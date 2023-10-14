@@ -1,23 +1,35 @@
 <resources>
     <string name="app_name">CineVerse</string>
+    <string name="app_slogan">Where Cinema Meets Your Pen!</string>
 
     <!-- Login/Register string -->
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
-    <string name="sign_in_to_continue">Please sign in to continue.</string>
-    <string name="logout">Logout</string>
-    <string name="register">Register</string>
-    <string name="do_not_have_an_account">Don\'t have an account?</string>
-    <string name="register_first"><u>Register first.</u></string>
-    <string name="already_have_account">Already have an account?</string>
-    <string name="login_page"><u>Login page.</u></string>
+    <string name="login">Log In</string>
+    <string name="google_login">Continue with Google</string>
+    <string name="login_to_continue">Please Login to continue.</string>
+    <string name="or">Or</string>
+    <string name="logout">Log Out</string>
+    <string name="signup">Sign Up</string>
+    <string name="do_not_have_an_account_q">Don\'t have an account?</string>
+    <string name="signup_first_u"><u>Sign Up first.</u></string>
+    <string name="already_have_account_q">Already have an account?</string>
+    <string name="login_page_u"><u>Log In page.</u></string>
     <string name="create_an_account">Create an account to continue.</string>
-    <string name="sign_in_or_register">Login or register</string>
-    <string name="invalid_credential">Email and Password must be entered</string>
-    <string name="user_not_found">User account not found</string>
-    <string name="user_disabled">User account disabled</string>
+    <string name="email_password_must_entered">Email and Password must be entered</string>
+    <string name="user_not_found_disabled">User account does not exist or has been disabled.</string>
+    <string name="user_already_exist">Already exists an account with the given email address.</string>
     <string name="user_logout">User Logged Out</string>
+    <string name="invalid_email_format">Invalid email format.</string>
     <string name="invalid_email">Invalid email address</string>
-    <string name="wrong_password">Wrong password</string>
+    <string name="wrong_password">Your password is incorrect, please try again.</string>
+    <string name="forgot_password_question_q">Forgot password?</string>
+    <string name="forgot_password_question_u"><u>Forgot password?</u></string>
+    <string name="reset_password">Reset password</string>
+    <string name="enter_your_email_to_reset">No worries! Enter your email and we will send you a link to reset your password.</string>
+    <string name="email_sent">Email sent</string>
+    <string name="invalid_credentials">Invalid email or password.</string>
+    <string name="error_failed">Error failed</string>
+    <string name="did_you_remember_password_q">Did you remember your password?</string>
+    <string name="weak_password">The password entered is too weak, please use at least 6 characters for added security.</string>
 </resources>

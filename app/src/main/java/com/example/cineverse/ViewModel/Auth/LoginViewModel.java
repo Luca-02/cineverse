@@ -5,41 +5,31 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.ViewModel.AuthViewModel;
+import com.example.cineverse.Repository.Auth.LoginRepository;
 
-public class LoginViewModel extends AuthViewModel {
+public class LoginViewModel extends AbstractAuthViewModel {
 
-    private final MutableLiveData<Boolean> invalidEmailLiveData;
-    private final MutableLiveData<Boolean> wrongPasswordLiveData;
-    private final MutableLiveData<Boolean> userNotFoundLiveData;
-    private final MutableLiveData<Boolean> userDisabledLiveData;
+    private final LoginRepository loginRepository;
+    private final MutableLiveData<LoginRepository.Error> errorLiveData;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
-        invalidEmailLiveData = authAppRepository.getInvalidEmailLiveData();
-        wrongPasswordLiveData = authAppRepository.getWrongPasswordLiveData();
-        userNotFoundLiveData = authAppRepository.getUserNotFoundLiveData();
-        userDisabledLiveData = authAppRepository.getUserDisabledLiveData();
+        loginRepository = new LoginRepository(application);
+        errorLiveData = loginRepository.getErrorLiveData();
+        setUserLiveData();
     }
 
-    public MutableLiveData<Boolean> getInvalidEmailLiveData() {
-        return invalidEmailLiveData;
+    @Override
+    protected void setUserLiveData() {
+        userLiveData = loginRepository.getUserLiveData();
     }
 
-    public MutableLiveData<Boolean> getWrongPasswordLiveData() {
-        return wrongPasswordLiveData;
-    }
-
-    public MutableLiveData<Boolean> getUserNotFoundLiveData() {
-        return userNotFoundLiveData;
-    }
-
-    public MutableLiveData<Boolean> getUserDisabledLiveData() {
-        return userDisabledLiveData;
+    public MutableLiveData<LoginRepository.Error> getErrorLiveData() {
+        return errorLiveData;
     }
 
     public void login(String email, String password) {
-        authAppRepository.login(email, password);
+        loginRepository.login(email, password);
     }
 
 }

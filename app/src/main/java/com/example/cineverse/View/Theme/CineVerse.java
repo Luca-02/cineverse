@@ -11,4 +11,5 @@ public class CineVerse extends Application {
         super.onCreate();
         DynamicColors.applyToActivitiesIfAvailable(this);
     }
+
 }

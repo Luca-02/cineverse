@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="shapeDrawable" type="android.graphics.drawable.Drawable"/>
+        <variable name="imgDrawable" type="android.graphics.drawable.Drawable"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/standard_spacing">
+
+        <ImageView
+            android:id="@+id/shape"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:alpha="0.2"
+            android:src="@{shapeDrawable}"
+            app:tint="?attr/colorPrimary"
+            app:layout_constraintDimensionRatio="16:9"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:src="@{imgDrawable}"
+            app:layout_constraintDimensionRatio="6:10"
+            app:layout_constraintBottom_toBottomOf="@+id/shape"
+            app:layout_constraintEnd_toEndOf="@+id/shape"
+            app:layout_constraintStart_toStartOf="@+id/shape"
+            app:layout_constraintTop_toTopOf="@+id/shape" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
