@@ -6,22 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.Repository.Auth.LoginRepository;
+import com.example.cineverse.ViewModel.AbstractAuthViewModel;
 
 public class LoginViewModel extends AbstractAuthViewModel {
 
-    private final LoginRepository loginRepository;
+    private final LoginRepository repository;
     private final MutableLiveData<LoginRepository.Error> errorLiveData;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
-        loginRepository = new LoginRepository(application);
-        errorLiveData = loginRepository.getErrorLiveData();
-        setUserLiveData();
-    }
-
-    @Override
-    protected void setUserLiveData() {
-        userLiveData = loginRepository.getUserLiveData();
+        repository = new LoginRepository(application);
+        errorLiveData = repository.getErrorLiveData();
+        setUserLiveData(repository);
     }
 
     public MutableLiveData<LoginRepository.Error> getErrorLiveData() {
@@ -29,7 +25,7 @@ public class LoginViewModel extends AbstractAuthViewModel {
     }
 
     public void login(String email, String password) {
-        loginRepository.login(email, password);
+        repository.login(email, password);
     }
 
 }

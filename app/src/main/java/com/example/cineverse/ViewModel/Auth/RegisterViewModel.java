@@ -6,22 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.Repository.Auth.RegisterRepository;
+import com.example.cineverse.ViewModel.AbstractAuthViewModel;
 
 public class RegisterViewModel extends AbstractAuthViewModel {
 
-    private final RegisterRepository registerRepository;
+    private final RegisterRepository repository;
     private final MutableLiveData<RegisterRepository.Error> errorLiveData;
 
     public RegisterViewModel(@NonNull Application application) {
         super(application);
-        registerRepository = new RegisterRepository(application);
-        errorLiveData = registerRepository.getErrorLiveData();
-        setUserLiveData();
-    }
-
-    @Override
-    protected void setUserLiveData() {
-        userLiveData = registerRepository.getUserLiveData();
+        repository = new RegisterRepository(application);
+        errorLiveData = repository.getErrorLiveData();
+        setUserLiveData(repository);
     }
 
     public MutableLiveData<RegisterRepository.Error> getErrorLiveData() {
@@ -29,7 +25,7 @@ public class RegisterViewModel extends AbstractAuthViewModel {
     }
 
     public void register(String email, String password) {
-        registerRepository.register(email, password);
+        repository.register(email, password);
     }
 
 }

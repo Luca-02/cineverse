@@ -6,22 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.Repository.Auth.ForgotPasswordRepository;
+import com.example.cineverse.ViewModel.AbstractAuthViewModel;
 
 public class ForgotPasswordViewModel extends AbstractAuthViewModel {
 
-    protected final ForgotPasswordRepository forgotPasswordRepository;
+    protected final ForgotPasswordRepository repository;
     private final MutableLiveData<ForgotPasswordRepository.Error> errorLiveData;
 
     public ForgotPasswordViewModel(@NonNull Application application) {
         super(application);
-        forgotPasswordRepository = new ForgotPasswordRepository(application);
-        errorLiveData = forgotPasswordRepository.getErrorLiveData();
-        setUserLiveData();
-    }
-
-    @Override
-    protected void setUserLiveData() {
-        userLiveData = forgotPasswordRepository.getUserLiveData();
+        repository = new ForgotPasswordRepository(application);
+        errorLiveData = repository.getErrorLiveData();
+        setUserLiveData(repository);
     }
 
     public MutableLiveData<ForgotPasswordRepository.Error> getErrorLiveData() {
@@ -29,7 +25,7 @@ public class ForgotPasswordViewModel extends AbstractAuthViewModel {
     }
 
     public void forgotPassword(String email) {
-        forgotPasswordRepository.forgotPassword(email);
+        repository.forgotPassword(email);
     }
 
 }

@@ -8,22 +8,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".View.Auth.Fragment.RegisterFragment">
+        tools:context=".View.Home.Fragment.VerifyEmailFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/materialToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/outline_arrow_back"/>
+                android:layout_height="?attr/actionBarSize"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <include
@@ -45,13 +42,15 @@
                 android:layout_height="wrap_content">
 
                 <include
-                    layout="@layout/header_image_layout"
                     android:id="@+id/include2"
+                    layout="@layout/header_image_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:shapeDrawable="@{@drawable/random_shape2}"
-                    app:imgDrawable="@{@drawable/forgot_password}"
+                    android:layout_marginTop="4dp"
+                    app:shapeDrawable="@{@drawable/random_shape4}"
+                    app:imgDrawable="@{@drawable/email_verification}"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,42 +70,52 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/forgot_password_question"
+                        android:text="@string/verify_email"
                         android:textSize="@dimen/text_big"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/sentMailTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:layout_marginTop="@dimen/half_standard_spacing"
+                        android:gravity="center"
+                        android:text="@string/we_have_sent_email"
+                        android:textSize="@dimen/text_normal" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/standard_spacing"
-                        android:text="@string/enter_your_email_to_reset"
+                        android:gravity="center"
+                        android:text="@string/check_your_inbox"
                         android:textSize="@dimen/text_normal" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/emailInputLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/email"
-                        app:startIconDrawable="@drawable/outline_email">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/emailEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/resetPasswordButton"
+                    <Button
+                        android:id="@+id/resentEmailButton"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/button_56dp"
-                        android:layout_marginTop="@dimen/standard_spacing"
                         android:enabled="false"
-                        android:text="@string/reset_password" />
+                        android:layout_marginTop="@dimen/standard_spacing"
+                        android:text="@string/resend_email"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Button
+                        android:id="@+id/verifiedButton"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_56dp"
+                        android:text="@string/verified" />
+
+                    <Button
+                        android:id="@+id/logoutButton"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_56dp"
+                        android:text="@string/logout" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </RelativeLayout>
 </layout>
+

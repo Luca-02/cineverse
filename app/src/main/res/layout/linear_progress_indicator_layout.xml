@@ -6,4 +6,4 @@
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
     android:indeterminate="true"
-    android:visibility="invisible" />
+    android:visibility="gone" />

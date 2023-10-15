@@ -16,7 +16,7 @@
         android:theme="@style/Theme.CineVerse"
         tools:targetApi="31">
         <activity
-            android:name=".View.Home.HomeActivity"
+            android:name=".View.Home.LoggedActivity"
             android:exported="false" />
         <activity
             android:name=".View.Auth.MainActivity"

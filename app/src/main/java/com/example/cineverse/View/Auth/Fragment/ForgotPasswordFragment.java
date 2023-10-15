@@ -1,4 +1,4 @@
-package com.example.cineverse.View.Auth.Fragment.Auth;
+package com.example.cineverse.View.Auth.Fragment;
 
 import android.os.Bundle;
 
@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.ViewModel.Auth.ForgotPasswordViewModel;
 import com.example.cineverse.databinding.FragmentForgotPasswordBinding;
@@ -26,7 +27,8 @@ public class ForgotPasswordFragment extends Fragment {
     private ForgotPasswordViewModel viewModel;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentForgotPasswordBinding.inflate(inflater, container, false);
         setViewModel();
         setListeners();
@@ -48,7 +50,7 @@ public class ForgotPasswordFragment extends Fragment {
             } else {
                 handleError(result.getError());
             }
-            hideProgressIndicator();
+            VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
         });
     }
 
@@ -63,7 +65,7 @@ public class ForgotPasswordFragment extends Fragment {
             String email = Objects.requireNonNull(
                     binding.emailEditText.getText()).toString().trim();
             viewModel.forgotPassword(email);
-            showProgressIndicator();
+            VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
         });
     }
 
@@ -75,14 +77,6 @@ public class ForgotPasswordFragment extends Fragment {
         disableErrorMessage();
         String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
         binding.resetPasswordButton.setEnabled(!email.isEmpty());
-    }
-
-    private void showProgressIndicator() {
-        binding.progressIndicator.getRoot().setVisibility(View.VISIBLE);
-    }
-
-    private void hideProgressIndicator() {
-        binding.progressIndicator.getRoot().setVisibility(View.INVISIBLE);
     }
 
     private void handleSuccess() {

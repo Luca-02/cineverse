@@ -1,6 +1,5 @@
-package com.example.cineverse.View.Auth.Fragment.Auth;
+package com.example.cineverse.View.Auth.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,8 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.Repository.Auth.RegisterRepository;
-import com.example.cineverse.View.Home.HomeActivity;
+import com.example.cineverse.View.Auth.MainActivity;
 import com.example.cineverse.ViewModel.Auth.RegisterViewModel;
 import com.example.cineverse.databinding.FragmentRegisterBinding;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +27,8 @@ public class RegisterFragment extends Fragment {
     private RegisterViewModel viewModel;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
         setViewModel();
         setListeners();
@@ -58,7 +59,7 @@ public class RegisterFragment extends Fragment {
             String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
             String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString().trim();
             viewModel.register(email, password);
-            showProgressIndicator();
+            VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
         });
     }
 
@@ -74,23 +75,11 @@ public class RegisterFragment extends Fragment {
         binding.registerButton.setEnabled(!email.isEmpty() && !password.isEmpty());
     }
 
-    private void showProgressIndicator() {
-        binding.progressIndicator.getRoot().setVisibility(View.VISIBLE);
-    }
-
-    private void hideProgressIndicator() {
-        binding.progressIndicator.getRoot().setVisibility(View.INVISIBLE);
-    }
-
     public void handleUser(FirebaseUser firebaseUser) {
         if (firebaseUser != null) {
-            Intent intent = new Intent(requireContext(), HomeActivity.class);
-            // Close all previews activity
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            requireActivity().finish();
+            ((MainActivity) requireActivity()).openHomeActivity();
         }
-        hideProgressIndicator();
+        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
     public void handleError(RegisterRepository.Error error) {
@@ -110,7 +99,7 @@ public class RegisterFragment extends Fragment {
                 binding.passwordInputLayout.setError(errorString);
                 break;
         }
-        hideProgressIndicator();
+        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
     public class MyTextWatcher implements TextWatcher {

@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".View.Auth.Fragment.Auth.RegisterFragment">
+        tools:context=".View.Auth.Fragment.RegisterFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -26,9 +26,17 @@
                 app:navigationIcon="@drawable/outline_arrow_back"/>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <include
+            android:id="@+id/progressIndicator"
+            layout="@layout/linear_progress_indicator_layout"
+            android:layout_below="@id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:scrollbars="none"
             android:layout_below="@id/appBarLayout">
 
@@ -37,21 +45,12 @@
                 android:layout_height="wrap_content">
 
                 <include
-                    android:id="@+id/progressIndicator"
-                    layout="@layout/linear_progress_indicator_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <include
                     layout="@layout/header_image_layout"
-                    app:shapeDrawable="@{@drawable/random_shape1}"
-                    app:imgDrawable="@{@drawable/register}"
                     android:id="@+id/include2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:shapeDrawable="@{@drawable/random_shape1}"
+                    app:imgDrawable="@{@drawable/register}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

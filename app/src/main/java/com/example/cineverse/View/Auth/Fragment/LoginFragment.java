@@ -1,6 +1,5 @@
-package com.example.cineverse.View.Auth.Fragment.Auth;
+package com.example.cineverse.View.Auth.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,16 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.Repository.Auth.LoginRepository;
-import com.example.cineverse.View.Home.HomeActivity;
+import com.example.cineverse.View.Auth.MainActivity;
 import com.example.cineverse.ViewModel.Auth.LoginViewModel;
 import com.example.cineverse.databinding.FragmentLoginBinding;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,20 +28,8 @@ public class LoginFragment extends Fragment {
     private LoginViewModel viewModel;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                Navigation.findNavController(requireView())
-                        .navigate(R.id.action_loginFragment_to_authFragment);
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         setViewModel();
         setListeners();
@@ -74,7 +60,7 @@ public class LoginFragment extends Fragment {
             String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
             String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString().trim();
             viewModel.login(email, password);
-            showProgressIndicator();
+            VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
         });
 
         binding.forgotPasswordText.setOnClickListener(view ->
@@ -94,23 +80,11 @@ public class LoginFragment extends Fragment {
         binding.loginButton.setEnabled(!email.isEmpty() && !password.isEmpty());
     }
 
-    private void showProgressIndicator() {
-        binding.progressIndicator.getRoot().setVisibility(View.VISIBLE);
-    }
-
-    private void hideProgressIndicator() {
-        binding.progressIndicator.getRoot().setVisibility(View.INVISIBLE);
-    }
-
     private void handleUser(FirebaseUser firebaseUser) {
         if (firebaseUser != null) {
-            Intent intent = new Intent(requireActivity(), HomeActivity.class);
-            // Close all previews activity
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            requireActivity().finish();
+            ((MainActivity) requireActivity()).openHomeActivity();
         }
-        hideProgressIndicator();
+        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
     private void handleError(LoginRepository.Error error) {
@@ -125,7 +99,7 @@ public class LoginFragment extends Fragment {
                 binding.passwordInputLayout.setError(errorString);
                 break;
         }
-        hideProgressIndicator();
+        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
     public class MyTextWatcher implements TextWatcher {

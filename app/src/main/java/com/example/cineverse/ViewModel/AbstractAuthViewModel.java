@@ -1,4 +1,4 @@
-package com.example.cineverse.ViewModel.Auth;
+package com.example.cineverse.ViewModel;
 
 import android.app.Application;
 
@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.cineverse.Repository.AuthRepository;
 import com.google.firebase.auth.FirebaseUser;
 
 public abstract class AbstractAuthViewModel extends AndroidViewModel {
@@ -20,6 +21,8 @@ public abstract class AbstractAuthViewModel extends AndroidViewModel {
         return userLiveData;
     }
 
-    protected abstract void setUserLiveData();
+    protected void setUserLiveData(AuthRepository repository) {
+        userLiveData = repository.getUserLiveData();
+    };
 
 }

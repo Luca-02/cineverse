@@ -45,14 +45,15 @@ public class AuthRepository {
     protected static final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     protected final Application application;
-    private final MutableLiveData<FirebaseUser> userLiveData;
+    protected final MutableLiveData<FirebaseUser> userLiveData;
 
     public AuthRepository(Application application) {
         this.application = application;
         userLiveData = new MutableLiveData<>();
 
-        if (firebaseAuth.getCurrentUser() != null) {
-            userLiveData.postValue(firebaseAuth.getCurrentUser());
+        FirebaseUser currentUser = getCurrentUser();
+        if (currentUser != null) {
+            userLiveData.postValue(currentUser);
         }
     }
 
@@ -62,6 +63,15 @@ public class AuthRepository {
 
     public void setUserLiveData(FirebaseUser firebaseUser) {
         userLiveData.postValue(firebaseUser);
+    }
+
+    public static FirebaseUser getCurrentUser() {
+        return firebaseAuth.getCurrentUser();
+    }
+
+    public static boolean isEmailVerified() {
+        FirebaseUser user = getCurrentUser();
+        return user != null && user.isEmailVerified();
     }
 
 }
