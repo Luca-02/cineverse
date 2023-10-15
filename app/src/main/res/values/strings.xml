@@ -6,11 +6,11 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="google_login">Continue with Google</string>
-    <string name="login">Log In</string>
-    <string name="login_to_continue">Please Login to continue.</string>
+    <string name="signin">Sign In</string>
+    <string name="signin_to_continue">Please Sign In to continue.</string>
     <string name="signup">Sign Up</string>
     <string name="create_an_account">Create an account to continue.</string>
-    <string name="logout">Log Out</string>
+    <string name="signout">Sign Out</string>
 
     <!-- Forgot Password -->
     <string name="forgot_password_question">Forgot password</string>

@@ -20,7 +20,8 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/materialToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"/>
+                android:layout_height="?attr/actionBarSize"
+                app:menu="@menu/verify_email_app_bar" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <include
@@ -37,84 +38,65 @@
             android:scrollbars="none"
             android:layout_below="@id/appBarLayout">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="@dimen/standard_spacing"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <include
                     android:id="@+id/include2"
                     layout="@layout/header_image_layout"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     app:shapeDrawable="@{@drawable/random_shape4}"
-                    app:imgDrawable="@{@drawable/email_verification}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:imgDrawable="@{@drawable/email_verification}" />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/standard_spacing"
+                    android:layout_marginTop="@dimen/double_spacing"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@string/verify_email"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sentMailTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/half_standard_spacing"
+                    android:gravity="center"
+                    android:text="@string/we_have_sent_email"
+                    android:textSize="@dimen/text_normal" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/standard_spacing"
+                    android:gravity="center"
+                    android:text="@string/check_your_inbox"
+                    android:textSize="@dimen/text_normal" />
+
+                <Button
+                    android:id="@+id/resentEmailButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_56dp"
+                    android:enabled="false"
+                    android:layout_marginTop="@dimen/standard_spacing"
+                    android:text="@string/resend_email"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/include2">
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/verify_email"
-                        android:textSize="@dimen/text_big"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/sentMailTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/half_standard_spacing"
-                        android:gravity="center"
-                        android:text="@string/we_have_sent_email"
-                        android:textSize="@dimen/text_normal" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/standard_spacing"
-                        android:gravity="center"
-                        android:text="@string/check_your_inbox"
-                        android:textSize="@dimen/text_normal" />
-
-                    <Button
-                        android:id="@+id/resentEmailButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/button_56dp"
-                        android:enabled="false"
-                        android:layout_marginTop="@dimen/standard_spacing"
-                        android:text="@string/resend_email"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <Button
-                        android:id="@+id/verifiedButton"
-                        style="?attr/borderlessButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/button_56dp"
-                        android:text="@string/verified" />
-
-                    <Button
-                        android:id="@+id/logoutButton"
-                        style="?attr/borderlessButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/button_56dp"
-                        android:text="@string/logout" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <Button
+                    android:id="@+id/verifiedButton"
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_56dp"
+                    android:text="@string/verified" />
+            </LinearLayout>
         </ScrollView>
     </RelativeLayout>
 </layout>

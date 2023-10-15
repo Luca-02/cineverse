@@ -62,7 +62,7 @@
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_56dp"
-                    android:text="@string/login" />
+                    android:text="@string/signin" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

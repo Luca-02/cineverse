@@ -83,15 +83,19 @@ public class VerifyEmailFragment extends Fragment {
     }
 
     private void setListeners() {
+        binding.materialToolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.signout) {
+                viewModel.logOut();
+                VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
+                return true;
+            }
+            return false;
+        });
         binding.resentEmailButton.setOnClickListener(view -> {
             handleSendEmail();
         });
         binding.verifiedButton.setOnClickListener(view -> {
             viewModel.reloadUser();
-            VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
-        });
-        binding.logoutButton.setOnClickListener(view -> {
-            viewModel.logOut();
             VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
         });
     }
