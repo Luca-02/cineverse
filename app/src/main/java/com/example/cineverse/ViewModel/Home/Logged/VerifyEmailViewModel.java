@@ -23,6 +23,7 @@ public class VerifyEmailViewModel extends LoggedViewModel {
         emailVerifiedLiveData = repository.getEmailVerifiedLiveData();
         setUserLiveData(repository);
         setLoggedOutLiveData(repository);
+        setNetworkErrorLiveData(repository);
     }
 
     public MutableLiveData<Boolean> getGetEmailSentLiveData() {

@@ -18,6 +18,7 @@ public class LoginViewModel extends AbstractAuthViewModel {
         repository = new LoginRepository(application);
         errorLiveData = repository.getErrorLiveData();
         setUserLiveData(repository);
+        setNetworkErrorLiveData(repository);
     }
 
     public MutableLiveData<LoginRepository.Error> getErrorLiveData() {

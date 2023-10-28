@@ -5,9 +5,11 @@ import android.app.Application;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.Repository.AuthRepository;
-import com.example.cineverse.Utils.EmailValidator;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+
+import org.apache.commons.validator.routines.EmailValidator;
 
 public class LoginRepository extends AuthRepository {
 
@@ -23,7 +25,7 @@ public class LoginRepository extends AuthRepository {
     }
 
     public void login(String email, String password) {
-        if (!EmailValidator.isEmailValid(email)) {
+        if (!EmailValidator.getInstance().isValid(email)) {
             postError(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
             firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -39,6 +41,8 @@ public class LoginRepository extends AuthRepository {
     private void handleFailure(Exception exception) {
         if (exception instanceof FirebaseAuthInvalidUserException) {
             postError(Error.ERROR_NOT_FOUND_DISABLED);
+        } else if (exception instanceof FirebaseNetworkException) {
+            setNetworkErrorLiveData(true);
         } else {
             postError(Error.ERROR_WRONG_PASSWORD);
         }

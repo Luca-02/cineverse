@@ -1,6 +1,13 @@
 <resources>
+    <string name="language">en</string>
     <string name="app_name">CineVerse</string>
     <string name="app_slogan">Where Cinema Meets Your Pen!</string>
+
+    <!-- Global -->
+    <string name="retry">Retry</string>
+
+    <!-- Error -->
+    <string name="unexpected_error">Unexpected error has occurred</string>
 
     <!-- Login/Register -->
     <string name="email">Email</string>
@@ -17,7 +24,6 @@
     <string name="forgot_password_question_u"><u>Forgot password?</u></string>
     <string name="enter_your_email_to_reset">No worries! Enter your email and we will send you a link to reset your password.</string>
     <string name="reset_password">Reset password</string>
-    <string name="email_sent">Email sent</string>
 
     <!-- Auth Error -->
     <string name="user_not_found_disabled">User account does not exist or has been disabled.</string>
@@ -36,4 +42,15 @@
     <string name="verified">Verified</string>
     <string name="wait_second">Wait %s second</string>
     <string name="wait_seconds">Wait %s seconds</string>
+    <string name="email_not_verified">Email not verified</string>
+
+    <!-- Network Error -->
+    <string name="ops">Ooops!</string>
+    <string name="no_internet">Slow or no internet connection.</string>
+    <string name="check_internet">Check your internet settings.</string>
+    <string name="try_again">Try Again</string>
+
+    <!-- Email -->
+    <string name="email_sent">Email sent</string>
+    <string name="email_not_sent_wait">Error, email not sent, wait few time</string>
 </resources>

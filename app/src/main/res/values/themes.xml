@@ -31,6 +31,7 @@
         <!-- Customize your light theme here. -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
 
         <!-- Button -->
         <item name="materialButtonStyle">@style/Widget.App.Button</item>
@@ -39,8 +40,6 @@
 
         <!-- TextInputLayout -->
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
-
-        <!-- Font -->
     </style>
 
     <style name="Theme.CineVerse" parent="Base.Theme.CineVerse" />

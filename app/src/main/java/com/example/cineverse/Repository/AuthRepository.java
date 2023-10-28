@@ -1,19 +1,12 @@
 package com.example.cineverse.Repository;
 
 import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.R;
-import com.example.cineverse.Utils.EmailValidator;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Objects;
 
 public class AuthRepository {
 
@@ -45,11 +38,13 @@ public class AuthRepository {
     protected static final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     protected final Application application;
-    protected final MutableLiveData<FirebaseUser> userLiveData;
+    private final MutableLiveData<FirebaseUser> userLiveData;
+    private final MutableLiveData<Boolean> networkErrorLiveData;
 
     public AuthRepository(Application application) {
         this.application = application;
         userLiveData = new MutableLiveData<>();
+        networkErrorLiveData = new MutableLiveData<>();
 
         FirebaseUser currentUser = getCurrentUser();
         if (currentUser != null) {
@@ -63,6 +58,14 @@ public class AuthRepository {
 
     public void setUserLiveData(FirebaseUser firebaseUser) {
         userLiveData.postValue(firebaseUser);
+    }
+
+    public MutableLiveData<Boolean> getNetworkErrorLiveData() {
+        return networkErrorLiveData;
+    }
+
+    public void setNetworkErrorLiveData(boolean bool) {
+        networkErrorLiveData.postValue(bool);
     }
 
     public static FirebaseUser getCurrentUser() {

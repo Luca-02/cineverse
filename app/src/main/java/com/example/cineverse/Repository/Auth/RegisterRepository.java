@@ -5,11 +5,13 @@ import android.app.Application;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.Repository.AuthRepository;
-import com.example.cineverse.Utils.EmailValidator;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+
+import org.apache.commons.validator.routines.EmailValidator;
 
 public class RegisterRepository extends AuthRepository {
 
@@ -25,7 +27,7 @@ public class RegisterRepository extends AuthRepository {
     }
 
     public void register(String email, String password) {
-        if (!EmailValidator.isEmailValid(email)) {
+        if (!EmailValidator.getInstance().isValid(email)) {
             postError(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -45,6 +47,8 @@ public class RegisterRepository extends AuthRepository {
             postError(Error.ERROR_INVALID_EMAIL);
         } else if (exception instanceof FirebaseAuthUserCollisionException) {
             postError(Error.ERROR_ALREADY_EXISTS);
+        } else if (exception instanceof FirebaseNetworkException) {
+            setNetworkErrorLiveData(true);
         } else {
             postError(Error.ERROR_INVALID_CREDENTIAL);
         }

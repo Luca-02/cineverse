@@ -18,6 +18,7 @@ public class RegisterViewModel extends AbstractAuthViewModel {
         repository = new RegisterRepository(application);
         errorLiveData = repository.getErrorLiveData();
         setUserLiveData(repository);
+        setNetworkErrorLiveData(repository);
     }
 
     public MutableLiveData<RegisterRepository.Error> getErrorLiveData() {

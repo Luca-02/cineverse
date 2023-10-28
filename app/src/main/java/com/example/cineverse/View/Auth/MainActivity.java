@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cineverse.Repository.AuthRepository;
 import com.example.cineverse.View.Home.LoggedActivity;
+import com.example.cineverse.View.NetworkError.NetworkErrorActivity;
 import com.example.cineverse.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    public void openNetworkErrorActivity() {
+        Intent intent = new Intent(this, NetworkErrorActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }

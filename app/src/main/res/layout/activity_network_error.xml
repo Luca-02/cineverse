@@ -8,15 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".View.Auth.Fragment.RegisterFragment">
+        tools:context=".View.NetworkError.NetworkErrorActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -25,13 +23,6 @@
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/outline_arrow_back"/>
         </com.google.android.material.appbar.AppBarLayout>
-
-        <include
-            android:id="@+id/progressIndicator"
-            layout="@layout/linear_progress_indicator_layout"
-            android:layout_below="@id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -53,64 +44,41 @@
                     layout="@layout/header_image_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:imgDrawable="@{@drawable/register}"
-                    app:shapeDrawable="@{@drawable/random_shape1}" />
+                    android:layout_marginTop="4dp"
+                    app:shapeDrawable="@{@drawable/random_shape5}"
+                    app:imgDrawable="@{@drawable/no_connection}" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/double_spacing"
                     android:gravity="center"
-                    android:text="@string/signup"
+                    android:text="@string/ops"
                     android:textSize="@dimen/text_big"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/sentMailTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/half_standard_spacing"
+                    android:gravity="center"
+                    android:text="@string/no_internet"
+                    android:textSize="@dimen/text_normal" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/standard_spacing"
                     android:gravity="center"
-                    android:text="@string/create_an_account"
+                    android:text="@string/check_internet"
                     android:textSize="@dimen/text_normal" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/emailInputLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/standard_spacing"
-                    android:hint="@string/email"
-                    app:startIconDrawable="@drawable/outline_email">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/emailEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/passwordInputLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/password"
-                    app:endIconMode="password_toggle"
-                    app:startIconDrawable="@drawable/outline_lock_open">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/passwordEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword" />
-                </com.google.android.material.textfield.TextInputLayout>
-
                 <Button
-                    android:id="@+id/registerButton"
+                    android:id="@+id/tryAgainButton"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_56dp"
                     android:layout_marginTop="@dimen/standard_spacing"
-                    android:enabled="false"
-                    android:text="@string/signup" />
+                    android:text="@string/try_again" />
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>

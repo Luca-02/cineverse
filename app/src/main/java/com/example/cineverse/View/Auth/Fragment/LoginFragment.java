@@ -24,6 +24,8 @@ import java.util.Objects;
 
 public class LoginFragment extends Fragment {
 
+    private final MyTextWatcher myTextWatcher = new MyTextWatcher();
+
     private FragmentLoginBinding binding;
     private LoginViewModel viewModel;
 
@@ -45,6 +47,7 @@ public class LoginFragment extends Fragment {
     private void setViewModel() {
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::handleUser);
+        viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
         viewModel.getErrorLiveData().observe(getViewLifecycleOwner(), this::handleError);
     }
 
@@ -52,7 +55,6 @@ public class LoginFragment extends Fragment {
         binding.materialToolbar.setNavigationOnClickListener(view ->
                 Navigation.findNavController(requireView()).popBackStack());
 
-        MyTextWatcher myTextWatcher = new MyTextWatcher();
         binding.emailEditText.addTextChangedListener(myTextWatcher);
         binding.passwordEditText.addTextChangedListener(myTextWatcher);
 
@@ -84,6 +86,14 @@ public class LoginFragment extends Fragment {
         if (firebaseUser != null) {
             ((MainActivity) requireActivity()).openHomeActivity();
         }
+        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+    }
+
+    private void handleNetworkError(Boolean bool) {
+        if (bool) {
+            ((MainActivity) requireActivity()).openNetworkErrorActivity();
+        }
+        binding.passwordEditText.setText(null);
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 

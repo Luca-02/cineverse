@@ -1,6 +1,10 @@
 package com.example.cineverse.View.Home.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
@@ -8,22 +12,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.View.Home.LoggedActivity;
 import com.example.cineverse.ViewModel.Home.Logged.VerifyEmailViewModel;
 import com.example.cineverse.databinding.FragmentVerifyEmailBinding;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 
 public class VerifyEmailFragment extends Fragment {
 
-    private static final int WAIT_COUNT_DOWN = 45;
+    private static final int WAIT_COUNT_DOWN = 60;
+
+    private final VerifyEmailListener verifyEmailListener = new VerifyEmailListener();
 
     private FragmentVerifyEmailBinding binding;
     private VerifyEmailViewModel viewModel;
@@ -61,10 +62,12 @@ public class VerifyEmailFragment extends Fragment {
                 unexpectedError();
                 binding.resentEmailButton.setEnabled(true);
             } else if (isSent) {
-                Toast.makeText(requireActivity(), "Email sent", Toast.LENGTH_SHORT).show();
+                Snackbar.make(binding.getRoot(),
+                        R.string.email_sent, Snackbar.LENGTH_SHORT).show();
                 startCountdown();
             } else {
-                Toast.makeText(requireActivity(), "Error, email not sent, wait few time", Toast.LENGTH_SHORT).show();
+                Snackbar.make(binding.getRoot(),
+                        R.string.email_not_sent_wait, Snackbar.LENGTH_SHORT).show();
                 binding.resentEmailButton.setEnabled(true);
             }
             VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
@@ -76,10 +79,14 @@ public class VerifyEmailFragment extends Fragment {
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_verifyEmailFragment_to_homeFragment);
             } else {
-                Toast.makeText(requireActivity(), "Not verified", Toast.LENGTH_SHORT).show();
+                Snackbar.make(binding.getRoot(),
+                        R.string.email_not_verified, Snackbar.LENGTH_SHORT)
+                        .setAction(R.string.retry, verifyEmailListener)
+                        .show();
             }
             VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
         });
+        viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
     }
 
     private void setListeners() {
@@ -91,13 +98,8 @@ public class VerifyEmailFragment extends Fragment {
             }
             return false;
         });
-        binding.resentEmailButton.setOnClickListener(view -> {
-            handleSendEmail();
-        });
-        binding.verifiedButton.setOnClickListener(view -> {
-            viewModel.reloadUser();
-            VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
-        });
+        binding.resentEmailButton.setOnClickListener(view -> handleSendEmail());
+        binding.verifiedButton.setOnClickListener(verifyEmailListener);
     }
 
     private void handleUser(FirebaseUser firebaseUser) {
@@ -116,10 +118,23 @@ public class VerifyEmailFragment extends Fragment {
         binding.sentMailTextView.setText(styledText);
     }
 
+    private void handleNetworkError(Boolean bool) {
+        if (bool) {
+            ((LoggedActivity) requireActivity()).openNetworkErrorActivity();
+        }
+        binding.resentEmailButton.setEnabled(true);
+        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+    }
+
     private void handleSendEmail() {
         viewModel.sendEmailVerification();
         VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
         binding.resentEmailButton.setEnabled(false);
+    }
+
+    private void handleVerifyEmail() {
+        viewModel.reloadUser();
+        VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
     }
 
     private void startCountdown() {
@@ -144,8 +159,15 @@ public class VerifyEmailFragment extends Fragment {
     }
 
     private void unexpectedError() {
-        Toast.makeText(requireActivity(),
-                "Unexpected error has occurred", Toast.LENGTH_SHORT).show();
+        Snackbar.make(binding.getRoot(),
+                R.string.unexpected_error, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public class VerifyEmailListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            handleVerifyEmail();
+        }
     }
 
 }

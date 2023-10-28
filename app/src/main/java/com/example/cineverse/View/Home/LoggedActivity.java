@@ -13,6 +13,7 @@ import android.util.Log;
 import com.example.cineverse.R;
 import com.example.cineverse.Repository.AuthRepository;
 import com.example.cineverse.View.Auth.MainActivity;
+import com.example.cineverse.View.NetworkError.NetworkErrorActivity;
 import com.example.cineverse.databinding.ActivityLoggedBinding;
 
 public class LoggedActivity extends AppCompatActivity {
@@ -47,6 +48,12 @@ public class LoggedActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    public void openNetworkErrorActivity() {
+        Intent intent = new Intent(this, NetworkErrorActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }

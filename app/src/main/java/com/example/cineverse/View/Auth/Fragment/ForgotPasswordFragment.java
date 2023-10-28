@@ -12,16 +12,20 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.R;
+import com.example.cineverse.Repository.AuthRepository;
+import com.example.cineverse.View.Auth.MainActivity;
 import com.example.cineverse.ViewModel.Auth.ForgotPasswordViewModel;
 import com.example.cineverse.databinding.FragmentForgotPasswordBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
 public class ForgotPasswordFragment extends Fragment {
+
+    private final MyTextWatcher myTextWatcher = new MyTextWatcher();
 
     private FragmentForgotPasswordBinding binding;
     private ForgotPasswordViewModel viewModel;
@@ -43,22 +47,14 @@ public class ForgotPasswordFragment extends Fragment {
 
     private void setViewModel() {
         viewModel = new ViewModelProvider(this).get(ForgotPasswordViewModel.class);
-
-        viewModel.getErrorLiveData().observe(getViewLifecycleOwner(), result -> {
-            if (result.isSuccess()) {
-                handleSuccess();
-            } else {
-                handleError(result.getError());
-            }
-            VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
-        });
+        viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
+        viewModel.getErrorLiveData().observe(getViewLifecycleOwner(), this::handleError);
     }
 
     private void setListeners() {
         binding.materialToolbar.setNavigationOnClickListener(view ->
                 Navigation.findNavController(requireView()).popBackStack());
 
-        MyTextWatcher myTextWatcher = new MyTextWatcher();
         binding.emailEditText.addTextChangedListener(myTextWatcher);
 
         binding.resetPasswordButton.setOnClickListener(view -> {
@@ -79,14 +75,27 @@ public class ForgotPasswordFragment extends Fragment {
         binding.resetPasswordButton.setEnabled(!email.isEmpty());
     }
 
+    private void handleNetworkError(Boolean bool) {
+        if (bool) {
+            ((MainActivity) requireActivity()).openNetworkErrorActivity();
+        }
+        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+    }
+
     private void handleSuccess() {
-        Toast.makeText(getContext(), R.string.email_sent, Toast.LENGTH_LONG).show();
+        Snackbar.make(binding.getRoot(),
+                R.string.email_sent, Snackbar.LENGTH_LONG).show();
         Navigation.findNavController(requireView())
                 .navigate(R.id.action_forgotPasswordFragment_to_loginFragment);
     }
 
-    private void handleError(int errorMessage) {
-        binding.emailInputLayout.setError(getString(errorMessage));
+    private void handleError(AuthRepository.Error result) {
+        if (result.isSuccess()) {
+            handleSuccess();
+        } else {
+            binding.emailInputLayout.setError(getString(result.getError()));
+        }
+        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
     public class MyTextWatcher implements TextWatcher {

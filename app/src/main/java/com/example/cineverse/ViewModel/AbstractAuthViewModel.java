@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser;
 public abstract class AbstractAuthViewModel extends AndroidViewModel {
 
     protected MutableLiveData<FirebaseUser> userLiveData;
+    protected MutableLiveData<Boolean> networkErrorLiveData;
 
     public AbstractAuthViewModel(@NonNull Application application) {
         super(application);
@@ -23,6 +24,14 @@ public abstract class AbstractAuthViewModel extends AndroidViewModel {
 
     protected void setUserLiveData(AuthRepository repository) {
         userLiveData = repository.getUserLiveData();
-    };
+    }
+
+    public MutableLiveData<Boolean> getNetworkErrorLiveData() {
+        return networkErrorLiveData;
+    }
+
+    public void setNetworkErrorLiveData(AuthRepository repository) {
+        networkErrorLiveData = repository.getNetworkErrorLiveData();
+    }
 
 }

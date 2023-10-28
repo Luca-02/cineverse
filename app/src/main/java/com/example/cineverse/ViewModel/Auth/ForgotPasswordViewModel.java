@@ -18,6 +18,7 @@ public class ForgotPasswordViewModel extends AbstractAuthViewModel {
         repository = new ForgotPasswordRepository(application);
         errorLiveData = repository.getErrorLiveData();
         setUserLiveData(repository);
+        setNetworkErrorLiveData(repository);
     }
 
     public MutableLiveData<ForgotPasswordRepository.Error> getErrorLiveData() {
