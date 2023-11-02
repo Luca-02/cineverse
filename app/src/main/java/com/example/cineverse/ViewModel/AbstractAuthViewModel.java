@@ -46,4 +46,11 @@ public abstract class AbstractAuthViewModel extends AndroidViewModel {
         networkErrorLiveData = repository.getNetworkErrorLiveData();
     }
 
+    /**
+     * Clears the networkErrorLiveData object.
+     */
+    public void clearNetworkErrorLiveData() {
+        networkErrorLiveData = new MutableLiveData<>();
+    }
+
 }

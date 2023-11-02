@@ -147,7 +147,7 @@ public class AuthFragment extends Fragment {
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
-            ((MainActivity) requireActivity()).openNetworkErrorActivity();
+            ((MainActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }

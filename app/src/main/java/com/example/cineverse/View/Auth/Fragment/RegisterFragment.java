@@ -116,7 +116,7 @@ public class RegisterFragment extends Fragment {
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
-            ((MainActivity) requireActivity()).openNetworkErrorActivity();
+            ((MainActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
         binding.passwordEditText.setText(null);
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());

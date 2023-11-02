@@ -89,7 +89,7 @@ public class VerifyEmailFragment extends Fragment {
             setEmailText(firebaseUser);
             handleSendEmail();
         } else {
-            // TODO create a LoggedUserFailureException
+            viewModel.logOut();
         }
     }
 
@@ -153,7 +153,7 @@ public class VerifyEmailFragment extends Fragment {
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
-            ((LoggedActivity) requireActivity()).openNetworkErrorActivity();
+            ((LoggedActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
         binding.resentEmailButton.setEnabled(true);
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());

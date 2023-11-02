@@ -14,6 +14,7 @@ import com.example.cineverse.R;
 import com.example.cineverse.Repository.AuthRepository;
 import com.example.cineverse.View.Auth.MainActivity;
 import com.example.cineverse.View.NetworkError.NetworkErrorActivity;
+import com.example.cineverse.ViewModel.AbstractAuthViewModel;
 import com.example.cineverse.databinding.ActivityLoggedBinding;
 
 /**
@@ -62,11 +63,15 @@ public class LoggedActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens the network error activity, allowing the user to handle network issues separately.
+     * Opens the network error activity (NetworkErrorActivity) and clears network error LiveData in the
+     * passed AbstractAuthViewModel to avoid re-opening NetworkErrorActivity when a fragment that
+     * contains network error LiveData is recreated.
+     *
+     * @param viewModel The AbstractAuthViewModel associated with the current authentication context.
      */
-    public void openNetworkErrorActivity() {
+    public void openNetworkErrorActivity(AbstractAuthViewModel viewModel) {
+        viewModel.clearNetworkErrorLiveData();
         Intent intent = new Intent(this, NetworkErrorActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
