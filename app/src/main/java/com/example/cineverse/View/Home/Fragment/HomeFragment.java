@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-        private void setListeners() {
+    private void setListeners() {
         binding.logoutButton.setOnClickListener(view -> viewModel.logOut());
     }
 

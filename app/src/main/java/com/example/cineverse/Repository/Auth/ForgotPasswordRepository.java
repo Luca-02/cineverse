@@ -10,10 +10,23 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+/**
+ * The ForgotPasswordRepository class extends AuthRepository and provides functionality for handling
+ * user password reset requests. It validates the user input (email), initiates a password reset
+ * operation using Firebase authentication services, and handles various scenarios, including
+ * invalid email format, user not found, network issues, and other exceptions. Errors and password
+ * reset status are communicated via MutableLiveData for observation and user feedback.
+ */
 public class ForgotPasswordRepository extends AuthRepository {
 
     private final MutableLiveData<Error> errorLiveData;
 
+    /**
+     * Constructs a ForgotPasswordRepository object with the given Application context and initializes
+     * MutableLiveData for observing password reset-related errors.
+     *
+     * @param application The Application context of the calling component.
+     */
     public ForgotPasswordRepository(Application application) {
         super(application);
         errorLiveData = new MutableLiveData<>();
@@ -23,9 +36,15 @@ public class ForgotPasswordRepository extends AuthRepository {
         return errorLiveData;
     }
 
+    /**
+     * Initiates a password reset request for the provided email address. Validates the email format,
+     * initiates the password reset operation, and communicates errors or success through errorLiveData.
+     *
+     * @param email User's email address for password reset.
+     */
     public void forgotPassword(String email) {
         if (!EmailValidator.getInstance().isValid(email)) {
-            postError(Error.ERROR_INVALID_EMAIL_FORMAT);
+            errorLiveData.postValue(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
             firebaseAuth.sendPasswordResetEmail(email)
                     .addOnSuccessListener(authResult -> handleSuccess())
@@ -33,22 +52,27 @@ public class ForgotPasswordRepository extends AuthRepository {
         }
     }
 
+    /**
+     * Handles successful password reset by posting SUCCESS to errorLiveData.
+     */
     private void handleSuccess() {
-        postError(Error.SUCCESS);
+        errorLiveData.postValue(Error.SUCCESS);
     }
 
+    /**
+     * Handles password reset failure scenarios by identifying the type of exception and
+     * posting appropriate errors for user feedback through errorLiveData.
+     *
+     * @param exception The exception occurred during the password reset process.
+     */
     private void handleFailure(Exception exception) {
         if (exception instanceof FirebaseAuthInvalidUserException) {
-            postError(Error.ERROR_NOT_FOUND_DISABLED);
+            errorLiveData.postValue(Error.ERROR_NOT_FOUND_DISABLED);
         } else if (exception instanceof FirebaseNetworkException) {
             setNetworkErrorLiveData(true);
         } else {
-            postError(Error.ERROR_INVALID_CREDENTIAL);
+            errorLiveData.postValue(Error.ERROR_INVALID_CREDENTIAL);
         }
-    }
-
-    private void postError(Error result) {
-        errorLiveData.postValue(result);
     }
 
 }

@@ -21,6 +21,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
+/**
+ * The RegisterFragment class represents the screen for user registration.
+ * Users can enter their email and password to create an account.
+ * This fragment handles user input validation, button functionality, and error handling for the
+ * registration process.
+ */
 public class RegisterFragment extends Fragment {
 
     private final MyTextWatcher myTextWatcher = new MyTextWatcher();
@@ -43,6 +49,9 @@ public class RegisterFragment extends Fragment {
         binding = null;
     }
 
+    /**
+     * Initializes the RegisterViewModel for this fragment.
+     */
     private void setViewModel() {
         viewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
         viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::handleUser);
@@ -50,6 +59,9 @@ public class RegisterFragment extends Fragment {
         viewModel.getErrorLiveData().observe(getViewLifecycleOwner(), this::handleError);
     }
 
+    /**
+     * Sets up the UI button listeners for navigation, text input, and registration functionality.
+     */
     private void setListeners() {
         binding.materialToolbar.setNavigationOnClickListener(view ->
                 Navigation.findNavController(requireView()).popBackStack());
@@ -65,11 +77,17 @@ public class RegisterFragment extends Fragment {
         });
     }
 
+    /**
+     * Disables error message for email and password input fields.
+     */
     private void disableErrorMessage() {
         binding.emailInputLayout.setErrorEnabled(false);
         binding.passwordInputLayout.setErrorEnabled(false);
     }
 
+    /**
+     * Handles the enabling/disabling state of the registration button based on the email and password input fields' content.
+     */
     private void handleButton() {
         disableErrorMessage();
         String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
@@ -77,13 +95,25 @@ public class RegisterFragment extends Fragment {
         binding.registerButton.setEnabled(!email.isEmpty() && !password.isEmpty());
     }
 
-    public void handleUser(FirebaseUser firebaseUser) {
+    /**
+     * Handles the user state after registration. Navigates the user to the home screen upon successful registration.
+     * Hides the progress indicator after handling the user state.
+     *
+     * @param firebaseUser The FirebaseUser object representing the registered user.
+     */
+    private void handleUser(FirebaseUser firebaseUser) {
         if (firebaseUser != null) {
             ((MainActivity) requireActivity()).openHomeActivity();
         }
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
+    /**
+     * Handles network error states. Navigates the user to the network error screen when there
+     * is a network error. Resets the password input field and hides the progress indicator.
+     *
+     * @param bool True if there is a network error, false otherwise.
+     */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
             ((MainActivity) requireActivity()).openNetworkErrorActivity();
@@ -92,7 +122,13 @@ public class RegisterFragment extends Fragment {
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
-    public void handleError(RegisterRepository.Error error) {
+    /**
+     * Handles registration errors. Displays error messages for the email and password input fields based on the error type.
+     * Hides the progress indicator after handling the error state.
+     *
+     * @param error The type of registration error.
+     */
+    private void handleError(RegisterRepository.Error error) {
         binding.passwordEditText.setText(null);
         String errorString = getString(error.getError());
         switch (error) {
@@ -112,6 +148,9 @@ public class RegisterFragment extends Fragment {
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
+    /**
+     * Custom TextWatcher class to handle text changes in the input fields.
+     */
     public class MyTextWatcher implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

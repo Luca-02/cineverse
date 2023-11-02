@@ -16,6 +16,10 @@ import com.example.cineverse.View.Auth.MainActivity;
 import com.example.cineverse.View.NetworkError.NetworkErrorActivity;
 import com.example.cineverse.databinding.ActivityLoggedBinding;
 
+/**
+ * The LoggedActivity class represents the main activity for logged-in users.
+ * It manages the navigation flow for authenticated users, directing them to appropriate fragments based on their email verification status.
+ */
 public class LoggedActivity extends AppCompatActivity {
 
     @Override
@@ -26,6 +30,10 @@ public class LoggedActivity extends AppCompatActivity {
         setupNavGraph();
     }
 
+    /**
+     * Sets up the navigation graph based on the user's email verification status.
+     * Redirects the user to the appropriate start destination fragment.
+     */
     private void setupNavGraph() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragmentContainerView);
@@ -42,6 +50,9 @@ public class LoggedActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Opens the authentication activity (MainActivity) and closes all previous activities in the stack.
+     */
     public void openAuthActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         // Close all previews activity
@@ -50,6 +61,9 @@ public class LoggedActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Opens the network error activity, allowing the user to handle network issues separately.
+     */
     public void openNetworkErrorActivity() {
         Intent intent = new Intent(this, NetworkErrorActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

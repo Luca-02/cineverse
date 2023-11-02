@@ -11,10 +11,22 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+/**
+ * The LoginRepository class extends AuthRepository and provides authentication functionality
+ * for user login. It validates the user input, performs login operations using Firebase
+ * authentication services, and handles success and failure scenarios. Errors and authentication
+ * status are communicated via MutableLiveData for observation and user feedback.
+ */
 public class LoginRepository extends AuthRepository {
 
     private final MutableLiveData<Error> errorLiveData;
 
+    /**
+     * Constructs a LoginRepository object with the given Application context and initializes
+     * MutableLiveData for observing authentication errors.
+     *
+     * @param application The Application context of the calling component.
+     */
     public LoginRepository(Application application) {
         super(application);
         errorLiveData = new MutableLiveData<>();
@@ -24,9 +36,16 @@ public class LoginRepository extends AuthRepository {
         return errorLiveData;
     }
 
+    /**
+     * Performs user login with the provided email and password. Validates the email format,
+     * initiates the login operation, and communicates errors or success through errorLiveData.
+     *
+     * @param email    User's email address for login.
+     * @param password User's password for login.
+     */
     public void login(String email, String password) {
         if (!EmailValidator.getInstance().isValid(email)) {
-            postError(Error.ERROR_INVALID_EMAIL_FORMAT);
+            errorLiveData.postValue(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
             firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener(this::handleSuccess)
@@ -34,22 +53,29 @@ public class LoginRepository extends AuthRepository {
         }
     }
 
+    /**
+     * Handles successful authentication by updating the user live data.
+     *
+     * @param authResult The successful authentication result containing user information.
+     */
     private void handleSuccess(AuthResult authResult) {
         setUserLiveData(authResult.getUser());
     }
 
+    /**
+     * Handles authentication failure scenarios by identifying the type of exception and
+     * posting appropriate errors for user feedback through errorLiveData.
+     *
+     * @param exception The exception occurred during the authentication process.
+     */
     private void handleFailure(Exception exception) {
         if (exception instanceof FirebaseAuthInvalidUserException) {
-            postError(Error.ERROR_NOT_FOUND_DISABLED);
+            errorLiveData.postValue(Error.ERROR_NOT_FOUND_DISABLED);
         } else if (exception instanceof FirebaseNetworkException) {
             setNetworkErrorLiveData(true);
         } else {
-            postError(Error.ERROR_WRONG_PASSWORD);
+            errorLiveData.postValue(Error.ERROR_WRONG_PASSWORD);
         }
-    }
-
-    private void postError(Error error) {
-        errorLiveData.postValue(error);
     }
 
 }

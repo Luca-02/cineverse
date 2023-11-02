@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cineverse.databinding.ActivityNetworkErrorBinding;
 
+/**
+ * The NetworkErrorActivity class represents the activity shown to the user when there is a network error.
+ */
 public class NetworkErrorActivity extends AppCompatActivity {
 
     @Override

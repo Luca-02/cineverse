@@ -23,6 +23,12 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
+/**
+ * The ForgotPasswordFragment class represents the screen for users to reset their password.
+ * Users can enter their email to receive a password reset email.
+ * This fragment handles user input validation, button functionality, and error handling for the
+ * password reset process.
+ */
 public class ForgotPasswordFragment extends Fragment {
 
     private final MyTextWatcher myTextWatcher = new MyTextWatcher();
@@ -45,18 +51,22 @@ public class ForgotPasswordFragment extends Fragment {
         binding = null;
     }
 
+    /**
+     * Initializes the ForgotPasswordViewModel for this fragment.
+     */
     private void setViewModel() {
         viewModel = new ViewModelProvider(this).get(ForgotPasswordViewModel.class);
         viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
         viewModel.getErrorLiveData().observe(getViewLifecycleOwner(), this::handleError);
     }
 
+    /**
+     * Sets up the UI button listeners for navigation, text input, and password reset functionality.
+     */
     private void setListeners() {
         binding.materialToolbar.setNavigationOnClickListener(view ->
                 Navigation.findNavController(requireView()).popBackStack());
-
         binding.emailEditText.addTextChangedListener(myTextWatcher);
-
         binding.resetPasswordButton.setOnClickListener(view -> {
             String email = Objects.requireNonNull(
                     binding.emailEditText.getText()).toString().trim();
@@ -65,16 +75,29 @@ public class ForgotPasswordFragment extends Fragment {
         });
     }
 
+    /**
+     * Disables error message for email input field.
+     */
     private void disableErrorMessage() {
         binding.emailInputLayout.setErrorEnabled(false);
     }
 
+    /**
+     * Handles the enabling/disabling state of the password reset button based on the email input field's content.
+     */
     private void handleButton() {
         disableErrorMessage();
-        String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
+        String email = Objects.requireNonNull(
+                binding.emailEditText.getText()).toString().trim();
         binding.resetPasswordButton.setEnabled(!email.isEmpty());
     }
 
+    /**
+     * Handles network error states. Navigates the user to the network error screen when there
+     * is a network error. Resets the email input field and hides the progress indicator.
+     *
+     * @param bool True if there is a network error, false otherwise.
+     */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
             ((MainActivity) requireActivity()).openNetworkErrorActivity();
@@ -82,6 +105,10 @@ public class ForgotPasswordFragment extends Fragment {
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
+    /**
+     * Handles the success state after sending a password reset email. Displays a success message,
+     * navigates the user to the login screen, and hides the progress indicator.
+     */
     private void handleSuccess() {
         Snackbar.make(binding.getRoot(),
                 R.string.email_sent, Snackbar.LENGTH_LONG).show();
@@ -89,6 +116,12 @@ public class ForgotPasswordFragment extends Fragment {
                 .navigate(R.id.action_forgotPasswordFragment_to_loginFragment);
     }
 
+    /**
+     * Handles password reset errors. If the operation is successful, calls handleSuccess().
+     * If there is an error, displays an error message for the email input field and hides the progress indicator.
+     *
+     * @param result The type of password reset operation result.
+     */
     private void handleError(AuthRepository.Error result) {
         if (result.isSuccess()) {
             handleSuccess();
@@ -98,6 +131,9 @@ public class ForgotPasswordFragment extends Fragment {
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
+    /**
+     * Custom TextWatcher class to handle text changes in the input field.
+     */
     public class MyTextWatcher implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

@@ -22,6 +22,11 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
+/**
+ * The LoginFragment class represents the login screen of the application.
+ * Users can enter their email and password to log into their account.
+ * This fragment handles user input validation, login button functionality, and error handling.
+ */
 public class LoginFragment extends Fragment {
 
     private final MyTextWatcher myTextWatcher = new MyTextWatcher();
@@ -44,6 +49,9 @@ public class LoginFragment extends Fragment {
         binding = null;
     }
 
+    /**
+     * Initializes the LoginViewModel for this fragment.
+     */
     private void setViewModel() {
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::handleUser);
@@ -51,6 +59,9 @@ public class LoginFragment extends Fragment {
         viewModel.getErrorLiveData().observe(getViewLifecycleOwner(), this::handleError);
     }
 
+    /**
+     * Sets up the UI button listeners for navigation, text input, and login functionality.
+     */
     private void setListeners() {
         binding.materialToolbar.setNavigationOnClickListener(view ->
                 Navigation.findNavController(requireView()).popBackStack());
@@ -70,11 +81,17 @@ public class LoginFragment extends Fragment {
                         .navigate(R.id.action_loginFragment_to_forgotPasswordFragment));
     }
 
+    /**
+     * Disables error messages for email and password input fields.
+     */
     private void disableErrorMessage() {
         binding.emailInputLayout.setErrorEnabled(false);
         binding.passwordInputLayout.setErrorEnabled(false);
     }
 
+    /**
+     * Handles the enabling/disabling state of the login button based on the input fields' content.
+     */
     private void handleButton() {
         disableErrorMessage();
         String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
@@ -82,6 +99,12 @@ public class LoginFragment extends Fragment {
         binding.loginButton.setEnabled(!email.isEmpty() && !password.isEmpty());
     }
 
+    /**
+     * Handles the authentication state changes for the user. Navigates the user to the home
+     * screen when authenticated.
+     *
+     * @param firebaseUser The authenticated FirebaseUser object. If null, user is not authenticated.
+     */
     private void handleUser(FirebaseUser firebaseUser) {
         if (firebaseUser != null) {
             ((MainActivity) requireActivity()).openHomeActivity();
@@ -89,6 +112,12 @@ public class LoginFragment extends Fragment {
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
+    /**
+     * Handles network error states. Navigates the user to the network error screen when there
+     * is a network error. Resets the password input field.
+     *
+     * @param bool True if there is a network error, false otherwise.
+     */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
             ((MainActivity) requireActivity()).openNetworkErrorActivity();
@@ -97,6 +126,11 @@ public class LoginFragment extends Fragment {
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
+    /**
+     * Handles authentication errors. Displays error messages for invalid email, password, or user not found.
+     *
+     * @param error The type of authentication error that occurred.
+     */
     private void handleError(LoginRepository.Error error) {
         binding.passwordEditText.setText(null);
         String errorString = getString(error.getError());
@@ -112,6 +146,9 @@ public class LoginFragment extends Fragment {
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
 
+    /**
+     * Custom TextWatcher class to handle text changes in the input fields.
+     */
     public class MyTextWatcher implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
