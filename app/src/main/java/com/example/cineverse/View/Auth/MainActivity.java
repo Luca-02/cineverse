@@ -7,8 +7,9 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cineverse.Repository.AuthRepository;
-import com.example.cineverse.View.Home.LoggedActivity;
+import com.example.cineverse.View.Home.HomeActivity;
 import com.example.cineverse.View.NetworkError.NetworkErrorActivity;
+import com.example.cineverse.View.VerifyEmail.VerifyEmailActivity;
 import com.example.cineverse.ViewModel.AbstractAuthViewModel;
 import com.example.cineverse.databinding.ActivityMainBinding;
 
@@ -37,16 +38,25 @@ public class MainActivity extends AppCompatActivity {
      */
     public void alreadyLogged() {
         if (AuthRepository.getCurrentUser() != null) {
-            openHomeActivity();
+            openLoggedActivity();
         }
     }
 
     /**
-     * Opens the home screen of the application (LoggedActivity). Closes all previous activities
-     * to maintain a clear navigation flow.
+     * Opens the appropriate activity based on the email verification status and closes all
+     * previous activities in the stack. If the email is verified, the method navigate to the
+     * home activity (HomeActivity); otherwise, it opens the email verification activity
+     * (VerifyEmailActivity).
      */
-    public void openHomeActivity() {
-        Intent intent = new Intent(this, LoggedActivity.class);
+    public void openLoggedActivity() {
+        boolean isEmailVerified = AuthRepository.isEmailVerified();
+        Intent intent;
+        if (isEmailVerified) {
+            intent = new Intent(this, HomeActivity.class);
+        } else {
+            intent = new Intent(this, VerifyEmailActivity.class);
+        }
+
         // Close all previews activity
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

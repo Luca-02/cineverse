@@ -1,4 +1,4 @@
-package com.example.cineverse.ViewModel.Home.Logged;
+package com.example.cineverse.ViewModel.VerifyEmail;
 
 import android.app.Application;
 
@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.Repository.Auth.Logged.VerifyEmailRepository;
-import com.example.cineverse.ViewModel.Home.LoggedViewModel;
+import com.example.cineverse.ViewModel.LoggedViewModel;
 
 /**
  * The VerifyEmailViewModel class extends LoggedViewModel and represents the ViewModel for email

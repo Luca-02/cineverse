@@ -1,11 +1,11 @@
-package com.example.cineverse.ViewModel.Home.Logged;
+package com.example.cineverse.ViewModel.Home;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 
 import com.example.cineverse.Repository.Auth.Logged.HomeRepository;
-import com.example.cineverse.ViewModel.Home.LoggedViewModel;
+import com.example.cineverse.ViewModel.LoggedViewModel;
 
 /**
  * HomeViewModel extends LoggedViewModel and is responsible for managing the data for the home screen

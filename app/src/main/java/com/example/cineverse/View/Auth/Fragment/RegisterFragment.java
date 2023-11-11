@@ -103,7 +103,7 @@ public class RegisterFragment extends Fragment {
      */
     private void handleUser(FirebaseUser firebaseUser) {
         if (firebaseUser != null) {
-            ((MainActivity) requireActivity()).openHomeActivity();
+            ((MainActivity) requireActivity()).openLoggedActivity();
         }
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }

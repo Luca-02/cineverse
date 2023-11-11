@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.cineverse.View.Home.LoggedActivity;
-import com.example.cineverse.ViewModel.Home.Logged.HomeViewModel;
+import com.example.cineverse.View.Home.HomeActivity;
+import com.example.cineverse.ViewModel.Home.HomeViewModel;
 import com.example.cineverse.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
      */
     private void handleLoggedOut(Boolean loggedOut) {
         if (loggedOut) {
-            ((LoggedActivity) requireActivity()).openAuthActivity();
+            ((HomeActivity) requireActivity()).openAuthActivity();
         }
     }
 

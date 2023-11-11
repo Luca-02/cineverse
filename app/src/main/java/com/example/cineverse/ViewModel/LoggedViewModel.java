@@ -1,4 +1,4 @@
-package com.example.cineverse.ViewModel.Home;
+package com.example.cineverse.ViewModel;
 
 import android.app.Application;
 

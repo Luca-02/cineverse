@@ -1,53 +1,61 @@
-package com.example.cineverse.View.Home.Fragment;
+package com.example.cineverse.View.VerifyEmail;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
+import androidx.lifecycle.ViewModelProvider;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.core.text.HtmlCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.R;
-import com.example.cineverse.View.Home.LoggedActivity;
-import com.example.cineverse.ViewModel.Home.Logged.VerifyEmailViewModel;
-import com.example.cineverse.databinding.FragmentVerifyEmailBinding;
+import com.example.cineverse.View.Auth.MainActivity;
+import com.example.cineverse.View.Home.HomeActivity;
+import com.example.cineverse.View.NetworkError.NetworkErrorActivity;
+import com.example.cineverse.ViewModel.AbstractAuthViewModel;
+import com.example.cineverse.ViewModel.VerifyEmail.VerifyEmailViewModel;
+import com.example.cineverse.databinding.ActivityVerifyEmailBinding;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * The VerifyEmailFragment class represents the fragment for email verification.
- * It allows users to verify their email address, resent verification emails, and navigate to the home screen upon successful verification.
+ * The VerifyEmailActivity class represents the activity for email verification.
+ * It allows users to verify their email address, resent verification emails, and navigate
+ * to the home screen upon successful verification.
  */
-public class VerifyEmailFragment extends Fragment {
+public class VerifyEmailActivity extends AppCompatActivity {
 
     private static final int WAIT_COUNT_DOWN = 60;
 
     private final VerifyEmailListener verifyEmailListener = new VerifyEmailListener();
+    private final Handler mHandler = new Handler();
 
-    private FragmentVerifyEmailBinding binding;
+    private ActivityVerifyEmailBinding binding;
     private VerifyEmailViewModel viewModel;
-
-    private final Handler mHandler = new Handler();;
+    private boolean isCountdownRunning = false;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentVerifyEmailBinding.inflate(inflater, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityVerifyEmailBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         setupViewModel();
         setListeners();
-        return binding.getRoot();
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    protected void onResume() {
+        super.onResume();
+        if (isCountdownRunning) {
+            binding.resentEmailButton.setEnabled(false);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
     }
 
@@ -56,11 +64,11 @@ public class VerifyEmailFragment extends Fragment {
      */
     private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(VerifyEmailViewModel.class);
-        viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::handleUser);
-        viewModel.getLoggedOutLiveData().observe(getViewLifecycleOwner(), this::handleLoggedOutUser);
-        viewModel.getEmailSentLiveData().observe(getViewLifecycleOwner(), this::handleEmailSent);
-        viewModel.getEmailVerifiedLiveData().observe(getViewLifecycleOwner(), this::handleEmailVerified);
-        viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
+        viewModel.getUserLiveData().observe(this, this::handleUser);
+        viewModel.getLoggedOutLiveData().observe(this, this::handleLoggedOutUser);
+        viewModel.getEmailSentLiveData().observe(this, this::handleEmailSent);
+        viewModel.getEmailVerifiedLiveData().observe(this, this::handleEmailVerified);
+        viewModel.getNetworkErrorLiveData().observe(this, this::handleNetworkError);
     }
 
     /**
@@ -100,10 +108,10 @@ public class VerifyEmailFragment extends Fragment {
      */
     private void handleLoggedOutUser(Boolean loggedOut) {
         if (loggedOut) {
-            ((LoggedActivity) requireActivity()).openAuthActivity();
+            openAuthActivity();
         }
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
-    };
+    }
 
     /**
      * Handles the state after the verification email is sent.
@@ -124,7 +132,7 @@ public class VerifyEmailFragment extends Fragment {
             binding.resentEmailButton.setEnabled(true);
         }
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
-    };
+    }
 
     /**
      * Handles the state after the email is verified.
@@ -135,8 +143,7 @@ public class VerifyEmailFragment extends Fragment {
         if (isVerified == null) {
             unexpectedError();
         } else if (isVerified) {
-            Navigation.findNavController(requireView())
-                    .navigate(R.id.action_verifyEmailFragment_to_homeFragment);
+            openHomeActivity();
         } else {
             Snackbar.make(binding.getRoot(),
                             R.string.email_not_verified, Snackbar.LENGTH_SHORT)
@@ -153,7 +160,7 @@ public class VerifyEmailFragment extends Fragment {
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
-            ((LoggedActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+            openNetworkErrorActivity(viewModel);
         }
         binding.resentEmailButton.setEnabled(true);
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
@@ -196,6 +203,7 @@ public class VerifyEmailFragment extends Fragment {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                isCountdownRunning = true;
                 if (countDown[0] > 0) {
                     String buttonText = getResources().getString(
                             countDown[0] == 1 ? R.string.wait_second : R.string.wait_seconds,
@@ -205,6 +213,7 @@ public class VerifyEmailFragment extends Fragment {
                     countDown[0]--;
                     mHandler.postDelayed(this, 1000);
                 } else {
+                    isCountdownRunning = false;
                     binding.resentEmailButton.setEnabled(true);
                     binding.resentEmailButton.setText(R.string.resend_email);
                 }
@@ -218,6 +227,41 @@ public class VerifyEmailFragment extends Fragment {
     private void unexpectedError() {
         Snackbar.make(binding.getRoot(),
                 R.string.unexpected_error, Snackbar.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Opens the authentication activity (MainActivity) and closes all previous activities in the stack.
+     */
+    public void openAuthActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        // Close all previews activity
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    /**
+     * Opens the home activity (HomeActivity) and closes all previous activities in the stack.
+     */
+    public void openHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        // Close all previews activity
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    /**
+     * Opens the network error activity (NetworkErrorActivity) and clears network error LiveData in the
+     * passed AbstractAuthViewModel to avoid re-opening NetworkErrorActivity when a fragment that
+     * contains network error LiveData is recreated.
+     *
+     * @param viewModel The AbstractAuthViewModel associated with the current authentication context.
+     */
+    public void openNetworkErrorActivity(AbstractAuthViewModel viewModel) {
+        viewModel.clearNetworkErrorLiveData();
+        Intent intent = new Intent(this, NetworkErrorActivity.class);
+        startActivity(intent);
     }
 
     /**

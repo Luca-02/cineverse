@@ -1,4 +1,4 @@
-package com.example.cineverse.View.Theme;
+package com.example.cineverse.Theme;
 
 import android.app.Application;
 
