@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="default_web_client_id" translatable="false">437098083016-1405ljf6sn6beoee83osfh362jmhvdnb.apps.googleusercontent.com</string>
 
     <string name="language">en</string>
@@ -6,7 +6,7 @@
     <string name="app_slogan">Where Cinema Meets Your Pen!</string>
 
     <!-- Global -->
-    <string name="retry">Retry</string>
+    <string name="retry" tools:ignore="PrivateResource">Retry</string>
 
     <!-- Error -->
     <string name="unexpected_error">Unexpected error has occurred</string>

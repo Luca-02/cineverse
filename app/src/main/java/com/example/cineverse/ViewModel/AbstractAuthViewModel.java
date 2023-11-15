@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.Repository.AuthRepository;
+import com.example.cineverse.Interface.IAuth;
+import com.example.cineverse.Repository.AbstractAuthRepository;
+import com.example.cineverse.Repository.AbstractAuthServiceRepository;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
@@ -16,7 +18,8 @@ import com.google.firebase.auth.FirebaseUser;
  * handle user authentication logic and communicate changes in user authentication status and network
  * errors through LiveData objects.
  */
-public abstract class AbstractAuthViewModel extends AndroidViewModel {
+public abstract class AbstractAuthViewModel extends AndroidViewModel
+        implements IAuth {
 
     protected MutableLiveData<FirebaseUser> userLiveData;
     protected MutableLiveData<Boolean> networkErrorLiveData;
@@ -34,23 +37,28 @@ public abstract class AbstractAuthViewModel extends AndroidViewModel {
         return userLiveData;
     }
 
-    protected void setUserLiveData(AuthRepository repository) {
-        userLiveData = repository.getUserLiveData();
-    }
-
     public MutableLiveData<Boolean> getNetworkErrorLiveData() {
         return networkErrorLiveData;
     }
 
-    public void setNetworkErrorLiveData(AuthRepository repository) {
-        networkErrorLiveData = repository.getNetworkErrorLiveData();
-    }
-
     /**
-     * Clears the networkErrorLiveData object.
+     * Clears the MutableLiveData instance for network error status.
+     * This method is typically used when the network error state is consumed, and you don't want
+     * to keep the last state in the LiveData.
      */
     public void clearNetworkErrorLiveData() {
         networkErrorLiveData = new MutableLiveData<>();
+    }
+
+    /**
+     * Sets the LiveData instances for observing the current user's authentication status and
+     * network error states based on the provided repository.
+     *
+     * @param repository The repository providing LiveData instances for observation.
+     */
+    protected void setLiveData(AbstractAuthRepository repository) {
+        userLiveData = repository.getUserLiveData();
+        networkErrorLiveData = repository.getNetworkErrorLiveData();
     }
 
 }

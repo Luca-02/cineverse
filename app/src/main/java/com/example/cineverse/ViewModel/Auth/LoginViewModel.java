@@ -5,19 +5,21 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.cineverse.Interface.Auth.ILogin;
 import com.example.cineverse.Repository.Auth.LoginRepository;
+import com.example.cineverse.ViewModel.AbstractAuthServicesViewModel;
 import com.example.cineverse.ViewModel.AbstractAuthViewModel;
 
 /**
- * The LoginViewModel class extends AbstractAuthViewModel and represents the ViewModel for user
+ * The LoginViewModel class extends AbstractAuthServicesViewModel and represents the ViewModel for user
  * login functionality. It handles user login operations, communicates changes in login status
  * and errors through LiveData objects. LoginViewModel integrates with LoginRepository and triggers
  * the login process based on user input.
  */
-public class LoginViewModel extends AbstractAuthViewModel {
+public class LoginViewModel extends AbstractAuthServicesViewModel
+        implements ILogin {
 
     private final LoginRepository repository;
-    private final MutableLiveData<LoginRepository.Error> errorLiveData;
 
     /**
      * Constructs a LoginViewModel object with the given Application context.
@@ -27,13 +29,7 @@ public class LoginViewModel extends AbstractAuthViewModel {
     public LoginViewModel(@NonNull Application application) {
         super(application);
         repository = new LoginRepository(application);
-        errorLiveData = repository.getErrorLiveData();
-        setUserLiveData(repository);
-        setNetworkErrorLiveData(repository);
-    }
-
-    public MutableLiveData<LoginRepository.Error> getErrorLiveData() {
-        return errorLiveData;
+        super.setLiveData(repository);
     }
 
     /**
@@ -42,6 +38,7 @@ public class LoginViewModel extends AbstractAuthViewModel {
      * @param email    The user's email address for login.
      * @param password The user's password for login.
      */
+    @Override
     public void login(String email, String password) {
         repository.login(email, password);
     }

@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.R;
-import com.example.cineverse.View.Auth.MainActivity;
+import com.example.cineverse.View.Auth.AuthActivity;
 import com.example.cineverse.View.Home.HomeActivity;
 import com.example.cineverse.View.NetworkError.NetworkErrorActivity;
 import com.example.cineverse.ViewModel.AbstractAuthViewModel;
@@ -30,7 +30,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
     private static final int WAIT_COUNT_DOWN = 60;
 
     private final VerifyEmailListener verifyEmailListener = new VerifyEmailListener();
-    private final Handler mHandler = new Handler();
+    private final Handler handler = new Handler();
 
     private ActivityVerifyEmailBinding binding;
     private VerifyEmailViewModel viewModel;
@@ -56,7 +56,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
+        handler.removeCallbacksAndMessages(null);
     }
 
     /**
@@ -119,6 +119,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
      * @param isSent A boolean indicating whether the email is sent successfully.
      */
     private void handleEmailSent(Boolean isSent) {
+        viewModel.clearEmailSentLiveData();
         if (isSent == null) {
             unexpectedError();
             binding.resentEmailButton.setEnabled(true);
@@ -140,6 +141,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
      * @param isVerified A boolean indicating whether the email is verified.
      */
     private void handleEmailVerified(Boolean isVerified) {
+        viewModel.clearEmailVerifiedLiveData();
         if (isVerified == null) {
             unexpectedError();
         } else if (isVerified) {
@@ -200,7 +202,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
      */
     private void startCountdown() {
         final int[] countDown = {WAIT_COUNT_DOWN};
-        mHandler.postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 isCountdownRunning = true;
@@ -211,7 +213,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
                     );
                     binding.resentEmailButton.setText(buttonText);
                     countDown[0]--;
-                    mHandler.postDelayed(this, 1000);
+                    handler.postDelayed(this, 1000);
                 } else {
                     isCountdownRunning = false;
                     binding.resentEmailButton.setEnabled(true);
@@ -233,7 +235,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
      * Opens the authentication activity (MainActivity) and closes all previous activities in the stack.
      */
     public void openAuthActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, AuthActivity.class);
         // Close all previews activity
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

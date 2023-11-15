@@ -3,6 +3,7 @@ package com.example.cineverse.View.Auth.Fragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -15,8 +16,8 @@ import android.view.ViewGroup;
 
 import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.R;
-import com.example.cineverse.Repository.AuthRepository;
-import com.example.cineverse.View.Auth.MainActivity;
+import com.example.cineverse.Repository.AbstractAuthRepository;
+import com.example.cineverse.View.Auth.AuthActivity;
 import com.example.cineverse.ViewModel.Auth.ForgotPasswordViewModel;
 import com.example.cineverse.databinding.FragmentForgotPasswordBinding;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,13 +37,37 @@ public class ForgotPasswordFragment extends Fragment {
     private FragmentForgotPasswordBinding binding;
     private ForgotPasswordViewModel viewModel;
 
+    public ForgotPasswordFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @return A new instance of fragment ForgotPasswordFragment.
+     */
+    public static ForgotPasswordFragment newInstance() {
+        return new ForgotPasswordFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentForgotPasswordBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setViewModel();
         setListeners();
-        return binding.getRoot();
     }
 
     @Override
@@ -100,7 +125,7 @@ public class ForgotPasswordFragment extends Fragment {
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
-            ((MainActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+            ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
@@ -122,7 +147,8 @@ public class ForgotPasswordFragment extends Fragment {
      *
      * @param result The type of password reset operation result.
      */
-    private void handleError(AuthRepository.Error result) {
+    private void handleError(AbstractAuthRepository.Error result) {
+        viewModel.clearErrorLiveData();
         if (result.isSuccess()) {
             handleSuccess();
         } else {

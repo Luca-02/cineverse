@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,7 +20,7 @@ import androidx.navigation.Navigation;
 import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.Repository.Auth.LoginRepository;
-import com.example.cineverse.View.Auth.MainActivity;
+import com.example.cineverse.View.Auth.AuthActivity;
 import com.example.cineverse.ViewModel.Auth.AuthViewModel;
 import com.example.cineverse.databinding.FragmentAuthBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -37,10 +38,27 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class AuthFragment extends Fragment {
 
+    // Fullscreen flag
+    private static final int uiOptions = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+
     private FragmentAuthBinding binding;
     private AuthViewModel viewModel;
     private GoogleSignInClient googleSignInClient;
     private ActivityResultLauncher<Intent> googleSignInLauncher;
+
+    public AuthFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @return A new instance of fragment AuthFragment.
+     */
+    public static AuthFragment newInstance() {
+        return new AuthFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,17 +75,42 @@ public class AuthFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        requireActivity().getWindow().addFlags(uiOptions);
+        // Inflate the layout for this fragment
         binding = FragmentAuthBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setViewModel();
         setListeners();
         createGoogleRequest();
-        return binding.getRoot();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requireActivity().getWindow().addFlags(uiOptions);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        requireActivity().getWindow().clearFlags(uiOptions);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        requireActivity().getWindow().clearFlags(uiOptions);
     }
 
     /**
@@ -134,7 +177,7 @@ public class AuthFragment extends Fragment {
      */
     private void handleUser(FirebaseUser firebaseUser) {
         if (firebaseUser != null) {
-            ((MainActivity) requireActivity()).openLoggedActivity();
+            ((AuthActivity) requireActivity()).openLoggedActivity();
         }
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
@@ -147,7 +190,7 @@ public class AuthFragment extends Fragment {
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
-            ((MainActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+            ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
@@ -158,6 +201,7 @@ public class AuthFragment extends Fragment {
      * @param error The type of authentication error that occurred.
      */
     private void handleError(LoginRepository.Error error) {
+        viewModel.clearErrorLiveData();
         String errorString = getString(error.getError());
         Snackbar.make(binding.getRoot(),
                 errorString, Snackbar.LENGTH_SHORT).show();

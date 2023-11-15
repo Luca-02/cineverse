@@ -16,23 +16,25 @@
         android:theme="@style/Theme.CineVerse"
         tools:targetApi="31">
         <activity
-            android:name=".View.VerifyEmail.VerifyEmailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.Auth.MainActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".View.MainActivity"
+            android:exported="true">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
         </activity>
+        <activity
+            android:name=".View.Auth.AuthActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".View.NetworkError.NetworkErrorActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.VerifyEmail.VerifyEmailActivity"
+            android:exported="false" />
         <activity
             android:name=".View.Home.HomeActivity"
             android:exported="false" />

@@ -1,20 +1,23 @@
-package com.example.cineverse.Repository.Auth.Logged;
+package com.example.cineverse.Repository.Logged;
 
 import android.app.Application;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.Repository.Auth.LoggedRepository;
+import com.example.cineverse.Interface.Logged.IVerifyEmail;
+import com.example.cineverse.Repository.AbstractAuthRepository;
+import com.example.cineverse.Repository.AbstractLoggedRepository;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * The VerifyEmailRepository class extends LoggedRepository and provides functionality for verifying
+ * The VerifyEmailRepository class extends AbstractLoggedRepository and provides functionality for verifying
  * user email addresses. It allows users to request email verification, reload their user data,
  * and check whether their email is verified or not. The class communicates email verification
  * status, reload operations, and network errors via MutableLiveData for observation and user feedback.
  */
-public class VerifyEmailRepository extends LoggedRepository {
+public class VerifyEmailRepository extends AbstractLoggedRepository
+        implements IVerifyEmail {
 
     private final MutableLiveData<Boolean> emailSentLiveData;
     private final MutableLiveData<Boolean> emailVerifiedLiveData;
@@ -43,6 +46,7 @@ public class VerifyEmailRepository extends LoggedRepository {
      * Initiates a request to send email verification to the user's email address. Reloading user
      * data is performed to ensure up-to-date information before sending the verification email.
      */
+    @Override
     public void sendEmailVerification() {
         FirebaseUser user = getCurrentUser();
         if (user != null) {
@@ -72,6 +76,7 @@ public class VerifyEmailRepository extends LoggedRepository {
     /**
      * Reloads user data and updates emailVerifiedLiveData based on the result of reloading.
      */
+    @Override
     public void reloadUser() {
         final FirebaseUser user = getCurrentUser();
         if (user != null) {

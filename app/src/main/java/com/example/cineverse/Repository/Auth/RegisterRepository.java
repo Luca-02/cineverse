@@ -4,7 +4,8 @@ import android.app.Application;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.Repository.AuthRepository;
+import com.example.cineverse.Interface.Auth.IRegister;
+import com.example.cineverse.Repository.AbstractAuthServiceRepository;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -14,28 +15,21 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import org.apache.commons.validator.routines.EmailValidator;
 
 /**
- * The RegisterRepository class extends AuthRepository and provides functionality for user registration.
+ * The RegisterRepository class extends AbstractAuthServiceRepository and provides functionality for user registration.
  * It validates user input, performs registration operations using Firebase authentication services,
  * and handles various registration-related error scenarios. Errors and registration status are
  * communicated via MutableLiveData for observation and user feedback.
  */
-public class RegisterRepository extends AuthRepository {
-
-    private final MutableLiveData<Error> errorLiveData;
+public class RegisterRepository extends AbstractAuthServiceRepository
+        implements IRegister {
 
     /**
-     * Constructs a RegisterRepository object with the given Application context and initializes
-     * MutableLiveData for observing registration-related errors.
+     * Constructs a RegisterRepository object with the given Application context.
      *
      * @param application The Application context of the calling component.
      */
     public RegisterRepository(Application application) {
         super(application);
-        errorLiveData = new MutableLiveData<>();
-    }
-
-    public MutableLiveData<Error> getErrorLiveData() {
-        return errorLiveData;
     }
 
     /**
@@ -45,6 +39,7 @@ public class RegisterRepository extends AuthRepository {
      * @param email    User's email address for registration.
      * @param password User's password for registration.
      */
+    @Override
     public void register(String email, String password) {
         if (!EmailValidator.getInstance().isValid(email)) {
             errorLiveData.postValue(Error.ERROR_INVALID_EMAIL_FORMAT);

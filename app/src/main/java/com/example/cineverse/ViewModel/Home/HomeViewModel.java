@@ -4,28 +4,29 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.Repository.Auth.Logged.HomeRepository;
-import com.example.cineverse.ViewModel.LoggedViewModel;
+import com.example.cineverse.Interface.Logged.IHome;
+import com.example.cineverse.Repository.Logged.HomeRepository;
+import com.example.cineverse.ViewModel.AbstractLoggedViewModel;
 
 /**
- * HomeViewModel extends LoggedViewModel and is responsible for managing the data for the home screen
+ * HomeViewModel extends AbstractLoggedViewModel and is responsible for managing the data for the home screen
  * when the user is logged in. It communicates with the HomeRepository to retrieve user-related data
  * and manages the user's authentication state.
  */
-public class HomeViewModel extends LoggedViewModel {
+public class HomeViewModel extends AbstractLoggedViewModel
+        implements IHome {
 
     private final HomeRepository repository;
 
     /**
-     * Constructs a HomeViewModel object.
+     * Constructs a HomeViewModel object with the given Application context.
      *
      * @param application The Application context of the calling component.
      */
     public HomeViewModel(@NonNull Application application) {
         super(application);
         repository = new HomeRepository(application);
-        setUserLiveData(repository);
-        setLoggedOutLiveData(repository);
+        super.setLiveData(repository);
     }
 
     /**

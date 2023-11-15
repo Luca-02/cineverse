@@ -4,36 +4,31 @@ import android.app.Application;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.Repository.AuthRepository;
+import com.example.cineverse.Interface.Auth.IForgotPassword;
+import com.example.cineverse.Repository.AbstractAuthRepository;
+import com.example.cineverse.Repository.AbstractAuthServiceRepository;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
 /**
- * The ForgotPasswordRepository class extends AuthRepository and provides functionality for handling
+ * The ForgotPasswordRepository class extends AbstractAuthServiceRepository and provides functionality for handling
  * user password reset requests. It validates the user input (email), initiates a password reset
  * operation using Firebase authentication services, and handles various scenarios, including
  * invalid email format, user not found, network issues, and other exceptions. Errors and password
  * reset status are communicated via MutableLiveData for observation and user feedback.
  */
-public class ForgotPasswordRepository extends AuthRepository {
-
-    private final MutableLiveData<Error> errorLiveData;
+public class ForgotPasswordRepository extends AbstractAuthServiceRepository
+        implements IForgotPassword {
 
     /**
-     * Constructs a ForgotPasswordRepository object with the given Application context and initializes
-     * MutableLiveData for observing password reset-related errors.
+     * Constructs a ForgotPasswordRepository object with the given Application.
      *
      * @param application The Application context of the calling component.
      */
     public ForgotPasswordRepository(Application application) {
         super(application);
-        errorLiveData = new MutableLiveData<>();
-    }
-
-    public MutableLiveData<Error> getErrorLiveData() {
-        return errorLiveData;
     }
 
     /**
@@ -42,6 +37,7 @@ public class ForgotPasswordRepository extends AuthRepository {
      *
      * @param email User's email address for password reset.
      */
+    @Override
     public void forgotPassword(String email) {
         if (!EmailValidator.getInstance().isValid(email)) {
             errorLiveData.postValue(Error.ERROR_INVALID_EMAIL_FORMAT);

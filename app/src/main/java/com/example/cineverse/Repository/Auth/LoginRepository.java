@@ -4,7 +4,8 @@ import android.app.Application;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.Repository.AuthRepository;
+import com.example.cineverse.Interface.Auth.ILogin;
+import com.example.cineverse.Repository.AbstractAuthServiceRepository;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
@@ -12,28 +13,21 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import org.apache.commons.validator.routines.EmailValidator;
 
 /**
- * The LoginRepository class extends AuthRepository and provides authentication functionality
+ * The LoginRepository class extends AbstractAuthServiceRepository and provides authentication functionality
  * for user login. It validates the user input, performs login operations using Firebase
  * authentication services, and handles success and failure scenarios. Errors and authentication
  * status are communicated via MutableLiveData for observation and user feedback.
  */
-public class LoginRepository extends AuthRepository {
-
-    private final MutableLiveData<Error> errorLiveData;
+public class LoginRepository extends AbstractAuthServiceRepository
+        implements ILogin {
 
     /**
-     * Constructs a LoginRepository object with the given Application context and initializes
-     * MutableLiveData for observing authentication errors.
+     * Constructs a LoginRepository object with the given Application context.
      *
      * @param application The Application context of the calling component.
      */
     public LoginRepository(Application application) {
         super(application);
-        errorLiveData = new MutableLiveData<>();
-    }
-
-    public MutableLiveData<Error> getErrorLiveData() {
-        return errorLiveData;
     }
 
     /**
@@ -43,6 +37,7 @@ public class LoginRepository extends AuthRepository {
      * @param email    User's email address for login.
      * @param password User's password for login.
      */
+    @Override
     public void login(String email, String password) {
         if (!EmailValidator.getInstance().isValid(email)) {
             errorLiveData.postValue(Error.ERROR_INVALID_EMAIL_FORMAT);

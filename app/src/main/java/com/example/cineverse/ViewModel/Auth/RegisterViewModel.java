@@ -5,19 +5,21 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.cineverse.Interface.Auth.IRegister;
 import com.example.cineverse.Repository.Auth.RegisterRepository;
+import com.example.cineverse.ViewModel.AbstractAuthServicesViewModel;
 import com.example.cineverse.ViewModel.AbstractAuthViewModel;
 
 /**
- * The RegisterViewModel class extends AbstractAuthViewModel and represents the ViewModel for user
+ * The RegisterViewModel class extends AbstractAuthServicesViewModel and represents the ViewModel for user
  * registration functionality. It handles user registration operations, communicates changes in
  * registration status and errors through LiveData objects. RegisterViewModel integrates with
  * RegisterRepository and triggers the registration process based on user input.
  */
-public class RegisterViewModel extends AbstractAuthViewModel {
+public class RegisterViewModel extends AbstractAuthServicesViewModel
+        implements IRegister {
 
     private final RegisterRepository repository;
-    private final MutableLiveData<RegisterRepository.Error> errorLiveData;
 
     /**
      * Constructs a RegisterViewModel object with the given Application context.
@@ -27,13 +29,7 @@ public class RegisterViewModel extends AbstractAuthViewModel {
     public RegisterViewModel(@NonNull Application application) {
         super(application);
         repository = new RegisterRepository(application);
-        errorLiveData = repository.getErrorLiveData();
-        setUserLiveData(repository);
-        setNetworkErrorLiveData(repository);
-    }
-
-    public MutableLiveData<RegisterRepository.Error> getErrorLiveData() {
-        return errorLiveData;
+        super.setLiveData(repository);
     }
 
     /**
@@ -42,6 +38,7 @@ public class RegisterViewModel extends AbstractAuthViewModel {
      * @param email    The user's email address for registration.
      * @param password The user's chosen password for registration.
      */
+    @Override
     public void register(String email, String password) {
         repository.register(email, password);
     }

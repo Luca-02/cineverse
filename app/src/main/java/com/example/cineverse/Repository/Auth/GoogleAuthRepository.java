@@ -5,7 +5,9 @@ import android.content.Intent;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.Repository.AuthRepository;
+import com.example.cineverse.Interface.Auth.IAuthGoogle;
+import com.example.cineverse.Repository.AbstractAuthRepository;
+import com.example.cineverse.Repository.AbstractAuthServiceRepository;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
@@ -19,29 +21,22 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 /**
- * The GoogleAuthRepository class extends AuthRepository and provides authentication functionality
+ * The GoogleAuthRepository class extends AbstractAuthServiceRepository and provides authentication functionality
  * for Google Sign-In. It allows users to authenticate using their Google accounts. The class
  * handles Google Sign-In operations, processes authentication results, and communicates errors
  * or success through errorLiveData. GoogleAuthRepository integrates with Firebase authentication
  * services for Google Sign-In authentication.
  */
-public class GoogleAuthRepository extends AuthRepository {
-
-    private final MutableLiveData<Error> errorLiveData;
+public class GoogleAuthRepository extends AbstractAuthServiceRepository
+        implements IAuthGoogle {
 
     /**
-     * Constructs a GoogleAuthRepository object with the given Application context and initializes
-     * MutableLiveData for observing Google Sign-In related errors.
+     * Constructs a GoogleAuthRepository object with the given Application context.
      *
      * @param application The Application context of the calling component.
      */
     public GoogleAuthRepository(Application application) {
         super(application);
-        errorLiveData = new MutableLiveData<>();
-    }
-
-    public MutableLiveData<Error> getErrorLiveData() {
-        return errorLiveData;
     }
 
     /**
@@ -51,6 +46,7 @@ public class GoogleAuthRepository extends AuthRepository {
      *
      * @param data Intent containing the Google Sign-In result data.
      */
+    @Override
     public void authWithGoogle(Intent data) {
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
         try {

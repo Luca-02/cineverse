@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
-import com.example.cineverse.View.Auth.MainActivity;
+import com.example.cineverse.R;
+import com.example.cineverse.View.Auth.AuthActivity;
 import com.example.cineverse.databinding.ActivityHomeBinding;
 
 /**
@@ -23,13 +26,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens the authentication activity (MainActivity) and closes all previous activities in the stack.
+     * Opens the authentication activity (MainActivity).
      */
     public void openAuthActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        // Close all previews activity
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        NavController navController =
+                Navigation.findNavController(this, R.id.fragmentContainerView);
+        navController.navigate(R.id.action_global_authActivity);
         finish();
     }
 

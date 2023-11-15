@@ -4,19 +4,20 @@ import android.app.Application;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.cineverse.Interface.IAuth;
 import com.example.cineverse.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * AuthRepository is a base class that provides authentication-related functionality using Firebase
+ * AbstractAuthRepository is a base class that provides authentication-related functionality using Firebase
  * authentication services. It encapsulates methods for handling user authentication, managing
  * user data, and checking network connectivity. This class is meant to be extended for specific
  * authentication methods such as email/password, Google Sign-In, etc.
  * This class maintains MutableLiveData objects for observing changes in user data and network
  * connectivity status.
  */
-public class AuthRepository {
+public abstract class AbstractAuthRepository implements IAuth {
 
     /**
      * Enum representing possible authentication errors and associated string resources for error messages.
@@ -56,12 +57,12 @@ public class AuthRepository {
     private final MutableLiveData<Boolean> networkErrorLiveData;
 
     /**
-     * Constructs an AuthRepository object with the given Application context. Initializes
+     * Constructs an AbstractAuthRepository object with the given Application context. Initializes
      * MutableLiveData objects for user data and network connectivity.
      *
      * @param application The Application context of the calling component.
      */
-    public AuthRepository(Application application) {
+    public AbstractAuthRepository(Application application) {
         this.application = application;
         userLiveData = new MutableLiveData<>();
         networkErrorLiveData = new MutableLiveData<>();

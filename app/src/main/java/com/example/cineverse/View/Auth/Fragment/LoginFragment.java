@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -15,7 +16,7 @@ import androidx.navigation.Navigation;
 import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.Repository.Auth.LoginRepository;
-import com.example.cineverse.View.Auth.MainActivity;
+import com.example.cineverse.View.Auth.AuthActivity;
 import com.example.cineverse.ViewModel.Auth.LoginViewModel;
 import com.example.cineverse.databinding.FragmentLoginBinding;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,13 +35,37 @@ public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
     private LoginViewModel viewModel;
 
+    public LoginFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @return A new instance of fragment LoginFragment.
+     */
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setViewModel();
         setListeners();
-        return binding.getRoot();
     }
 
     @Override
@@ -107,7 +132,7 @@ public class LoginFragment extends Fragment {
      */
     private void handleUser(FirebaseUser firebaseUser) {
         if (firebaseUser != null) {
-            ((MainActivity) requireActivity()).openLoggedActivity();
+            ((AuthActivity) requireActivity()).openLoggedActivity();
         }
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
     }
@@ -120,7 +145,7 @@ public class LoginFragment extends Fragment {
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
-            ((MainActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+            ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
         binding.passwordEditText.setText(null);
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
@@ -132,6 +157,7 @@ public class LoginFragment extends Fragment {
      * @param error The type of authentication error that occurred.
      */
     private void handleError(LoginRepository.Error error) {
+        viewModel.clearErrorLiveData();
         binding.passwordEditText.setText(null);
         String errorString = getString(error.getError());
         switch (error) {
