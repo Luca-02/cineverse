@@ -27,7 +27,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
  * or success through errorLiveData. GoogleAuthRepository integrates with Firebase authentication
  * services for Google Sign-In authentication.
  */
-public class GoogleAuthRepository extends AbstractAuthServiceRepository
+public class GoogleAuthRepository
+        extends AbstractAuthServiceRepository
         implements IAuthGoogle {
 
     /**

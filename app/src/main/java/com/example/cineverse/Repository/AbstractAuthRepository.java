@@ -17,7 +17,8 @@ import com.google.firebase.auth.FirebaseUser;
  * This class maintains MutableLiveData objects for observing changes in user data and network
  * connectivity status.
  */
-public abstract class AbstractAuthRepository implements IAuth {
+public abstract class AbstractAuthRepository
+        implements IAuth {
 
     /**
      * Enum representing possible authentication errors and associated string resources for error messages.

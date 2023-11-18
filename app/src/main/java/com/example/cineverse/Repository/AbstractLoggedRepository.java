@@ -13,7 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
  * Subclasses of AbstractLoggedRepository are expected to handle user logout logic and communicate changes
  * in user logout status through LiveData objects.
  */
-public abstract class AbstractLoggedRepository extends AbstractAuthRepository
+public abstract class AbstractLoggedRepository
+        extends AbstractAuthRepository
         implements ILogged {
 
     private final MutableLiveData<Boolean> loggedOutLiveData;

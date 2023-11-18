@@ -16,10 +16,9 @@ import com.example.cineverse.ViewModel.AbstractAuthViewModel;
  * and errors through LiveData objects. LoginViewModel integrates with LoginRepository and triggers
  * the login process based on user input.
  */
-public class LoginViewModel extends AbstractAuthServicesViewModel
+public class LoginViewModel
+        extends AbstractAuthServicesViewModel<LoginRepository>
         implements ILogin {
-
-    private final LoginRepository repository;
 
     /**
      * Constructs a LoginViewModel object with the given Application context.
@@ -27,9 +26,7 @@ public class LoginViewModel extends AbstractAuthServicesViewModel
      * @param application The Application context of the calling component.
      */
     public LoginViewModel(@NonNull Application application) {
-        super(application);
-        repository = new LoginRepository(application);
-        super.setLiveData(repository);
+        super(application, new LoginRepository(application));
     }
 
     /**

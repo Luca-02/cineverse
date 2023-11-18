@@ -17,10 +17,9 @@ import com.example.cineverse.ViewModel.AbstractAuthViewModel;
  * ForgotPasswordViewModel integrates with ForgotPasswordRepository and triggers the password reset
  * email sending process based on user input.
  */
-public class ForgotPasswordViewModel extends AbstractAuthServicesViewModel
+public class ForgotPasswordViewModel
+        extends AbstractAuthServicesViewModel<ForgotPasswordRepository>
         implements IForgotPassword {
-
-    protected final ForgotPasswordRepository repository;
 
     /**
      * Constructs a ForgotPasswordViewModel object with the given Application context.
@@ -28,9 +27,7 @@ public class ForgotPasswordViewModel extends AbstractAuthServicesViewModel
      * @param application The Application context of the calling component.
      */
     public ForgotPasswordViewModel(@NonNull Application application) {
-        super(application);
-        repository = new ForgotPasswordRepository(application);
-        super.setLiveData(repository);
+        super(application, new ForgotPasswordRepository(application));
     }
 
     /**

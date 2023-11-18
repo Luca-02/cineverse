@@ -16,10 +16,9 @@ import com.example.cineverse.ViewModel.AbstractAuthViewModel;
  * registration status and errors through LiveData objects. RegisterViewModel integrates with
  * RegisterRepository and triggers the registration process based on user input.
  */
-public class RegisterViewModel extends AbstractAuthServicesViewModel
+public class RegisterViewModel
+        extends AbstractAuthServicesViewModel<RegisterRepository>
         implements IRegister {
-
-    private final RegisterRepository repository;
 
     /**
      * Constructs a RegisterViewModel object with the given Application context.
@@ -27,9 +26,7 @@ public class RegisterViewModel extends AbstractAuthServicesViewModel
      * @param application The Application context of the calling component.
      */
     public RegisterViewModel(@NonNull Application application) {
-        super(application);
-        repository = new RegisterRepository(application);
-        super.setLiveData(repository);
+        super(application, new RegisterRepository(application));
     }
 
     /**

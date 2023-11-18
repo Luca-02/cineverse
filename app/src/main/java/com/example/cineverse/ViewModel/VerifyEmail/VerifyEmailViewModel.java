@@ -16,10 +16,10 @@ import com.example.cineverse.ViewModel.AbstractLoggedViewModel;
  * through LiveData objects. VerifyEmailViewModel integrates with VerifyEmailRepository and
  * triggers the email verification process based on user input.
  */
-public class VerifyEmailViewModel extends AbstractLoggedViewModel
+public class VerifyEmailViewModel
+        extends AbstractLoggedViewModel<VerifyEmailRepository>
         implements IVerifyEmail {
 
-    private final VerifyEmailRepository repository;
     private MutableLiveData<Boolean> emailSentLiveData;
     private MutableLiveData<Boolean> emailVerifiedLiveData;
 
@@ -29,9 +29,7 @@ public class VerifyEmailViewModel extends AbstractLoggedViewModel
      * @param application The Application context of the calling component.
      */
     public VerifyEmailViewModel(@NonNull Application application) {
-        super(application);
-        repository = new VerifyEmailRepository(application);
-        super.setLiveData(repository);
+        super(application, new VerifyEmailRepository(application));
         emailSentLiveData = repository.getEmailSentLiveData();
         emailVerifiedLiveData = repository.getEmailVerifiedLiveData();
     }

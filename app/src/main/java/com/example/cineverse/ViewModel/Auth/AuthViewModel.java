@@ -15,10 +15,9 @@ import com.example.cineverse.ViewModel.AbstractAuthServicesViewModel;
  * changes in user authentication status and errors through LiveData objects. AuthViewModel integrates
  * with GoogleAuthRepository and handles Google Sign-In authentication requests.
  */
-public class AuthViewModel extends AbstractAuthServicesViewModel
+public class AuthViewModel
+        extends AbstractAuthServicesViewModel<GoogleAuthRepository>
         implements IAuthGoogle {
-
-    private final GoogleAuthRepository repository;
 
     /**
      * Constructs an AuthViewModel object with the given Application context.
@@ -26,9 +25,7 @@ public class AuthViewModel extends AbstractAuthServicesViewModel
      * @param application The Application context of the calling component.
      */
     public AuthViewModel(@NonNull Application application) {
-        super(application);
-        repository = new GoogleAuthRepository(application);
-        super.setLiveData(repository);
+        super(application, new GoogleAuthRepository(application));
     }
 
     /**

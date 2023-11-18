@@ -137,8 +137,7 @@ public class ForgotPasswordFragment extends Fragment {
     private void handleSuccess() {
         Snackbar.make(binding.getRoot(),
                 R.string.email_sent, Snackbar.LENGTH_LONG).show();
-        Navigation.findNavController(requireView())
-                .navigate(R.id.action_forgotPasswordFragment_to_loginFragment);
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     /**

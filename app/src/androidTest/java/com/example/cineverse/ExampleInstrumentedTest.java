@@ -33,4 +33,30 @@ public class ExampleInstrumentedTest {
         assertEquals("com.example.cineverse", appContext.getPackageName());
     }
 
+    @org.junit.Test
+    public void viewModelTest() {
+//        Log.d("MY_TAG", String.valueOf(viewModel.getClass()));
+//        Log.d("MY_TAG", viewModel.repository.toString());
+//        Log.d("MY_TAG", String.valueOf(viewModel.repository == null));
+//        Log.d("MY_TAG", String.valueOf(viewModel.repository.getClass()));
+//        Log.d("MY_TAG", viewModel.getUserLiveData().toString());
+//        Log.d("MY_TAG", String.valueOf(viewModel.getUserLiveData() == null));
+//        Log.d("MY_TAG", viewModel.getNetworkErrorLiveData().toString());
+//        Log.d("MY_TAG", String.valueOf(viewModel.getNetworkErrorLiveData() == null));
+//        Log.d("MY_TAG", viewModel.getErrorLiveData().toString());
+//        Log.d("MY_TAG", String.valueOf(viewModel.getErrorLiveData() == null));
+
+        AuthViewModel viewModel = new AuthViewModel(new Application());
+//        System.out.println(viewModel.getClass());
+//        System.out.println(viewModel.repository);
+//        System.out.println(viewModel.repository == null);
+//        System.out.println(viewModel.repository.getClass());
+//        System.out.println(viewModel.getUserLiveData());
+//        System.out.println(viewModel.getUserLiveData() == null);
+//        System.out.println(viewModel.getNetworkErrorLiveData());
+//        System.out.println(viewModel.getNetworkErrorLiveData() == null);
+//        System.out.println(viewModel.getErrorLiveData());
+//        System.out.println(viewModel.getErrorLiveData() == null);
+    }
+
 }

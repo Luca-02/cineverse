@@ -19,7 +19,8 @@ import org.apache.commons.validator.routines.EmailValidator;
  * invalid email format, user not found, network issues, and other exceptions. Errors and password
  * reset status are communicated via MutableLiveData for observation and user feedback.
  */
-public class ForgotPasswordRepository extends AbstractAuthServiceRepository
+public class ForgotPasswordRepository
+        extends AbstractAuthServiceRepository
         implements IForgotPassword {
 
     /**

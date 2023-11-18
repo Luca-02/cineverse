@@ -13,10 +13,9 @@ import com.example.cineverse.ViewModel.AbstractLoggedViewModel;
  * when the user is logged in. It communicates with the HomeRepository to retrieve user-related data
  * and manages the user's authentication state.
  */
-public class HomeViewModel extends AbstractLoggedViewModel
+public class HomeViewModel
+        extends AbstractLoggedViewModel<HomeRepository>
         implements IHome {
-
-    private final HomeRepository repository;
 
     /**
      * Constructs a HomeViewModel object with the given Application context.
@@ -24,9 +23,7 @@ public class HomeViewModel extends AbstractLoggedViewModel
      * @param application The Application context of the calling component.
      */
     public HomeViewModel(@NonNull Application application) {
-        super(application);
-        repository = new HomeRepository(application);
-        super.setLiveData(repository);
+        super(application, new HomeRepository(application));
     }
 
     /**

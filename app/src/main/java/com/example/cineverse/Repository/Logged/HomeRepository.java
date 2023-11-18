@@ -11,7 +11,8 @@ import com.example.cineverse.Repository.AbstractLoggedRepository;
  * after the user has successfully logged in. It extends the AbstractLoggedRepository class, inheriting
  * common functionalities related to user authentication and data management.
  */
-public class HomeRepository extends AbstractLoggedRepository
+public class HomeRepository
+        extends AbstractLoggedRepository
         implements IHome {
 
     /**

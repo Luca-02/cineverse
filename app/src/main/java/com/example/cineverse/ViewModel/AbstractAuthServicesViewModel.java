@@ -5,15 +5,20 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.cineverse.Interface.IAuthServices;
 import com.example.cineverse.Repository.AbstractAuthRepository;
 import com.example.cineverse.Repository.AbstractAuthServiceRepository;
 
 /**
- * The AbstractAuthServicesViewModel class extends AbstractAuthViewModel and serves as a base class
- * for view models related to authentication services. It provides MutableLiveData for observing
+ * The AbstractAuthServicesViewModel class extends AbstractAuthViewModel and serves as the base class
+ * for ViewModels related to authentication services. It provides MutableLiveData for observing
  * authentication-related errors.
+ *
+ * @param <T> The type of repository associated with the ViewModel.
  */
-public abstract class AbstractAuthServicesViewModel extends AbstractAuthViewModel {
+public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthServiceRepository>
+        extends AbstractAuthViewModel<T>
+        implements IAuthServices {
 
     private MutableLiveData<AbstractAuthRepository.Error> errorLiveData;
 
@@ -22,9 +27,11 @@ public abstract class AbstractAuthServicesViewModel extends AbstractAuthViewMode
      * MutableLiveData for observing authentication-related errors.
      *
      * @param application The Application context of the calling component.
+     * @param repository  The repository associated with the ViewModel.
      */
-    public AbstractAuthServicesViewModel(@NonNull Application application) {
-        super(application);
+    public AbstractAuthServicesViewModel(@NonNull Application application, T repository) {
+        super(application, repository);
+        errorLiveData = repository.getErrorLiveData();
     }
 
     public MutableLiveData<AbstractAuthRepository.Error> getErrorLiveData() {
@@ -38,16 +45,6 @@ public abstract class AbstractAuthServicesViewModel extends AbstractAuthViewMode
      */
     public void clearErrorLiveData() {
         errorLiveData = new MutableLiveData<>();
-    }
-
-    /**
-     * Sets the LiveData for observing authentication-related errors based on the provided repository.
-     *
-     * @param repository The repository providing LiveData for observing authentication-related errors.
-     */
-    protected void setLiveData(AbstractAuthServiceRepository repository) {
-        super.setLiveData(repository);
-        errorLiveData = repository.getErrorLiveData();
     }
 
 }

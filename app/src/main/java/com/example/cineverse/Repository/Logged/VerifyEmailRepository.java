@@ -16,7 +16,8 @@ import com.google.firebase.auth.FirebaseUser;
  * and check whether their email is verified or not. The class communicates email verification
  * status, reload operations, and network errors via MutableLiveData for observation and user feedback.
  */
-public class VerifyEmailRepository extends AbstractLoggedRepository
+public class VerifyEmailRepository
+        extends AbstractLoggedRepository
         implements IVerifyEmail {
 
     private final MutableLiveData<Boolean> emailSentLiveData;

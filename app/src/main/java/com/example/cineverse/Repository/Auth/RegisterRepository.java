@@ -20,7 +20,8 @@ import org.apache.commons.validator.routines.EmailValidator;
  * and handles various registration-related error scenarios. Errors and registration status are
  * communicated via MutableLiveData for observation and user feedback.
  */
-public class RegisterRepository extends AbstractAuthServiceRepository
+public class RegisterRepository
+        extends AbstractAuthServiceRepository
         implements IRegister {
 
     /**

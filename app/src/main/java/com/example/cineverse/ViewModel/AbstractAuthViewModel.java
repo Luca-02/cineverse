@@ -17,10 +17,14 @@ import com.google.firebase.auth.FirebaseUser;
  * the current user and network error states. Subclasses of AbstractAuthViewModel are expected to
  * handle user authentication logic and communicate changes in user authentication status and network
  * errors through LiveData objects.
+ *
+ * @param <T> The type of repository associated with the ViewModel.
  */
-public abstract class AbstractAuthViewModel extends AndroidViewModel
+public abstract class AbstractAuthViewModel<T extends AbstractAuthRepository>
+        extends AndroidViewModel
         implements IAuth {
 
+    public T repository;
     protected MutableLiveData<FirebaseUser> userLiveData;
     protected MutableLiveData<Boolean> networkErrorLiveData;
 
@@ -28,9 +32,13 @@ public abstract class AbstractAuthViewModel extends AndroidViewModel
      * Constructs an AbstractAuthViewModel object with the given Application context.
      *
      * @param application The Application context of the calling component.
+     * @param repository  The repository associated with the ViewModel.
      */
-    public AbstractAuthViewModel(@NonNull Application application) {
+    public AbstractAuthViewModel(@NonNull Application application, T repository) {
         super(application);
+        this.repository = repository;
+        userLiveData = repository.getUserLiveData();
+        networkErrorLiveData = repository.getNetworkErrorLiveData();
     }
 
     public MutableLiveData<FirebaseUser> getUserLiveData() {
@@ -48,17 +56,6 @@ public abstract class AbstractAuthViewModel extends AndroidViewModel
      */
     public void clearNetworkErrorLiveData() {
         networkErrorLiveData = new MutableLiveData<>();
-    }
-
-    /**
-     * Sets the LiveData instances for observing the current user's authentication status and
-     * network error states based on the provided repository.
-     *
-     * @param repository The repository providing LiveData instances for observation.
-     */
-    protected void setLiveData(AbstractAuthRepository repository) {
-        userLiveData = repository.getUserLiveData();
-        networkErrorLiveData = repository.getNetworkErrorLiveData();
     }
 
 }

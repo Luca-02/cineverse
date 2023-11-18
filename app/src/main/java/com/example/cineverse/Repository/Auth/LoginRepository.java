@@ -18,7 +18,8 @@ import org.apache.commons.validator.routines.EmailValidator;
  * authentication services, and handles success and failure scenarios. Errors and authentication
  * status are communicated via MutableLiveData for observation and user feedback.
  */
-public class LoginRepository extends AbstractAuthServiceRepository
+public class LoginRepository
+        extends AbstractAuthServiceRepository
         implements ILogin {
 
     /**
