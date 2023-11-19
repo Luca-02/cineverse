@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.example.cineverse.Interface.Auth.IAuthGoogle;
 import com.example.cineverse.Repository.Auth.GoogleAuthRepository;
 import com.example.cineverse.ViewModel.AbstractAuthServicesViewModel;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 /**
  * The AuthViewModel class extends AbstractAuthServicesViewModel and represents the ViewModel for authentication
@@ -19,6 +20,8 @@ public class AuthViewModel
         extends AbstractAuthServicesViewModel<GoogleAuthRepository>
         implements IAuthGoogle {
 
+    private final GoogleSignInOptions googleSignInOptions;
+
     /**
      * Constructs an AuthViewModel object with the given Application context.
      *
@@ -26,6 +29,11 @@ public class AuthViewModel
      */
     public AuthViewModel(@NonNull Application application) {
         super(application, new GoogleAuthRepository(application));
+        googleSignInOptions = repository.getGoogleSignInOptions();
+    }
+
+    public GoogleSignInOptions getGoogleSignInOptions() {
+        return googleSignInOptions;
     }
 
     /**

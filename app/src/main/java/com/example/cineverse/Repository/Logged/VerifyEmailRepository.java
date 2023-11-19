@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.Interface.Logged.IVerifyEmail;
-import com.example.cineverse.Repository.AbstractAuthRepository;
 import com.example.cineverse.Repository.AbstractLoggedRepository;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseUser;

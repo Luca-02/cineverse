@@ -1,67 +1,49 @@
-package com.example.cineverse.View.Home.Fragment;
+package com.example.cineverse.View.Home.Fragment.BottomNavigationSection;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.cineverse.View.Home.HomeActivity;
-import com.example.cineverse.ViewModel.Home.HomeViewModel;
-import com.example.cineverse.databinding.FragmentHomeBinding;
+import com.example.cineverse.View.Home.EmailVerifiedActivity;
+import com.example.cineverse.ViewModel.Logged.Verified.AccountViewModel;
+import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * A fragment representing the home screen of the application, where the logged-in user's information is displayed.
+ * Then AccountFragment class representing the user account section of the application.
+ * This fragment serves as one of the tabs in the BottomNavigationView.
  */
-public class HomeFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
-    private HomeViewModel viewModel;
+    private FragmentAccountBinding binding;
+    private AccountViewModel viewModel;
 
-    public HomeFragment() {
+    public AccountFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment HomeFragment.
-     */
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                requireActivity().finish();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentAccountBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupViewModel();
+        setViewModel();
         setListeners();
     }
 
@@ -72,10 +54,10 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Initializes the ViewModel associated with this fragment.
+     * Sets up the ViewModel for the fragment.
      */
-    private void setupViewModel() {
-        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+    private void setViewModel() {
+        viewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::handleUser);
         viewModel.getLoggedOutLiveData().observe(getViewLifecycleOwner(), this::handleLoggedOut);
     }
@@ -108,7 +90,7 @@ public class HomeFragment extends Fragment {
      */
     private void handleLoggedOut(Boolean loggedOut) {
         if (loggedOut) {
-            ((HomeActivity) requireActivity()).openAuthActivity();
+            ((EmailVerifiedActivity) requireActivity()).openAuthActivity();
         }
     }
 

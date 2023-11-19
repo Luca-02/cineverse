@@ -1,4 +1,4 @@
-package com.example.cineverse.ViewModel.VerifyEmail;
+package com.example.cineverse.ViewModel.Logged;
 
 import android.app.Application;
 

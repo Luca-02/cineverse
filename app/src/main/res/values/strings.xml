@@ -7,6 +7,9 @@
 
     <!-- Global -->
     <string name="retry" tools:ignore="PrivateResource">Retry</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="account">Account</string>
 
     <!-- Error -->
     <string name="unexpected_error">Unexpected error has occurred</string>

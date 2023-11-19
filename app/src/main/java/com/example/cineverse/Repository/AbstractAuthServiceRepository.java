@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.Interface.IAuthServices;
-import com.example.cineverse.Repository.AbstractAuthRepository;
 
 /**
  * The AbstractAuthServiceRepository class extends AbstractAuthRepository and serves as a base class

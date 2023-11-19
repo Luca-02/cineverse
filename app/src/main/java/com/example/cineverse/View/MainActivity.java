@@ -7,13 +7,13 @@ import android.os.Bundle;
 
 import com.example.cineverse.Repository.AbstractAuthRepository;
 import com.example.cineverse.View.Auth.AuthActivity;
-import com.example.cineverse.View.Home.HomeActivity;
+import com.example.cineverse.View.Home.EmailVerifiedActivity;
 import com.example.cineverse.View.VerifyEmail.VerifyEmailActivity;
 
 /**
  * The MainActivity class serves as the entry point of the application. It checks the user's
  * authentication status and redirects them to the appropriate activity, either (AuthActivity)
- * for authentication or (HomeActivity)/(VerifyEmailActivity) based on email verification status.
+ * for authentication or (VerifyEmailActivity or EmailVerifiedActivity) based on email verification status.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -42,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Determines the appropriate activity based on the user's email verification status.
      *
-     * @return Intent for the required activity (HomeActivity or VerifyEmailActivity).
+     * @return Intent for the required activity (VerifyEmailActivity or EmailVerifiedActivity).
      */
     private Intent requireLoggedActivity() {
         boolean isEmailVerified = AbstractAuthRepository.isEmailVerified();
         if (isEmailVerified) {
-            return new Intent(this, HomeActivity.class);
+            return new Intent(this, EmailVerifiedActivity.class);
         } else {
             return new Intent(this, VerifyEmailActivity.class);
         }

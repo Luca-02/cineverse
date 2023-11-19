@@ -1,11 +1,16 @@
 package com.example.cineverse.View.Auth;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.cineverse.Handler.Callback.BackPressedHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.Repository.AbstractAuthRepository;
 import com.example.cineverse.Repository.AbstractAuthServiceRepository;
@@ -13,35 +18,99 @@ import com.example.cineverse.ViewModel.AbstractAuthServicesViewModel;
 import com.example.cineverse.databinding.ActivityAuthBinding;
 
 /**
- * The MainActivity class serves as the entry point of the application. It checks if a user is
- * already logged in. If so, it navigates the user to the home screen (LoggedActivity). If not, it
- * displays the main authentication screen. This activity also handles network error scenarios by
+ * The AuthActivity class serves as the entry point of the application for authentication-related flows.
+ * It checks if a user is already logged in. If so, it navigates the user to the home screen (HomeActivity).
+ * If not, it displays the main authentication screen. This activity also handles network error scenarios by
  * redirecting users to the NetworkErrorActivity.
  */
 public class AuthActivity extends AppCompatActivity {
 
+    private ActivityAuthBinding binding;
+    private NavController navController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityAuthBinding binding = ActivityAuthBinding.inflate(getLayoutInflater());
+        binding = ActivityAuthBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setActionBar();
+        setNavController();
+        handleOnDestinationChangedListener();
+        BackPressedHandler.handleOnBackPressedCallback(this, navController);
+        binding.materialToolbar.setNavigationOnClickListener(
+                view -> getOnBackPressedDispatcher().onBackPressed());
     }
 
     /**
-     * Opens the LoggedActivity based on the email verification status. If the email is verified,
-     * it navigates the user to the home screen (HomeActivity). If not, it navigates to the email
-     * verification screen (VerifyEmailActivity).
+     * Sets up the action bar with the provided Toolbar.
+     */
+    private void setActionBar() {
+        setSupportActionBar(binding.materialToolbar);
+        ActionBar actionBar =  getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(null);
+        }
+    }
+
+    /**
+     * Sets up the NavController for navigating between destinations.
+     * This method finds the NavHostFragment and initializes the NavController.
+     */
+    private void setNavController() {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragmentContainerView);
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
+        }
+    }
+
+    /**
+     * Handles the OnDestinationChangedListener to apply animations based on destination changes.
+     */
+    private void handleOnDestinationChangedListener() {
+        final Animation enterAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        final Animation exitAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+
+        navController.addOnDestinationChangedListener(
+                (controller, destination, arguments) -> {
+                    boolean hideAppBar = false;
+                    if (arguments != null) {
+                        hideAppBar = arguments.getBoolean("HideAppBar", false);
+                    }
+                    if(hideAppBar) {
+                        if (binding.appBarLayout.getVisibility() != View.GONE) {
+                            // Hide the app bar with animation
+                            binding.appBarLayout.setAnimation(exitAnimation);
+                            binding.appBarLayout.setVisibility(View.GONE);
+                            binding.appBarLayout.startAnimation(exitAnimation);
+                        }
+                    } else {
+                        if (binding.appBarLayout.getVisibility() != View.VISIBLE) {
+                            // Show the app bar with animation
+                            binding.appBarLayout.setAnimation(enterAnimation);
+                            binding.appBarLayout.setVisibility(View.VISIBLE);
+                            binding.appBarLayout.startAnimation(enterAnimation);
+                        }
+                    }
+                }
+        );
+    }
+
+    /**
+     * Opens the EmailVerifiedActivity or VerifyEmailActivity based on the email verification status.
+     * If the email is verified, it navigates the user to the verified email screen (EmailVerifiedActivity).
+     * If not, it navigates to the email verification screen (VerifyEmailActivity).
      */
     public void openLoggedActivity() {
-        NavController navController =
-                Navigation.findNavController(this, R.id.fragmentContainerView);
-        boolean isEmailVerified = AbstractAuthRepository.isEmailVerified();
-        if (isEmailVerified) {
-            navController.navigate(R.id.action_global_homeActivity);
-        } else {
-            navController.navigate(R.id.action_global_verifyEmailActivity);
+        if (navController != null) {
+            boolean isEmailVerified = AbstractAuthRepository.isEmailVerified();
+            if (isEmailVerified) {
+                navController.navigate(R.id.action_global_emailVerifiedActivity);
+            } else {
+                navController.navigate(R.id.action_global_verifyEmailActivity);
+            }
+            finish();
         }
-        finish();
     }
 
     /**
@@ -53,10 +122,10 @@ public class AuthActivity extends AppCompatActivity {
      */
     public <T extends AbstractAuthServiceRepository> void openNetworkErrorActivity(
             AbstractAuthServicesViewModel<T> viewModel) {
-        viewModel.clearNetworkErrorLiveData();
-        NavController navController =
-                Navigation.findNavController(this, R.id.fragmentContainerView);
-        navController.navigate(R.id.action_global_networkErrorActivity);
+        if (navController != null) {
+            viewModel.clearNetworkErrorLiveData();
+            navController.navigate(R.id.action_global_networkErrorActivity);
+        }
     }
 
 }

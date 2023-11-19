@@ -2,8 +2,6 @@ package com.example.cineverse.Repository.Auth;
 
 import android.app.Application;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.cineverse.Interface.Auth.IRegister;
 import com.example.cineverse.Repository.AbstractAuthServiceRepository;
 import com.google.firebase.FirebaseNetworkException;

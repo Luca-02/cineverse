@@ -3,13 +3,12 @@ package com.example.cineverse.Repository.Auth;
 import android.app.Application;
 import android.content.Intent;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.cineverse.Interface.Auth.IAuthGoogle;
-import com.example.cineverse.Repository.AbstractAuthRepository;
+import com.example.cineverse.R;
 import com.example.cineverse.Repository.AbstractAuthServiceRepository;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
@@ -31,6 +30,8 @@ public class GoogleAuthRepository
         extends AbstractAuthServiceRepository
         implements IAuthGoogle {
 
+    private final GoogleSignInOptions googleSignInOptions;
+
     /**
      * Constructs a GoogleAuthRepository object with the given Application context.
      *
@@ -38,6 +39,15 @@ public class GoogleAuthRepository
      */
     public GoogleAuthRepository(Application application) {
         super(application);
+        // Initialize GoogleSignInOptions
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(application.getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+    }
+
+    public GoogleSignInOptions getGoogleSignInOptions() {
+        return googleSignInOptions;
     }
 
     /**

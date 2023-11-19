@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -25,7 +24,6 @@ import com.example.cineverse.ViewModel.Auth.AuthViewModel;
 import com.example.cineverse.databinding.FragmentAuthBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -50,33 +48,14 @@ public class AuthFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment AuthFragment.
-     */
-    public static AuthFragment newInstance() {
-        return new AuthFragment();
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                requireActivity().finish();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        requireActivity().getWindow().addFlags(uiOptions);
-        // Inflate the layout for this fragment
         binding = FragmentAuthBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -113,8 +92,9 @@ public class AuthFragment extends Fragment {
         requireActivity().getWindow().clearFlags(uiOptions);
     }
 
+
     /**
-     * Initializes the AuthViewModel for this fragment.
+     * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
         viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
@@ -141,17 +121,12 @@ public class AuthFragment extends Fragment {
      * Configures the Google sign-in request and launches the Google sign-in flow.
      */
     private void createGoogleRequest() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
+        googleSignInClient = GoogleSignIn.getClient(
+                requireActivity(), viewModel.getGoogleSignInOptions());
         googleSignInClient.signOut();
 
         googleSignInLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
+                new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         viewModel.authWithGoogle(data);

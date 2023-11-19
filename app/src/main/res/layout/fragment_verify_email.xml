@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".View.VerifyEmail.Fragment.VerifyEmailFragment">
+
+        <include
+            android:id="@+id/progressIndicator"
+            layout="@layout/linear_progress_indicator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/standard_spacing"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/include2"
+                    layout="@layout/header_image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:shapeDrawable="@{@drawable/random_shape4}"
+                    app:imgDrawable="@{@drawable/email_verification}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/double_spacing"
+                    android:gravity="center"
+                    android:text="@string/verify_email"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sentMailTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/half_standard_spacing"
+                    android:gravity="center"
+                    android:text="@string/we_have_sent_email"
+                    android:textSize="@dimen/text_normal" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/standard_spacing"
+                    android:gravity="center"
+                    android:text="@string/check_your_inbox"
+                    android:textSize="@dimen/text_normal" />
+
+                <Button
+                    android:id="@+id/resentEmailButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_56dp"
+                    android:enabled="false"
+                    android:layout_marginTop="@dimen/standard_spacing"
+                    android:text="@string/resend_email" />
+
+                <Button
+                    android:id="@+id/verifiedButton"
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_56dp"
+                    android:text="@string/verified" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>

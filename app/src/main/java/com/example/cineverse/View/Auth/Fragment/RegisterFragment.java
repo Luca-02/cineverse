@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import com.example.cineverse.Handler.UI.VisibilityHandler;
 import com.example.cineverse.Repository.Auth.RegisterRepository;
@@ -37,16 +36,6 @@ public class RegisterFragment extends Fragment {
 
     public RegisterFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment RegisterFragment.
-     */
-    public static RegisterFragment newInstance() {
-        return new RegisterFragment();
     }
 
     @Override
@@ -75,7 +64,7 @@ public class RegisterFragment extends Fragment {
     }
 
     /**
-     * Initializes the RegisterViewModel for this fragment.
+     * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
         viewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
@@ -88,12 +77,8 @@ public class RegisterFragment extends Fragment {
      * Sets up the UI button listeners for navigation, text input, and registration functionality.
      */
     private void setListeners() {
-        binding.materialToolbar.setNavigationOnClickListener(view ->
-                Navigation.findNavController(requireView()).popBackStack());
-
         binding.emailEditText.addTextChangedListener(myTextWatcher);
         binding.passwordEditText.addTextChangedListener(myTextWatcher);
-
         binding.registerButton.setOnClickListener(view -> {
             String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
             String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString().trim();

@@ -3,12 +3,10 @@ package com.example.cineverse.ViewModel.Auth;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.Interface.Auth.IForgotPassword;
 import com.example.cineverse.Repository.Auth.ForgotPasswordRepository;
 import com.example.cineverse.ViewModel.AbstractAuthServicesViewModel;
-import com.example.cineverse.ViewModel.AbstractAuthViewModel;
 
 /**
  * The ForgotPasswordViewModel class extends AbstractAuthServicesViewModel and represents the ViewModel

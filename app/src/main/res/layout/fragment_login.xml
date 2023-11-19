@@ -7,27 +7,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:layout_marginTop="?attr/actionBarSize"
         tools:context=".View.Auth.Fragment.LoginFragment">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/materialToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/outline_arrow_back"/>
-        </com.google.android.material.appbar.AppBarLayout>
 
         <include
             android:id="@+id/progressIndicator"
             layout="@layout/linear_progress_indicator_layout"
-            android:layout_below="@id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -35,8 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
-            android:scrollbars="none"
-            android:layout_below="@id/appBarLayout">
+            android:scrollbars="none">
 
             <LinearLayout
                 android:id="@+id/linearLayout"

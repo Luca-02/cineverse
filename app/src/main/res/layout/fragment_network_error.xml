@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".View.NetworkError.NetworkErrorActivity">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none"
+            tools:ignore="UselessParent">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/standard_spacing"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/include2"
+                    layout="@layout/header_image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:shapeDrawable="@{@drawable/random_shape5}"
+                    app:imgDrawable="@{@drawable/no_connection}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/double_spacing"
+                    android:gravity="center"
+                    android:text="@string/ops"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sentMailTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/half_standard_spacing"
+                    android:gravity="center"
+                    android:text="@string/no_internet"
+                    android:textSize="@dimen/text_normal" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/standard_spacing"
+                    android:gravity="center"
+                    android:text="@string/check_internet"
+                    android:textSize="@dimen/text_normal" />
+
+                <Button
+                    android:id="@+id/tryAgainButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_56dp"
+                    android:layout_marginTop="@dimen/standard_spacing"
+                    android:text="@string/try_again" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>

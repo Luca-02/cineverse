@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/verify_email_nav_graph"
+    app:startDestination="@id/verifyEmailFragment">
+
+    <fragment
+        android:id="@+id/verifyEmailFragment"
+        android:name="com.example.cineverse.View.VerifyEmail.Fragment.VerifyEmailFragment"
+        android:label="VerifyEmailFragment"
+        tools:layout="@layout/fragment_verify_email" />
+
+    <activity
+        android:id="@+id/networkErrorActivity"
+        android:name="com.example.cineverse.View.NetworkError.NetworkErrorActivity"
+        android:label="NetworkErrorActivity"
+        tools:layout="@layout/activity_network_error" />
+    <activity
+        android:id="@+id/emailVerifiedActivity"
+        android:name="com.example.cineverse.View.Home.EmailVerifiedActivity"
+        android:label="activity_email_verified"
+        tools:layout="@layout/activity_email_verified" />
+    <activity
+        android:id="@+id/authActivity"
+        android:name="com.example.cineverse.View.Auth.AuthActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth" />
+
+    <action
+        android:id="@+id/action_global_networkErrorActivity"
+        app:destination="@id/networkErrorActivity" />
+    <action
+        android:id="@+id/action_global_emailVerifiedActivity"
+        app:destination="@id/emailVerifiedActivity"
+        app:popUpTo="@id/verify_email_nav_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_authActivity"
+        app:destination="@id/authActivity"
+        app:popUpTo="@id/verify_email_nav_graph"
+        app:popUpToInclusive="true" />
+</navigation>

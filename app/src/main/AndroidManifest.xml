@@ -36,7 +36,7 @@
             android:name=".View.VerifyEmail.VerifyEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".View.Home.HomeActivity"
+            android:name=".View.Home.EmailVerifiedActivity"
             android:exported="false" />
     </application>
 

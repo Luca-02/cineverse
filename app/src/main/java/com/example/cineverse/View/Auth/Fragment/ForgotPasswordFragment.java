@@ -41,16 +41,6 @@ public class ForgotPasswordFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ForgotPasswordFragment.
-     */
-    public static ForgotPasswordFragment newInstance() {
-        return new ForgotPasswordFragment();
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +67,7 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     /**
-     * Initializes the ForgotPasswordViewModel for this fragment.
+     * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
         viewModel = new ViewModelProvider(this).get(ForgotPasswordViewModel.class);
@@ -89,8 +79,6 @@ public class ForgotPasswordFragment extends Fragment {
      * Sets up the UI button listeners for navigation, text input, and password reset functionality.
      */
     private void setListeners() {
-        binding.materialToolbar.setNavigationOnClickListener(view ->
-                Navigation.findNavController(requireView()).popBackStack());
         binding.emailEditText.addTextChangedListener(myTextWatcher);
         binding.resetPasswordButton.setOnClickListener(view -> {
             String email = Objects.requireNonNull(
