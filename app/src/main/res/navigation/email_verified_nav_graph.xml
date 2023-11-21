@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.cineverse.View.Home.Fragment.DashboardFragment"
+        android:name="com.example.cineverse.view.email_verified.fragment.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <activity
         android:id="@+id/authActivity"
-        android:name="com.example.cineverse.View.Auth.AuthActivity"
+        android:name="com.example.cineverse.view.auth.AuthActivity"
         android:label="activity_auth"
         tools:layout="@layout/activity_auth" />
 

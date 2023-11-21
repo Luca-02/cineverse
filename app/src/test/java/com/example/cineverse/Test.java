@@ -2,13 +2,6 @@ package com.example.cineverse;
 
 import static org.junit.Assert.*;
 
-import android.app.Application;
-import android.util.Log;
-
-import androidx.lifecycle.MutableLiveData;
-
-import com.example.cineverse.ViewModel.Auth.AuthViewModel;
-
 import java.io.IOException;
 
 import okhttp3.OkHttpClient;

@@ -9,3 +9,6 @@
     binding = null;
     }
     ```
+  
+- [ ] per analizzare il progetto con 
+[SonarQube](https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/#analyzing)

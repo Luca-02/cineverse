@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".View.VerifyEmail.Fragment.VerifyEmailFragment">
+        tools:context=".view.verify_email.fragment.VerifyEmailFragment">
 
         <include
             android:id="@+id/progressIndicator"

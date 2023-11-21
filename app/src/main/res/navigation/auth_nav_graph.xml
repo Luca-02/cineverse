@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="com.example.cineverse.View.Auth.Fragment.AuthFragment"
+        android:name="com.example.cineverse.view.auth.fragment.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth">
         <argument
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.cineverse.View.Auth.Fragment.LoginFragment"
+        android:name="com.example.cineverse.view.auth.fragment.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.cineverse.View.Auth.Fragment.RegisterFragment"
+        android:name="com.example.cineverse.view.auth.fragment.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.example.cineverse.View.Auth.Fragment.ForgotPasswordFragment"
+        android:name="com.example.cineverse.view.auth.fragment.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password">
         <action
@@ -78,17 +78,17 @@
 
     <activity
         android:id="@+id/networkErrorActivity"
-        android:name="com.example.cineverse.View.NetworkError.NetworkErrorActivity"
+        android:name="com.example.cineverse.view.network_error.NetworkErrorActivity"
         android:label="NetworkErrorActivity"
         tools:layout="@layout/activity_network_error" />
     <activity
         android:id="@+id/verifyEmailActivity"
-        android:name="com.example.cineverse.View.VerifyEmail.VerifyEmailActivity"
+        android:name="com.example.cineverse.view.verify_email.VerifyEmailActivity"
         android:label="VerifyEmailActivity"
         tools:layout="@layout/activity_verify_email" />
     <activity
         android:id="@+id/emailVerifiedActivity"
-        android:name="com.example.cineverse.View.Home.EmailVerifiedActivity"
+        android:name="com.example.cineverse.view.email_verified.EmailVerifiedActivity"
         android:label="activity_email_verified"
         tools:layout="@layout/activity_email_verified" />
 

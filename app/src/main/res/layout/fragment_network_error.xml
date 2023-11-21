@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".View.NetworkError.NetworkErrorActivity">
+        tools:context=".view.network_error.NetworkErrorActivity">
 
         <ScrollView
             android:layout_width="match_parent"
