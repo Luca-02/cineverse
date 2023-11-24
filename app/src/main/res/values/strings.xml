@@ -15,7 +15,9 @@
     <string name="unexpected_error">Unexpected error has occurred</string>
 
     <!-- Login/Register -->
+    <string name="username">Username</string>
     <string name="email">Email</string>
+    <string name="username_email">Username or Email</string>
     <string name="password">Password</string>
     <string name="google_login">Continue with Google</string>
     <string name="signin">Sign In</string>
@@ -32,7 +34,9 @@
 
     <!-- Auth Error -->
     <string name="user_not_found_disabled">User account does not exist or has been disabled.</string>
-    <string name="user_already_exist">Already exists an account with the given email address.</string>
+    <string name="username_already_exist">Already exists an account with the given username.</string>
+    <string name="email_already_exist">Already exists an account with the given email address.</string>
+    <string name="invalid_username_format">Invalid username format.</string>
     <string name="invalid_email_format">Invalid email format.</string>
     <string name="invalid_email">Invalid email address</string>
     <string name="wrong_password">Your password is incorrect, please try again.</string>

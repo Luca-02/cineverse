@@ -13,5 +13,5 @@ public interface IRegister extends IAuth {
      * @param email    The user's email address for registration.
      * @param password The user's password for registration.
      */
-    void register(String email, String password);
+    void register(String username, String email, String password);
 }

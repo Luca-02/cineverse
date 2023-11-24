@@ -34,8 +34,8 @@ public class RegisterViewModel
      * @param password The user's chosen password for registration.
      */
     @Override
-    public void register(String email, String password) {
-        repository.register(email, password);
+    public void register(String username, String email, String password) {
+        repository.register(username, email, password);
     }
 
 }

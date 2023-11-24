@@ -1,6 +1,7 @@
 package com.example.cineverse.view.email_verified.fragment.account;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.example.cineverse.view.email_verified.EmailVerifiedActivity;
 import com.example.cineverse.viewmodel.logged.email_verified.AccountViewModel;
-import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.google.firebase.auth.FirebaseUser;
 
 /**

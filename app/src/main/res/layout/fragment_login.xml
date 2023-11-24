@@ -57,17 +57,17 @@
                     android:textSize="@dimen/text_normal" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/emailInputLayout"
+                    android:id="@+id/accountInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/standard_spacing"
-                    android:hint="@string/email"
+                    android:layout_marginBottom="@dimen/half_standard_spacing"
+                    android:hint="@string/username_email"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:startIconDrawable="@drawable/outline_email">
+                    app:startIconDrawable="@drawable/person">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/emailEditText"
+                        android:id="@+id/accountEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress" />

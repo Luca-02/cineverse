@@ -3,8 +3,8 @@ package com.example.cineverse.repository.auth;
 import android.app.Application;
 import android.content.Intent;
 
-import com.example.cineverse.interfaces.auth.IAuthGoogle;
 import com.example.cineverse.R;
+import com.example.cineverse.interfaces.auth.IAuthGoogle;
 import com.example.cineverse.repository.AbstractAuthServiceRepository;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -17,6 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 /**
@@ -72,12 +73,30 @@ public class GoogleAuthRepository
     }
 
     /**
-     * Handles successful Google Sign-In authentication by updating the user live data.
+     * Handles successful Google Sign-In authentication by saving user data in firebase and
+     * updating the user live data.
      *
      * @param authResult The successful authentication result containing user information.
      */
-    private void handleSuccess(AuthResult authResult)  {
-        setUserLiveData(authResult.getUser());
+    private void handleSuccess(AuthResult authResult) {
+        FirebaseUser firebaseUser = authResult.getUser();
+        if (firebaseUser != null) {
+            String email = firebaseUser.getEmail();
+            if (email != null) {
+                String username = getSubstringBeforeAt(email);
+                userRepository.saveUser(firebaseUser, username, saved -> {
+                    if (saved == null) {
+                        handleAuthenticationFailure();
+                    } else {
+                        setUserLiveData(firebaseUser);
+                    }
+                });
+            } else {
+                handleAuthenticationFailure();
+            }
+        } else {
+            handleAuthenticationFailure();
+        }
     }
 
     /**
@@ -92,12 +111,25 @@ public class GoogleAuthRepository
         } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
             errorLiveData.postValue(Error.ERROR_INVALID_CREDENTIAL);
         } else if (exception instanceof FirebaseAuthUserCollisionException) {
-            errorLiveData.postValue(Error.ERROR_ALREADY_EXISTS);
+            errorLiveData.postValue(Error.ERROR_EMAIL_ALREADY_EXISTS);
         } else if (exception instanceof FirebaseNetworkException) {
             setNetworkErrorLiveData(true);
         } else {
             errorLiveData.postValue(Error.ERROR_AUTHENTICATION_FAILED);
         }
+    }
+
+    private void handleAuthenticationFailure() {
+        firebaseAuth.signOut();
+        errorLiveData.postValue(Error.ERROR_AUTHENTICATION_FAILED);
+    }
+
+    private static String getSubstringBeforeAt(String email) {
+        int atIndex = email.indexOf('@');
+        if (atIndex != -1) {
+            return email.substring(0, atIndex);
+        }
+        return email;
     }
 
 }

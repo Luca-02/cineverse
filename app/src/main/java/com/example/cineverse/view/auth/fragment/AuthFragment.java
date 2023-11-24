@@ -37,7 +37,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class AuthFragment extends Fragment {
 
     // Fullscreen flag
-    private static final int uiOptions = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+    private static final int UI_OPTIONS = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
     private FragmentAuthBinding binding;
     private AuthViewModel viewModel;
@@ -77,19 +77,19 @@ public class AuthFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        requireActivity().getWindow().addFlags(uiOptions);
+        requireActivity().getWindow().addFlags(UI_OPTIONS);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        requireActivity().getWindow().clearFlags(uiOptions);
+        requireActivity().getWindow().clearFlags(UI_OPTIONS);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        requireActivity().getWindow().clearFlags(uiOptions);
+        requireActivity().getWindow().clearFlags(UI_OPTIONS);
     }
 
 

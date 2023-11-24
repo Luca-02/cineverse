@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.interfaces.IAuth;
 import com.example.cineverse.R;
+import com.example.cineverse.repository.storage.firebase.user.UserFirebaseRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -26,9 +27,11 @@ public abstract class AbstractAuthRepository
     public enum Error {
         SUCCESS(null),
         ERROR_INVALID_EMAIL(R.string.invalid_email),
+        ERROR_INVALID_USERNAME_FORMAT(R.string.invalid_username_format),
         ERROR_INVALID_EMAIL_FORMAT(R.string.invalid_email_format),
         ERROR_NOT_FOUND_DISABLED(R.string.user_not_found_disabled),
-        ERROR_ALREADY_EXISTS(R.string.user_already_exist),
+        ERROR_USERNAME_ALREADY_EXISTS(R.string.username_already_exist),
+        ERROR_EMAIL_ALREADY_EXISTS(R.string.email_already_exist),
         ERROR_WEAK_PASSWORD(R.string.weak_password),
         ERROR_WRONG_PASSWORD(R.string.wrong_password),
         ERROR_INVALID_CREDENTIAL(R.string.invalid_credentials),
@@ -51,9 +54,10 @@ public abstract class AbstractAuthRepository
     }
 
     // Firebase authentication instance.
-    protected static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    protected static final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     protected final Application application;
+    protected final UserFirebaseRepository userRepository;
     private final MutableLiveData<FirebaseUser> userLiveData;
     private final MutableLiveData<Boolean> networkErrorLiveData;
 
@@ -65,6 +69,7 @@ public abstract class AbstractAuthRepository
      */
     public AbstractAuthRepository(Application application) {
         this.application = application;
+        userRepository = new UserFirebaseRepository();
         userLiveData = new MutableLiveData<>();
         networkErrorLiveData = new MutableLiveData<>();
 

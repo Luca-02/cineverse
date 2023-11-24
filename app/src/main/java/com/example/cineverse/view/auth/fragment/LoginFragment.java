@@ -78,10 +78,10 @@ public class LoginFragment extends Fragment {
      * Sets up the UI button listeners for navigation, text input, and login functionality.
      */
     private void setListeners() {
-        binding.emailEditText.addTextChangedListener(myTextWatcher);
+        binding.accountEditText.addTextChangedListener(myTextWatcher);
         binding.passwordEditText.addTextChangedListener(myTextWatcher);
         binding.loginButton.setOnClickListener(view -> {
-            String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
+            String email = Objects.requireNonNull(binding.accountEditText.getText()).toString().trim();
             String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString().trim();
             viewModel.login(email, password);
             VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
@@ -95,7 +95,7 @@ public class LoginFragment extends Fragment {
      * Disables error messages for email and password input fields.
      */
     private void disableErrorMessage() {
-        binding.emailInputLayout.setErrorEnabled(false);
+        binding.accountInputLayout.setErrorEnabled(false);
         binding.passwordInputLayout.setErrorEnabled(false);
     }
 
@@ -104,7 +104,7 @@ public class LoginFragment extends Fragment {
      */
     private void handleButton() {
         disableErrorMessage();
-        String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
+        String email = Objects.requireNonNull(binding.accountEditText.getText()).toString().trim();
         String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString().trim();
         binding.loginButton.setEnabled(!email.isEmpty() && !password.isEmpty());
     }
@@ -148,7 +148,7 @@ public class LoginFragment extends Fragment {
         switch (error) {
             case ERROR_INVALID_EMAIL_FORMAT:
             case ERROR_NOT_FOUND_DISABLED:
-                binding.emailInputLayout.setError(errorString);
+                binding.accountInputLayout.setError(errorString);
                 break;
             case ERROR_WRONG_PASSWORD:
                 binding.passwordInputLayout.setError(errorString);

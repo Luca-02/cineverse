@@ -17,6 +17,7 @@ import com.example.cineverse.repository.auth.RegisterRepository;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.auth.RegisterViewModel;
 import com.example.cineverse.databinding.FragmentRegisterBinding;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
@@ -77,32 +78,25 @@ public class RegisterFragment extends Fragment {
      * Sets up the UI button listeners for navigation, text input, and registration functionality.
      */
     private void setListeners() {
+        binding.usernameEditText.addTextChangedListener(myTextWatcher);
         binding.emailEditText.addTextChangedListener(myTextWatcher);
         binding.passwordEditText.addTextChangedListener(myTextWatcher);
         binding.registerButton.setOnClickListener(view -> {
+            String username = Objects.requireNonNull(binding.usernameEditText.getText()).toString().trim();
             String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
             String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString().trim();
-            viewModel.register(email, password);
+            viewModel.register(username, email, password);
             VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
         });
     }
 
     /**
-     * Disables error message for email and password input fields.
+     * Disables error message for username, email and password input fields.
      */
     private void disableErrorMessage() {
+        binding.usernameInputLayout.setErrorEnabled(false);
         binding.emailInputLayout.setErrorEnabled(false);
         binding.passwordInputLayout.setErrorEnabled(false);
-    }
-
-    /**
-     * Handles the enabling/disabling state of the registration button based on the email and password input fields' content.
-     */
-    private void handleButton() {
-        disableErrorMessage();
-        String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
-        String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString().trim();
-        binding.registerButton.setEnabled(!email.isEmpty() && !password.isEmpty());
     }
 
     /**
@@ -133,7 +127,8 @@ public class RegisterFragment extends Fragment {
     }
 
     /**
-     * Handles registration errors. Displays error messages for the email and password input fields based on the error type.
+     * Handles registration errors. Displays error messages for the username, email and password input
+     * fields based on the error type.
      * Hides the progress indicator after handling the error state.
      *
      * @param error The type of registration error.
@@ -143,9 +138,13 @@ public class RegisterFragment extends Fragment {
         binding.passwordEditText.setText(null);
         String errorString = getString(error.getError());
         switch (error) {
+            case ERROR_INVALID_USERNAME_FORMAT:
+            case ERROR_USERNAME_ALREADY_EXISTS:
+                binding.usernameInputLayout.setError(errorString);
+                break;
             case ERROR_INVALID_EMAIL_FORMAT:
             case ERROR_INVALID_EMAIL:
-            case ERROR_ALREADY_EXISTS:
+            case ERROR_EMAIL_ALREADY_EXISTS:
                 binding.emailInputLayout.setError(errorString);
                 break;
             case ERROR_WEAK_PASSWORD:
@@ -154,6 +153,10 @@ public class RegisterFragment extends Fragment {
             case ERROR_INVALID_CREDENTIAL:
                 binding.emailInputLayout.setError(errorString);
                 binding.passwordInputLayout.setError(errorString);
+                break;
+            case ERROR_AUTHENTICATION_FAILED:
+                Snackbar.make(binding.getRoot(),
+                        errorString, Snackbar.LENGTH_SHORT).show();
                 break;
         }
         VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
@@ -175,6 +178,19 @@ public class RegisterFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable editable) {
         }
+
+        /**
+         * Handles the enabling/disabling state of the registration button based on the username, email
+         * and password input fields' content.
+         */
+        private void handleButton() {
+            disableErrorMessage();
+            String username = Objects.requireNonNull(binding.usernameEditText.getText()).toString().trim();
+            String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
+            String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString().trim();
+            binding.registerButton.setEnabled(!username.isEmpty() &&!email.isEmpty() && !password.isEmpty());
+        }
+
     }
 
 }

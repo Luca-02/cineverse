@@ -30,21 +30,35 @@ public class LoginRepository
     }
 
     /**
-     * Performs user login with the provided email and password. Validates the email format,
+     * Performs user login with the provided account and password. Validates the account format,
      * initiates the login operation, and communicates errors or success through errorLiveData.
      *
-     * @param email    User's email address for login.
-     * @param password User's password for login.
+     * @param account   User's account (username or email) for login.
+     * @param password  User's password for login.
      */
     @Override
-    public void login(String email, String password) {
-        if (!EmailValidator.getInstance().isValid(email)) {
-            errorLiveData.postValue(Error.ERROR_INVALID_EMAIL_FORMAT);
+    public void login(String account, String password) {
+        if (!EmailValidator.getInstance().isValid(account)) {
+            if (account.contains("@")) {
+                errorLiveData.postValue(Error.ERROR_INVALID_EMAIL_FORMAT);
+            } else {
+                userRepository.getEmailFromUsername(account, email -> {
+                    if (email != null) {
+                        signInWithCredentials(email, password);
+                    } else {
+                        errorLiveData.postValue(Error.ERROR_NOT_FOUND_DISABLED);
+                    }
+                });
+            }
         } else {
-            firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnSuccessListener(this::handleSuccess)
-                    .addOnFailureListener(this::handleFailure);
+            signInWithCredentials(account, password);
         }
+    }
+
+    private void signInWithCredentials(String email, String password) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(this::handleSuccess)
+                .addOnFailureListener(this::handleFailure);
     }
 
     /**
