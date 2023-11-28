@@ -1,7 +1,6 @@
 package com.example.cineverse.view.auth;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -13,9 +12,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.handler.callback.BackPressedHandler;
 import com.example.cineverse.R;
-import com.example.cineverse.repository.AbstractAuthRepository;
-import com.example.cineverse.repository.AbstractAuthServiceRepository;
-import com.example.cineverse.viewmodel.AbstractAuthServicesViewModel;
+import com.example.cineverse.repository.classes.AbstractAuthRepository;
+import com.example.cineverse.repository.classes.auth_service.AbstractAuthServiceRepository;
+import com.example.cineverse.viewmodel.auth_service.AbstractAuthServicesViewModel;
 import com.example.cineverse.databinding.ActivityAuthBinding;
 
 /**

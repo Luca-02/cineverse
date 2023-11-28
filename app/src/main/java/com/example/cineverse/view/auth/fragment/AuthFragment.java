@@ -16,16 +16,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.handler.ui.VisibilityHandler;
 import com.example.cineverse.R;
-import com.example.cineverse.repository.auth.LoginRepository;
+import com.example.cineverse.repository.classes.auth_service.auth.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.viewmodel.auth.AuthViewModel;
+import com.example.cineverse.viewmodel.auth_service.auth.AuthViewModel;
 import com.example.cineverse.databinding.FragmentAuthBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseUser;
 
 /**
  * The AuthFragment class represents the user authentication screen of the application.
@@ -130,7 +130,7 @@ public class AuthFragment extends Fragment {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         viewModel.authWithGoogle(data);
-                        VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
+                        binding.progressIndicator.getRoot().setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -148,13 +148,13 @@ public class AuthFragment extends Fragment {
      * Handles the authentication state changes for the user. Navigates the user to the home
      * screen when authenticated.
      *
-     * @param firebaseUser The authenticated FirebaseUser object. If null, user is not authenticated.
+     * @param user The authenticated User object. If null, user is not authenticated.
      */
-    private void handleUser(FirebaseUser firebaseUser) {
-        if (firebaseUser != null) {
+    private void handleUser(User user) {
+        if (user != null) {
             ((AuthActivity) requireActivity()).openLoggedActivity();
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
@@ -167,7 +167,7 @@ public class AuthFragment extends Fragment {
         if (bool) {
             ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
@@ -180,7 +180,7 @@ public class AuthFragment extends Fragment {
         String errorString = getString(error.getError());
         Snackbar.make(binding.getRoot(),
                 errorString, Snackbar.LENGTH_SHORT).show();
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
 }

@@ -5,9 +5,9 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.interfaces.logged.verify_email.IVerifyEmail;
-import com.example.cineverse.repository.logged.verify_email.VerifyEmailRepository;
-import com.example.cineverse.viewmodel.AbstractLoggedViewModel;
+import com.example.cineverse.repository.classes.logged.verify_email.VerifyEmailRepository;
+import com.example.cineverse.repository.interfaces.logged.verify_email.IVerifyEmail;
+import com.example.cineverse.viewmodel.logged.AbstractLoggedViewModel;
 
 /**
  * The VerifyEmailViewModel class extends AbstractLoggedViewModel and represents the ViewModel for email
@@ -29,7 +29,7 @@ public class VerifyEmailViewModel
      * @param application The Application context of the calling component.
      */
     public VerifyEmailViewModel(@NonNull Application application) {
-        super(application, new VerifyEmailRepository(application));
+        super(application, new VerifyEmailRepository(application.getBaseContext()));
         emailSentLiveData = repository.getEmailSentLiveData();
         emailVerifiedLiveData = repository.getEmailVerifiedLiveData();
     }

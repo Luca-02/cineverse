@@ -12,13 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.handler.ui.VisibilityHandler;
-import com.example.cineverse.repository.auth.RegisterRepository;
+import com.example.cineverse.repository.classes.auth_service.auth.RegisterRepository;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.viewmodel.auth.RegisterViewModel;
+import com.example.cineverse.viewmodel.auth_service.auth.RegisterViewModel;
 import com.example.cineverse.databinding.FragmentRegisterBinding;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
@@ -86,7 +86,7 @@ public class RegisterFragment extends Fragment {
             String email = Objects.requireNonNull(binding.emailEditText.getText()).toString().trim();
             String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString().trim();
             viewModel.register(username, email, password);
-            VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
+            binding.progressIndicator.getRoot().setVisibility(View.VISIBLE);
         });
     }
 
@@ -103,13 +103,13 @@ public class RegisterFragment extends Fragment {
      * Handles the user state after registration. Navigates the user to the home screen upon successful registration.
      * Hides the progress indicator after handling the user state.
      *
-     * @param firebaseUser The FirebaseUser object representing the registered user.
+     * @param user The User object representing the registered user.
      */
-    private void handleUser(FirebaseUser firebaseUser) {
-        if (firebaseUser != null) {
+    private void handleUser(User user) {
+        if (user != null) {
             ((AuthActivity) requireActivity()).openLoggedActivity();
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
@@ -123,7 +123,7 @@ public class RegisterFragment extends Fragment {
             ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
         binding.passwordEditText.setText(null);
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
@@ -159,7 +159,7 @@ public class RegisterFragment extends Fragment {
                         errorString, Snackbar.LENGTH_SHORT).show();
                 break;
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**

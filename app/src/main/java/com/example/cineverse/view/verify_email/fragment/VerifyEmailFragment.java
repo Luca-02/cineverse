@@ -16,13 +16,13 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.handler.ui.VisibilityHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.view.verify_email.VerifyEmailActivity;
 import com.example.cineverse.viewmodel.logged.verify_email.VerifyEmailViewModel;
 import com.example.cineverse.databinding.FragmentVerifyEmailBinding;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseUser;
 
 public class VerifyEmailFragment extends Fragment {
 
@@ -93,7 +93,7 @@ public class VerifyEmailFragment extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.signout) {
                     viewModel.logOut();
-                    VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
+                    binding.progressIndicator.getRoot().setVisibility(View.VISIBLE);
                     return true;
                 }
                 return false;
@@ -124,11 +124,11 @@ public class VerifyEmailFragment extends Fragment {
     /**
      * Handles the user's state after email verification.
      *
-     * @param firebaseUser The FirebaseUser object representing the current user.
+     * @param user The User object representing the current user.
      */
-    private void handleUser(FirebaseUser firebaseUser) {
-        if (firebaseUser != null) {
-            setEmailText(firebaseUser);
+    private void handleUser(User user) {
+        if (user != null) {
+            setEmailText(user);
             handleSendEmail();
         } else {
             viewModel.logOut();
@@ -144,7 +144,7 @@ public class VerifyEmailFragment extends Fragment {
         if (loggedOut) {
             ((VerifyEmailActivity) requireActivity()).openAuthActivity();
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
@@ -166,7 +166,7 @@ public class VerifyEmailFragment extends Fragment {
                     R.string.email_not_sent_wait, Snackbar.LENGTH_SHORT).show();
             binding.resentEmailButton.setEnabled(true);
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
@@ -186,7 +186,7 @@ public class VerifyEmailFragment extends Fragment {
                     .setAction(R.string.retry, verifyEmailListener)
                     .show();
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
@@ -199,16 +199,16 @@ public class VerifyEmailFragment extends Fragment {
             ((VerifyEmailActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
         binding.resentEmailButton.setEnabled(true);
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
      * Sets the email text with formatting to show in the UI.
      *
-     * @param firebaseUser The FirebaseUser object representing the current user.
+     * @param user The User object representing the current user.
      */
-    private void setEmailText(FirebaseUser firebaseUser) {
-        String email = firebaseUser.getEmail();
+    private void setEmailText(User user) {
+        String email = user.getEmail();
         String formattedString = getString(R.string.we_have_sent_email, "<b>" + email + "</b>");
         CharSequence styledText = HtmlCompat.fromHtml(formattedString, HtmlCompat.FROM_HTML_MODE_LEGACY);
         binding.sentMailTextView.setText(styledText);
@@ -219,7 +219,7 @@ public class VerifyEmailFragment extends Fragment {
      */
     private void handleSendEmail() {
         viewModel.sendEmailVerification();
-        VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.VISIBLE);
         binding.resentEmailButton.setEnabled(false);
     }
 
@@ -228,7 +228,7 @@ public class VerifyEmailFragment extends Fragment {
      */
     private void handleVerifyEmail() {
         viewModel.reloadUser();
-        VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.VISIBLE);
     }
 
     /**

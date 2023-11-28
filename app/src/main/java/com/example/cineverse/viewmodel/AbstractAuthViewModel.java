@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.interfaces.IAuth;
-import com.example.cineverse.repository.AbstractAuthRepository;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.repository.interfaces.IAuth;
+import com.example.cineverse.repository.classes.AbstractAuthRepository;
 
 /**
  * The AbstractAuthViewModel class serves as the base class for ViewModels related to authentication
@@ -24,7 +24,7 @@ public abstract class AbstractAuthViewModel<T extends AbstractAuthRepository>
         implements IAuth {
 
     public T repository;
-    protected MutableLiveData<FirebaseUser> userLiveData;
+    protected MutableLiveData<User> userLiveData;
     protected MutableLiveData<Boolean> networkErrorLiveData;
 
     /**
@@ -40,7 +40,7 @@ public abstract class AbstractAuthViewModel<T extends AbstractAuthRepository>
         networkErrorLiveData = repository.getNetworkErrorLiveData();
     }
 
-    public MutableLiveData<FirebaseUser> getUserLiveData() {
+    public MutableLiveData<User> getUserLiveData() {
         return userLiveData;
     }
 

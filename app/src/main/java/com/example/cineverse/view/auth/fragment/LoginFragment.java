@@ -13,13 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.handler.ui.VisibilityHandler;
 import com.example.cineverse.R;
-import com.example.cineverse.repository.auth.LoginRepository;
+import com.example.cineverse.repository.classes.auth_service.auth.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.viewmodel.auth.LoginViewModel;
+import com.example.cineverse.viewmodel.auth_service.auth.LoginViewModel;
 import com.example.cineverse.databinding.FragmentLoginBinding;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
@@ -84,7 +84,7 @@ public class LoginFragment extends Fragment {
             String email = Objects.requireNonNull(binding.accountEditText.getText()).toString().trim();
             String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString().trim();
             viewModel.login(email, password);
-            VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
+            binding.progressIndicator.getRoot().setVisibility(View.VISIBLE);
         });
         binding.forgotPasswordText.setOnClickListener(view ->
                 Navigation.findNavController(requireView())
@@ -113,13 +113,13 @@ public class LoginFragment extends Fragment {
      * Handles the authentication state changes for the user. Navigates the user to the home
      * screen when authenticated.
      *
-     * @param firebaseUser The authenticated FirebaseUser object. If null, user is not authenticated.
+     * @param user The authenticated User object. If null, user is not authenticated.
      */
-    private void handleUser(FirebaseUser firebaseUser) {
-        if (firebaseUser != null) {
+    private void handleUser(User user) {
+        if (user != null) {
             ((AuthActivity) requireActivity()).openLoggedActivity();
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
@@ -133,7 +133,7 @@ public class LoginFragment extends Fragment {
             ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
         binding.passwordEditText.setText(null);
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
@@ -154,7 +154,7 @@ public class LoginFragment extends Fragment {
                 binding.passwordInputLayout.setError(errorString);
                 break;
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**

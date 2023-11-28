@@ -1,7 +1,6 @@
 package com.example.cineverse.view.email_verified.fragment.account;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.example.cineverse.view.email_verified.EmailVerifiedActivity;
 import com.example.cineverse.viewmodel.logged.email_verified.AccountViewModel;
-import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Then AccountFragment class representing the user account section of the application.
@@ -73,11 +72,11 @@ public class AccountFragment extends Fragment {
     /**
      * Handles the user's authentication status and updates the UI accordingly.
      *
-     * @param firebaseUser The current Firebase user object representing the logged-in user.
+     * @param user The current User user object representing the logged-in user.
      */
-    private void handleUser(FirebaseUser firebaseUser) {
-        if (firebaseUser != null) {
-            binding.userEmail.setText(String.format("Logged In User: %s", firebaseUser.getEmail()));
+    private void handleUser(User user) {
+        if (user != null) {
+            binding.userEmail.setText(String.format("Logged In User: %s", user.getEmail()));
             binding.logoutButton.setEnabled(true);
         } else {
             viewModel.logOut();

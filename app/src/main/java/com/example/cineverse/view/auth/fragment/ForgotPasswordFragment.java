@@ -16,9 +16,9 @@ import android.view.ViewGroup;
 
 import com.example.cineverse.handler.ui.VisibilityHandler;
 import com.example.cineverse.R;
-import com.example.cineverse.repository.AbstractAuthRepository;
+import com.example.cineverse.repository.classes.auth_service.auth.ForgotPasswordRepository;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.viewmodel.auth.ForgotPasswordViewModel;
+import com.example.cineverse.viewmodel.auth_service.auth.ForgotPasswordViewModel;
 import com.example.cineverse.databinding.FragmentForgotPasswordBinding;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -84,7 +84,7 @@ public class ForgotPasswordFragment extends Fragment {
             String email = Objects.requireNonNull(
                     binding.emailEditText.getText()).toString().trim();
             viewModel.forgotPassword(email);
-            VisibilityHandler.setVisibleView(binding.progressIndicator.getRoot());
+            binding.progressIndicator.getRoot().setVisibility(View.VISIBLE);
         });
     }
 
@@ -115,7 +115,7 @@ public class ForgotPasswordFragment extends Fragment {
         if (bool) {
             ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
@@ -134,14 +134,14 @@ public class ForgotPasswordFragment extends Fragment {
      *
      * @param result The type of password reset operation result.
      */
-    private void handleError(AbstractAuthRepository.Error result) {
+    private void handleError(ForgotPasswordRepository.Error result) {
         viewModel.clearErrorLiveData();
         if (result.isSuccess()) {
             handleSuccess();
         } else {
             binding.emailInputLayout.setError(getString(result.getError()));
         }
-        VisibilityHandler.setGoneView(binding.progressIndicator.getRoot());
+        binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
 
     /**
