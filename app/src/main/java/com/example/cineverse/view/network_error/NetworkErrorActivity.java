@@ -12,7 +12,7 @@ import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityNetworkErrorBinding;
 
 /**
- * The NetworkErrorActivity class represents the activity shown to the user when there is a network error.
+ * The {@link NetworkErrorActivity} class represents the activity shown to the user when there is a network error.
  */
 public class NetworkErrorActivity extends AppCompatActivity {
 
@@ -32,7 +32,7 @@ public class NetworkErrorActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets up the action bar with the provided Toolbar.
+     * Sets up the {@link ActionBar} with the provided Toolbar.
      */
     private void setActionBar() {
         setSupportActionBar(binding.materialToolbar);
@@ -43,8 +43,8 @@ public class NetworkErrorActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets up the NavController for navigating between destinations.
-     * This method finds the NavHostFragment and initializes the NavController.
+     * Sets up the {@link NavController} for navigating between destinations.
+     * This method finds the {@link NavHostFragment} and initializes the {@link NavController}.
      */
     private void setNavController() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()

@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import com.example.cineverse.data.model.user.User;
 import com.google.gson.Gson;
 
+import javax.inject.Singleton;
+
 /**
- * The {@code LocalAuth} class provides methods for managing local authentication-related data
+ * The {@link LocalAuth} class provides methods for managing local authentication-related data
  * using {@link SharedPreferences}. It includes functionality for storing and retrieving user
  * information locally.
  */
@@ -31,13 +33,15 @@ public class LocalAuth {
     private LocalAuth() {}
 
     /**
-     * Gets the singleton instance of the {@code LocalAuth} class.
+     * Gets the singleton instance of the {@link LocalAuth} class.
      *
-     * @return The {@code LocalAuth} instance.
+     * @return The {@link LocalAuth} instance.
      */
     public static LocalAuth getInstance() {
-        if (instance == null) {
-            instance = new LocalAuth();
+        synchronized (LocalAuth.class){
+            if (instance == null) {
+                instance = new LocalAuth();
+            }
         }
         return instance;
     }
@@ -46,7 +50,7 @@ public class LocalAuth {
      * Retrieves the stored user information from shared preferences.
      *
      * @param context The context used to access shared preferences.
-     * @return The {@code User} object representing the stored user information,
+     * @return The {@link User} object representing the stored user information,
      *         or {@code null} if no user information is stored.
      */
     public User getUser(Context context) {
@@ -64,7 +68,7 @@ public class LocalAuth {
     /**
      * Clears the stored user information from shared preferences.
      *
-     * @param context The context used to access shared preferences.
+     * @param context The {@link Context} used to access shared preferences.
      */
     public void clearUser(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);

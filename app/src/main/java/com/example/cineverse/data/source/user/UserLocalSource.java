@@ -8,7 +8,7 @@ import com.example.cineverse.data.model.user.User;
 import com.google.gson.Gson;
 
 /**
- * The {@code UserLocalSource} class provides methods to interact with the local storage (SharedPreferences)
+ * The {@link UserLocalSource} class provides methods to interact with the local storage (SharedPreferences)
  * for user-related operations. It includes a method to save user information locally.
  */
 public class UserLocalSource {

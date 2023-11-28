@@ -13,7 +13,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 /**
- * The {@code UserFirebaseQuery} class provides methods for querying user-related data from
+ * The {@link UserFirebaseQuery} class provides methods for querying user-related data from
  * Firebase Realtime Database. It extends the functionality of {@link UserFirebaseDatabaseServices}.
  * It includes methods to check if a username or user with a specific UID is saved in the database,
  * retrieve user information from UID, and obtain the email associated with a username or UID.

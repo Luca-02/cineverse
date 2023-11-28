@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.cineverse.databinding.FragmentNetworkErrorBinding;
 
 /**
- * Fragment representing the network error screen.
+ * The {@link NetworkErrorFragment} representing the network error screen.
  */
 public class NetworkErrorFragment extends Fragment {
 

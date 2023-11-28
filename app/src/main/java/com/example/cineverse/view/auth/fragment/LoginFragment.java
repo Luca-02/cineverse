@@ -15,15 +15,15 @@ import androidx.navigation.Navigation;
 
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.R;
-import com.example.cineverse.repository.classes.auth_service.auth.LoginRepository;
+import com.example.cineverse.repository.classes.auth.service.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.viewmodel.auth_service.auth.LoginViewModel;
+import com.example.cineverse.viewmodel.auth.service.LoginViewModel;
 import com.example.cineverse.databinding.FragmentLoginBinding;
 
 import java.util.Objects;
 
 /**
- * The LoginFragment class represents the login screen of the application.
+ * The {@link LoginFragment} class represents the login screen of the application.
  * Users can enter their email and password to log into their account.
  * This fragment handles user input validation, login button functionality, and error handling.
  */
@@ -112,7 +112,7 @@ public class LoginFragment extends Fragment {
      * Handles the authentication state changes for the user. Navigates the user to the home
      * screen when authenticated.
      *
-     * @param user The authenticated User object. If null, user is not authenticated.
+     * @param user The authenticated {@link User} object. If {@code null}, user is not authenticated.
      */
     private void handleUser(User user) {
         if (user != null) {
@@ -125,7 +125,7 @@ public class LoginFragment extends Fragment {
      * Handles network error states. Navigates the user to the network error screen when there
      * is a network error. Resets the password input field.
      *
-     * @param bool True if there is a network error, false otherwise.
+     * @param bool {@code true} if there is a network error, {@code false} otherwise.
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
@@ -157,7 +157,7 @@ public class LoginFragment extends Fragment {
     }
 
     /**
-     * Custom TextWatcher class to handle text changes in the input fields.
+     * Custom {@link TextWatcher} class to handle text changes in the input fields.
      */
     public class MyTextWatcher implements TextWatcher {
         @Override

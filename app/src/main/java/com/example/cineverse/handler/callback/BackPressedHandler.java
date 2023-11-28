@@ -6,7 +6,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 
 /**
- * The {@code BackPressedHandler} class provides utility methods to handle the {@code onBackPressed} callback in Android applications.
+ * The {@link BackPressedHandler} class provides utility methods to handle the {@code onBackPressed} callback in Android applications.
  */
 public class BackPressedHandler {
 
@@ -17,8 +17,8 @@ public class BackPressedHandler {
     /**
      * Handles the {@code onBackPressed} callback to navigate between destinations or finish the activity.
      *
-     * @param activity      The {@code FragmentActivity} associated with the {@code onBackPressed} callback.
-     * @param navController The {@code NavController} used for navigation between destinations.
+     * @param activity      The {@link FragmentActivity} associated with the {@code onBackPressed} callback.
+     * @param navController The {@link NavController} used for navigation between destinations.
      */
     public static void handleOnBackPressedCallback(FragmentActivity activity, NavController navController) {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {

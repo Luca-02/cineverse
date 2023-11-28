@@ -7,21 +7,25 @@ import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.cineverse.databinding.ActivityAuthBinding;
 import com.example.cineverse.handler.callback.BackPressedHandler;
 import com.example.cineverse.R;
-import com.example.cineverse.repository.classes.AbstractAuthRepository;
-import com.example.cineverse.repository.classes.auth_service.AbstractAuthServiceRepository;
-import com.example.cineverse.viewmodel.auth_service.AbstractAuthServicesViewModel;
-import com.example.cineverse.databinding.ActivityAuthBinding;
+import com.example.cineverse.repository.classes.AbstractUserRepository;
+import com.example.cineverse.repository.classes.auth.AbstractAuthRepository;
+import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
+import com.example.cineverse.view.network_error.NetworkErrorActivity;
+import com.example.cineverse.view.verify_account.VerifyAccountActivity;
+import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
 
 /**
- * The AuthActivity class serves as the entry point of the application for authentication-related flows.
- * It checks if a user is already logged in. If so, it navigates the user to the home screen (HomeActivity).
+ * The {@link AuthActivity} class serves as the entry point of the application for authentication-related flows.
+ * It checks if a user is already logged in. If so, it navigates the user to {@link VerifiedAccountActivity}.
  * If not, it displays the main authentication screen. This activity also handles network error scenarios by
- * redirecting users to the NetworkErrorActivity.
+ * redirecting users to the {@link NetworkErrorActivity}.
  */
 public class AuthActivity extends AppCompatActivity {
 
@@ -42,7 +46,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets up the action bar with the provided Toolbar.
+     * Sets up the {@link ActionBar} with the provided Toolbar.
      */
     private void setActionBar() {
         setSupportActionBar(binding.materialToolbar);
@@ -53,8 +57,8 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets up the NavController for navigating between destinations.
-     * This method finds the NavHostFragment and initializes the NavController.
+     * Sets up the {@link NavController} for navigating between destinations.
+     * This method finds the {@link NavHostFragment} and initializes the {@link NavController}.
      */
     private void setNavController() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
@@ -97,30 +101,30 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens the EmailVerifiedActivity or VerifyEmailActivity based on the email verification status.
-     * If the email is verified, it navigates the user to the verified email screen (EmailVerifiedActivity).
-     * If not, it navigates to the email verification screen (VerifyEmailActivity).
+     * Opens the {@link VerifiedAccountActivity} or {@link VerifyAccountActivity} based on the email verification status.
+     * If the email is verified, it navigates the user to the verified email screen ({@link VerifiedAccountActivity}).
+     * If not, it navigates to the email verification screen ({@link VerifyAccountActivity}).
      */
     public void openLoggedActivity() {
         if (navController != null) {
-            boolean isEmailVerified = AbstractAuthRepository.isEmailVerified();
+            boolean isEmailVerified = AbstractUserRepository.isEmailVerified();
             if (isEmailVerified) {
-                navController.navigate(R.id.action_global_emailVerifiedActivity);
+                navController.navigate(R.id.action_global_verifiedAccountActivity);
             } else {
-                navController.navigate(R.id.action_global_verifyEmailActivity);
+                navController.navigate(R.id.action_global_verifyAccountActivity);
             }
             finish();
         }
     }
 
     /**
-     * Opens the network error activity (NetworkErrorActivity) and clears network error LiveData in the
-     * passed AbstractAuthViewModel to avoid re-opening NetworkErrorActivity when a fragment that
-     * contains network error LiveData is recreated.
+     * Opens the network error activity ({@link NetworkErrorActivity}) and clears network error {@link LiveData} in the
+     * passed {@link AbstractAuthServicesViewModel} to avoid re-opening {@link NetworkErrorActivity} when a fragment that
+     * contains network error {@link LiveData} is recreated.
      *
-     * @param viewModel The AbstractAuthViewModel associated with the current authentication context.
+     * @param viewModel The {@link AbstractAuthServicesViewModel} associated with the current authentication context.
      */
-    public <T extends AbstractAuthServiceRepository> void openNetworkErrorActivity(
+    public <T extends AbstractAuthRepository> void openNetworkErrorActivity(
             AbstractAuthServicesViewModel<T> viewModel) {
         if (navController != null) {
             viewModel.clearNetworkErrorLiveData();

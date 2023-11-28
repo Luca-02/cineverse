@@ -5,7 +5,7 @@ import android.app.Application;
 import com.google.android.material.color.DynamicColors;
 
 /**
- * The {@code CineVerse} class represents the custom application class for the CineVerse application.
+ * The {@link CineVerse} class represents the custom application class for the CineVerse application.
  */
 public class CineVerse extends Application {
 

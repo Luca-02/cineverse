@@ -4,7 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 /**
- * The {@code FirebaseDatabaseServices} class provides a centralized access point for interacting
+ * The {@link FirebaseDatabaseServices} class provides a centralized access point for interacting
  * with the Firebase Realtime Database.
  */
 public class FirebaseDatabaseServices {

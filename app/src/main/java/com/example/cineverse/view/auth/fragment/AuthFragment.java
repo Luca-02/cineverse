@@ -18,18 +18,18 @@ import androidx.navigation.Navigation;
 
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.R;
-import com.example.cineverse.repository.classes.auth_service.auth.LoginRepository;
+import com.example.cineverse.repository.classes.auth.service.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.viewmodel.auth_service.auth.AuthViewModel;
+import com.example.cineverse.viewmodel.auth.service.AuthViewModel;
 import com.example.cineverse.databinding.FragmentAuthBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.snackbar.Snackbar;
 
 /**
- * The AuthFragment class represents the user authentication screen of the application.
+ * The {@link AuthFragment} class represents the user authentication screen of the application.
  * Users can log in with their email and password, register a new account, or sign in using
- * their Google account. This fragment handles user input and interacts with the AuthViewModel
+ * their Google account. This fragment handles user input and interacts with the {@link AuthViewModel}
  * to perform authentication operations. It also provides navigation to the registration and
  * login screens as well as handling Google sign-in operations.
  */
@@ -147,7 +147,7 @@ public class AuthFragment extends Fragment {
      * Handles the authentication state changes for the user. Navigates the user to the home
      * screen when authenticated.
      *
-     * @param user The authenticated User object. If null, user is not authenticated.
+     * @param user The authenticated {@link User} object. If {@code null}, user is not authenticated.
      */
     private void handleUser(User user) {
         if (user != null) {
@@ -160,7 +160,7 @@ public class AuthFragment extends Fragment {
      * Handles network error states. Navigates the user to the network error screen when there
      * is a network error.
      *
-     * @param bool True if there is a network error, false otherwise.
+     * @param bool {@code true} if there is a network error, {@code false} otherwise.
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
@@ -170,7 +170,7 @@ public class AuthFragment extends Fragment {
     }
 
     /**
-     * Handles authentication errors. Displays a Snackbar with the error message.
+     * Handles authentication errors. Displays a {@link Snackbar} with the error message.
      *
      * @param error The type of authentication error that occurred.
      */

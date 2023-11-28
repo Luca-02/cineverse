@@ -3,7 +3,7 @@ package com.example.cineverse.data.service.firebase;
 import com.google.firebase.database.DatabaseReference;
 
 /**
- * The {@code UserFirebaseDatabaseServices} class extends {@link FirebaseDatabaseServices} and
+ * The {@link UserFirebaseDatabaseServices} class extends {@link FirebaseDatabaseServices} and
  * provides references to specific nodes ("usernames" and "users") in the Firebase Realtime Database.
  * Additionally, it includes callback interfaces for asynchronous operations with one parameter
  * and network availability checks.

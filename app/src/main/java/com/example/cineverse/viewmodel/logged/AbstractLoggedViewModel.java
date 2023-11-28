@@ -5,30 +5,30 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.repository.interfaces.ILogged;
+import com.example.cineverse.repository.interfaces.logged.ILogged;
 import com.example.cineverse.repository.classes.logged.AbstractLoggedRepository;
-import com.example.cineverse.viewmodel.AbstractAuthViewModel;
+import com.example.cineverse.viewmodel.AbstractUserViewModel;
 
 /**
- * The AbstractLoggedViewModel class extends AbstractAuthViewModel and serves as the base class for ViewModels
+ * The {@link AbstractLoggedViewModel} class extends {@link AbstractUserViewModel} and serves as the base class for ViewModels
  * related to the logged-in user's functionality. It provides MutableLiveData instances for observing
  * the user's authentication status, network error states, and logout events. Subclasses of
- * LoggedViewModel are expected to handle user-specific logic and communicate changes in user
+ * {@link AbstractLoggedViewModel} are expected to handle user-specific logic and communicate changes in user
  * authentication status, network errors, and logout events through LiveData objects.
  *
- * @param <T> The type of repository associated with the ViewModel.
+ * @param <T> The type of {@link AbstractLoggedRepository} associated with the ViewModel.
  */
 public abstract class AbstractLoggedViewModel<T extends AbstractLoggedRepository>
-        extends AbstractAuthViewModel<T>
+        extends AbstractUserViewModel<T>
         implements ILogged {
 
     protected MutableLiveData<Boolean> loggedOutLiveData;
 
     /**
-     * Constructs an AbstractLoggedViewModel object with the given Application context.
+     * Constructs an {@link AbstractLoggedViewModel} object with the given {@link Application}.
      *
-     * @param application The Application context of the calling component.
-     * @param repository  The repository associated with the ViewModel.
+     * @param application The {@link Application} of the calling component.
+     * @param repository  The {@link AbstractLoggedRepository} associated with the ViewModel.
      */
     public AbstractLoggedViewModel(@NonNull Application application, T repository) {
         super(application, repository);

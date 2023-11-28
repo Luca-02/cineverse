@@ -79,30 +79,30 @@
     <activity
         android:id="@+id/networkErrorActivity"
         android:name="com.example.cineverse.view.network_error.NetworkErrorActivity"
-        android:label="NetworkErrorActivity"
+        android:label="activity_network_error"
         tools:layout="@layout/activity_network_error" />
     <activity
-        android:id="@+id/verifyEmailActivity"
-        android:name="com.example.cineverse.view.verify_email.VerifyEmailActivity"
-        android:label="VerifyEmailActivity"
-        tools:layout="@layout/activity_verify_email" />
+        android:id="@+id/verifyAccountActivity"
+        android:name="com.example.cineverse.view.verify_account.VerifyAccountActivity"
+        android:label="activity_verify_account"
+        tools:layout="@layout/activity_verify_account" />
     <activity
-        android:id="@+id/emailVerifiedActivity"
-        android:name="com.example.cineverse.view.email_verified.EmailVerifiedActivity"
+        android:id="@+id/verifiedAccountActivity"
+        android:name="com.example.cineverse.view.verified_account.VerifiedAccountActivity"
         android:label="activity_email_verified"
-        tools:layout="@layout/activity_email_verified" />
+        tools:layout="@layout/activity_verified_account" />
 
     <action
         android:id="@+id/action_global_networkErrorActivity"
         app:destination="@id/networkErrorActivity" />
     <action
-        android:id="@+id/action_global_verifyEmailActivity"
-        app:destination="@id/verifyEmailActivity"
+        android:id="@+id/action_global_verifyAccountActivity"
+        app:destination="@id/verifyAccountActivity"
         app:popUpTo="@id/auth_nav_graph"
         app:popUpToInclusive="true" />
     <action
-        android:id="@+id/action_global_emailVerifiedActivity"
-        app:destination="@id/emailVerifiedActivity"
+        android:id="@+id/action_global_verifiedAccountActivity"
+        app:destination="@id/verifiedAccountActivity"
         app:popUpTo="@id/auth_nav_graph"
         app:popUpToInclusive="true" />
 </navigation>

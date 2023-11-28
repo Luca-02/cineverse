@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/networkErrorFragment"
         android:name="com.example.cineverse.view.network_error.fragment.NetworkErrorFragment"
-        android:label="NetworkErrorFragment"
+        android:label="fragment_network_error"
         tools:layout="@layout/fragment_network_error" />
 </navigation>

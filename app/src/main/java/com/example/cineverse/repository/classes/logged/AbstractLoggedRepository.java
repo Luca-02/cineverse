@@ -4,26 +4,26 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.repository.classes.AbstractAuthRepository;
-import com.example.cineverse.repository.interfaces.ILogged;
+import com.example.cineverse.repository.classes.AbstractUserRepository;
+import com.example.cineverse.repository.interfaces.logged.ILogged;
 
 /**
- * The {@code AbstractLoggedRepository} class serves as the base class for repositories related to logged-in users.
- * It extends {@link AbstractAuthRepository} and provides {@link MutableLiveData} instances for observing user
- * logout status. Subclasses of {@code AbstractLoggedRepository} are expected to handle user logout logic
+ * The {@link AbstractLoggedRepository} class serves as the base class for repositories related to logged-in users.
+ * It extends {@link AbstractUserRepository} and provides {@link MutableLiveData} instances for observing user
+ * logout status. Subclasses of {@link AbstractLoggedRepository} are expected to handle user logout logic
  * and communicate changes in user logout status through LiveData objects.
  */
 public abstract class AbstractLoggedRepository
-        extends AbstractAuthRepository
+        extends AbstractUserRepository
         implements ILogged {
 
     private final MutableLiveData<Boolean> loggedOutLiveData;
 
     /**
-     * Constructs an {@code AbstractLoggedRepository} object with the given Application context and initializes
-     * MutableLiveData for observing user logout status.
+     * Constructs an {@link AbstractLoggedRepository} object with the given application {@link Context} and initializes
+     * {@link MutableLiveData} for observing user logout status.
      *
-     * @param context The Application context of the calling component.
+     * @param context The application {@link Context} of the calling component.
      */
     public AbstractLoggedRepository(Context context) {
         super(context);
@@ -35,8 +35,8 @@ public abstract class AbstractLoggedRepository
     }
 
     /**
-     * Logs out the currently authenticated user by invoking Firebase's signOut() method and communicates
-     * the logout status via {@code loggedOutLiveData}.
+     * Logs out the currently authenticated user by invoking {@link AbstractUserRepository#clearAllUser clearAllUser} method and communicates
+     * the logout status via {@link #loggedOutLiveData}.
      */
     @Override
     public void logOut() {

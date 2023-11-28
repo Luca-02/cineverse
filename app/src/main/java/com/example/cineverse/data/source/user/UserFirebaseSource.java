@@ -15,46 +15,62 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 
 /**
- * The {@code UserFirebaseSource} class provides methods to interact with the Firebase Realtime Database
+ * The {@link UserFirebaseSource} class provides methods to interact with the Firebase Realtime Database
  * for user-related operations. It extends the functionality of {@link UserFirebaseDatabaseServices}.
  * It includes methods for saving a user, checking if a user is saved, and handling the transaction to
  * save a user's information.
  */
 public class UserFirebaseSource extends UserFirebaseDatabaseServices {
 
+    private final Context context;
+
     /**
-     * Saves a user in the Firebase Realtime Database. If the user is already saved, it invokes the
-     * provided callback with the result. If the user is not saved, it creates a username if necessary
-     * and performs a transaction to save the user's information.
+     * Constructs a {@code UserFirebaseSource} object with the given context.
      *
-     * @param user The user to save.
-     * @param context The context used to check network availability.
+     * @param context The context of the calling component.
+     */
+    public UserFirebaseSource(Context context) {
+        this.context = context;
+    }
+
+    /**
+     * Saves a user in the Firebase Realtime Database if the user is not already saved. It creates a
+     * username if necessary and performs a transaction to save the user's information.
+     *
+     * @param user     The user to save.
      * @param callback The callback to handle the result.
      */
-    public void saveUser(User user, Context context, Callback<Boolean> callback) {
+    public void saveUser(User user, Callback<Boolean> callback) {
         if (NetworkHandler.isNetworkAvailable(context)) {
-            UserFirebaseQuery.isUserSaved(user.getUid(), context,
-                    new Callback<Boolean>() {
-                        @Override
-                        public void onCallback(Boolean isUserSaved) {
-                            if (isUserSaved == null) {
-                                callback.onCallback(null);
-                            } else {
-                                if (!isUserSaved) {
-                                    saveUserNotSaved(user, callback);
-                                } else {
-                                    callback.onCallback(false);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onNetworkUnavailable() {
-                            callback.onNetworkUnavailable();
-                        }
-                    });
+            checkIfUserSaved(user, callback);
         } else {
             callback.onNetworkUnavailable();
+        }
+    }
+
+    private void checkIfUserSaved(User user, Callback<Boolean> callback) {
+        UserFirebaseQuery.isUserSaved(user.getUid(), context, new Callback<Boolean>() {
+            @Override
+            public void onCallback(Boolean isUserSaved) {
+                handleUserSavedResult(isUserSaved, user, callback);
+            }
+
+            @Override
+            public void onNetworkUnavailable() {
+                callback.onNetworkUnavailable();
+            }
+        });
+    }
+
+    private void handleUserSavedResult(Boolean isUserSaved, User user, Callback<Boolean> callback) {
+        if (isUserSaved == null) {
+            callback.onCallback(null);
+        } else {
+            if (!isUserSaved) {
+                saveUserNotSaved(user, callback);
+            } else {
+                callback.onCallback(false);
+            }
         }
     }
 
@@ -62,7 +78,7 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
      * Saves a user in the Firebase Realtime Database if the user is not already saved. It creates a
      * username if necessary and performs a transaction to save the user's information.
      *
-     * @param user The user to save.
+     * @param user     The user to save.
      * @param callback The callback to handle the result.
      */
     private void saveUserNotSaved(User user, Callback<Boolean> callback) {

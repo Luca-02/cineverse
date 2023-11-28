@@ -10,7 +10,7 @@ import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * The {@code UserStorage} class serves as a higher-level abstraction for user-related operations,
+ * The {@link UserStorage} class serves as a higher-level abstraction for user-related operations,
  * combining functionality from Firebase, local storage, and user queries. It includes methods for
  * registering a user, authenticating a Google user, and logging in a user.
  */
@@ -22,7 +22,7 @@ public class UserStorage extends UserFirebaseDatabaseServices {
 
     public UserStorage(Context context) {
         this.context = context;
-        firebaseSource = new UserFirebaseSource();
+        firebaseSource = new UserFirebaseSource(context);
         localSource = new UserLocalSource(context);
     }
 
@@ -38,23 +38,17 @@ public class UserStorage extends UserFirebaseDatabaseServices {
                              Callback<User> callback) {
         User user = new User(firebaseUser, username);
 
-        firebaseSource.saveUser(user, context,
-                new Callback<Boolean>() {
-                    @Override
-                    public void onCallback(Boolean userSaved) {
-                        if (userSaved != null && userSaved) {
-                            localSource.saveUser(user);
-                            callback.onCallback(user);
-                        } else {
-                            callback.onCallback(null);
-                        }
-                    }
+        firebaseSource.saveUser(user, new Callback<Boolean>() {
+            @Override
+            public void onCallback(Boolean userSaved) {
+                handleUserSaveResult(userSaved, user, callback);
+            }
 
-                    @Override
-                    public void onNetworkUnavailable() {
-                        callback.onNetworkUnavailable();
-                    }
-                });
+            @Override
+            public void onNetworkUnavailable() {
+                callback.onNetworkUnavailable();
+            }
+        });
     }
 
     /**
@@ -107,6 +101,15 @@ public class UserStorage extends UserFirebaseDatabaseServices {
                         callback.onNetworkUnavailable();
                     }
                 });
+    }
+
+    private void handleUserSaveResult(Boolean userSaved, User user, Callback<User> callback) {
+        if (userSaved != null && userSaved) {
+            localSource.saveUser(user);
+            callback.onCallback(user);
+        } else {
+            callback.onCallback(null);
+        }
     }
 
 }

@@ -13,16 +13,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.repository.classes.auth_service.auth.RegisterRepository;
+import com.example.cineverse.repository.classes.auth.service.RegisterRepository;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.viewmodel.auth_service.auth.RegisterViewModel;
+import com.example.cineverse.viewmodel.auth.service.RegisterViewModel;
 import com.example.cineverse.databinding.FragmentRegisterBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
 /**
- * The RegisterFragment class represents the screen for user registration.
+ * The {@link RegisterFragment} class represents the screen for user registration.
  * Users can enter their email and password to create an account.
  * This fragment handles user input validation, button functionality, and error handling for the
  * registration process.
@@ -102,7 +102,7 @@ public class RegisterFragment extends Fragment {
      * Handles the user state after registration. Navigates the user to the home screen upon successful registration.
      * Hides the progress indicator after handling the user state.
      *
-     * @param user The User object representing the registered user.
+     * @param user The {@link User} object representing the registered user.
      */
     private void handleUser(User user) {
         if (user != null) {
@@ -115,7 +115,7 @@ public class RegisterFragment extends Fragment {
      * Handles network error states. Navigates the user to the network error screen when there
      * is a network error. Resets the password input field and hides the progress indicator.
      *
-     * @param bool True if there is a network error, false otherwise.
+     * @param bool {@code true} if there is a network error, {@code false} otherwise.
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
@@ -162,7 +162,7 @@ public class RegisterFragment extends Fragment {
     }
 
     /**
-     * Custom TextWatcher class to handle text changes in the input fields.
+     * Custom {@link TextWatcher} class to handle text changes in the input fields.
      */
     public class MyTextWatcher implements TextWatcher {
         @Override

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * The {@code User} class represents a user with essential information such as UID, username,
+ * The {@link User} class represents a user with essential information such as UID, username,
  * email, and photo URL.
  */
 public class User {

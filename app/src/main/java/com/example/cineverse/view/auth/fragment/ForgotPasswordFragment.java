@@ -15,16 +15,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cineverse.R;
-import com.example.cineverse.repository.classes.auth_service.auth.ForgotPasswordRepository;
+import com.example.cineverse.repository.classes.auth.service.ForgotPasswordRepository;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.viewmodel.auth_service.auth.ForgotPasswordViewModel;
+import com.example.cineverse.viewmodel.auth.service.ForgotPasswordViewModel;
 import com.example.cineverse.databinding.FragmentForgotPasswordBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
 /**
- * The ForgotPasswordFragment class represents the screen for users to reset their password.
+ * The {@link ForgotPasswordFragment} class represents the screen for users to reset their password.
  * Users can enter their email to receive a password reset email.
  * This fragment handles user input validation, button functionality, and error handling for the
  * password reset process.
@@ -108,7 +108,7 @@ public class ForgotPasswordFragment extends Fragment {
      * Handles network error states. Navigates the user to the network error screen when there
      * is a network error. Resets the email input field and hides the progress indicator.
      *
-     * @param bool True if there is a network error, false otherwise.
+     * @param bool {@code true} if there is a network error, {@code false} otherwise.
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
@@ -128,7 +128,7 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     /**
-     * Handles password reset errors. If the operation is successful, calls handleSuccess().
+     * Handles password reset errors. If the operation is successful, calls {@link #handleSuccess() handleSuccess}.
      * If there is an error, displays an error message for the email input field and hides the progress indicator.
      *
      * @param result The type of password reset operation result.
@@ -144,7 +144,7 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     /**
-     * Custom TextWatcher class to handle text changes in the input field.
+     * Custom {@link TextWatcher} class to handle text changes in the input field.
      */
     public class MyTextWatcher implements TextWatcher {
         @Override
