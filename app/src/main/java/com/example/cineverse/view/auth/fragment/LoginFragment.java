@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.handler.ui.VisibilityHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.repository.classes.auth_service.auth.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;

@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.handler.ui.VisibilityHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.view.verify_email.VerifyEmailActivity;
 import com.example.cineverse.viewmodel.logged.verify_email.VerifyEmailViewModel;

@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.cineverse.handler.ui.VisibilityHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.repository.classes.auth_service.auth.ForgotPasswordRepository;
 import com.example.cineverse.view.auth.AuthActivity;
