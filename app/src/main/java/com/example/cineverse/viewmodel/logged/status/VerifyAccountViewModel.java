@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.repository.classes.logged.status.VerifyAccountRepository;
-import com.example.cineverse.repository.interfaces.logged.status.IVerifyEmail;
+import com.example.cineverse.repository.interfaces.logged.status.IVerifyAccount;
 import com.example.cineverse.viewmodel.logged.AbstractLoggedViewModel;
 
 /**
@@ -18,7 +18,7 @@ import com.example.cineverse.viewmodel.logged.AbstractLoggedViewModel;
  */
 public class VerifyAccountViewModel
         extends AbstractLoggedViewModel<VerifyAccountRepository>
-        implements IVerifyEmail {
+        implements IVerifyAccount {
 
     private MutableLiveData<Boolean> emailSentLiveData;
     private MutableLiveData<Boolean> emailVerifiedLiveData;

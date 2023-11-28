@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.repository.classes.logged.AbstractLoggedRepository;
-import com.example.cineverse.repository.interfaces.logged.status.IVerifyEmail;
+import com.example.cineverse.repository.interfaces.logged.status.IVerifyAccount;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class VerifyAccountRepository
         extends AbstractLoggedRepository
-        implements IVerifyEmail {
+        implements IVerifyAccount {
 
     private final MutableLiveData<Boolean> emailSentLiveData;
     private final MutableLiveData<Boolean> emailVerifiedLiveData;
