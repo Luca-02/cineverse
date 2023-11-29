@@ -11,13 +11,12 @@ import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityAuthBinding;
 import com.example.cineverse.handler.callback.BackPressedHandler;
-import com.example.cineverse.R;
-import com.example.cineverse.repository.classes.AbstractUserRepository;
 import com.example.cineverse.repository.classes.auth.AbstractAuthRepository;
-import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
+import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.verify_account.VerifyAccountActivity;
 import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
 
@@ -104,10 +103,12 @@ public class AuthActivity extends AppCompatActivity {
      * Opens the {@link VerifiedAccountActivity} or {@link VerifyAccountActivity} based on the email verification status.
      * If the email is verified, it navigates the user to the verified email screen ({@link VerifiedAccountActivity}).
      * If not, it navigates to the email verification screen ({@link VerifyAccountActivity}).
+     *
+     * @param isEmailVerified A boolean indicating whether the user's email is verified.
+     *                        {@code true} if the email is verified, {@code false} otherwise.
      */
-    public void openLoggedActivity() {
+    public void openLoggedActivity(boolean isEmailVerified) {
         if (navController != null) {
-            boolean isEmailVerified = AbstractUserRepository.isEmailVerified();
             if (isEmailVerified) {
                 navController.navigate(R.id.action_global_verifiedAccountActivity);
             } else {

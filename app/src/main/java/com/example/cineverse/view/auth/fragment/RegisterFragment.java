@@ -106,7 +106,8 @@ public class RegisterFragment extends Fragment {
      */
     private void handleUser(User user) {
         if (user != null) {
-            ((AuthActivity) requireActivity()).openLoggedActivity();
+            boolean isEmailVerified = viewModel.isEmailVerified();
+            ((AuthActivity) requireActivity()).openLoggedActivity(isEmailVerified);
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }

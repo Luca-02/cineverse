@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
-import com.example.cineverse.repository.classes.AbstractUserRepository;
+import com.example.cineverse.repository.classes.UserRepository;
 import com.example.cineverse.repository.classes.auth.AbstractAuthRepository;
 import com.example.cineverse.repository.interfaces.auth.service.IAuthGoogle;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -77,7 +77,7 @@ public class GoogleAuthRepository
 
     /**
      * Handles successful Google Sign-In authentication by saving user data in firebase and
-     * updating with {@link AbstractUserRepository#setUserLiveData setUserLiveData}.
+     * updating with {@link UserRepository#setUserLiveData setUserLiveData}.
      *
      * @param authResult The successful authentication result containing user information.
      */

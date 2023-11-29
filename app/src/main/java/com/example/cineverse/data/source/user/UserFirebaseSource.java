@@ -6,13 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.query.user.UserFirebaseQuery;
 import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
 import com.example.cineverse.handler.network.NetworkHandler;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * The {@link UserFirebaseSource} class provides methods to interact with the Firebase Realtime Database
@@ -49,7 +50,7 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
     }
 
     private void checkIfUserSaved(User user, Callback<Boolean> callback) {
-        UserFirebaseQuery.isUserSaved(user.getUid(), context, new Callback<Boolean>() {
+        isUserSaved(user.getUid(), context, new Callback<Boolean>() {
             @Override
             public void onCallback(Boolean isUserSaved) {
                 handleUserSavedResult(isUserSaved, user, callback);
@@ -119,6 +120,164 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
                 }
             }
         });
+    }
+
+    /**
+     * Checks if a username is saved in the usernames database.
+     *
+     * @param username The username to check.
+     * @param context The context used to check network availability.
+     * @param callback The callback to handle the result.
+     */
+    public void isUsernameSaved(String username, Context context, final Callback<Boolean> callback) {
+        if (NetworkHandler.isNetworkAvailable(context)) {
+            Query query = usernamesDatabase.child(username);
+
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    boolean exists = dataSnapshot.exists();
+                    callback.onCallback(exists);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    callback.onCallback(null);
+                }
+            });
+        } else {
+            callback.onNetworkUnavailable();
+        }
+    }
+
+    /**
+     * Checks if a user with a specific UID is saved in the users database.
+     *
+     * @param uid The UID to check.
+     * @param context The context used to check network availability.
+     * @param callback The callback to handle the result.
+     */
+    public void isUserSaved(String uid, Context context, final Callback<Boolean> callback) {
+        if (NetworkHandler.isNetworkAvailable(context)) {
+            Query query = usersDatabase.child(uid);
+
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    boolean exists = dataSnapshot.exists();
+                    callback.onCallback(exists);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    callback.onCallback(null);
+                }
+            });
+        } else {
+            callback.onNetworkUnavailable();
+        }
+    }
+
+    /**
+     * Retrieves a {@code User} object from the users database using the UID.
+     *
+     * @param uid The UID of the user.
+     * @param context The context used to check network availability.
+     * @param callback The callback to handle the result.
+     */
+    public void getUserFromUid(String uid, Context context, final Callback<User> callback) {
+        if (NetworkHandler.isNetworkAvailable(context)) {
+            Query query = usersDatabase.child(uid);
+
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        User user = dataSnapshot.getValue(User.class);
+                        callback.onCallback(user);
+                    } else {
+                        callback.onCallback(null);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    callback.onCallback(null);
+                }
+            });
+        } else {
+            callback.onNetworkUnavailable();
+        }
+
+    }
+
+    /**
+     * Retrieves the email associated with a username from the usernames database.
+     *
+     * @param username The username to retrieve the email for.
+     * @param context The context used to check network availability.
+     * @param callback The callback to handle the result.
+     */
+    public void getEmailFromUsername(String username, Context context, final Callback<String> callback) {
+        if (NetworkHandler.isNetworkAvailable(context)) {
+            Query uidQuery = usernamesDatabase.child(username);
+
+            uidQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String uid = dataSnapshot.getValue(String.class);
+                        if (uid != null) {
+                            getEmailFromUid(uid, context, callback);
+                        } else {
+                            callback.onCallback(null);
+                        }
+                    } else {
+                        callback.onCallback(null);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    callback.onCallback(null);
+                }
+            });
+        } else {
+            callback.onNetworkUnavailable();
+        }
+
+    }
+
+    /**
+     * Retrieves the email associated with a UID from the users database.
+     *
+     * @param uid The UID to retrieve the email for.
+     * @param context The context used to check network availability.
+     * @param callback The callback to handle the result.
+     */
+    public void getEmailFromUid(String uid, Context context, final Callback<String> callback) {
+        if (NetworkHandler.isNetworkAvailable(context)) {
+            Query emailQuery = usersDatabase.child(uid).child("email");
+
+            emailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String email = dataSnapshot.getValue(String.class);
+                        callback.onCallback(email);
+                    } else {
+                        callback.onCallback(null);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    callback.onCallback(null);
+                }
+            });
+        } else {
+            callback.onNetworkUnavailable();
+        }
     }
 
 }

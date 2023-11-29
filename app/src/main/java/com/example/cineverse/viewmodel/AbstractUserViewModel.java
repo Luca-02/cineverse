@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.repository.interfaces.IUser;
-import com.example.cineverse.repository.classes.AbstractUserRepository;
+import com.example.cineverse.repository.classes.UserRepository;
 
 /**
  * The {@link AbstractUserViewModel} class serves as the base class for ViewModels related to authentication
@@ -17,12 +17,15 @@ import com.example.cineverse.repository.classes.AbstractUserRepository;
  * handle user authentication logic and communicate changes in user authentication status and network
  * errors through LiveData objects.
  *
- * @param <T> The type of {@link AbstractUserRepository} associated with the ViewModel.
+ * @param <T> The type of {@link UserRepository} associated with the ViewModel.
  */
-public abstract class AbstractUserViewModel<T extends AbstractUserRepository>
+public abstract class AbstractUserViewModel<T extends UserRepository>
         extends AndroidViewModel
         implements IUser {
 
+    /**
+     * The repository responsible for handling user authentication and data operations.
+     */
     public T repository;
     protected MutableLiveData<User> userLiveData;
     protected MutableLiveData<Boolean> networkErrorLiveData;
@@ -31,7 +34,7 @@ public abstract class AbstractUserViewModel<T extends AbstractUserRepository>
      * Constructs an {@link AbstractUserViewModel} object with the given {@link Application}.
      *
      * @param application The {@link Application} of the calling component.
-     * @param repository  The {@link AbstractUserRepository} associated with the ViewModel.
+     * @param repository  The {@link UserRepository} associated with the ViewModel.
      */
     public AbstractUserViewModel(@NonNull Application application, T repository) {
         super(application);
@@ -55,6 +58,26 @@ public abstract class AbstractUserViewModel<T extends AbstractUserRepository>
      */
     public void clearNetworkErrorLiveData() {
         networkErrorLiveData = new MutableLiveData<>();
+    }
+
+    /**
+     * Initiates the process of retrieving the current user associated with the authentication system.
+     *
+     * @return The currently authenticated {@link User} object or {@code null} if not authenticated.
+     */
+    @Override
+    public User getCurrentUser() {
+        return repository.getCurrentUser();
+    }
+
+    /**
+     * Initiates the process of checking whether the email of the current user is verified.
+     *
+     * @return {@code true} if the user's email is verified, {@code false} otherwise.
+     */
+    @Override
+    public boolean isEmailVerified() {
+        return repository.isEmailVerified();
     }
 
 }

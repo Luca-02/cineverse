@@ -6,16 +6,16 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.repository.classes.AbstractUserRepository;
+import com.example.cineverse.repository.classes.UserRepository;
 import com.example.cineverse.repository.interfaces.auth.IAuth;
 
 /**
- * The {@link AbstractAuthRepository} class extends {@link AbstractUserRepository} and serves as
+ * The {@link AbstractAuthRepository} class extends {@link UserRepository} and serves as
  * a base class for authentication service repositories. It provides {@link MutableLiveData} for observing
  * authentication-related errors.
  */
 public abstract class AbstractAuthRepository
-        extends AbstractUserRepository
+        extends UserRepository
         implements IAuth {
 
     /**

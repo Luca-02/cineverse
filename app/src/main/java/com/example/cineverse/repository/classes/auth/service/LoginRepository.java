@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.query.user.UserFirebaseQuery;
 import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
 import com.example.cineverse.repository.classes.auth.AbstractAuthRepository;
 import com.example.cineverse.repository.interfaces.auth.service.ILogin;
@@ -48,7 +47,7 @@ public class LoginRepository
             if (account.contains("@")) {
                 errorLiveData.postValue(Error.ERROR_INVALID_EMAIL_FORMAT);
             } else {
-                UserFirebaseQuery.getEmailFromUsername(account, context,
+                userStorage.getFirebaseSource().getEmailFromUsername(account, context,
                         new UserFirebaseDatabaseServices.Callback<String>() {
                             @Override
                             public void onCallback(String email) {

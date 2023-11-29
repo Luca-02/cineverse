@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.query.user.UserFirebaseQuery;
 import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
 import com.example.cineverse.repository.classes.auth.AbstractAuthRepository;
 import com.example.cineverse.repository.interfaces.auth.service.IRegister;
@@ -54,7 +53,7 @@ public class RegisterRepository
         } else if (!EmailValidator.getInstance().isValid(email)) {
             errorLiveData.postValue(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
-            UserFirebaseQuery.isUsernameSaved(username, context,
+            userStorage.getFirebaseSource().isUsernameSaved(username, context,
                     new UserFirebaseDatabaseServices.Callback<Boolean>() {
                         @Override
                         public void onCallback(Boolean exist) {

@@ -2,7 +2,6 @@ package com.example.cineverse.data.storage.user;
 
 import android.content.Context;
 
-import com.example.cineverse.data.query.user.UserFirebaseQuery;
 import com.example.cineverse.data.source.user.UserFirebaseSource;
 import com.example.cineverse.data.source.user.UserLocalSource;
 import com.example.cineverse.data.model.user.User;
@@ -24,6 +23,14 @@ public class UserStorage extends UserFirebaseDatabaseServices {
         this.context = context;
         firebaseSource = new UserFirebaseSource(context);
         localSource = new UserLocalSource(context);
+    }
+
+    public UserFirebaseSource getFirebaseSource() {
+        return firebaseSource;
+    }
+
+    public UserLocalSource getLocalSource() {
+        return localSource;
     }
 
     /**
@@ -60,7 +67,7 @@ public class UserStorage extends UserFirebaseDatabaseServices {
      */
     public void authGoogleUser(FirebaseUser firebaseUser,
                                Callback<User> callback) {
-        UserFirebaseQuery.getUserFromUid(firebaseUser.getUid(), context,
+        firebaseSource.getUserFromUid(firebaseUser.getUid(), context,
                 new Callback<User>() {
                     @Override
                     public void onCallback(User user) {
@@ -86,7 +93,7 @@ public class UserStorage extends UserFirebaseDatabaseServices {
      */
     public void loginUser(String uid,
                           Callback<User> callback) {
-        UserFirebaseQuery.getUserFromUid(uid, context,
+        firebaseSource.getUserFromUid(uid, context,
                 new Callback<User>() {
                     @Override
                     public void onCallback(User user) {

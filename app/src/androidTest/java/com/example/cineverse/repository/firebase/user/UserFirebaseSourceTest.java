@@ -1,6 +1,8 @@
 package com.example.cineverse.repository.firebase.user;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,8 +10,8 @@ import android.util.Log;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.query.user.UserFirebaseQuery;
 import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.data.source.user.UserFirebaseSource;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,15 +19,17 @@ import org.junit.Test;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class UserFirebaseSourceRepositoryTest {
+public class UserFirebaseSourceTest {
 
-    private static final String TAG = UserFirebaseSourceRepositoryTest.class.getSimpleName();
+    private static final String TAG = UserFirebaseSourceTest.class.getSimpleName();
 
     private Context context;
+    private UserFirebaseSource userFirebaseSource;
 
     @Before
     public void setup() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        userFirebaseSource = new UserFirebaseSource(context);
     }
 
     @Test
@@ -33,7 +37,7 @@ public class UserFirebaseSourceRepositoryTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         String inputUsername = "milanesiluca2002";
-        UserFirebaseQuery.getEmailFromUsername(inputUsername, context,
+        userFirebaseSource.getEmailFromUsername(inputUsername, context,
                 new UserFirebaseDatabaseServices.Callback<String>() {
                     @Override
                     public void onCallback(String email) {
@@ -56,7 +60,7 @@ public class UserFirebaseSourceRepositoryTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         String inputUsername = "gVAAnz1sdReOF6p7lpvJwWoW7Z72";
-        UserFirebaseQuery.getUserFromUid(inputUsername, context,
+        userFirebaseSource.getUserFromUid(inputUsername, context,
                 new UserFirebaseDatabaseServices.Callback<User>() {
                     @Override
                     public void onCallback(User user) {
@@ -82,7 +86,7 @@ public class UserFirebaseSourceRepositoryTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         String inputUsername = "milanesiluca2002";
-        UserFirebaseQuery.isUsernameSaved(inputUsername, context,
+        userFirebaseSource.isUsernameSaved(inputUsername, context,
                 new UserFirebaseDatabaseServices.Callback<Boolean>() {
                     @Override
                     public void onCallback(Boolean exist) {
@@ -105,7 +109,7 @@ public class UserFirebaseSourceRepositoryTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         String inputUsername = "test200";
-        UserFirebaseQuery.isUsernameSaved(inputUsername, context,
+        userFirebaseSource.isUsernameSaved(inputUsername, context,
                 new UserFirebaseDatabaseServices.Callback<Boolean>() {
                     @Override
                     public void onCallback(Boolean exist) {
