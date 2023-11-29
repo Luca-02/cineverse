@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
-import com.example.cineverse.handler.network.NetworkHandler;
+import com.example.cineverse.utils.network.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.MutableData;
@@ -42,7 +42,7 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
      * @param callback The callback to handle the result.
      */
     public void saveUser(User user, Callback<Boolean> callback) {
-        if (NetworkHandler.isNetworkAvailable(context)) {
+        if (NetworkUtils.isNetworkAvailable(context)) {
             checkIfUserSaved(user, callback);
         } else {
             callback.onNetworkUnavailable();
@@ -130,7 +130,7 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
      * @param callback The callback to handle the result.
      */
     public void isUsernameSaved(String username, Context context, final Callback<Boolean> callback) {
-        if (NetworkHandler.isNetworkAvailable(context)) {
+        if (NetworkUtils.isNetworkAvailable(context)) {
             Query query = usernamesDatabase.child(username);
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -158,7 +158,7 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
      * @param callback The callback to handle the result.
      */
     public void isUserSaved(String uid, Context context, final Callback<Boolean> callback) {
-        if (NetworkHandler.isNetworkAvailable(context)) {
+        if (NetworkUtils.isNetworkAvailable(context)) {
             Query query = usersDatabase.child(uid);
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -186,7 +186,7 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
      * @param callback The callback to handle the result.
      */
     public void getUserFromUid(String uid, Context context, final Callback<User> callback) {
-        if (NetworkHandler.isNetworkAvailable(context)) {
+        if (NetworkUtils.isNetworkAvailable(context)) {
             Query query = usersDatabase.child(uid);
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -219,7 +219,7 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
      * @param callback The callback to handle the result.
      */
     public void getEmailFromUsername(String username, Context context, final Callback<String> callback) {
-        if (NetworkHandler.isNetworkAvailable(context)) {
+        if (NetworkUtils.isNetworkAvailable(context)) {
             Query uidQuery = usernamesDatabase.child(username);
 
             uidQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -256,7 +256,7 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
      * @param callback The callback to handle the result.
      */
     public void getEmailFromUid(String uid, Context context, final Callback<String> callback) {
-        if (NetworkHandler.isNetworkAvailable(context)) {
+        if (NetworkUtils.isNetworkAvailable(context)) {
             Query emailQuery = usersDatabase.child(uid).child("email");
 
             emailQuery.addListenerForSingleValueEvent(new ValueEventListener() {

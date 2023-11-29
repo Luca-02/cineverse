@@ -20,7 +20,7 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
         extends AbstractUserViewModel<T>
         implements IAuth {
 
-    private MutableLiveData<AbstractAuthRepository.Error> errorLiveData;
+    private MutableLiveData<Error> errorLiveData;
 
     /**
      * Constructs an {@link AbstractAuthServicesViewModel} object with the given {@link Application} and initializes
@@ -34,7 +34,7 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
         errorLiveData = repository.getErrorLiveData();
     }
 
-    public MutableLiveData<AbstractAuthRepository.Error> getErrorLiveData() {
+    public MutableLiveData<Error> getErrorLiveData() {
         return errorLiveData;
     }
 

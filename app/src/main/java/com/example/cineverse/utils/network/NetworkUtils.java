@@ -1,23 +1,21 @@
-package com.example.cineverse.handler.network;
+package com.example.cineverse.utils.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.example.cineverse.handler.callback.BackPressedHandler;
-
 /**
- * The {@link NetworkHandler} class provides utility methods for checking network connectivity.
+ * The {@link NetworkUtils} class provides utility methods for checking network connectivity.
  * It includes a method to determine whether a network connection is available.
  */
-public class NetworkHandler {
+public class NetworkUtils {
 
     /**
      * Private constructor to prevent instantiation of this utility class.
      * Throws an {@link IllegalStateException} if attempted to create an instance.
      */
-    private NetworkHandler() {
-        throw new IllegalStateException(BackPressedHandler.class.getSimpleName());
+    private NetworkUtils() {
+        throw new IllegalStateException(NetworkUtils.class.getSimpleName());
     }
 
     /**
