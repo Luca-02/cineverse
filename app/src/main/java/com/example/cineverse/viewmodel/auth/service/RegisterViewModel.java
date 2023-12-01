@@ -35,7 +35,7 @@ public class RegisterViewModel
      */
     @Override
     public void register(String username, String email, String password) {
-        repository.register(username, email, password);
+        userRepository.register(username, email, password);
     }
 
 }

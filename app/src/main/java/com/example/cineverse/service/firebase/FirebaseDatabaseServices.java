@@ -1,4 +1,4 @@
-package com.example.cineverse.data.service.firebase;
+package com.example.cineverse.service.firebase;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

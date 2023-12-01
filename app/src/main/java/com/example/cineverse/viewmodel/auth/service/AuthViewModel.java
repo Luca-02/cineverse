@@ -29,7 +29,7 @@ public class AuthViewModel
      */
     public AuthViewModel(@NonNull Application application) {
         super(application, new GoogleAuthRepository(application.getBaseContext()));
-        googleSignInOptions = repository.getGoogleSignInOptions();
+        googleSignInOptions = userRepository.getGoogleSignInOptions();
     }
 
     public GoogleSignInOptions getGoogleSignInOptions() {
@@ -43,7 +43,7 @@ public class AuthViewModel
      */
     @Override
     public void authWithGoogle(Intent data) {
-        repository.authWithGoogle(data);
+        userRepository.authWithGoogle(data);
     }
 
 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
 import com.example.cineverse.repository.classes.auth.AbstractAuthRepository;
 import com.example.cineverse.repository.interfaces.auth.service.ILogin;
 import com.google.firebase.FirebaseNetworkException;

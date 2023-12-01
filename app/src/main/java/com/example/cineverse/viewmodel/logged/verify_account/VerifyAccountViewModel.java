@@ -1,4 +1,4 @@
-package com.example.cineverse.viewmodel.logged.status;
+package com.example.cineverse.viewmodel.logged.verify_account;
 
 import android.app.Application;
 
@@ -30,8 +30,8 @@ public class VerifyAccountViewModel
      */
     public VerifyAccountViewModel(@NonNull Application application) {
         super(application, new VerifyAccountRepository(application.getBaseContext()));
-        emailSentLiveData = repository.getEmailSentLiveData();
-        emailVerifiedLiveData = repository.getEmailVerifiedLiveData();
+        emailSentLiveData = userRepository.getEmailSentLiveData();
+        emailVerifiedLiveData = userRepository.getEmailVerifiedLiveData();
     }
 
     public MutableLiveData<Boolean> getEmailSentLiveData() {
@@ -65,7 +65,7 @@ public class VerifyAccountViewModel
      */
     @Override
     public void sendEmailVerification() {
-        repository.sendEmailVerification();
+        userRepository.sendEmailVerification();
     }
 
     /**
@@ -73,15 +73,7 @@ public class VerifyAccountViewModel
      */
     @Override
     public void reloadUser() {
-        repository.reloadUser();
-    }
-
-    /**
-     * Initiates the user logout process.
-     */
-    @Override
-    public void logOut() {
-        repository.logOut();
+        userRepository.reloadUser();
     }
 
 }

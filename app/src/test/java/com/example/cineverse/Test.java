@@ -14,7 +14,7 @@ public class Test {
     private static final String ACCESS_TOKEN_AUTH = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiY2E2Mjg0MzBkZjNjNDMzODlhNzFkODEwOWQ5YmU5NCIsInN1YiI6IjY1MWFlY2I1OWQ1OTJjMDEwMmMwYjcxMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.YjbEjNLSKh9SejXvH4BCs4o0eDMYYIK_nws6Fqcc5HY";
 
     @org.junit.Test
-    public void addition_isCorrect() {
+    public void apiTest() {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -27,7 +27,7 @@ public class Test {
         try {
             Response response = client.newCall(request).execute();
             if (response.body() != null)
-                System.out.print(response.body().string());
+                System.out.println(response.body().string());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -35,7 +35,7 @@ public class ForgotPasswordViewModel
      */
     @Override
     public void forgotPassword(String email) {
-        repository.forgotPassword(email);
+        userRepository.forgotPassword(email);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.cineverse.utils.network;
+package com.example.cineverse.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

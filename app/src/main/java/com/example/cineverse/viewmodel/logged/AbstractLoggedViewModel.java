@@ -40,9 +40,11 @@ public abstract class AbstractLoggedViewModel<T extends AbstractLoggedRepository
     }
 
     /**
-     * Abstract method to be implemented by subclasses. Handles the user logout functionality.
+     * Initiates the user logout process.
      */
     @Override
-    public abstract void logOut();
+    public void logOut() {
+        userRepository.logOut();
+    };
 
 }

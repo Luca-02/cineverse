@@ -3,8 +3,8 @@
     <!-- spacing -->
     <dimen name="double_spacing">32dp</dimen>
     <dimen name="standard_spacing">16dp</dimen>
-    <dimen name="half_standard_spacing">8dp</dimen>
-    <dimen name="quarter_standard_spacing">4dp</dimen>
+    <dimen name="half_spacing">8dp</dimen>
+    <dimen name="quarter_spacing">4dp</dimen>
 
     <!-- text -->
     <dimen name="text_big">32sp</dimen>
@@ -17,4 +17,5 @@
 
     <!-- radius -->
     <dimen name="normal_radius">16dp</dimen>
+    <dimen name="half_radius">16dp</dimen>
 </resources>

@@ -10,7 +10,7 @@ import android.util.Log;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
 import com.example.cineverse.data.source.user.UserFirebaseSource;
 
 import org.junit.Before;

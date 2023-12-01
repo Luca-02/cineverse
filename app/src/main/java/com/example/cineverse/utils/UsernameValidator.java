@@ -1,4 +1,4 @@
-package com.example.cineverse.utils.validator;
+package com.example.cineverse.utils;
 
 /**
  * The {@link UsernameValidator} class provides methods for validating usernames based on a specific regular expression.

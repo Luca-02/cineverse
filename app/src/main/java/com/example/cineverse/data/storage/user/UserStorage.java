@@ -5,7 +5,7 @@ import android.content.Context;
 import com.example.cineverse.data.source.user.UserFirebaseSource;
 import com.example.cineverse.data.source.user.UserLocalSource;
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
 import com.google.firebase.auth.FirebaseUser;
 
 /**

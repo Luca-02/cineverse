@@ -26,7 +26,7 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
     /**
      * The repository responsible for handling user authentication and data operations.
      */
-    public T repository;
+    public T userRepository;
     protected MutableLiveData<User> userLiveData;
     protected MutableLiveData<Boolean> networkErrorLiveData;
 
@@ -34,13 +34,13 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
      * Constructs an {@link AbstractUserViewModel} object with the given {@link Application}.
      *
      * @param application The {@link Application} of the calling component.
-     * @param repository  The {@link UserRepository} associated with the ViewModel.
+     * @param userRepository  The {@link UserRepository} associated with the ViewModel.
      */
-    public AbstractUserViewModel(@NonNull Application application, T repository) {
+    public AbstractUserViewModel(@NonNull Application application, T userRepository) {
         super(application);
-        this.repository = repository;
-        userLiveData = repository.getUserLiveData();
-        networkErrorLiveData = repository.getNetworkErrorLiveData();
+        this.userRepository = userRepository;
+        userLiveData = userRepository.getUserLiveData();
+        networkErrorLiveData = userRepository.getNetworkErrorLiveData();
     }
 
     public MutableLiveData<User> getUserLiveData() {
@@ -67,7 +67,7 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
      */
     @Override
     public User getCurrentUser() {
-        return repository.getCurrentUser();
+        return userRepository.getCurrentUser();
     }
 
     /**
@@ -77,7 +77,7 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
      */
     @Override
     public boolean isEmailVerified() {
-        return repository.isEmailVerified();
+        return userRepository.isEmailVerified();
     }
 
 }

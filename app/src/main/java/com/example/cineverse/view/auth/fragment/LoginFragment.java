@@ -21,6 +21,7 @@ import com.example.cineverse.viewmodel.auth.service.LoginViewModel;
 import com.example.cineverse.databinding.FragmentLoginBinding;
 
 import java.util.Objects;
+import java.util.Properties;
 
 /**
  * The {@link LoginFragment} class represents the login screen of the application.

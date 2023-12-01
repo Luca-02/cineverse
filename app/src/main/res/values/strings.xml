@@ -13,6 +13,7 @@
 
     <!-- Error -->
     <string name="unexpected_error">Unexpected error has occurred</string>
+    <string name="unable_load_data">Unable to load data</string>
 
     <!-- Login/Register -->
     <string name="username">Username</string>

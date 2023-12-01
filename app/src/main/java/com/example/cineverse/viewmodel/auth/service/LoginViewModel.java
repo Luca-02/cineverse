@@ -35,7 +35,7 @@ public class LoginViewModel
      */
     @Override
     public void login(String email, String password) {
-        repository.login(email, password);
+        userRepository.login(email, password);
     }
 
 }

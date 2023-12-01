@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
-import com.example.cineverse.utils.network.NetworkUtils;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.utils.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.MutableData;

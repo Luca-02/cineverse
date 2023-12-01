@@ -2,6 +2,8 @@ package com.example.cineverse.utils.validator;
 
 import static org.junit.Assert.*;
 
+import com.example.cineverse.utils.UsernameValidator;
+
 import org.junit.Test;
 
 public class UsernameValidatorTest {

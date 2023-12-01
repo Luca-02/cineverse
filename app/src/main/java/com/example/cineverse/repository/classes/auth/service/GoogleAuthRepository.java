@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
 import com.example.cineverse.repository.classes.UserRepository;
 import com.example.cineverse.repository.classes.auth.AbstractAuthRepository;
 import com.example.cineverse.repository.interfaces.auth.service.IAuthGoogle;
