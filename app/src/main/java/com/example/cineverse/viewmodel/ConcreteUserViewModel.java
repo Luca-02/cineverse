@@ -4,12 +4,10 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.repository.classes.UserRepository;
-import com.example.cineverse.repository.interfaces.IUser;
+import com.example.cineverse.repository.UserRepository;
 
 public class ConcreteUserViewModel
-        extends AbstractUserViewModel<UserRepository>
-        implements IUser {
+        extends AbstractUserViewModel<UserRepository> {
 
     /**
      * Constructs an {@link ConcreteUserViewModel} object with the given {@link Application}.

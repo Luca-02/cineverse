@@ -1,17 +1,13 @@
-package com.example.cineverse.repository.classes.auth.service;
+package com.example.cineverse.repository.auth.service;
 
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.cineverse.R;
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
-import com.example.cineverse.repository.classes.UserRepository;
-import com.example.cineverse.repository.classes.auth.AbstractAuthRepository;
-import com.example.cineverse.repository.interfaces.auth.service.IAuthGoogle;
+import com.example.cineverse.repository.auth.AbstractAuthRepository;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
@@ -27,14 +23,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
  * The {@link GoogleAuthRepository} class extends {@link AbstractAuthRepository} and provides
  * authentication functionality for Google Sign-In. It allows users to authenticate using their Google accounts.
  * The class handles Google Sign-In operations, processes authentication results, and communicates errors
- * or success through {@link AbstractAuthRepository#errorLiveData errorLiveData}. {@link GoogleAuthRepository} integrates with Firebase authentication
- * services for Google Sign-In authentication.
+ * or success through a provided {@link AuthCallback}. {@link GoogleAuthRepository} integrates with Firebase
+ * authentication services for Google Sign-In authentication.
  */
 public class GoogleAuthRepository
-        extends AbstractAuthRepository
-        implements IAuthGoogle {
-
-    private final GoogleSignInOptions googleSignInOptions;
+        extends AbstractAuthRepository {
 
     /**
      * Constructs a {@link GoogleAuthRepository} object with the given application {@link Context}.
@@ -43,81 +36,72 @@ public class GoogleAuthRepository
      */
     public GoogleAuthRepository(Context context) {
         super(context);
-        // Initialize GoogleSignInOptions
-        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-    }
-
-    public GoogleSignInOptions getGoogleSignInOptions() {
-        return googleSignInOptions;
     }
 
     /**
      * Initiates Google Sign-In authentication with the provided data from the intent. Handles the
      * Google Sign-In result, processes authentication credentials, and communicates errors or success
-     * through {@link AbstractAuthRepository#errorLiveData errorLiveData}.
+     * through the provided {@link AuthCallback}.
      *
-     * @param data {@link Intent} containing the Google Sign-In result data.
+     * @param data     {@link Intent} containing the Google Sign-In result data.
+     * @param callback The callback to handle authentication outcomes.
      */
-    @Override
-    public void authWithGoogle(Intent data) {
+    public void authWithGoogle(Intent data, AuthCallback callback) {
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
         try {
             GoogleSignInAccount account = task.getResult(ApiException.class);
             AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
             firebaseAuth.signInWithCredential(credential)
-                    .addOnSuccessListener(this::handleSuccess)
-                    .addOnFailureListener(this::handleFailure);
+                    .addOnSuccessListener(authResult -> handleSuccess(authResult, callback))
+                    .addOnFailureListener(e -> handleFailure(e, callback));
         } catch (ApiException e) {
-            errorLiveData.postValue(Error.ERROR_GOOGLE_SIGNIN_FAILED);
+            callback.onError(Error.ERROR_GOOGLE_SIGNIN_FAILED);
         }
     }
 
     /**
-     * Handles successful Google Sign-In authentication by saving user data in firebase and
-     * updating with {@link UserRepository#setUserLiveData setUserLiveData}.
+     * Handles successful Google Sign-In authentication by saving user data in firebase.
      *
      * @param authResult The successful authentication result containing user information.
+     * @param callback   The callback to handle authentication outcomes.
      */
-    private void handleSuccess(AuthResult authResult) {
+    private void handleSuccess(AuthResult authResult, AuthCallback callback) {
         FirebaseUser firebaseUser = authResult.getUser();
         if (firebaseUser != null) {
             userStorage.authGoogleUser(firebaseUser,
                     new UserFirebaseDatabaseServices.Callback<User>() {
                         @Override
                         public void onCallback(User user) {
-                            handleUserAuthentication(user);
+                            handleUserAuthentication(user, callback);
                         }
 
                         @Override
                         public void onNetworkUnavailable() {
-                            handleAuthenticationNetworkFailure();
+                            handleAuthenticationNetworkFailure(callback);
                         }
                     });
         } else {
-            handleAuthenticationFailure();
+            handleAuthenticationFailure(callback);
         }
     }
 
     /**
-     * Handles Google Sign-In authentication failure scenarios by identifying the type of exception and
-     * posting appropriate errors for user feedback through {@link AbstractAuthRepository#errorLiveData errorLiveData}.
+     * Handles Google Sign-In authentication failure scenarios by identifying the type of exception.
      *
      * @param exception The exception occurred during the Google Sign-In authentication process.
+     * @param callback  The callback to handle authentication outcomes.
      */
-    private void handleFailure(Exception exception) {
+    private void handleFailure(Exception exception, ErrorAuthCallback callback) {
         if (exception instanceof FirebaseAuthInvalidUserException) {
-            errorLiveData.postValue(Error.ERROR_NOT_FOUND_DISABLED);
+            callback.onError(Error.ERROR_NOT_FOUND_DISABLED);
         } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-            errorLiveData.postValue(Error.ERROR_INVALID_CREDENTIAL);
+            callback.onError(Error.ERROR_INVALID_CREDENTIAL);
         } else if (exception instanceof FirebaseAuthUserCollisionException) {
-            errorLiveData.postValue(Error.ERROR_EMAIL_ALREADY_EXISTS);
+            callback.onError(Error.ERROR_EMAIL_ALREADY_EXISTS);
         } else if (exception instanceof FirebaseNetworkException) {
-            setNetworkErrorLiveData(true);
+            callback.onNetworkError();
         } else {
-            errorLiveData.postValue(Error.ERROR_AUTHENTICATION_FAILED);
+            callback.onError(Error.ERROR_AUTHENTICATION_FAILED);
         }
     }
 

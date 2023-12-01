@@ -4,8 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.repository.classes.auth.service.LoginRepository;
-import com.example.cineverse.repository.interfaces.auth.service.ILogin;
+import com.example.cineverse.repository.auth.service.LoginRepository;
 import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
 
 /**
@@ -15,8 +14,7 @@ import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
  * the login process based on user input.
  */
 public class LoginViewModel
-        extends AbstractAuthServicesViewModel<LoginRepository>
-        implements ILogin {
+        extends AbstractAuthServicesViewModel<LoginRepository> {
 
     /**
      * Constructs a {@link LoginViewModel} object with the given {@link Application}.
@@ -33,9 +31,8 @@ public class LoginViewModel
      * @param email    The user's email address for login.
      * @param password The user's password for login.
      */
-    @Override
     public void login(String email, String password) {
-        repository.login(email, password);
+        repository.login(email, password, this);
     }
 
 }

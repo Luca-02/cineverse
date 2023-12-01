@@ -7,8 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.repository.interfaces.IUser;
-import com.example.cineverse.repository.classes.UserRepository;
+import com.example.cineverse.repository.UserRepository;
 
 /**
  * The {@link AbstractUserViewModel} class serves as the base class for ViewModels related to authentication
@@ -21,14 +20,14 @@ import com.example.cineverse.repository.classes.UserRepository;
  */
 public abstract class AbstractUserViewModel<T extends UserRepository>
         extends AndroidViewModel
-        implements IUser {
+        implements UserRepository.NetworkCallback {
 
     /**
      * The repository responsible for handling user authentication and data operations.
      */
-    public T repository;
-    protected MutableLiveData<User> userLiveData;
-    protected MutableLiveData<Boolean> networkErrorLiveData;
+    protected T repository;
+    private MutableLiveData<User> userLiveData;
+    private MutableLiveData<Boolean> networkErrorLiveData;
 
     /**
      * Constructs an {@link AbstractUserViewModel} object with the given {@link Application}.
@@ -39,15 +38,25 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
     public AbstractUserViewModel(@NonNull Application application, T repository) {
         super(application);
         this.repository = repository;
-        userLiveData = repository.getUserLiveData();
-        networkErrorLiveData = repository.getNetworkErrorLiveData();
+
+        // Check if there is a currently authenticated user and update userLiveData if available.
+        User currentUser = getCurrentUser();
+        if (currentUser != null) {
+            getUserLiveData().postValue(currentUser);
+        }
     }
 
     public MutableLiveData<User> getUserLiveData() {
+        if (userLiveData == null) {
+            userLiveData = new MutableLiveData<>();
+        }
         return userLiveData;
     }
 
     public MutableLiveData<Boolean> getNetworkErrorLiveData() {
+        if (networkErrorLiveData == null) {
+            networkErrorLiveData = new MutableLiveData<>();
+        }
         return networkErrorLiveData;
     }
 
@@ -61,11 +70,10 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
     }
 
     /**
-     * Initiates the process of retrieving the current user associated with the authentication system.
+     * Initiates the process to gets the currently authenticated user.
      *
      * @return The currently authenticated {@link User} object or {@code null} if not authenticated.
      */
-    @Override
     public User getCurrentUser() {
         return repository.getCurrentUser();
     }
@@ -75,9 +83,17 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
      *
      * @return {@code true} if the user's email is verified, {@code false} otherwise.
      */
-    @Override
     public boolean isEmailVerified() {
         return repository.isEmailVerified();
+    }
+
+    /**
+     * Overrides the {@link UserRepository.NetworkCallback#onNetworkError()} method
+     * to handle the network error event and update the network error LiveData.
+     */
+    @Override
+    public void onNetworkError() {
+        getNetworkErrorLiveData().postValue(true);
     }
 
 }

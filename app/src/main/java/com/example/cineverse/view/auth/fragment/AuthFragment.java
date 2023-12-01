@@ -18,7 +18,7 @@ import androidx.navigation.Navigation;
 
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.R;
-import com.example.cineverse.repository.classes.auth.service.LoginRepository;
+import com.example.cineverse.repository.auth.service.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.auth.service.AuthViewModel;
 import com.example.cineverse.databinding.FragmentAuthBinding;

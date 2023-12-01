@@ -4,8 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.repository.classes.auth.service.ForgotPasswordRepository;
-import com.example.cineverse.repository.interfaces.auth.service.IForgotPassword;
+import com.example.cineverse.repository.auth.service.ForgotPasswordRepository;
 import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
 
 /**
@@ -16,8 +15,7 @@ import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
  * email sending process based on user input.
  */
 public class ForgotPasswordViewModel
-        extends AbstractAuthServicesViewModel<ForgotPasswordRepository>
-        implements IForgotPassword {
+        extends AbstractAuthServicesViewModel<ForgotPasswordRepository> {
 
     /**
      * Constructs a {@link ForgotPasswordViewModel} object with the given {@link Application}.
@@ -33,9 +31,8 @@ public class ForgotPasswordViewModel
      *
      * @param email The user's email address for sending the password reset email.
      */
-    @Override
     public void forgotPassword(String email) {
-        repository.forgotPassword(email);
+        repository.forgotPassword(email, this);
     }
 
 }

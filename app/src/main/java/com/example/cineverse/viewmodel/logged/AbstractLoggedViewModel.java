@@ -5,8 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.repository.interfaces.logged.ILogged;
-import com.example.cineverse.repository.classes.logged.AbstractLoggedRepository;
+import com.example.cineverse.repository.logged.AbstractLoggedRepository;
 import com.example.cineverse.viewmodel.AbstractUserViewModel;
 
 /**
@@ -20,9 +19,9 @@ import com.example.cineverse.viewmodel.AbstractUserViewModel;
  */
 public abstract class AbstractLoggedViewModel<T extends AbstractLoggedRepository>
         extends AbstractUserViewModel<T>
-        implements ILogged {
+        implements AbstractLoggedRepository.LoggedCallback {
 
-    protected MutableLiveData<Boolean> loggedOutLiveData;
+    private MutableLiveData<Boolean> loggedOutLiveData;
 
     /**
      * Constructs an {@link AbstractLoggedViewModel} object with the given {@link Application}.
@@ -32,17 +31,29 @@ public abstract class AbstractLoggedViewModel<T extends AbstractLoggedRepository
      */
     public AbstractLoggedViewModel(@NonNull Application application, T repository) {
         super(application, repository);
-        loggedOutLiveData = repository.getLoggedOutLiveData();
     }
 
     public MutableLiveData<Boolean> getLoggedOutLiveData() {
+        if (loggedOutLiveData == null) {
+            loggedOutLiveData = new MutableLiveData<>();
+        }
         return loggedOutLiveData;
     }
 
     /**
-     * Abstract method to be implemented by subclasses. Handles the user logout functionality.
+     * Initiates the user logout process.
+     */
+    public void logOut() {
+        repository.logOut(this);
+    }
+
+    /**
+     * Overrides the {@link AbstractLoggedRepository.LoggedCallback#onLogOut()} method
+     * to handle the logout event and update the logged-out LiveData.
      */
     @Override
-    public abstract void logOut();
+    public void onLogOut() {
+        getLoggedOutLiveData().postValue(true);
+    }
 
 }

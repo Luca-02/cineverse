@@ -5,8 +5,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.repository.interfaces.auth.IAuth;
-import com.example.cineverse.repository.classes.auth.AbstractAuthRepository;
+import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.repository.auth.AbstractAuthRepository;
 import com.example.cineverse.viewmodel.AbstractUserViewModel;
 
 /**
@@ -18,9 +18,9 @@ import com.example.cineverse.viewmodel.AbstractUserViewModel;
  */
 public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthRepository>
         extends AbstractUserViewModel<T>
-        implements IAuth {
+        implements AbstractAuthRepository.AuthCallback {
 
-    private MutableLiveData<Error> errorLiveData;
+    private MutableLiveData<AbstractAuthRepository.Error> errorLiveData;
 
     /**
      * Constructs an {@link AbstractAuthServicesViewModel} object with the given {@link Application} and initializes
@@ -31,10 +31,12 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
      */
     public AbstractAuthServicesViewModel(@NonNull Application application, T repository) {
         super(application, repository);
-        errorLiveData = repository.getErrorLiveData();
     }
 
-    public MutableLiveData<Error> getErrorLiveData() {
+    public MutableLiveData<AbstractAuthRepository.Error> getErrorLiveData() {
+        if (errorLiveData == null) {
+            errorLiveData = new MutableLiveData<>();
+        }
         return errorLiveData;
     }
 
@@ -45,6 +47,28 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
      */
     public void clearErrorLiveData() {
         errorLiveData = new MutableLiveData<>();
+    }
+
+    /**
+     * Overrides the {@link AbstractAuthRepository.AuthCallback#onError(AbstractAuthRepository.Error)} method to handle
+     * authentication-related errors and update the error LiveData.
+     *
+     * @param error The authentication-related error.
+     */
+    @Override
+    public void onError(AbstractAuthRepository.Error error) {
+        getErrorLiveData().postValue(error);
+    }
+
+    /**
+     * Overrides the {@link AbstractAuthRepository.AuthCallback#onUserAuthentication(User)} method
+     * to handle successful user authentication and update the user LiveData.
+     *
+     * @param user The authenticated user.
+     */
+    @Override
+    public void onUserAuthentication(User user) {
+        getUserLiveData().postValue(user);
     }
 
 }

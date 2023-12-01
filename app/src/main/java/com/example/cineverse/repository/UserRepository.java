@@ -1,12 +1,9 @@
-package com.example.cineverse.repository.classes;
+package com.example.cineverse.repository;
 
 import android.content.Context;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.data.storage.user.UserStorage;
-import com.example.cineverse.repository.interfaces.IUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -15,10 +12,9 @@ import com.google.firebase.auth.FirebaseUser;
  * using Firebase authentication services. It encapsulates methods for handling user authentication,
  * managing user data, and checking network connectivity. This class is meant to be extended for specific
  * authentication methods such as email/password, Google Sign-In, etc.
+ * It provides {@link NetworkCallback} to communicate the network error to the caller.
  */
-public class UserRepository
-        extends AbstractNetworkRepository
-        implements IUser {
+public class UserRepository {
 
     /**
      * Firebase authentication instance.
@@ -27,32 +23,15 @@ public class UserRepository
 
     protected final Context context;
     protected final UserStorage userStorage;
-    private final MutableLiveData<User> userLiveData;
 
     /**
      * Constructs an {@link UserRepository} object with the given application {@link Context}.
-     * Initializes {@link MutableLiveData} objects for user data and network connectivity.
      *
      * @param context The application {@link Context}.
      */
     public UserRepository(Context context) {
         this.context = context;
-        userLiveData = new MutableLiveData<>();
         userStorage = new UserStorage(context);
-
-        // Check if there is a currently authenticated user and update userLiveData if available.
-        User currentUser = getCurrentUser();
-        if (currentUser != null) {
-            userLiveData.postValue(currentUser);
-        }
-    }
-
-    public MutableLiveData<User> getUserLiveData() {
-        return userLiveData;
-    }
-
-    public void setUserLiveData(User user) {
-        userLiveData.postValue(user);
     }
 
     /**
@@ -89,15 +68,11 @@ public class UserRepository
      *
      * @return The currently authenticated {@link User} object or {@code null} if not authenticated.
      */
-    @Override
     public User getCurrentUser() {
-        /*
-         * If getCurrentFirebaseUser() is NOT NULL and the User locally saved exist with equal
-         * uid, then the user is already logged.
-         * If one of them is NULL or does not exist, or have different uid, then is not already
-         * logged, and if FirebaseUser is NOT NULL, sign out from firebase, if User locally saved
-         * exist delete it.
-         */
+        // If getCurrentFirebaseUser() is NOT NULL and the User locally saved exist with equal
+        // uid, then the user is already logged. If one of them is NULL or does not exist, or have different
+        // uid, then is not already logged, and if FirebaseUser is NOT NULL, sign out from firebase, if
+        // User locally saved exist delete it.
 
         FirebaseUser firebaseUser = getCurrentFirebaseUser();
         User localUser = getCurrentLocalUser(context);
@@ -118,6 +93,16 @@ public class UserRepository
     public boolean isEmailVerified() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         return user != null && user.isEmailVerified();
+    }
+
+    /**
+     * Callback interface for handling network-related errors.
+     */
+    public interface NetworkCallback {
+        /**
+         * Invoked when there is a network error
+         */
+        void onNetworkError();
     }
 
 }

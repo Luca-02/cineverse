@@ -1,13 +1,10 @@
-package com.example.cineverse.repository.classes.auth.service;
+package com.example.cineverse.repository.auth.service;
 
 import android.content.Context;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
-import com.example.cineverse.repository.classes.auth.AbstractAuthRepository;
-import com.example.cineverse.repository.interfaces.auth.service.IRegister;
+import com.example.cineverse.repository.auth.AbstractAuthRepository;
 import com.example.cineverse.utils.validator.UsernameValidator;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
@@ -22,11 +19,10 @@ import org.apache.commons.validator.routines.EmailValidator;
  * The {@link RegisterRepository} class extends {@link AbstractAuthRepository} and provides functionality
  * for user registration. It validates user input, performs registration operations using Firebase authentication
  * services, and handles various registration-related error scenarios. Errors and registration status are
- * communicated via {@link MutableLiveData} for observation and user feedback.
+ * communicated through the provided {@link AuthCallback}.
  */
 public class RegisterRepository
-        extends AbstractAuthRepository
-        implements IRegister {
+        extends AbstractAuthRepository {
 
     /**
      * Constructs a {@code RegisterRepository} object with the given application {@link Context}.
@@ -40,37 +36,38 @@ public class RegisterRepository
     /**
      * Attempts user registration with the provided username, email, and password. Validates the username
      * and email format, initiates the registration operation, and communicates errors or success through
-     * {@link AbstractAuthRepository#errorLiveData errorLiveData}.
+     * the provided {@link AuthCallback}.
      *
-     * @param username  User's username registration.
+     * @param username  User's username for registration.
      * @param email     User's email address for registration.
      * @param password  User's password for registration.
+     * @param callback  Callback to handle authentication errors and status.
      */
-    @Override
-    public void register(String username, String email, String password) {
+    public void register(String username, String email, String password, AuthCallback callback) {
         if (!UsernameValidator.getInstance().isValid(username)) {
-            errorLiveData.postValue(Error.ERROR_INVALID_USERNAME_FORMAT);
+            callback.onError(Error.ERROR_INVALID_USERNAME_FORMAT);
         } else if (!EmailValidator.getInstance().isValid(email)) {
-            errorLiveData.postValue(Error.ERROR_INVALID_EMAIL_FORMAT);
+            callback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
             userStorage.getFirebaseSource().isUsernameSaved(username, context,
                     new UserFirebaseDatabaseServices.Callback<Boolean>() {
                         @Override
                         public void onCallback(Boolean exist) {
                             if (exist == null) {
-                                errorLiveData.postValue(Error.ERROR_AUTHENTICATION_FAILED);
+                                callback.onError(Error.ERROR_AUTHENTICATION_FAILED);
                             } else if (exist) {
-                                errorLiveData.postValue(Error.ERROR_USERNAME_ALREADY_EXISTS);
+                                callback.onError(Error.ERROR_USERNAME_ALREADY_EXISTS);
                             } else {
                                 firebaseAuth.createUserWithEmailAndPassword(email, password)
-                                        .addOnSuccessListener(authResult -> handleSuccess(authResult, username))
-                                        .addOnFailureListener(exception -> handleFailure(exception));
+                                        .addOnSuccessListener(authResult ->
+                                                handleSuccess(authResult, username, callback))
+                                        .addOnFailureListener(e -> handleFailure(e, callback));
                             }
                         }
 
                         @Override
                         public void onNetworkUnavailable() {
-                            setNetworkErrorLiveData(true);
+                            callback.onNetworkError();
                         }
                     });
         }
@@ -79,46 +76,47 @@ public class RegisterRepository
     /**
      * Handles successful registration by saving user data in Firebase and updating the user live data.
      *
-     * @param authResult    The successful registration result containing user information.
-     * @param username      User's username registration.
+     * @param authResult The successful registration result containing user information.
+     * @param username   User's username for registration.
+     * @param callback   Callback to handle authentication errors and status.
      */
-    private void handleSuccess(AuthResult authResult, String username) {
+    private void handleSuccess(AuthResult authResult, String username, AuthCallback callback) {
         FirebaseUser firebaseUser = authResult.getUser();
         if (firebaseUser != null) {
             userStorage.registerUser(firebaseUser, username,
                     new UserFirebaseDatabaseServices.Callback<User>() {
                         @Override
                         public void onCallback(User user) {
-                            handleUserAuthentication(user);
+                            handleUserAuthentication(user, callback);
                         }
 
                         @Override
                         public void onNetworkUnavailable() {
-                            handleAuthenticationNetworkFailure();
+                            handleAuthenticationNetworkFailure(callback);
                         }
                     });
         } else {
-            handleAuthenticationFailure();
+            handleAuthenticationFailure(callback);
         }
     }
 
     /**
-     * Handles registration failure scenarios by identifying the type of exception and
-     * posting appropriate errors for user feedback through {@link AbstractAuthRepository#errorLiveData errorLiveData}.
+     * Handles registration failure scenarios by identifying the type of exception.
      *
      * @param exception The exception occurred during the registration process.
+     * @param callback  Callback to handle authentication errors and status.
      */
-    private void handleFailure(Exception exception) {
+    private void handleFailure(Exception exception, ErrorAuthCallback callback) {
         if (exception instanceof FirebaseAuthWeakPasswordException) {
-            errorLiveData.postValue(Error.ERROR_WEAK_PASSWORD);
+            callback.onError(Error.ERROR_WEAK_PASSWORD);
         } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-            errorLiveData.postValue(Error.ERROR_INVALID_EMAIL);
+            callback.onError(Error.ERROR_INVALID_EMAIL);
         } else if (exception instanceof FirebaseAuthUserCollisionException) {
-            errorLiveData.postValue(Error.ERROR_EMAIL_ALREADY_EXISTS);
+            callback.onError(Error.ERROR_EMAIL_ALREADY_EXISTS);
         } else if (exception instanceof FirebaseNetworkException) {
-            setNetworkErrorLiveData(true);
+            callback.onNetworkError();
         } else {
-            errorLiveData.postValue(Error.ERROR_INVALID_CREDENTIAL);
+            callback.onError(Error.ERROR_INVALID_CREDENTIAL);
         }
     }
 

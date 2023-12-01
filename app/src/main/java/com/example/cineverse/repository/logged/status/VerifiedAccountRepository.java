@@ -1,13 +1,11 @@
-package com.example.cineverse.repository.classes.logged.status;
+package com.example.cineverse.repository.logged.status;
 
 import android.content.Context;
 
-import com.example.cineverse.repository.classes.logged.AbstractLoggedRepository;
-import com.example.cineverse.repository.interfaces.logged.status.IVerifiedAccount;
+import com.example.cineverse.repository.logged.AbstractLoggedRepository;
 
 public class VerifiedAccountRepository
-        extends AbstractLoggedRepository
-        implements IVerifiedAccount {
+        extends AbstractLoggedRepository {
 
     /**
      * Constructs a {@link VerifiedAccountRepository} object with the given application {@link Context}.
