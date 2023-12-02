@@ -7,12 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.repository.classes.UserRepository;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.verify_account.VerifyAccountActivity;
 import com.example.cineverse.viewmodel.ConcreteUserViewModel;
-import com.example.cineverse.viewmodel.auth.service.AuthViewModel;
 
 /**
  * The {@link MainActivity} class serves as the entry point of the application. It checks the user's

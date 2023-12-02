@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cineverse.R;
-import com.example.cineverse.repository.classes.auth.service.ForgotPasswordRepository;
+import com.example.cineverse.repository.auth.service.ForgotPasswordRepository;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.auth.service.ForgotPasswordViewModel;
 import com.example.cineverse.databinding.FragmentForgotPasswordBinding;

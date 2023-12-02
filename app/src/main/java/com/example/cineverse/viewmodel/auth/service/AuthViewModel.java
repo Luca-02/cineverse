@@ -5,8 +5,8 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.repository.classes.auth.service.GoogleAuthRepository;
-import com.example.cineverse.repository.interfaces.auth.service.IAuthGoogle;
+import com.example.cineverse.R;
+import com.example.cineverse.repository.auth.service.GoogleAuthRepository;
 import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
@@ -17,8 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
  * with {@link GoogleAuthRepository} and handles Google Sign-In authentication requests.
  */
 public class AuthViewModel
-        extends AbstractAuthServicesViewModel<GoogleAuthRepository>
-        implements IAuthGoogle {
+        extends AbstractAuthServicesViewModel<GoogleAuthRepository> {
 
     private final GoogleSignInOptions googleSignInOptions;
 
@@ -29,7 +28,11 @@ public class AuthViewModel
      */
     public AuthViewModel(@NonNull Application application) {
         super(application, new GoogleAuthRepository(application.getBaseContext()));
-        googleSignInOptions = userRepository.getGoogleSignInOptions();
+        // Initialize GoogleSignInOptions
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(application.getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
     }
 
     public GoogleSignInOptions getGoogleSignInOptions() {
@@ -41,9 +44,8 @@ public class AuthViewModel
      *
      * @param data {@link Intent} containing the Google Sign-In result data.
      */
-    @Override
     public void authWithGoogle(Intent data) {
-        userRepository.authWithGoogle(data);
+        userRepository.authWithGoogle(data, this);
     }
 
 }

@@ -4,8 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.repository.classes.auth.service.RegisterRepository;
-import com.example.cineverse.repository.interfaces.auth.service.IRegister;
+import com.example.cineverse.repository.auth.service.RegisterRepository;
 import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
 
 /**
@@ -15,8 +14,7 @@ import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
  * {@link RegisterRepository} and triggers the registration process based on user input.
  */
 public class RegisterViewModel
-        extends AbstractAuthServicesViewModel<RegisterRepository>
-        implements IRegister {
+        extends AbstractAuthServicesViewModel<RegisterRepository> {
 
     /**
      * Constructs a {@link RegisterViewModel} object with the given {@link Application}.
@@ -33,9 +31,8 @@ public class RegisterViewModel
      * @param email    The user's email address for registration.
      * @param password The user's chosen password for registration.
      */
-    @Override
     public void register(String username, String email, String password) {
-        userRepository.register(username, email, password);
+        userRepository.register(username, email, password, this);
     }
 
 }

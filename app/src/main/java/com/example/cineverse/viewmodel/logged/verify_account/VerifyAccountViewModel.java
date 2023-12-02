@@ -1,12 +1,11 @@
-package com.example.cineverse.viewmodel.logged.verify_account;
+package com.example.cineverse.viewmodel.logged.status;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.repository.classes.logged.status.VerifyAccountRepository;
-import com.example.cineverse.repository.interfaces.logged.status.IVerifyAccount;
+import com.example.cineverse.repository.logged.status.VerifyAccountRepository;
 import com.example.cineverse.viewmodel.logged.AbstractLoggedViewModel;
 
 /**
@@ -18,7 +17,7 @@ import com.example.cineverse.viewmodel.logged.AbstractLoggedViewModel;
  */
 public class VerifyAccountViewModel
         extends AbstractLoggedViewModel<VerifyAccountRepository>
-        implements IVerifyAccount {
+        implements VerifyAccountRepository.SentEmailCallback, VerifyAccountRepository.ReloadUserCallback {
 
     private MutableLiveData<Boolean> emailSentLiveData;
     private MutableLiveData<Boolean> emailVerifiedLiveData;
@@ -30,11 +29,12 @@ public class VerifyAccountViewModel
      */
     public VerifyAccountViewModel(@NonNull Application application) {
         super(application, new VerifyAccountRepository(application.getBaseContext()));
-        emailSentLiveData = userRepository.getEmailSentLiveData();
-        emailVerifiedLiveData = userRepository.getEmailVerifiedLiveData();
     }
 
     public MutableLiveData<Boolean> getEmailSentLiveData() {
+        if (emailSentLiveData == null) {
+            emailSentLiveData = new MutableLiveData<>();
+        }
         return emailSentLiveData;
     }
 
@@ -48,6 +48,9 @@ public class VerifyAccountViewModel
     }
 
     public MutableLiveData<Boolean> getEmailVerifiedLiveData() {
+        if (emailVerifiedLiveData == null) {
+            emailVerifiedLiveData = new MutableLiveData<>();
+        }
         return emailVerifiedLiveData;
     }
 
@@ -63,17 +66,37 @@ public class VerifyAccountViewModel
     /**
      * Initiates the process of sending an email verification to the user's email address.
      */
-    @Override
     public void sendEmailVerification() {
-        userRepository.sendEmailVerification();
+        userRepository.sendEmailVerification(this);
     }
 
     /**
      * Initiates the process of reloading the user's data from the server.
      */
-    @Override
     public void reloadUser() {
-        userRepository.reloadUser();
+        userRepository.reloadUser(this);
+    }
+
+    /**
+     * Overrides the {@link VerifyAccountRepository.SentEmailCallback#onEmailSent(Boolean)} method
+     * to handle the result of the email sending operation and update the email sent LiveData.
+     *
+     * @param isSent The status of the email sending operation.
+     */
+    @Override
+    public void onEmailSent(Boolean isSent) {
+        getEmailSentLiveData().postValue(isSent);
+    }
+
+    /**
+     * Overrides the {@link VerifyAccountRepository.ReloadUserCallback#onReloadUser(Boolean)} method
+     * to handle the result of the user data reloading operation and update the email verification LiveData.
+     *
+     * @param isVerified The status of the email verification.
+     */
+    @Override
+    public void onReloadUser(Boolean isVerified) {
+        getEmailVerifiedLiveData().postValue(isVerified);
     }
 
 }

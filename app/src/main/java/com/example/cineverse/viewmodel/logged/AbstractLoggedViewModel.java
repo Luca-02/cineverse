@@ -5,8 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.repository.interfaces.logged.ILogged;
-import com.example.cineverse.repository.classes.logged.AbstractLoggedRepository;
+import com.example.cineverse.repository.logged.AbstractLoggedRepository;
 import com.example.cineverse.viewmodel.AbstractUserViewModel;
 
 /**
@@ -20,31 +19,41 @@ import com.example.cineverse.viewmodel.AbstractUserViewModel;
  */
 public abstract class AbstractLoggedViewModel<T extends AbstractLoggedRepository>
         extends AbstractUserViewModel<T>
-        implements ILogged {
+        implements AbstractLoggedRepository.LoggedCallback {
 
-    protected MutableLiveData<Boolean> loggedOutLiveData;
+    private MutableLiveData<Boolean> loggedOutLiveData;
 
     /**
      * Constructs an {@link AbstractLoggedViewModel} object with the given {@link Application}.
      *
      * @param application The {@link Application} of the calling component.
-     * @param repository  The {@link AbstractLoggedRepository} associated with the ViewModel.
+     * @param userRepository  The {@link AbstractLoggedRepository} associated with the ViewModel.
      */
-    public AbstractLoggedViewModel(@NonNull Application application, T repository) {
-        super(application, repository);
-        loggedOutLiveData = repository.getLoggedOutLiveData();
+    public AbstractLoggedViewModel(@NonNull Application application, T userRepository) {
+        super(application, userRepository);
     }
 
     public MutableLiveData<Boolean> getLoggedOutLiveData() {
+        if (loggedOutLiveData == null) {
+            loggedOutLiveData = new MutableLiveData<>();
+        }
         return loggedOutLiveData;
     }
 
     /**
      * Initiates the user logout process.
      */
-    @Override
     public void logOut() {
-        userRepository.logOut();
-    };
+        userRepository.logOut(this);
+    }
+
+    /**
+     * Overrides the {@link AbstractLoggedRepository.LoggedCallback#onLogOut()} method
+     * to handle the logout event and update the logged-out LiveData.
+     */
+    @Override
+    public void onLogOut() {
+        getLoggedOutLiveData().postValue(true);
+    }
 
 }
