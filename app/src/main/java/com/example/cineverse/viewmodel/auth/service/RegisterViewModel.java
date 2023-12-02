@@ -32,7 +32,7 @@ public class RegisterViewModel
      * @param password The user's chosen password for registration.
      */
     public void register(String username, String email, String password) {
-        repository.register(username, email, password, this);
+        userRepository.register(username, email, password, this);
     }
 
 }

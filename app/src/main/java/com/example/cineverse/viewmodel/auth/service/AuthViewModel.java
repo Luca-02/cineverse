@@ -45,7 +45,7 @@ public class AuthViewModel
      * @param data {@link Intent} containing the Google Sign-In result data.
      */
     public void authWithGoogle(Intent data) {
-        repository.authWithGoogle(data, this);
+        userRepository.authWithGoogle(data, this);
     }
 
 }

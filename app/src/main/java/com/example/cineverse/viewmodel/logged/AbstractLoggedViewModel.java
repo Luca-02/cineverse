@@ -27,10 +27,10 @@ public abstract class AbstractLoggedViewModel<T extends AbstractLoggedRepository
      * Constructs an {@link AbstractLoggedViewModel} object with the given {@link Application}.
      *
      * @param application The {@link Application} of the calling component.
-     * @param repository  The {@link AbstractLoggedRepository} associated with the ViewModel.
+     * @param userRepository  The {@link AbstractLoggedRepository} associated with the ViewModel.
      */
-    public AbstractLoggedViewModel(@NonNull Application application, T repository) {
-        super(application, repository);
+    public AbstractLoggedViewModel(@NonNull Application application, T userRepository) {
+        super(application, userRepository);
     }
 
     public MutableLiveData<Boolean> getLoggedOutLiveData() {
@@ -44,7 +44,7 @@ public abstract class AbstractLoggedViewModel<T extends AbstractLoggedRepository
      * Initiates the user logout process.
      */
     public void logOut() {
-        repository.logOut(this);
+        userRepository.logOut(this);
     }
 
     /**

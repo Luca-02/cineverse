@@ -67,14 +67,14 @@ public class VerifyAccountViewModel
      * Initiates the process of sending an email verification to the user's email address.
      */
     public void sendEmailVerification() {
-        repository.sendEmailVerification(this);
+        userRepository.sendEmailVerification(this);
     }
 
     /**
      * Initiates the process of reloading the user's data from the server.
      */
     public void reloadUser() {
-        repository.reloadUser(this);
+        userRepository.reloadUser(this);
     }
 
     /**

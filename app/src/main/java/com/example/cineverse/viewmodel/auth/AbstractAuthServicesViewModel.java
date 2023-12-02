@@ -27,10 +27,10 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
      * {@link MutableLiveData} for observing authentication-related errors.
      *
      * @param application The {@link Application} of the calling component.
-     * @param repository  The {@link AbstractAuthRepository} associated with the ViewModel.
+     * @param userRepository  The {@link AbstractAuthRepository} associated with the ViewModel.
      */
-    public AbstractAuthServicesViewModel(@NonNull Application application, T repository) {
-        super(application, repository);
+    public AbstractAuthServicesViewModel(@NonNull Application application, T userRepository) {
+        super(application, userRepository);
     }
 
     public MutableLiveData<AbstractAuthRepository.Error> getErrorLiveData() {
