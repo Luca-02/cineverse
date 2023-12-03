@@ -20,7 +20,7 @@ import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentVerifyAccountBinding;
 import com.example.cineverse.view.verify_account.VerifyAccountActivity;
-import com.example.cineverse.viewmodel.logged.status.VerifyAccountViewModel;
+import com.example.cineverse.viewmodel.logged.verify_account.VerifyAccountViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 /**
