@@ -80,8 +80,7 @@ public class HomeContentSectionAdapter
 
             if (viewModel.isContentEmpty()) {
                 viewModel.fetch();
-                binding.shimmerLayout.getRoot().startShimmer();
-                binding.shimmerLayout.getRoot().setVisibility(View.VISIBLE);
+                binding.contentSectionProgressIndicator.setVisibility(View.VISIBLE);
             }
         }
 
@@ -100,8 +99,7 @@ public class HomeContentSectionAdapter
             viewModel.getContentLiveData().observe(viewLifecycleOwner,
                     (Observer<List<? extends AbstractPoster>>) abstractPosters -> {
                         movieAdapter.setData(abstractPosters);
-                        binding.shimmerLayout.getRoot().stopShimmer();
-                        binding.shimmerLayout.getRoot().setVisibility(View.GONE);
+                        binding.contentSectionProgressIndicator.setVisibility(View.GONE);
             });
         }
 

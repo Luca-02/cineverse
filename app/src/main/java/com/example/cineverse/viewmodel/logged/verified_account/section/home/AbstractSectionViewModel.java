@@ -7,10 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.content.AbstractPoster;
 import com.example.cineverse.data.model.content.AbstractPosterApiResponse;
-import com.example.cineverse.data.model.content.movie.PosterMovie;
-import com.example.cineverse.data.model.content.tv.PosterTv;
-import com.example.cineverse.repository.content.movie.PosterMovieRepository;
-import com.example.cineverse.repository.content.tv.PosterTvRepository;
 
 import java.util.ArrayList;
 import java.util.List;

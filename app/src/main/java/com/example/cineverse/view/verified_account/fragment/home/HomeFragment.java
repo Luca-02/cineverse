@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
 
     private void initContentSection() {
         List<HomeContentSection> sectionList =
-                new ArrayList<>(Arrays.asList(HomeContentSection.values()));
+                new ArrayList<>(viewModel.getHomeContentSection());
 
         HomeContentSectionAdapter sectionAdapter = new HomeContentSectionAdapter(
                 this,

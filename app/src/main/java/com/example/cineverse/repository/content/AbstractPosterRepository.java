@@ -27,7 +27,7 @@ public abstract class AbstractPosterRepository
             public void onResponse(@NonNull Call<A> call, @NonNull Response<A> response) {
                 if (response.body() != null && response.isSuccessful()) {
                     AbstractPosterApiResponse<T> movieResponse = response.body();
-                    if (movieResponse.isResponseOk()) {
+                    if (response.code() == 200 && movieResponse.isResponseOk()) {
                         callback.onResponse(movieResponse);
                     } else {
                         callback.onResponse(null);
