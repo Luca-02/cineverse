@@ -2,6 +2,7 @@ package com.example.cineverse.view.verified_account;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -18,15 +19,28 @@ import com.example.cineverse.view.auth.AuthActivity;
  */
 public class VerifiedAccountActivity extends AppCompatActivity {
 
+    private ActivityVerifiedAccountBinding binding;
     private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityVerifiedAccountBinding binding = ActivityVerifiedAccountBinding.inflate(getLayoutInflater());
+        binding = ActivityVerifiedAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setActionBar();
         setNavController();
         BackPressedHandler.handleOnBackPressedCallback(this, navController);
+    }
+
+    /**
+     * Sets up the {@link ActionBar} with the provided Toolbar.
+     */
+    private void setActionBar() {
+        setSupportActionBar(binding.materialToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(null);
+        }
     }
 
     /**
