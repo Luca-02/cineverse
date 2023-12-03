@@ -4,10 +4,10 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.viewmodel.logged.verified_account.AbstractVerifiedAccountViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.VerifiedAccountViewModel;
 
 public class AccountViewModel
-        extends AbstractVerifiedAccountViewModel {
+        extends VerifiedAccountViewModel {
 
     /**
      * Constructs a {@link AccountViewModel} object with the given {@link Application}.

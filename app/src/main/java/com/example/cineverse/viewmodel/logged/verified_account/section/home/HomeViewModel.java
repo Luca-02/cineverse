@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.ui.HomeContentSection;
-import com.example.cineverse.viewmodel.logged.verified_account.AbstractVerifiedAccountViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.VerifiedAccountViewModel;
 import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.movie.PopularMovieViewModel;
 import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.movie.TopRatedMovieViewModel;
 import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.movie.UpcomingMovieViewModel;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeViewModel
-        extends AbstractVerifiedAccountViewModel {
+        extends VerifiedAccountViewModel {
 
     /**
      * Constructs an {@link HomeViewModel} object with the given {@link Application}.
