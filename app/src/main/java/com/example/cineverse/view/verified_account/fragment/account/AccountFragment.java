@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
-import com.example.cineverse.viewmodel.logged.verified_account.section.account.AccountViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.VerifiedAccountViewModel;
 
 /**
  * The {@link AccountFragment} class representing the user account section of the application.
@@ -22,7 +22,7 @@ import com.example.cineverse.viewmodel.logged.verified_account.section.account.A
 public class AccountFragment extends Fragment {
 
     private FragmentAccountBinding binding;
-    private AccountViewModel viewModel;
+    private VerifiedAccountViewModel viewModel;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -52,7 +52,7 @@ public class AccountFragment extends Fragment {
      * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
-        viewModel = new ViewModelProvider(this).get(AccountViewModel.class);
+        viewModel = new ViewModelProvider(this).get(VerifiedAccountViewModel.class);
         viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::handleUser);
         viewModel.getLoggedOutLiveData().observe(getViewLifecycleOwner(), this::handleLoggedOut);
     }
