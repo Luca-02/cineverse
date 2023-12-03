@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingTop="@dimen/double_spacing">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,12 +57,7 @@
             android:paddingStart="@dimen/half_spacing"
             android:paddingEnd="@dimen/half_spacing" />
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/contentSectionProgressIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:indeterminate="true"
-            android:visibility="gone" />
+        <include layout="@layout/content_section_shimmer"
+            android:id="@+id/shimmerLayout" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
