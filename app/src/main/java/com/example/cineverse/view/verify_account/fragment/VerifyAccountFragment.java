@@ -48,12 +48,6 @@ public class VerifyAccountFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setActionBarMenu();
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentVerifyAccountBinding.inflate(inflater, container, false);
@@ -63,6 +57,7 @@ public class VerifyAccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setActionBarMenu();
         setViewModel();
         setListeners();
     }
