@@ -1,4 +1,4 @@
-package com.example.cineverse.utils.validator;
+package com.example.cineverse.utils;
 
 import static org.junit.Assert.*;
 

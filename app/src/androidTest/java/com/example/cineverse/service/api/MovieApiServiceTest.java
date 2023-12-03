@@ -11,8 +11,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.cineverse.R;
-import com.example.cineverse.data.model.content.PosterMovie;
-import com.example.cineverse.data.model.content.PosterMovieApiResponse;
+import com.example.cineverse.data.model.content.movie.PosterMovie;
+import com.example.cineverse.data.model.content.movie.PosterMovieApiResponse;
 import com.example.cineverse.repository.firebase.user.UserFirebaseSourceTest;
 import com.example.cineverse.utils.ServiceLocator;
 

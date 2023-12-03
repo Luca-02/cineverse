@@ -1,4 +1,4 @@
-package com.example.cineverse.viewmodel.logged.verified_account.section;
+package com.example.cineverse.viewmodel.logged.verified_account.section.account;
 
 import android.app.Application;
 

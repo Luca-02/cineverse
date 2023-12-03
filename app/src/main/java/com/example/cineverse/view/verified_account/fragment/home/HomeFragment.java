@@ -1,6 +1,5 @@
 package com.example.cineverse.view.verified_account.fragment.home;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +11,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.cineverse.adapter.PosterMovieAdapter;
-import com.example.cineverse.data.model.content.PosterMovie;
+import com.example.cineverse.adapter.HomeContentSectionAdapter;
+import com.example.cineverse.data.model.ui.HomeContentSection;
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.databinding.FragmentHomeBinding;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
-import com.example.cineverse.viewmodel.logged.verified_account.section.HomeViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.HomeViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,13 +28,8 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment {
 
-    // every page in 20 item with TMDB Api
-    public static final int MAX_PAGE_TO_LOAD = 4;
-
     private FragmentHomeBinding binding;
     private HomeViewModel viewModel;
-
-    private PosterMovieAdapter popularMovieAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -50,8 +45,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initUi();
         setViewModel();
+        initContentSection();
     }
 
     @Override
@@ -64,12 +59,9 @@ public class HomeFragment extends Fragment {
      * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
-        if (viewModel == null) {
-            viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-            viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::handleUser);
-            viewModel.getLoggedOutLiveData().observe(getViewLifecycleOwner(), this::handleLoggedOut);
-            viewModel.getPopularMovieLiveData().observe(getViewLifecycleOwner(), this::handlePopularMovie);
-        }
+        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::handleUser);
+        viewModel.getLoggedOutLiveData().observe(getViewLifecycleOwner(), this::handleLoggedOut);
     }
 
     /**
@@ -96,27 +88,20 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private void handlePopularMovie(List<PosterMovie> posterMovies) {
-        popularMovieAdapter.setData(posterMovies);
-    }
+    private void initContentSection() {
+        List<HomeContentSection> sectionList =
+                new ArrayList<>(Arrays.asList(HomeContentSection.values()));
 
-    private void initUi() {
-        initPopularMovieUi();
-    }
+        HomeContentSectionAdapter sectionAdapter = new HomeContentSectionAdapter(
+                this,
+                requireActivity().getApplication(),
+                getViewLifecycleOwner(),
+                sectionList
+        );
 
-    private void initPopularMovieUi() {
-        List<PosterMovie> posterMovies = new ArrayList<>();
-        if (viewModel != null) {
-            posterMovies = viewModel.getPopularMovieLiveData().getValue();
-        }
-
-        popularMovieAdapter =
-                new PosterMovieAdapter(requireContext(), posterMovies);
-
-        binding.popularMovieRecyclerView.setLayoutManager(new LinearLayoutManager(
-                requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.popularMovieRecyclerView.setAdapter(popularMovieAdapter);
+        binding.sectionRecyclerView.setLayoutManager(new LinearLayoutManager(
+                requireContext(), LinearLayoutManager.VERTICAL, false));
+        binding.sectionRecyclerView.setAdapter(sectionAdapter);
     }
 
 }

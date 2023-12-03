@@ -3,8 +3,8 @@ package com.example.cineverse.repository.auth.service;
 import android.content.Context;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
 import com.example.cineverse.repository.auth.AbstractAuthRepository;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;

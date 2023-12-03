@@ -67,4 +67,15 @@
     <!-- Google -->
     <string name="google_signin_failed">Google Sign In failed</string>
     <string name="authentication_failed">Authentication failed</string>
+
+    <!-- Home -->
+    <string name="hello_">Hello\u0020</string>
+    <string name="review_or_track_content">Review or track the content you want to see</string>
+    <string name="popular_movie">Popular Movie</string>
+    <string name="top_rated_movie">Top Rated Movie</string>
+    <string name="upcoming_movie">Upcoming Movie</string>
+    <string name="popular_tv">Popular Tv Series</string>
+    <string name="top_rated_tv">Top Rated Tv Series</string>
+    <string name="week_airing_tv">Airing this week Tv Series</string>
+    <string name="view_all">View all</string>
 </resources>

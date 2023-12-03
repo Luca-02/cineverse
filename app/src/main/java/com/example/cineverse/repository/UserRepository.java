@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.data.storage.user.UserStorage;
+import com.example.cineverse.utils.ServiceLocator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -31,7 +32,7 @@ public class UserRepository {
      */
     public UserRepository(Context context) {
         this.context = context;
-        userStorage = new UserStorage(context);
+        userStorage = ServiceLocator.getInstance().getUserStorage(context);
     }
 
     /**

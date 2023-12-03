@@ -9,6 +9,7 @@
     <!-- text -->
     <dimen name="text_big">32sp</dimen>
     <dimen name="text_title">24sp</dimen>
+    <dimen name="text_medium">20sp</dimen>
     <dimen name="text_normal">16sp</dimen>
     <dimen name="text_small">14sp</dimen>
 
@@ -17,5 +18,5 @@
 
     <!-- radius -->
     <dimen name="normal_radius">16dp</dimen>
-    <dimen name="half_radius">16dp</dimen>
+    <dimen name="half_radius">8dp</dimen>
 </resources>

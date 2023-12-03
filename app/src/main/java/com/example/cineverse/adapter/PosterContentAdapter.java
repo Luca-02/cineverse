@@ -2,6 +2,7 @@ package com.example.cineverse.adapter;
 
 import static com.example.cineverse.utils.constant.Api.TMDB_POSTER_SIZE_URL;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,23 +11,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.cineverse.data.model.content.PosterMovie;
-import com.example.cineverse.databinding.PosterContentItemBinding;
+import com.example.cineverse.data.model.content.AbstractPoster;
+import com.example.cineverse.databinding.PosterTitleContentItemBinding;
 
 import java.util.List;
 
-public class PosterMovieAdapter
-        extends RecyclerView.Adapter<PosterMovieAdapter.MyViewHolder> {
+public class PosterContentAdapter
+        extends RecyclerView.Adapter<PosterContentAdapter.MyViewHolder> {
 
     private final Context context;
-    private List<PosterMovie> movieList;
+    private List<? extends AbstractPoster> movieList;
 
-    public PosterMovieAdapter(Context context, List<PosterMovie> movieList) {
+    public PosterContentAdapter(Context context, List<AbstractPoster> movieList) {
         this.context = context;
         this.movieList = movieList;
     }
 
-    public void setData(List<PosterMovie> movieList) {
+    @SuppressLint("NotifyDataSetChanged")
+    public void setData(List<? extends AbstractPoster> movieList) {
         this.movieList = movieList;
         notifyDataSetChanged();
     }
@@ -35,7 +37,7 @@ public class PosterMovieAdapter
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new MyViewHolder(PosterContentItemBinding.inflate(inflater, parent, false));
+        return new MyViewHolder(PosterTitleContentItemBinding.inflate(inflater, parent, false));
     }
 
     @Override
@@ -56,17 +58,19 @@ public class PosterMovieAdapter
      */
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private final PosterContentItemBinding binding;
+        private final PosterTitleContentItemBinding binding;
 
-        public MyViewHolder(@NonNull PosterContentItemBinding binding) {
+        public MyViewHolder(@NonNull PosterTitleContentItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public void bind(PosterMovie posterMovie) {
+        public void bind(AbstractPoster posterMovie) {
             Glide.with(context)
                     .load(TMDB_POSTER_SIZE_URL + posterMovie.getPosterPath())
                     .into(binding.posterImageView);
+
+            binding.titleTextView.setText(posterMovie.getName());
         }
 
     }

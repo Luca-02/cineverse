@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
 import com.example.cineverse.repository.auth.AbstractAuthRepository;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;

@@ -5,7 +5,6 @@ import static com.example.cineverse.utils.constant.Api.TMDB_API_BASE_URL;
 import android.content.Context;
 
 import com.example.cineverse.data.storage.user.UserStorage;
-import com.example.cineverse.service.api.MovieApiService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
