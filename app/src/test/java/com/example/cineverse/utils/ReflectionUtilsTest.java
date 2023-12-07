@@ -2,14 +2,10 @@ package com.example.cineverse.utils;
 
 import static org.junit.Assert.*;
 
-import com.example.cineverse.data.model.content.movie.PosterMovie;
-import com.example.cineverse.data.model.content.tv.PosterTv;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.movie.TopRatedMovieViewModel;
+import com.example.cineverse.data.model.content.poster.PosterMovie;
+import com.example.cineverse.data.model.content.poster.PosterTv;
 
 import org.junit.Test;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 public class ReflectionUtilsTest {
 

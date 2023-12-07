@@ -1,0 +1,236 @@
+package com.example.cineverse.adapter;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.cineverse.data.model.content.Failure;
+import com.example.cineverse.data.model.content.poster.AbstractPoster;
+import com.example.cineverse.data.model.ui.ContentSection;
+import com.example.cineverse.databinding.CarouselContentSectionBinding;
+import com.example.cineverse.databinding.PosterContentSectionBinding;
+import com.example.cineverse.exception.ViewTypeNotFoundException;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
+import com.google.android.material.carousel.CarouselLayoutManager;
+import com.google.android.material.carousel.CarouselSnapHelper;
+import com.google.android.material.carousel.HeroCarouselStrategy;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ContentSectionAdapter
+        extends RecyclerView.Adapter<ContentSectionAdapter.SectionViewHolder> {
+
+    private final ViewModelStoreOwner owner;
+    private final Context context;
+    private final LifecycleOwner viewLifecycleOwner;
+    private final List<ContentSection> sectionList;
+
+    public ContentSectionAdapter(ViewModelStoreOwner owner,
+                                 Context context,
+                                 LifecycleOwner viewLifecycleOwner,
+                                 List<ContentSection> sectionList) {
+        this.owner = owner;
+        this.context = context;
+        this.viewLifecycleOwner = viewLifecycleOwner;
+        this.sectionList = sectionList;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void refresh() {
+        for (ContentSection section : sectionList) {
+            section.setForceRefresh(true);
+        }
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public SectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if (viewType == ContentSection.POSTER_TYPE) {
+            return new PosterSectionViewHolder(PosterContentSectionBinding.inflate(
+                    inflater, parent, false));
+        } else if (viewType == ContentSection.CAROUSEL_TYPE) {
+            return new CarouselSectionViewHolder(CarouselContentSectionBinding.inflate(
+                    inflater, parent, false));
+        } else {
+            throw new ViewTypeNotFoundException("View type [" + viewType + "] not found");
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SectionViewHolder holder, int position) {
+        holder.bind(sectionList.get(position));
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull SectionViewHolder holder) {
+        super.onViewRecycled(holder);
+        if (holder instanceof CarouselSectionViewHolder) {
+            ((CarouselSectionViewHolder) holder).clearRecyclerView();
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        if (sectionList != null) {
+            return sectionList.size();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return sectionList.get(position).getViewType();
+    }
+
+    /**
+     * Abstract ViewHolder to bind data to the RecyclerView items.
+     */
+    public abstract static class SectionViewHolder extends RecyclerView.ViewHolder {
+
+        protected ContentAdapter contentAdapter;
+        protected AbstractSectionViewModel<? extends AbstractPoster> viewModel;
+
+        public SectionViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+
+        protected abstract void bind(ContentSection section);
+
+        public void fetchContent(CircularProgressIndicator contentSectionProgressIndicator, boolean refresh) {
+            if (refresh) {
+                viewModel.clearContentLiveDataList();
+            }
+
+            if (viewModel.isContentEmpty()) {
+                viewModel.fetch();
+                contentSectionProgressIndicator.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public Observer<List<? extends AbstractPoster>> getContentObserver(
+                CircularProgressIndicator contentSectionProgressIndicator) {
+            return (Observer<List<? extends AbstractPoster>>) abstractPosters -> {
+                contentAdapter.setData(abstractPosters);
+                contentSectionProgressIndicator.setVisibility(View.GONE);
+            };
+        }
+
+        public Observer<Failure> getFailureObserver(ConstraintLayout root) {
+            return failure ->
+                    Snackbar.make(root, failure.getStatusMessage(), Snackbar.LENGTH_SHORT)
+                            .show();
+        }
+
+    }
+
+    /**
+     * Custom ViewHolder to bind data to the RecyclerView items.
+     */
+    public class PosterSectionViewHolder extends SectionViewHolder {
+
+        private final PosterContentSectionBinding binding;
+
+        public PosterSectionViewHolder(@NonNull PosterContentSectionBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        @Override
+        public void bind(ContentSection section) {
+            initUi(section);
+            setViewModel(section);
+            fetchContent(binding.contentSectionProgressIndicator, section.isForceRefresh());
+        }
+
+        private void initUi(ContentSection section) {
+            binding.headerLayout.sectionTitleTextView.setText(section.getSectionTitleStringId());
+            setRecyclerView();
+        }
+
+        private void setRecyclerView() {
+            contentAdapter = new ContentAdapter(context, ContentSection.POSTER_TYPE, new ArrayList<>());
+            binding.contentSectionRecyclerView.setLayoutManager(new LinearLayoutManager(
+                    context, LinearLayoutManager.HORIZONTAL, false));
+            binding.contentSectionRecyclerView.setAdapter(contentAdapter);
+        }
+
+        private void setViewModel(ContentSection section) {
+            viewModel = new ViewModelProvider(owner).get(section.getViewModelClass());
+            viewModel.getContentLiveData().observe(viewLifecycleOwner,
+                    getContentObserver(binding.contentSectionProgressIndicator));
+            viewModel.getFailureLiveData().observe(viewLifecycleOwner,
+                    getFailureObserver(binding.getRoot()));
+        }
+
+    }
+
+    /**
+     * Custom ViewHolder to bind data to the RecyclerView items.
+     */
+    public class CarouselSectionViewHolder extends SectionViewHolder {
+
+        private final CarouselContentSectionBinding binding;
+
+        public CarouselSectionViewHolder(@NonNull CarouselContentSectionBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        @Override
+        public void bind(ContentSection section) {
+            initUi(section);
+            setViewModel(section);
+            fetchContent(binding.contentSectionProgressIndicator, section.isForceRefresh());
+        }
+
+        private void initUi(ContentSection section) {
+            binding.headerLayout.sectionTitleTextView.setText(section.getSectionTitleStringId());
+            setRecyclerView();
+        }
+
+        private void setRecyclerView() {
+            contentAdapter = new ContentAdapter(context, ContentSection.CAROUSEL_TYPE, new ArrayList<>());
+            binding.contentSectionRecyclerView.setLayoutManager(
+                    new CarouselLayoutManager(new HeroCarouselStrategy()));
+
+            // Only create the CarouselSnapHelper if it hasn't already been set up
+            if (binding.contentSectionRecyclerView.getOnFlingListener() == null) {
+                CarouselSnapHelper snapHelper = new CarouselSnapHelper();
+                snapHelper.attachToRecyclerView(binding.contentSectionRecyclerView);
+            }
+
+            binding.contentSectionRecyclerView.setAdapter(contentAdapter);
+        }
+
+        private void setViewModel(ContentSection section) {
+            viewModel = new ViewModelProvider(owner).get(section.getViewModelClass());
+            viewModel.getContentLiveData().observe(viewLifecycleOwner,
+                    getContentObserver(binding.contentSectionProgressIndicator));
+            viewModel.getFailureLiveData().observe(viewLifecycleOwner,
+                    getFailureObserver(binding.getRoot()));
+        }
+
+        public void clearRecyclerView() {
+            binding.contentSectionRecyclerView.setOnFlingListener(null);
+        }
+
+    }
+
+}

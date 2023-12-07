@@ -156,7 +156,6 @@ public class VerifyAccountFragment extends Fragment {
      * @param isSent A boolean indicating whether the email is sent successfully.
      */
     private void handleEmailSent(Boolean isSent) {
-        viewModel.clearEmailSentLiveData();
         if (isSent == null) {
             unexpectedError();
             binding.resentEmailButton.setEnabled(true);
@@ -178,7 +177,6 @@ public class VerifyAccountFragment extends Fragment {
      * @param isVerified A boolean indicating whether the email is verified.
      */
     private void handleEmailVerified(Boolean isVerified) {
-        viewModel.clearEmailVerifiedLiveData();
         if (isVerified == null) {
             unexpectedError();
         } else if (isVerified) {
@@ -199,7 +197,7 @@ public class VerifyAccountFragment extends Fragment {
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
-            ((VerifyAccountActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+            ((VerifyAccountActivity) requireActivity()).openNetworkErrorActivity();
         }
         binding.resentEmailButton.setEnabled(true);
         binding.progressIndicator.getRoot().setVisibility(View.GONE);

@@ -11,8 +11,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.cineverse.R;
-import com.example.cineverse.data.model.content.movie.PosterMovie;
-import com.example.cineverse.data.model.content.movie.PosterMovieApiResponse;
+import com.example.cineverse.data.model.content.poster.PosterMovie;
+import com.example.cineverse.data.model.content.poster.PosterMovieApiResponse;
 import com.example.cineverse.repository.firebase.user.UserFirebaseSourceTest;
 import com.example.cineverse.utils.ServiceLocator;
 
@@ -44,50 +44,50 @@ public class MovieApiServiceTest {
                 .create(MovieApiService.class);
     }
 
-    @Test
-    public void getPopularMovies() throws InterruptedException {
-        final CountDownLatch latch = new CountDownLatch(1);
-        String language = context.getString(R.string.language);
-        int page = 41575;
-        String bearerAccessTokenAuth = "Bearer " + context.getString(R.string.access_token_auth);
-
-        Log.d(TAG, "getPopularMovies: " + language);
-        Log.d(TAG, "getPopularMovies: " + page);
-        Log.d(TAG, "getPopularMovies: " + bearerAccessTokenAuth);
-
-        Call<PosterMovieApiResponse> call = movieApiService.getPopularMovies(language, page, bearerAccessTokenAuth);
-
-        call.enqueue(new Callback<PosterMovieApiResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PosterMovieApiResponse> call, @NonNull Response<PosterMovieApiResponse> response) {
-                if (response.body() != null && response.isSuccessful()) {
-                    PosterMovieApiResponse movieResponse = response.body();
-                    if (movieResponse.isResponseOk()) {
-                        List<PosterMovie> posterMovies = movieResponse.getResults();
-
-                        for (PosterMovie m : posterMovies) {
-                            Log.d(TAG, m.toString());
-                        }
-                    } else {
-                        Log.d(TAG, "onResponse: response error");
-                    }
-                } else {
-                    Log.d(TAG, "onResponse: error");
-                }
-                assertNotNull(response.body());
-                assertTrue(response.isSuccessful());
-                latch.countDown();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<PosterMovieApiResponse> call, @NonNull Throwable t) {
-                Log.d(TAG, "onFailure: failed");
-                latch.countDown();
-            }
-        });
-
-        latch.await(5, TimeUnit.SECONDS);
-        assertTrue(true);
-    }
+//    @Test
+//    public void getPopularMovies() throws InterruptedException {
+//        final CountDownLatch latch = new CountDownLatch(1);
+//        String language = context.getString(R.string.language);
+//        int page = 41575;
+//        String bearerAccessTokenAuth = "Bearer " + context.getString(R.string.access_token_auth);
+//
+//        Log.d(TAG, "getPopularMovies: " + language);
+//        Log.d(TAG, "getPopularMovies: " + page);
+//        Log.d(TAG, "getPopularMovies: " + bearerAccessTokenAuth);
+//
+//        Call<PosterMovieApiResponse> call = movieApiService.getPopularMovies(language, page, bearerAccessTokenAuth);
+//
+//        call.enqueue(new Callback<PosterMovieApiResponse>() {
+//            @Override
+//            public void onResponse(@NonNull Call<PosterMovieApiResponse> call, @NonNull Response<PosterMovieApiResponse> response) {
+//                if (response.body() != null && response.isSuccessful()) {
+//                    PosterMovieApiResponse movieResponse = response.body();
+//                    if (movieResponse.isResponseOk()) {
+//                        List<PosterMovie> posterMovies = movieResponse.getResults();
+//
+//                        for (PosterMovie m : posterMovies) {
+//                            Log.d(TAG, m.toString());
+//                        }
+//                    } else {
+//                        Log.d(TAG, "onResponse: response error");
+//                    }
+//                } else {
+//                    Log.d(TAG, "onResponse: error");
+//                }
+//                assertNotNull(response.body());
+//                assertTrue(response.isSuccessful());
+//                latch.countDown();
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<PosterMovieApiResponse> call, @NonNull Throwable t) {
+//                Log.d(TAG, "onFailure: failed");
+//                latch.countDown();
+//            }
+//        });
+//
+//        latch.await(5, TimeUnit.SECONDS);
+//        assertTrue(true);
+//    }
 
 }

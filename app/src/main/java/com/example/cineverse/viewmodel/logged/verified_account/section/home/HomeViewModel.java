@@ -5,14 +5,16 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 
 import com.example.cineverse.R;
-import com.example.cineverse.data.model.ui.HomeContentSection;
+import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.viewmodel.logged.verified_account.VerifiedAccountViewModel;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.movie.PopularMovieViewModel;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.movie.TopRatedMovieViewModel;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.movie.UpcomingMovieViewModel;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.tv.PopularTvViewModel;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.tv.TopRatedTvViewModel;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.tv.WeekAiringTvViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.poster.AiringTodayTvViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.poster.NowPlayingMoviesViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.poster.PopularMovieViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.poster.TopRatedMovieViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.poster.UpcomingMovieViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.poster.PopularTvViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.poster.TopRatedTvViewModel;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.poster.WeekAiringTvViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +31,16 @@ public class HomeViewModel
         super(application);
     }
 
-    public List<HomeContentSection> getHomeContentSection() {
-        List<HomeContentSection> sectionList = new ArrayList<>();
-        sectionList.add(new HomeContentSection(R.string.popular_movie, PopularMovieViewModel.class));
-        sectionList.add(new HomeContentSection(R.string.top_rated_movie, TopRatedMovieViewModel.class));
-        sectionList.add(new HomeContentSection(R.string.upcoming_movie, UpcomingMovieViewModel.class));
-        sectionList.add(new HomeContentSection(R.string.popular_tv, PopularTvViewModel.class));
-        sectionList.add(new HomeContentSection(R.string.top_rated_tv, TopRatedTvViewModel.class));
-        sectionList.add(new HomeContentSection(R.string.week_airing_tv, WeekAiringTvViewModel.class));
+    public List<ContentSection> getHomeContentSection() {
+        List<ContentSection> sectionList = new ArrayList<>();
+        sectionList.add(new ContentSection(R.string.top_rated_movie, TopRatedMovieViewModel.class, ContentSection.CAROUSEL_TYPE));
+        sectionList.add(new ContentSection(R.string.popular_movie, PopularMovieViewModel.class, ContentSection.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.upcoming_movie, UpcomingMovieViewModel.class, ContentSection.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.now_playing_movie, NowPlayingMoviesViewModel.class, ContentSection.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.top_rated_tv, TopRatedTvViewModel.class, ContentSection.CAROUSEL_TYPE));
+        sectionList.add(new ContentSection(R.string.popular_tv, PopularTvViewModel.class, ContentSection.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.week_airing_tv, WeekAiringTvViewModel.class, ContentSection.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.airing_today_tv, AiringTodayTvViewModel.class, ContentSection.POSTER_TYPE));
         return sectionList;
     }
 

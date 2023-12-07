@@ -2,8 +2,8 @@ package com.example.cineverse.viewmodel.logged.verified_account.section.home.sec
 
 import android.app.Application;
 
-import com.example.cineverse.data.model.content.tv.PosterTv;
-import com.example.cineverse.repository.content.tv.PosterTvRepository;
+import com.example.cineverse.data.model.content.poster.PosterTv;
+import com.example.cineverse.repository.content.poster.PosterTvRepository;
 import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
 
 public abstract class AbstractSectionTvViewModel
@@ -13,7 +13,8 @@ public abstract class AbstractSectionTvViewModel
 
     public AbstractSectionTvViewModel(Application application) {
         super(application);
-        this.repository = new PosterTvRepository(application.getBaseContext());
+        this.repository = new PosterTvRepository(
+                application.getBaseContext(), this);
     }
 
 }

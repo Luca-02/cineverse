@@ -90,10 +90,12 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
     /**
      * Overrides the {@link UserRepository.NetworkCallback#onNetworkError()} method
      * to handle the network error event and update the network error LiveData.
+     * Clears network error {@link MutableLiveData}.
      */
     @Override
     public void onNetworkError() {
         getNetworkErrorLiveData().postValue(true);
+        clearNetworkErrorLiveData();
     }
 
 }

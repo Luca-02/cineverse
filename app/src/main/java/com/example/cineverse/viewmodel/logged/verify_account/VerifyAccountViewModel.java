@@ -80,23 +80,27 @@ public class VerifyAccountViewModel
     /**
      * Overrides the {@link VerifyAccountRepository.SentEmailCallback#onEmailSent(Boolean)} method
      * to handle the result of the email sending operation and update the email sent LiveData.
+     * Clears email sent status {@link MutableLiveData}.
      *
      * @param isSent The status of the email sending operation.
      */
     @Override
     public void onEmailSent(Boolean isSent) {
         getEmailSentLiveData().postValue(isSent);
+        clearEmailSentLiveData();
     }
 
     /**
      * Overrides the {@link VerifyAccountRepository.ReloadUserCallback#onReloadUser(Boolean)} method
      * to handle the result of the user data reloading operation and update the email verification LiveData.
+     * Clears email verification status {@link MutableLiveData}.
      *
      * @param isVerified The status of the email verification.
      */
     @Override
     public void onReloadUser(Boolean isVerified) {
         getEmailVerifiedLiveData().postValue(isVerified);
+        clearEmailVerifiedLiveData();
     }
 
 }

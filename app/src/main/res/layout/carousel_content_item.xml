@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.carousel.MaskableFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/carouselItemContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/half_spacing"
+    android:layout_marginEnd="@dimen/half_spacing"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/carouselImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:layout_marginEnd="@dimen/standard_spacing"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/rankTextView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/standard_spacing"
+                android:layout_marginStart="@dimen/standard_spacing"
+                android:layout_marginEnd="@dimen/standard_spacing"
+                android:gravity="top|end"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:shadowColor="#000"
+                android:shadowRadius="10"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/titleTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standard_spacing"
+                android:layout_marginStart="@dimen/standard_spacing"
+                android:layout_marginEnd="@dimen/standard_spacing"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:shadowColor="#000"
+                android:shadowRadius="10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.carousel.MaskableFrameLayout>

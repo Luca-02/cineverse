@@ -119,16 +119,10 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens the network error activity ({@link NetworkErrorActivity}) and clears network error {@link LiveData} in the
-     * passed {@link AbstractAuthServicesViewModel} to avoid re-opening {@link NetworkErrorActivity} when a fragment that
-     * contains network error {@link LiveData} is recreated.
-     *
-     * @param viewModel The {@link AbstractAuthServicesViewModel} associated with the current authentication context.
+     * Opens the network error activity ({@link NetworkErrorActivity}).
      */
-    public <T extends AbstractAuthRepository> void openNetworkErrorActivity(
-            AbstractAuthServicesViewModel<T> viewModel) {
+    public void openNetworkErrorActivity() {
         if (navController != null) {
-            viewModel.clearNetworkErrorLiveData();
             navController.navigate(R.id.action_global_networkErrorActivity);
         }
     }

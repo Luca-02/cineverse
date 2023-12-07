@@ -51,7 +51,7 @@ public class UserLocalSource {
      * @return The {@link User} object representing the stored user information,
      *         or {@code null} if no user information is stored.
      */
-    public User getUser(Context context) {
+    public User getUser() {
         SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String userJson = preferences.getString(USER_KEY, null);
 
@@ -68,7 +68,7 @@ public class UserLocalSource {
      *
      * @param context The {@link Context} used to access shared preferences.
      */
-    public void clearUser(Context context) {
+    public void clearUser() {
         SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(USER_KEY);

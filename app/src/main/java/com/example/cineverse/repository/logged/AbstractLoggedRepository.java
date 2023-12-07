@@ -31,7 +31,7 @@ public abstract class AbstractLoggedRepository
      * @param callback Callback to handle the result of the logout operation.
      */
     public void logOut(LoggedCallback callback) {
-        clearAllUser(context);
+        clearAllUser();
         callback.onLogOut();
     }
 

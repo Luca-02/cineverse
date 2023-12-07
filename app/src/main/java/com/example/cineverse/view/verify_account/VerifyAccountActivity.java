@@ -80,15 +80,10 @@ public class VerifyAccountActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens the network error activity ({@link NetworkErrorActivity}) and clears network error LiveData in the
-     * passed AbstractAuthViewModel to avoid re-opening {@link NetworkErrorActivity} when a fragment that
-     * contains network error LiveData is recreated.
-     *
-     * @param viewModel The {@link VerifyAccountViewModel} associated with the current email verification context.
+     * Opens the network error activity ({@link NetworkErrorActivity}).
      */
-    public void openNetworkErrorActivity(VerifyAccountViewModel viewModel) {
+    public void openNetworkErrorActivity() {
         if (navController != null) {
-            viewModel.clearNetworkErrorLiveData();
             navController.navigate(R.id.action_global_networkErrorActivity);
         }
     }

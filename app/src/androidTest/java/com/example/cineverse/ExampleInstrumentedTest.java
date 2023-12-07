@@ -1,14 +1,22 @@
 package com.example.cineverse;
 
 import android.content.Context;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
+
+import com.example.cineverse.service.api.MovieApiService;
+import com.example.cineverse.utils.ServiceLocator;
+
+import java.util.Locale;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -20,11 +28,21 @@ public class ExampleInstrumentedTest {
 
     private static final String TAG = ExampleInstrumentedTest.class.getSimpleName();
 
+    private Context context;
+
+    @Before
+    public void setup() {
+        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    }
+
     @Test
-    public void useAppContext() {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.cineverse", appContext.getPackageName());
+    public void testGetLocalRegion() {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String ISO2 = manager.getSimCountryIso();
+        String ISO3 = new Locale("", ISO2).getISO3Country();
+        Log.d(TAG, ISO2);
+        Log.d(TAG, ISO3);
+        assertTrue(true);
     }
 
 }

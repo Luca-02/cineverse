@@ -74,8 +74,10 @@
     <string name="popular_movie">Popular Movie</string>
     <string name="top_rated_movie">Top Rated Movie</string>
     <string name="upcoming_movie">Upcoming Movie</string>
+    <string name="now_playing_movie">Now playing Movie</string>
     <string name="popular_tv">Popular Tv Series</string>
-    <string name="top_rated_tv">Top Rated Tv Series</string>
+    <string name="top_rated_tv">Globally Top Rated Tv Series</string>
+    <string name="airing_today_tv">Airing today Tv Series</string>
     <string name="week_airing_tv">Airing this week Tv Series</string>
     <string name="view_all">View all</string>
 </resources>

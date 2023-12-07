@@ -107,7 +107,7 @@ public class ForgotPasswordFragment extends Fragment {
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
-            ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+            ((AuthActivity) requireActivity()).openNetworkErrorActivity();
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
@@ -129,7 +129,6 @@ public class ForgotPasswordFragment extends Fragment {
      * @param result The type of password reset operation result.
      */
     private void handleError(ForgotPasswordRepository.Error result) {
-        viewModel.clearErrorLiveData();
         if (result.isSuccess()) {
             handleSuccess();
         } else {

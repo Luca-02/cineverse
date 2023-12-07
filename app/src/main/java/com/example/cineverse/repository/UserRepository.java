@@ -47,21 +47,18 @@ public class UserRepository {
     /**
      * Returns the currently authenticated {@link User} object saved locally.
      *
-     * @param context The application {@link Context}.
      * @return {@link User} representing the currently authenticated user, or {@code null} if not authenticated.
      */
-    protected User getCurrentLocalUser(Context context) {
-        return userStorage.getLocalSource().getUser(context);
+    protected User getCurrentLocalUser() {
+        return userStorage.getLocalSource().getUser();
     }
 
     /**
      * Clears all user-related information, {@link FirebaseAuth#signOut signOut} from Firebase and deleting locally saved user.
-     *
-     * @param context The application {@link Context}.
      */
-    protected void clearAllUser(Context context) {
+    protected void clearAllUser() {
         firebaseAuth.signOut();
-        userStorage.getLocalSource().clearUser(context);
+        userStorage.getLocalSource().clearUser();
     }
 
     /**
@@ -76,12 +73,12 @@ public class UserRepository {
         // User locally saved exist delete it.
 
         FirebaseUser firebaseUser = getCurrentFirebaseUser();
-        User localUser = getCurrentLocalUser(context);
+        User localUser = getCurrentLocalUser();
 
         if (firebaseUser != null && localUser != null && firebaseUser.getUid().equals(localUser.getUid())) {
             return localUser;
         } else {
-            clearAllUser(context);
+            clearAllUser();
             return null;
         }
     }

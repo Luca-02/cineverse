@@ -115,7 +115,7 @@ public class RegisterFragment extends Fragment {
      */
     private void handleNetworkError(Boolean bool) {
         if (bool) {
-            ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+            ((AuthActivity) requireActivity()).openNetworkErrorActivity();
         }
         binding.passwordEditText.setText(null);
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
@@ -129,7 +129,6 @@ public class RegisterFragment extends Fragment {
      * @param error The type of registration error.
      */
     private void handleError(RegisterRepository.Error error) {
-        viewModel.clearErrorLiveData();
         binding.passwordEditText.setText(null);
         String errorString = getString(error.getError());
         switch (error) {

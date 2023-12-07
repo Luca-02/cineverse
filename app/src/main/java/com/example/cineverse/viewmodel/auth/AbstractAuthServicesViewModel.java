@@ -42,8 +42,8 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
 
     /**
      * Clears the {@link MutableLiveData} instance for authentication-related errors status.
-     * This method is typically used when the network error state is consumed, and you don't want
-     * to keep the last state in the LiveData.
+     * This method is typically used when the authentication-related error state is consumed, and
+     * you don't want to keep the last state in the LiveData.
      */
     public void clearErrorLiveData() {
         errorLiveData = new MutableLiveData<>();
@@ -52,12 +52,14 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
     /**
      * Overrides the {@link AbstractAuthRepository.AuthCallback#onError(AbstractAuthRepository.Error)} method to handle
      * authentication-related errors and update the error LiveData.
+     * Clears authentication-related error {@link MutableLiveData}.
      *
      * @param error The authentication-related error.
      */
     @Override
     public void onError(AbstractAuthRepository.Error error) {
         getErrorLiveData().postValue(error);
+        clearErrorLiveData();
     }
 
     /**
