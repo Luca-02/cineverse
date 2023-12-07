@@ -1,8 +1,9 @@
 package com.example.cineverse.adapter;
 
+import static com.google.android.material.animation.AnimationUtils.lerp;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,6 @@ import com.example.cineverse.viewmodel.logged.verified_account.section.home.Abst
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.CarouselSnapHelper;
 import com.google.android.material.carousel.HeroCarouselStrategy;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -55,12 +55,14 @@ public class ContentSectionAdapter
         for (ContentSection section : sectionList) {
             section.setForceRefresh(true);
         }
-        notifyDataSetChanged();
+        notifyItemRangeChanged(0, sectionList.size());
     }
 
     @NonNull
     @Override
-    public SectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
+        int viewType = sectionList.get(position).getViewType();
+
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == ContentSection.POSTER_TYPE) {
             return new PosterSectionViewHolder(PosterContentSectionBinding.inflate(
@@ -96,7 +98,12 @@ public class ContentSectionAdapter
 
     @Override
     public int getItemViewType(int position) {
-        return sectionList.get(position).getViewType();
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     /**
@@ -113,22 +120,19 @@ public class ContentSectionAdapter
 
         protected abstract void bind(ContentSection section);
 
-        public void fetchContent(CircularProgressIndicator contentSectionProgressIndicator, boolean refresh) {
+        public void fetchContent(boolean refresh) {
             if (refresh) {
                 viewModel.clearContentLiveDataList();
             }
 
             if (viewModel.isContentEmpty()) {
                 viewModel.fetch();
-                contentSectionProgressIndicator.setVisibility(View.VISIBLE);
             }
         }
 
-        public Observer<List<? extends AbstractPoster>> getContentObserver(
-                CircularProgressIndicator contentSectionProgressIndicator) {
-            return (Observer<List<? extends AbstractPoster>>) abstractPosters -> {
+        public Observer<List<? extends AbstractPoster>> getContentObserver() {
+            return abstractPosters -> {
                 contentAdapter.setData(abstractPosters);
-                contentSectionProgressIndicator.setVisibility(View.GONE);
             };
         }
 
@@ -156,7 +160,7 @@ public class ContentSectionAdapter
         public void bind(ContentSection section) {
             initUi(section);
             setViewModel(section);
-            fetchContent(binding.contentSectionProgressIndicator, section.isForceRefresh());
+            fetchContent(section.isForceRefresh());
         }
 
         private void initUi(ContentSection section) {
@@ -174,7 +178,7 @@ public class ContentSectionAdapter
         private void setViewModel(ContentSection section) {
             viewModel = new ViewModelProvider(owner).get(section.getViewModelClass());
             viewModel.getContentLiveData().observe(viewLifecycleOwner,
-                    getContentObserver(binding.contentSectionProgressIndicator));
+                    getContentObserver());
             viewModel.getFailureLiveData().observe(viewLifecycleOwner,
                     getFailureObserver(binding.getRoot()));
         }
@@ -197,7 +201,7 @@ public class ContentSectionAdapter
         public void bind(ContentSection section) {
             initUi(section);
             setViewModel(section);
-            fetchContent(binding.contentSectionProgressIndicator, section.isForceRefresh());
+            fetchContent(section.isForceRefresh());
         }
 
         private void initUi(ContentSection section) {
@@ -222,7 +226,7 @@ public class ContentSectionAdapter
         private void setViewModel(ContentSection section) {
             viewModel = new ViewModelProvider(owner).get(section.getViewModelClass());
             viewModel.getContentLiveData().observe(viewLifecycleOwner,
-                    getContentObserver(binding.contentSectionProgressIndicator));
+                    getContentObserver());
             viewModel.getFailureLiveData().observe(viewLifecycleOwner,
                     getFailureObserver(binding.getRoot()));
         }

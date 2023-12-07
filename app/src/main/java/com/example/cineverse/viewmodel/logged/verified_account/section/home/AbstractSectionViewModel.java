@@ -1,6 +1,7 @@
 package com.example.cineverse.viewmodel.logged.verified_account.section.home;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
@@ -62,15 +63,8 @@ public abstract class AbstractSectionViewModel<T extends AbstractPoster>
     @Override
     public void onResponse(AbstractPosterApiResponse<T> response) {
         if (response != null) {
-            List<T> currentData = getContentLiveData().getValue();
             List<T> resultData = response.getResults();
-            if (currentData == null) {
-                currentData = new ArrayList<>();
-            } else {
-                currentData.clear();
-            }
-            currentData.addAll(resultData);
-            getContentLiveData().postValue(currentData);
+            getContentLiveData().postValue(resultData);
         }
     }
 

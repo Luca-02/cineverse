@@ -12,8 +12,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.cineverse.adapter.ContentSectionAdapter;
+import com.example.cineverse.data.model.content.poster.AbstractPoster;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentHomeBinding;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
 import com.example.cineverse.viewmodel.logged.verified_account.section.home.HomeViewModel;
 
 import java.util.ArrayList;

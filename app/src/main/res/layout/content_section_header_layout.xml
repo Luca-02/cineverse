@@ -16,17 +16,20 @@
         android:layout_height="match_parent"
         android:textSize="@dimen/text_medium"
         android:textStyle="bold"
+        android:ellipsize="end"
+        android:maxLines="2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/viewAllImageView"
+        app:layout_constraintEnd_toStartOf="@+id/viewAllChip"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/viewAllImageView"
+    <com.google.android.material.chip.Chip
+        style="@style/Widget.Material3.Chip.Assist"
+        android:id="@+id/viewAllChip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/outline_navigate_next"
-        app:tint="?attr/colorPrimary"
+        android:text="@string/view_all"
+        app:chipCornerRadius="@dimen/normal_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -4,6 +4,8 @@ import static com.example.cineverse.utils.constant.Api.TMDB_IMAGE_ORIGINAL_SIZE_
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.RectF;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,9 @@ import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.CarouselContentItemBinding;
 import com.example.cineverse.databinding.PosterContentItemBinding;
 import com.example.cineverse.exception.ViewTypeNotFoundException;
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.carousel.MaskableFrameLayout;
+import com.google.android.material.carousel.OnMaskChangedListener;
 
 import java.util.List;
 
@@ -25,7 +30,7 @@ public class ContentAdapter
 
     private final Context context;
     private final int viewType;
-    private List<? extends AbstractPoster> contentList;
+    private final List<AbstractPoster> contentList;
 
     public ContentAdapter(Context context, int viewType, List<AbstractPoster> contentList) {
         this.context = context;
@@ -34,9 +39,12 @@ public class ContentAdapter
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<? extends AbstractPoster> movieList) {
-        this.contentList = movieList;
-        notifyDataSetChanged();
+    public void setData(List<? extends AbstractPoster> newContentList) {
+        int end = contentList.size();
+        contentList.clear();
+        notifyItemRangeRemoved(0, end);
+        contentList.addAll(newContentList);
+        notifyItemRangeInserted(0, contentList.size());
     }
 
     @NonNull
@@ -112,11 +120,13 @@ public class ContentAdapter
 
         private final CarouselContentItemBinding binding;
 
+
         public CarouselViewHolder(@NonNull CarouselContentItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void bind(AbstractPoster posterMovie, int position) {
             String rank = (position + 1) + "°";
@@ -126,6 +136,17 @@ public class ContentAdapter
                     .into(binding.carouselImageView);
             binding.rankTextView.setText(rank);
             binding.titleTextView.setText(posterMovie.getName());
+
+            ((MaskableFrameLayout) itemView).setOnMaskChangedListener(maskRect -> {
+                float transitionX = maskRect.left;
+                float alpha = AnimationUtils
+                        .lerp(1F, 0F, 0F, 80F, maskRect.left);
+
+                binding.rankTextView.setTranslationX(transitionX);
+                binding.rankTextView.setAlpha(alpha);
+                binding.titleTextView.setTranslationX(transitionX);
+                binding.titleTextView.setAlpha(alpha);
+            });
         }
 
     }
