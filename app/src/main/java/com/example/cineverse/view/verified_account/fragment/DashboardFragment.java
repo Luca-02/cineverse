@@ -23,7 +23,6 @@ import com.example.cineverse.databinding.CircularLogoLayoutBinding;
 import com.example.cineverse.databinding.FragmentDashboardBinding;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.viewmodel.logged.verified_account.VerifiedAccountViewModel;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.HomeViewModel;
 
 /**
  * The {@link DashboardFragment} class represents the dashboard of the application.
@@ -94,7 +93,7 @@ public class DashboardFragment extends Fragment {
      * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
-        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        viewModel = new ViewModelProvider(this).get(VerifiedAccountViewModel.class);
         viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::handleUser);
     }
 
