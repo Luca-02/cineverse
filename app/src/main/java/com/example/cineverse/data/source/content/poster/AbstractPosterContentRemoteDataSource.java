@@ -1,13 +1,17 @@
 package com.example.cineverse.data.source.content.poster;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
+import com.example.cineverse.R;
 import com.example.cineverse.data.model.content.Failure;
 import com.example.cineverse.data.model.content.poster.AbstractPoster;
 import com.example.cineverse.data.model.content.poster.AbstractPosterApiResponse;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -16,15 +20,17 @@ import retrofit2.Response;
 
 public abstract class AbstractPosterContentRemoteDataSource<T extends AbstractPoster> {
 
-    protected String bearerAccessTokenAuth;
+    protected String language;
     protected String region;
+    protected String bearerAccessTokenAuth;
     private final PosterContentResponseCallback<T> callback;
 
-    public AbstractPosterContentRemoteDataSource(String bearerAccessTokenAuth,
-                                                 String region,
+    public AbstractPosterContentRemoteDataSource(Context context,
                                                  PosterContentResponseCallback<T> callback) {
-        this.bearerAccessTokenAuth = bearerAccessTokenAuth;
-        this.region = region;
+        language = context.getString(R.string.language);
+        region = Locale.getDefault().getCountry();
+        bearerAccessTokenAuth =
+                "Bearer " + context.getString(R.string.access_token_auth);
         this.callback = callback;
     }
 

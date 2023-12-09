@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="@dimen/standard_spacing"
     android:layout_marginBottom="@dimen/standard_spacing">
 
@@ -25,5 +26,28 @@
             android:clipToPadding="false"
             android:paddingStart="@dimen/half_spacing"
             android:paddingEnd="@dimen/half_spacing" />
+
+        <HorizontalScrollView
+            android:id="@+id/fetchingHorizontalScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="@dimen/half_spacing"
+                android:paddingEnd="@dimen/half_spacing"
+                android:orientation="horizontal">
+
+                <include layout="@layout/poster_content_item" />
+                <include layout="@layout/poster_content_item" />
+                <include layout="@layout/poster_content_item" />
+                <include layout="@layout/poster_content_item" />
+                <include layout="@layout/poster_content_item" />
+            </LinearLayout>
+        </HorizontalScrollView>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

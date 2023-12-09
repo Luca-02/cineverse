@@ -24,10 +24,6 @@ public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
 
-    public DashboardFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -20,10 +20,6 @@ public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
 
-    public SearchFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

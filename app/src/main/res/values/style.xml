@@ -30,4 +30,13 @@
     <style name="Widget.App.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
     </style>
+
+    <!-- Chip -->
+    <style name="Widget.App.Chip.Suggestion" parent="Widget.Material3.Chip.Suggestion">
+        <item name="chipCornerRadius">@dimen/normal_radius</item>
+    </style>
+
+    <style name="Widget.App.Chip.Assist" parent="Widget.Material3.Chip.Assist">
+        <item name="chipCornerRadius">@dimen/normal_radius</item>
+    </style>
 </resources>

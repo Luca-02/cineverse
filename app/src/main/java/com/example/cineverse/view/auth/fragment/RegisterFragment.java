@@ -34,10 +34,6 @@ public class RegisterFragment extends Fragment {
     private FragmentRegisterBinding binding;
     private RegisterViewModel viewModel;
 
-    public RegisterFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

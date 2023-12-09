@@ -1,7 +1,6 @@
 package com.example.cineverse.viewmodel.logged.verified_account.section.home;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
@@ -9,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.cineverse.data.model.content.Failure;
 import com.example.cineverse.data.model.content.poster.AbstractPoster;
 import com.example.cineverse.data.model.content.poster.AbstractPosterApiResponse;
+import com.example.cineverse.data.source.content.poster.IPosterContentRemoteDataSource;
 import com.example.cineverse.data.source.content.poster.PosterContentResponseCallback;
 
 import java.util.ArrayList;
@@ -73,6 +73,8 @@ public abstract class AbstractSectionViewModel<T extends AbstractPoster>
         getFailureLiveData().postValue(failure);
         clearFailureLiveData();
     }
+
+    protected abstract IPosterContentRemoteDataSource createRemoteDataSourceInstance();
 
     public abstract void fetch();
 

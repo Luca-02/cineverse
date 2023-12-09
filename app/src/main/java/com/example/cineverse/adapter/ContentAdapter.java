@@ -38,7 +38,6 @@ public class ContentAdapter
         this.contentList = contentList;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<? extends AbstractPoster> newContentList) {
         int end = contentList.size();
         contentList.clear();

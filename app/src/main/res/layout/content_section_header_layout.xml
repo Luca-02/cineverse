@@ -24,12 +24,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.chip.Chip
-        style="@style/Widget.Material3.Chip.Assist"
+        style="@style/Widget.App.Chip.Assist"
         android:id="@+id/viewAllChip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/view_all"
-        app:chipCornerRadius="@dimen/normal_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

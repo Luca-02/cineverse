@@ -1,13 +1,11 @@
 package com.example.cineverse.adapter;
 
-import static com.google.android.material.animation.AnimationUtils.lerp;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LifecycleOwner;
@@ -27,6 +25,7 @@ import com.example.cineverse.viewmodel.logged.verified_account.section.home.Abst
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.CarouselSnapHelper;
 import com.google.android.material.carousel.HeroCarouselStrategy;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -35,22 +34,30 @@ import java.util.List;
 public class ContentSectionAdapter
         extends RecyclerView.Adapter<ContentSectionAdapter.SectionViewHolder> {
 
+    public interface OnClickListener {
+        void onViewAllClick(@IdRes int sectionTitleStringId,
+                            Class<? extends AbstractSectionViewModel
+                                    <? extends AbstractPoster>> viewModelClass);
+    }
+
     private final ViewModelStoreOwner owner;
     private final Context context;
     private final LifecycleOwner viewLifecycleOwner;
     private final List<ContentSection> sectionList;
+    private final OnClickListener onClickListener;
 
     public ContentSectionAdapter(ViewModelStoreOwner owner,
                                  Context context,
                                  LifecycleOwner viewLifecycleOwner,
-                                 List<ContentSection> sectionList) {
+                                 List<ContentSection> sectionList,
+                                 OnClickListener onClickListener) {
         this.owner = owner;
         this.context = context;
         this.viewLifecycleOwner = viewLifecycleOwner;
         this.sectionList = sectionList;
+        this.onClickListener = onClickListener;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     public void refresh() {
         for (ContentSection section : sectionList) {
             section.setForceRefresh(true);
@@ -109,7 +116,7 @@ public class ContentSectionAdapter
     /**
      * Abstract ViewHolder to bind data to the RecyclerView items.
      */
-    public abstract static class SectionViewHolder extends RecyclerView.ViewHolder {
+    public abstract class SectionViewHolder extends RecyclerView.ViewHolder {
 
         protected ContentAdapter contentAdapter;
         protected AbstractSectionViewModel<? extends AbstractPoster> viewModel;
@@ -118,21 +125,30 @@ public class ContentSectionAdapter
             super(itemView);
         }
 
-        protected abstract void bind(ContentSection section);
+        public void setViewAllChipListener(Chip chip, ContentSection section) {
+            chip.setOnClickListener(view ->
+                    onClickListener.onViewAllClick(section.getSectionTitleStringId(), section.getViewModelClass()));
+        }
 
-        public void fetchContent(boolean refresh) {
+        public void fetchContent(View view, boolean refresh) {
             if (refresh) {
                 viewModel.clearContentLiveDataList();
             }
 
             if (viewModel.isContentEmpty()) {
                 viewModel.fetch();
+                if (view != null) {
+                    view.setVisibility(View.VISIBLE);
+                }
             }
         }
 
-        public Observer<List<? extends AbstractPoster>> getContentObserver() {
+        public Observer<List<? extends AbstractPoster>> getContentObserver(View view) {
             return abstractPosters -> {
                 contentAdapter.setData(abstractPosters);
+                if (view != null) {
+                    view.setVisibility(View.GONE);
+                }
             };
         }
 
@@ -141,6 +157,8 @@ public class ContentSectionAdapter
                     Snackbar.make(root, failure.getStatusMessage(), Snackbar.LENGTH_SHORT)
                             .show();
         }
+
+        protected abstract void bind(ContentSection section);
 
     }
 
@@ -160,12 +178,13 @@ public class ContentSectionAdapter
         public void bind(ContentSection section) {
             initUi(section);
             setViewModel(section);
-            fetchContent(section.isForceRefresh());
+            fetchContent(binding.fetchingHorizontalScrollView, section.isForceRefresh());
         }
 
         private void initUi(ContentSection section) {
             binding.headerLayout.sectionTitleTextView.setText(section.getSectionTitleStringId());
             setRecyclerView();
+            setViewAllChipListener(binding.headerLayout.viewAllChip, section);
         }
 
         private void setRecyclerView() {
@@ -178,7 +197,7 @@ public class ContentSectionAdapter
         private void setViewModel(ContentSection section) {
             viewModel = new ViewModelProvider(owner).get(section.getViewModelClass());
             viewModel.getContentLiveData().observe(viewLifecycleOwner,
-                    getContentObserver());
+                    getContentObserver(binding.fetchingHorizontalScrollView));
             viewModel.getFailureLiveData().observe(viewLifecycleOwner,
                     getFailureObserver(binding.getRoot()));
         }
@@ -201,12 +220,13 @@ public class ContentSectionAdapter
         public void bind(ContentSection section) {
             initUi(section);
             setViewModel(section);
-            fetchContent(section.isForceRefresh());
+            fetchContent(null, section.isForceRefresh());
         }
 
         private void initUi(ContentSection section) {
             binding.headerLayout.sectionTitleTextView.setText(section.getSectionTitleStringId());
             setRecyclerView();
+            setViewAllChipListener(binding.headerLayout.viewAllChip, section);
         }
 
         private void setRecyclerView() {
@@ -226,7 +246,7 @@ public class ContentSectionAdapter
         private void setViewModel(ContentSection section) {
             viewModel = new ViewModelProvider(owner).get(section.getViewModelClass());
             viewModel.getContentLiveData().observe(viewLifecycleOwner,
-                    getContentObserver());
+                    getContentObserver(null));
             viewModel.getFailureLiveData().observe(viewLifecycleOwner,
                     getFailureObserver(binding.getRoot()));
         }

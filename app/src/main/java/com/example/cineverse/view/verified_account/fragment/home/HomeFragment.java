@@ -1,25 +1,25 @@
 package com.example.cineverse.view.verified_account.fragment.home;
 
+import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.TITLE_STRING_ID_TAG;
+import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.VIEW_MODEL_CLASS_NAME_TAG;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.cineverse.adapter.ContentSectionAdapter;
+import com.example.cineverse.R;
 import com.example.cineverse.data.model.content.poster.AbstractPoster;
-import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentHomeBinding;
 import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.HomeViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.chip.Chip;
 
 /**
  * The {@link HomeFragment} class representing the home section of the application.
@@ -28,12 +28,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private HomeViewModel viewModel;
-    private ContentSectionAdapter sectionAdapter;
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
+    private NavController navController;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -45,9 +40,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setViewModel();
-        setListener();
-        initContentSection();
+        setNavController();
+        setListener(view);
     }
 
     @Override
@@ -56,35 +50,43 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
-    private void initContentSection() {
-        List<ContentSection> sectionList =
-                new ArrayList<>(viewModel.getHomeContentSection());
-
-        sectionAdapter = new ContentSectionAdapter(
-                this,
-                requireContext(),
-                getViewLifecycleOwner(),
-                sectionList
-        );
-
-        binding.sectionRecyclerView.setLayoutManager(new LinearLayoutManager(
-                requireContext(), LinearLayoutManager.VERTICAL, false));
-        binding.sectionRecyclerView.setAdapter(sectionAdapter);
-        binding.sectionRecyclerView.setAdapter(sectionAdapter);
+    /**
+     * Sets up the {@link NavController} for navigating between destinations.
+     * This method finds the {@link NavHostFragment} and initializes the {@link NavController}.
+     */
+    private void setNavController() {
+        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager()
+                .findFragmentById(R.id.navHomeSectionFragment);
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
+        }
     }
 
     /**
-     * Sets up the ViewModel for the fragment.
+     * Sets up click listeners for UI elements in the fragment.
      */
-    private void setViewModel() {
-        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+    private void setListener(View view) {
+        binding.chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
+            int selectedId = group.getCheckedChipId();
+            Chip selectedChip = view.findViewById(selectedId);
+
+            if (selectedChip == binding.allChip) {
+                navController.navigate(R.id.action_global_allContentFragment);
+            } else if (selectedChip == binding.movieChip) {
+                navController.navigate(R.id.action_global_movieContentFragment);
+            } else if (selectedChip == binding.tvChip) {
+                navController.navigate(R.id.action_global_tvContentFragment);
+            }
+        });
     }
 
-    private void setListener() {
-        binding.swipeContainer.setOnRefreshListener(() -> {
-            sectionAdapter.refresh();
-            binding.swipeContainer.setRefreshing(false);
-        });
+    public void openViewAllContentActivity(@IdRes int sectionTitleStringId,
+                                           Class<? extends AbstractSectionViewModel
+                                                   <? extends AbstractPoster>> viewModelClass) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(TITLE_STRING_ID_TAG, sectionTitleStringId);
+        bundle.putString(VIEW_MODEL_CLASS_NAME_TAG, viewModelClass.getCanonicalName());
+        navController.navigate(R.id.action_global_viewAllContentActivity, bundle);
     }
 
 }

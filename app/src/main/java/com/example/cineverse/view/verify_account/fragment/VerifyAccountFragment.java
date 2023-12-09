@@ -43,10 +43,6 @@ public class VerifyAccountFragment extends Fragment {
     private VerifyAccountViewModel viewModel;
     private boolean isCountdownRunning = false;
 
-    public VerifyAccountFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

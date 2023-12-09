@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.source.content.poster.IPosterContentRemoteDataSource;
+import com.example.cineverse.data.source.content.poster.UpcomingMovieRemoteDataSource;
 import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.AbstractSectionMovieViewModel;
 
 public class UpcomingMovieViewModel
@@ -20,8 +22,11 @@ public class UpcomingMovieViewModel
     }
 
     @Override
-    public void fetch() {
-        repository.fetchUpcomingMovies(getApplication().getString(R.string.language), 1);
+    protected IPosterContentRemoteDataSource createRemoteDataSourceInstance() {
+        return new UpcomingMovieRemoteDataSource(
+                getApplication().getBaseContext(),
+                this
+        );
     }
 
 }
