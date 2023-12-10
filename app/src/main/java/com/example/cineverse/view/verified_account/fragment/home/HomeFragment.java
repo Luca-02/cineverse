@@ -16,7 +16,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
-import com.example.cineverse.data.model.content.poster.AbstractPoster;
 import com.example.cineverse.databinding.FragmentHomeBinding;
 import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
 import com.google.android.material.chip.Chip;
@@ -56,7 +55,7 @@ public class HomeFragment extends Fragment {
      */
     private void setNavController() {
         NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager()
-                .findFragmentById(R.id.navHomeSectionFragment);
+                .findFragmentById(R.id.homeFragmentContainerView);
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
@@ -81,8 +80,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void openViewAllContentActivity(@IdRes int sectionTitleStringId,
-                                           Class<? extends AbstractSectionViewModel
-                                                   <? extends AbstractPoster>> viewModelClass) {
+                                           Class<? extends AbstractSectionViewModel> viewModelClass) {
         Bundle bundle = new Bundle();
         bundle.putInt(TITLE_STRING_ID_TAG, sectionTitleStringId);
         bundle.putString(VIEW_MODEL_CLASS_NAME_TAG, viewModelClass.getCanonicalName());

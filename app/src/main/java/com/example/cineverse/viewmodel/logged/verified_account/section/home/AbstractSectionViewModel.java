@@ -6,20 +6,18 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.content.Failure;
-import com.example.cineverse.data.model.content.poster.AbstractPoster;
-import com.example.cineverse.data.model.content.poster.AbstractPosterApiResponse;
+import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.source.content.poster.IPosterContentRemoteDataSource;
-import com.example.cineverse.data.source.content.poster.PosterContentResponseCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractSectionViewModel<T extends AbstractPoster>
-        extends AndroidViewModel
-        implements PosterContentResponseCallback<T> {
+public abstract class AbstractSectionViewModel
+        extends AndroidViewModel {
 
-    private MutableLiveData<List<T>> contentLiveData;
+    private MutableLiveData<List<? extends AbstractContent>> contentLiveData;
     private MutableLiveData<Failure> failureLiveData;
+    private int page;
 
     /**
      * Constructs an {@link AbstractSectionViewModel} object with the given {@link Application}.
@@ -28,9 +26,10 @@ public abstract class AbstractSectionViewModel<T extends AbstractPoster>
      */
     public AbstractSectionViewModel(Application application) {
         super(application);
+        page = 1;
     }
 
-    public MutableLiveData<List<T>> getContentLiveData() {
+    public MutableLiveData<List<? extends AbstractContent>> getContentLiveData() {
         if (contentLiveData == null) {
             contentLiveData = new MutableLiveData<>();
         }
@@ -52,29 +51,26 @@ public abstract class AbstractSectionViewModel<T extends AbstractPoster>
         getContentLiveData().setValue(new ArrayList<>());
     }
 
+    public int getPage() {
+        return page;
+    }
+
+    public void increasePage() {
+        page++;
+    }
+
     public boolean isContentEmpty() {
-        List<T> content = getContentLiveData().getValue();
+        List<? extends AbstractContent> content = getContentLiveData().getValue();
         if (content != null) {
             return content.isEmpty();
         }
         return true;
     }
 
-    @Override
-    public void onResponse(AbstractPosterApiResponse<T> response) {
-        if (response != null) {
-            List<T> resultData = response.getResults();
-            getContentLiveData().postValue(resultData);
-        }
+    public void fetchAndIncreasePage() {
+        fetch();
+        increasePage();
     }
-
-    @Override
-    public void onFailure(Failure failure) {
-        getFailureLiveData().postValue(failure);
-        clearFailureLiveData();
-    }
-
-    protected abstract IPosterContentRemoteDataSource createRemoteDataSourceInstance();
 
     public abstract void fetch();
 

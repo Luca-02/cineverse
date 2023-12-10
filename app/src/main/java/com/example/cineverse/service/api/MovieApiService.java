@@ -9,7 +9,7 @@ import static com.example.cineverse.utils.constant.Api.Movie.UPCOMING_MOVIE_ENDP
 import static com.example.cineverse.utils.constant.Api.PAGE_PARAMETER;
 import static com.example.cineverse.utils.constant.Api.REGION_PARAMETER;
 
-import com.example.cineverse.data.model.content.poster.PosterMovieApiResponse;
+import com.example.cineverse.data.model.content.section.ContentMovieApiResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,7 +19,7 @@ import retrofit2.http.Query;
 public interface MovieApiService {
 
     @GET(NOW_PLAYING_MOVIE_ENDPOINT)
-    Call<PosterMovieApiResponse> getNowPlayingMovies(
+    Call<ContentMovieApiResponse> getNowPlayingMovies(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -27,7 +27,7 @@ public interface MovieApiService {
     );
 
     @GET(POPULAR_MOVIE_ENDPOINT)
-    Call<PosterMovieApiResponse> getPopularMovies(
+    Call<ContentMovieApiResponse> getPopularMovies(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -35,7 +35,7 @@ public interface MovieApiService {
     );
 
     @GET(TOP_RATED_MOVIE_ENDPOINT)
-    Call<PosterMovieApiResponse> getTopRatedMovies(
+    Call<ContentMovieApiResponse> getTopRatedMovies(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -43,7 +43,7 @@ public interface MovieApiService {
     );
 
     @GET(UPCOMING_MOVIE_ENDPOINT)
-    Call<PosterMovieApiResponse> getUpcomingMovies(
+    Call<ContentMovieApiResponse> getUpcomingMovies(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,

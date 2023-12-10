@@ -67,10 +67,12 @@ public class UserRepository {
      * @return The currently authenticated {@link User} object or {@code null} if not authenticated.
      */
     public User getCurrentUser() {
-        // If getCurrentFirebaseUser() is NOT NULL and the User locally saved exist with equal
-        // uid, then the user is already logged. If one of them is NULL or does not exist, or have different
-        // uid, then is not already logged, and if FirebaseUser is NOT NULL, sign out from firebase, if
-        // User locally saved exist delete it.
+        /*
+         * If getCurrentFirebaseUser() is NOT NULL and the User locally saved exist with equal
+         * uid, then the user is already logged. If one of them is NULL or does not exist, or have different
+         * uid, then is not already logged, and if FirebaseUser is NOT NULL, sign out from firebase, if
+         * User locally saved exist delete it.
+         */
 
         FirebaseUser firebaseUser = getCurrentFirebaseUser();
         User localUser = getCurrentLocalUser();

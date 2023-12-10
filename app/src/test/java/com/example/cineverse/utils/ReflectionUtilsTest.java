@@ -2,8 +2,8 @@ package com.example.cineverse.utils;
 
 import static org.junit.Assert.*;
 
-import com.example.cineverse.data.model.content.poster.PosterMovie;
-import com.example.cineverse.data.model.content.poster.PosterTv;
+import com.example.cineverse.data.model.content.section.ContentMovie;
+import com.example.cineverse.data.model.content.section.ContentTv;
 
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class ReflectionUtilsTest {
                 ": " + genericTypeClass.getSimpleName());
     }
 
-    private static class A extends B<PosterMovie, PosterTv> {
+    private static class A extends B<ContentMovie, ContentTv> {
 
     }
 

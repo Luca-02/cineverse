@@ -51,7 +51,7 @@ public class DashboardFragment extends Fragment {
      */
     private void setNavController() {
         NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager()
-                .findFragmentById(R.id.navHostFragment);
+                .findFragmentById(R.id.dashboardFragmentContainerView);
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(binding.bottomNav, navController);

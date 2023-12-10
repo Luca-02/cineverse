@@ -2,26 +2,14 @@ package com.example.cineverse.viewmodel.logged.verified_account.section.home.sec
 
 import android.app.Application;
 
-import com.example.cineverse.R;
-import com.example.cineverse.data.model.content.poster.PosterTv;
-import com.example.cineverse.repository.content.poster.PosterContentRepository;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
+import com.example.cineverse.data.model.content.section.ContentTv;
+import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionContentViewModel;
 
 public abstract class AbstractSectionTvViewModel
-        extends AbstractSectionViewModel<PosterTv> {
-
-    protected PosterContentRepository repository;
+        extends AbstractSectionContentViewModel<ContentTv> {
 
     public AbstractSectionTvViewModel(Application application) {
         super(application);
-        this.repository = new PosterContentRepository(
-                createRemoteDataSourceInstance()
-        );
-    }
-
-    @Override
-    public void fetch() {
-        repository.fetch(1);
     }
 
 }

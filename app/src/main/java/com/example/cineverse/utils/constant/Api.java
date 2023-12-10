@@ -11,6 +11,8 @@ public class Api {
     public static final String PAGE_PARAMETER = "page";
     public static final String REGION_PARAMETER = "region";
 
+    public static final String RESPONSE_DATE_FORMAT = "yyyy-MM-dd";
+
     public static class Movie {
         public static final String NOW_PLAYING_MOVIE_ENDPOINT = "movie/now_playing";
         public static final String POPULAR_MOVIE_ENDPOINT = "movie/popular";

@@ -71,6 +71,11 @@
     <!-- Home -->
     <string name="hello_">Hello\u0020</string>
     <string name="review_or_track_content">Review or track the content you want to see</string>
+    <string name="all">All</string>
+    <string name="movies">Movies</string>
+    <string name="tv_series">Tv Series</string>
+
+    <!-- Home Section -->
     <string name="popular_movie">Popular Movie</string>
     <string name="top_rated_movie">Globally Top Rated Movie</string>
     <string name="upcoming_movie">Upcoming Movie</string>
@@ -80,7 +85,4 @@
     <string name="airing_today_tv">Airing today Tv Series</string>
     <string name="week_airing_tv">Airing this week Tv Series</string>
     <string name="view_all">View all</string>
-    <string name="all">All</string>
-    <string name="movies">Movies</string>
-    <string name="tv_series">Tv Series</string>
 </resources>

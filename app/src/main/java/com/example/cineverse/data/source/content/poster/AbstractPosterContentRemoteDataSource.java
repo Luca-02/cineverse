@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.content.Failure;
-import com.example.cineverse.data.model.content.poster.AbstractPoster;
-import com.example.cineverse.data.model.content.poster.AbstractPosterApiResponse;
+import com.example.cineverse.data.model.content.AbstractContent;
+import com.example.cineverse.data.model.content.AbstractContentApiResponse;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public abstract class AbstractPosterContentRemoteDataSource<T extends AbstractPoster> {
+public abstract class AbstractPosterContentRemoteDataSource<T extends AbstractContent> {
 
     protected String language;
     protected String region;
@@ -34,13 +34,13 @@ public abstract class AbstractPosterContentRemoteDataSource<T extends AbstractPo
         this.callback = callback;
     }
 
-    public <A extends AbstractPosterApiResponse<T>> void handlePosterApiCal(Call<A> call) {
+    public <A extends AbstractContentApiResponse<T>> void handlePosterApiCal(Call<A> call) {
         call.enqueue(new Callback<A>() {
             @Override
             public void onResponse(@NonNull Call<A> call, @NonNull Response<A> response) {
                 if (response.body() != null && response.isSuccessful()) {
                     if (response.code() == 200) {
-                        AbstractPosterApiResponse<T> movieResponse = response.body();
+                        AbstractContentApiResponse<T> movieResponse = response.body();
                         callback.onResponse(movieResponse);
                     } else {
                         callback.onFailure(Failure.getUnexpectedError());

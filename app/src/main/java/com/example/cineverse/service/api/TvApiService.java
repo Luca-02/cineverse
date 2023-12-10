@@ -9,7 +9,7 @@ import static com.example.cineverse.utils.constant.Api.Tv.ON_THE_AIR_TV_ENDPOINT
 import static com.example.cineverse.utils.constant.Api.Tv.POPULAR_TV_ENDPOINT;
 import static com.example.cineverse.utils.constant.Api.Tv.TOP_RATED_TV_ENDPOINT;
 
-import com.example.cineverse.data.model.content.poster.PosterTvApiResponse;
+import com.example.cineverse.data.model.content.section.ContentTvApiResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,7 +19,7 @@ import retrofit2.http.Query;
 public interface TvApiService {
 
     @GET(AIRING_TODAY_TV_ENDPOINT)
-    Call<PosterTvApiResponse> getAiringTodayTv(
+    Call<ContentTvApiResponse> getAiringTodayTv(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -27,7 +27,7 @@ public interface TvApiService {
     );
 
     @GET(ON_THE_AIR_TV_ENDPOINT)
-    Call<PosterTvApiResponse> getWeekAiringTv(
+    Call<ContentTvApiResponse> getWeekAiringTv(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -35,7 +35,7 @@ public interface TvApiService {
     );
 
     @GET(POPULAR_TV_ENDPOINT)
-    Call<PosterTvApiResponse> getPopularTv(
+    Call<ContentTvApiResponse> getPopularTv(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -43,7 +43,7 @@ public interface TvApiService {
     );
 
     @GET(TOP_RATED_TV_ENDPOINT)
-    Call<PosterTvApiResponse> getTopRatedTv(
+    Call<ContentTvApiResponse> getTopRatedTv(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,

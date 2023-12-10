@@ -4,9 +4,8 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.R;
 import com.example.cineverse.data.source.content.poster.IPosterContentRemoteDataSource;
-import com.example.cineverse.data.source.content.poster.WeekAiringTvRemoteDataSource;
+import com.example.cineverse.data.source.content.poster.section.WeekAiringTvRemoteDataSource;
 import com.example.cineverse.viewmodel.logged.verified_account.section.home.section.AbstractSectionTvViewModel;
 
 public class WeekAiringTvViewModel

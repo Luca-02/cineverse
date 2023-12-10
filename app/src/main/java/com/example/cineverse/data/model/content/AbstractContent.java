@@ -1,8 +1,8 @@
-package com.example.cineverse.data.model.content.poster;
+package com.example.cineverse.data.model.content;
 
 import com.google.gson.annotations.SerializedName;
 
-public abstract class AbstractPoster {
+public abstract class AbstractContent {
 
     private int id;
     @SerializedName("poster_path")
@@ -10,7 +10,7 @@ public abstract class AbstractPoster {
     @SerializedName("backdrop_path")
     private String backdropPath;
 
-    public AbstractPoster(int id, String posterPath, String backdropPath) {
+    public AbstractContent(int id, String posterPath, String backdropPath) {
         this.id = id;
         this.posterPath = posterPath;
         this.backdropPath = backdropPath;
@@ -43,5 +43,9 @@ public abstract class AbstractPoster {
     public abstract String getName();
 
     public abstract void setName(String name);
+
+    public abstract String getReleaseDate();
+
+    public abstract void setReleaseDate(String releaseDate);
 
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_all_content_nav_graph"
+    app:startDestination="@id/viewAllContentFragment">
+
+    <fragment
+        android:id="@+id/viewAllContentFragment"
+        android:name="com.example.cineverse.view.view_all_content.fragment.ViewAllContentFragment"
+        android:label="fragment_view_all_content"
+        tools:layout="@layout/fragment_view_all_content" />
+</navigation>

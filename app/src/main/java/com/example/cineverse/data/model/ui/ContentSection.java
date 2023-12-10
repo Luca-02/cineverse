@@ -1,6 +1,5 @@
 package com.example.cineverse.data.model.ui;
 
-import com.example.cineverse.data.model.content.poster.AbstractPoster;
 import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
 
 public class ContentSection {
@@ -9,14 +8,12 @@ public class ContentSection {
     public static final int CAROUSEL_TYPE = 1;
 
     private final int sectionTitleStringId;
-    private final Class<? extends AbstractSectionViewModel
-            <? extends AbstractPoster>> viewModelClass;
+    private final Class<? extends AbstractSectionViewModel> viewModelClass;
     private final int viewType;
     private boolean forceRefresh;
 
     public ContentSection(int sectionTitleStringId,
-                          Class<? extends AbstractSectionViewModel
-                                      <? extends AbstractPoster>> viewModelClass,
+                          Class<? extends AbstractSectionViewModel> viewModelClass,
                           int viewType) {
         this.sectionTitleStringId = sectionTitleStringId;
         this.viewModelClass = viewModelClass;
@@ -28,8 +25,7 @@ public class ContentSection {
         return sectionTitleStringId;
     }
 
-    public Class<? extends AbstractSectionViewModel
-            <? extends AbstractPoster>> getViewModelClass() {
+    public Class<? extends AbstractSectionViewModel> getViewModelClass() {
         return viewModelClass;
     }
 

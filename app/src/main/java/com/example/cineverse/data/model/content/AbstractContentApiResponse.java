@@ -1,12 +1,10 @@
-package com.example.cineverse.data.model.content.poster;
-
-import androidx.annotation.NonNull;
+package com.example.cineverse.data.model.content;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public abstract class AbstractPosterApiResponse<T extends AbstractPoster> {
+public abstract class AbstractContentApiResponse<T extends AbstractContent> {
 
     private int page;
     private List<T> results;
@@ -15,7 +13,7 @@ public abstract class AbstractPosterApiResponse<T extends AbstractPoster> {
     @SerializedName("total_results")
     private int totalResults;
 
-    public AbstractPosterApiResponse(int page, List<T> results, int totalPages, int totalResults) {
+    public AbstractContentApiResponse(int page, List<T> results, int totalPages, int totalResults) {
         this.page = page;
         this.results = results;
         this.totalPages = totalPages;
@@ -52,17 +50,6 @@ public abstract class AbstractPosterApiResponse<T extends AbstractPoster> {
 
     public void setResults(List<T> results) {
         this.results = results;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "AbstractPosterApiResponse{" +
-                "page=" + page +
-                ", results=" + results +
-                ", totalPages=" + totalPages +
-                ", totalResults=" + totalResults + '\'' +
-                '}';
     }
 
 }

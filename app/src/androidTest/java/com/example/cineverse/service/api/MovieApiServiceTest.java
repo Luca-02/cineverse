@@ -4,29 +4,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.cineverse.R;
-import com.example.cineverse.data.model.content.poster.PosterMovie;
-import com.example.cineverse.data.model.content.poster.PosterMovieApiResponse;
 import com.example.cineverse.repository.firebase.user.UserFirebaseSourceTest;
 import com.example.cineverse.utils.ServiceLocator;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @RunWith(AndroidJUnit4.class)
 public class MovieApiServiceTest {

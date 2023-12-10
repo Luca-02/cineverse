@@ -11,8 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.cineverse.adapter.ContentSectionAdapter;
-import com.example.cineverse.data.model.content.poster.AbstractPoster;
+import com.example.cineverse.adapter.HomeSectionAdapter;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentAllContentBinding;
 import com.example.cineverse.view.verified_account.fragment.home.HomeFragment;
@@ -23,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllContentFragment extends Fragment
-        implements ContentSectionAdapter.OnClickListener {
+        implements HomeSectionAdapter.OnClickListener {
 
     private FragmentAllContentBinding binding;
     private HomeViewModel viewModel;
-    private ContentSectionAdapter sectionAdapter;
+    private HomeSectionAdapter sectionAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -41,31 +40,13 @@ public class AllContentFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         setViewModel();
         setListener();
-        initContentSection();
+        initContentSection(view);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    private void initContentSection() {
-        List<ContentSection> sectionList =
-                new ArrayList<>(viewModel.getAllContentSection());
-
-        sectionAdapter = new ContentSectionAdapter(
-                this,
-                requireContext(),
-                getViewLifecycleOwner(),
-                sectionList,
-                this
-        );
-
-        binding.sectionRecyclerView.setLayoutManager(new LinearLayoutManager(
-                requireContext(), LinearLayoutManager.VERTICAL, false));
-        binding.sectionRecyclerView.setAdapter(sectionAdapter);
-        binding.sectionRecyclerView.setHasFixedSize(true);
     }
 
     /**
@@ -85,10 +66,28 @@ public class AllContentFragment extends Fragment
         });
     }
 
+    private void initContentSection(View view) {
+        List<ContentSection> sectionList =
+                new ArrayList<>(viewModel.getAllContentSection());
+
+        sectionAdapter = new HomeSectionAdapter(
+                this,
+                requireContext(),
+                getViewLifecycleOwner(),
+                view,
+                sectionList,
+                this
+        );
+
+        binding.sectionRecyclerView.setLayoutManager(new LinearLayoutManager(
+                requireContext(), LinearLayoutManager.VERTICAL, false));
+        binding.sectionRecyclerView.setAdapter(sectionAdapter);
+        binding.sectionRecyclerView.setHasFixedSize(true);
+    }
+
     @Override
     public void onViewAllClick(int sectionTitleStringId,
-                               Class<? extends AbstractSectionViewModel
-                                       <? extends AbstractPoster>> viewModelClass) {
+                               Class<? extends AbstractSectionViewModel> viewModelClass) {
         HomeFragment homeFragment = (HomeFragment) requireParentFragment().requireParentFragment();
         homeFragment.openViewAllContentActivity(sectionTitleStringId, viewModelClass);
     }
