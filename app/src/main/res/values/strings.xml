@@ -66,4 +66,17 @@
     <!-- Google -->
     <string name="google_signin_failed">Google Sign In failed</string>
     <string name="authentication_failed">Authentication failed</string>
+
+    <!-- Profile Account -->
+    <string name="fav_films">Favourite Movies</string>
+    <string name="recent_watched">Recent Watched</string>
+    <string name="recent_reviews">Recent Reviews</string>
+    <string name="see_all">See All</string>
+
+    <!-- Profile Account info slider-->
+    <string name="total_movies">Total Movies</string>
+    <string name="reviews">Reviews</string>
+    <string name="likes">Likes</string>
+    <string name="film_of_the_year">Film of the Year</string>
+
 </resources>
