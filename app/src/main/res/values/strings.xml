@@ -79,4 +79,7 @@
     <string name="likes">Likes</string>
     <string name="film_of_the_year">Film of the Year</string>
 
+    <!-- Profile menu settings-->
+    <string name="setting_menu">Settings</string>
+
 </resources>
