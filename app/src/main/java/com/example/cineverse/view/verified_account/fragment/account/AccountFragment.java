@@ -1,5 +1,6 @@
 package com.example.cineverse.view.verified_account.fragment.account;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -25,6 +27,7 @@ import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.verified_account.fragment.account.utils.AbstractSizeUpdate;
 import com.example.cineverse.viewmodel.logged.verified_account.VerifiedAccountViewModel;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 /**
  * The {@link AccountFragment} class representing the user account section of the application.
@@ -42,6 +45,9 @@ public class AccountFragment extends Fragment {
     private int initialImageSizePx; // Initial size of profile picture in pixels
     private int initialTextSizePx; // Initial text size of username in pixels
     private AbstractSizeUpdate size_updater;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    ConstraintLayout profile_ConstraintLayout;
+
 
 
     public AccountFragment() {
@@ -85,6 +91,8 @@ public class AccountFragment extends Fragment {
         appBarLayout = view.findViewById(R.id.account_appBarLayout);
         userName = view.findViewById(R.id.userEmail);
         size_updater = new AbstractSizeUpdate(){};
+        collapsingToolbarLayout = view.findViewById(R.id.collapsingToolbarLayout);
+        profile_ConstraintLayout = view.findViewById(R.id.profileConstraintLayout);
     }
 
     /**
@@ -107,6 +115,8 @@ public class AccountFragment extends Fragment {
         Log.d("TEXT", String.valueOf(initialTextSizePx));
         // Add an offset listener to the AppBarLayout
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isColorChanged = false;
+            int scrollRange = -1;
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 // Calculate the percentage of collapse/expansion (-1f to 1f)
@@ -116,10 +126,29 @@ public class AccountFragment extends Fragment {
                 int newSize = size_updater.calculateNewSize(collapsePercent, initialImageSizePx, size_updater.dpToPx(getContext(),40)); // Initial and final size in pixels
                 int newTextSize = size_updater.calculateNewTextSize(collapsePercent, initialTextSizePx, size_updater.dpToPx(getContext(),18)); // Initial and final text size in pixels
 
+
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    // Collapsed
+                    if (!isColorChanged) {
+                        profile_ConstraintLayout.setBackgroundColor(Color.TRANSPARENT); // Set transparent background
+                        userName.setTextColor(getResources().getColor(R.color.white));
+                        isColorChanged = true;
+                    }
+                } else {
+                    // Expanded or in-between
+                    if (isColorChanged) {
+                        profile_ConstraintLayout.setBackgroundColor(Color.parseColor("#80C0C0C0")); // Set your original color
+                        isColorChanged = false;
+                    }
+                }
                 // Update the size of profileImage and userName
                 updateSize(newSize, newTextSize);
             }
         });
+
     }
 
     /*
