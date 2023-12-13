@@ -5,9 +5,12 @@ import static com.example.cineverse.utils.constant.Api.LANGUAGE_PARAMETER;
 import static com.example.cineverse.utils.constant.Api.PAGE_PARAMETER;
 import static com.example.cineverse.utils.constant.Api.REGION_PARAMETER;
 import static com.example.cineverse.utils.constant.Api.Tv.AIRING_TODAY_TV_ENDPOINT;
+import static com.example.cineverse.utils.constant.Api.Tv.DISCOVER_TV_ENDPOINT;
 import static com.example.cineverse.utils.constant.Api.Tv.ON_THE_AIR_TV_ENDPOINT;
 import static com.example.cineverse.utils.constant.Api.Tv.POPULAR_TV_ENDPOINT;
+import static com.example.cineverse.utils.constant.Api.Tv.TODAY_TRENDING_TV_ENDPOINT;
 import static com.example.cineverse.utils.constant.Api.Tv.TOP_RATED_TV_ENDPOINT;
+import static com.example.cineverse.utils.constant.Api.WITH_GENRES_PARAMETER;
 
 import com.example.cineverse.data.model.content.section.ContentTvApiResponse;
 
@@ -47,6 +50,21 @@ public interface TvApiService {
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
+            @Header(AUTHORIZATION_HEADER) String bearerAccessTokenAuth
+    );
+
+    @GET(TODAY_TRENDING_TV_ENDPOINT)
+    Call<ContentTvApiResponse> getTodayTrendingTv(
+            @Query(LANGUAGE_PARAMETER) String language,
+            @Query(PAGE_PARAMETER) int page,
+            @Header(AUTHORIZATION_HEADER) String bearerAccessTokenAuth
+    );
+
+    @GET(DISCOVER_TV_ENDPOINT)
+    Call<ContentTvApiResponse> getTvFromGenres(
+            @Query(LANGUAGE_PARAMETER) String language,
+            @Query(PAGE_PARAMETER) int page,
+            @Query(WITH_GENRES_PARAMETER) int withGenres,
             @Header(AUTHORIZATION_HEADER) String bearerAccessTokenAuth
     );
 

@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.data.model.User;
 import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
 import com.example.cineverse.utils.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
@@ -208,7 +208,6 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
         } else {
             callback.onNetworkUnavailable();
         }
-
     }
 
     /**
@@ -245,7 +244,6 @@ public class UserFirebaseSource extends UserFirebaseDatabaseServices {
         } else {
             callback.onNetworkUnavailable();
         }
-
     }
 
     /**

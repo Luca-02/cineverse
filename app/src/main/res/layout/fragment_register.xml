@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/half_spacing"
                     android:hint="@string/username"
-                    app:startIconDrawable="@drawable/person">
+                    app:startIconDrawable="@drawable/outline_person">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/usernameEditText"

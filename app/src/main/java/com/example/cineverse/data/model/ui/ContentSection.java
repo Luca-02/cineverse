@@ -1,18 +1,19 @@
 package com.example.cineverse.data.model.ui;
 
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.AbstractSectionViewModel;
 
 public class ContentSection {
 
     public static final int POSTER_TYPE = 0;
     public static final int CAROUSEL_TYPE = 1;
+    public static final int GENRE_TYPE = 2;
 
-    private final int sectionTitleStringId;
+    private final Integer sectionTitleStringId;
     private final Class<? extends AbstractSectionViewModel> viewModelClass;
     private final int viewType;
     private boolean forceRefresh;
 
-    public ContentSection(int sectionTitleStringId,
+    public ContentSection(Integer sectionTitleStringId,
                           Class<? extends AbstractSectionViewModel> viewModelClass,
                           int viewType) {
         this.sectionTitleStringId = sectionTitleStringId;

@@ -23,7 +23,7 @@ public class ForgotPasswordViewModel
      * @param application The {@link Application} of the calling component.
      */
     public ForgotPasswordViewModel(@NonNull Application application) {
-        super(application, new ForgotPasswordRepository(application.getBaseContext()));
+        super(application, new ForgotPasswordRepository(application.getApplicationContext()));
     }
 
     /**

@@ -2,9 +2,9 @@ package com.example.cineverse.utils;
 
 import static com.example.cineverse.utils.constant.Api.TMDB_API_BASE_URL;
 
-import android.content.Context;
-
-import com.example.cineverse.data.storage.user.UserStorage;
+import com.example.cineverse.service.api.GenreApiService;
+import com.example.cineverse.service.api.MovieApiService;
+import com.example.cineverse.service.api.TvApiService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -22,15 +22,23 @@ public class ServiceLocator {
         return instance;
     }
 
-    public UserStorage getUserStorage(Context context) {
-        return new UserStorage(context);
-    }
-
-    public Retrofit getRetrofitService() {
+    private Retrofit getRetrofitService() {
         return new Retrofit.Builder()
                 .baseUrl(TMDB_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+    }
+
+    public MovieApiService getMovieApiService() {
+        return getRetrofitService().create(MovieApiService.class);
+    }
+
+    public TvApiService getTvApiService() {
+        return getRetrofitService().create(TvApiService.class);
+    }
+
+    public GenreApiService getGenreApiService() {
+        return getRetrofitService().create(GenreApiService.class);
     }
 
 }

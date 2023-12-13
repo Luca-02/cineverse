@@ -2,9 +2,8 @@ package com.example.cineverse.repository;
 
 import android.content.Context;
 
-import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.storage.user.UserStorage;
-import com.example.cineverse.utils.ServiceLocator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,7 +31,7 @@ public class UserRepository {
      */
     public UserRepository(Context context) {
         this.context = context;
-        userStorage = ServiceLocator.getInstance().getUserStorage(context);
+        userStorage = new UserStorage(context);
     }
 
     /**
@@ -63,17 +62,20 @@ public class UserRepository {
 
     /**
      * Gets the currently authenticated user based on Firebase and local storage.
+     * If {@link #getCurrentFirebaseUser()} is NOT {@code null} and the {@link User} locally saved exist with equal
+     * uid, then the user is already logged.
+     * <pre></pre>
+     * If one of them is {@code null} or does not exist, or have different
+     * uid, then is not already logged, so:
+     * <ul>
+     * <li>if {@link FirebaseUser} is NOT {@code null}, sign out from Firebase.</li>
+     * <li>if {@link User} locally saved exist delete it.</li>
+     * </ul>
      *
-     * @return The currently authenticated {@link User} object or {@code null} if not authenticated.
+     *
+     * @return The currently authenticated {@link User} object or {@code null} if not already authenticated.
      */
     public User getCurrentUser() {
-        /*
-         * If getCurrentFirebaseUser() is NOT NULL and the User locally saved exist with equal
-         * uid, then the user is already logged. If one of them is NULL or does not exist, or have different
-         * uid, then is not already logged, and if FirebaseUser is NOT NULL, sign out from firebase, if
-         * User locally saved exist delete it.
-         */
-
         FirebaseUser firebaseUser = getCurrentFirebaseUser();
         User localUser = getCurrentLocalUser();
 

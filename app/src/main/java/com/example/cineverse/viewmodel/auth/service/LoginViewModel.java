@@ -22,7 +22,7 @@ public class LoginViewModel
      * @param application The {@link Application} of the calling component.
      */
     public LoginViewModel(@NonNull Application application) {
-        super(application, new LoginRepository(application.getBaseContext()));
+        super(application, new LoginRepository(application.getApplicationContext()));
     }
 
     /**

@@ -24,6 +24,8 @@
             android:clipChildren="false"
             android:paddingStart="@dimen/standard_spacing"
             android:paddingEnd="@dimen/standard_spacing"
+            android:paddingTop="@dimen/half_spacing"
+            android:paddingBottom="@dimen/half_spacing"
             app:selectionRequired="true"
             app:singleSelection="true"
             app:checkedChip="@id/allChip">
@@ -42,13 +44,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/movies" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/tvChip"
-                style="@style/Widget.App.Chip.Suggestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tv_series" />
-        </com.google.android.material.chip.ChipGroup>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tvChip"
+            style="@style/Widget.App.Chip.Suggestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_series" />
+    </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
     <androidx.fragment.app.FragmentContainerView

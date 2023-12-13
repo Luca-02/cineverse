@@ -22,7 +22,7 @@ public class RegisterViewModel
      * @param application The {@link Application of the calling component.
      */
     public RegisterViewModel(@NonNull Application application) {
-        super(application, new RegisterRepository(application.getBaseContext()));
+        super(application, new RegisterRepository(application.getApplicationContext()));
     }
 
     /**

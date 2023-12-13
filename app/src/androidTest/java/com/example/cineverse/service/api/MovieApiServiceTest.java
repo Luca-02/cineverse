@@ -25,9 +25,7 @@ public class MovieApiServiceTest {
     @Before
     public void setup() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        movieApiService = ServiceLocator.getInstance()
-                .getRetrofitService()
-                .create(MovieApiService.class);
+        movieApiService = ServiceLocator.getInstance().getMovieApiService();
     }
 
 //    @Test

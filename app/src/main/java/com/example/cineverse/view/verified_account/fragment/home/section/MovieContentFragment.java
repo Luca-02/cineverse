@@ -5,24 +5,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.cineverse.adapter.HomeSectionAdapter;
+import com.example.cineverse.adapter.home.HomeSectionAdapter;
+import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentMovieContentBinding;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.HomeViewModel;
+import com.example.cineverse.view.verified_account.fragment.home.HomeFragment;
+import com.example.cineverse.viewmodel.verified_account.section.home.HomeViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovieContentFragment extends Fragment
-        implements HomeSectionAdapter.OnClickListener {
+        implements HomeSectionAdapter.OnSectionClickListener {
 
     private FragmentMovieContentBinding binding;
     private HomeViewModel viewModel;
@@ -39,8 +39,8 @@ public class MovieContentFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setViewModel();
-        setListener();
         initContentSection(view);
+        setListener();
     }
 
     @Override
@@ -68,26 +68,32 @@ public class MovieContentFragment extends Fragment
 
     private void initContentSection(View view) {
         List<ContentSection> sectionList =
-                new ArrayList<>(viewModel.getMovieContentSection());
+                new ArrayList<>(viewModel.getMovieContentSection(true));
 
         sectionAdapter = new HomeSectionAdapter(
                 this,
                 requireContext(),
                 getViewLifecycleOwner(),
-                view, sectionList,
+                view,
+                sectionList,
                 this
         );
 
-        binding.sectionRecyclerView.setLayoutManager(new LinearLayoutManager(
-                requireContext(), LinearLayoutManager.VERTICAL, false));
+        binding.sectionRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.sectionRecyclerView.setAdapter(sectionAdapter);
         binding.sectionRecyclerView.setHasFixedSize(true);
     }
 
     @Override
-    public void onViewAllClick(@IdRes int sectionTitleStringId,
-                               Class<? extends AbstractSectionViewModel> viewModelClass) {
+    public void onViewAllClick(ContentSection section) {
+        HomeFragment homeFragment = (HomeFragment) requireParentFragment().requireParentFragment();
+        homeFragment.openViewAllContentActivity(section);
+    }
 
+    @Override
+    public void onGenreClick(ContentSection section, Genre genre) {
+        HomeFragment homeFragment = (HomeFragment) requireParentFragment().requireParentFragment();
+        homeFragment.openViewAllContentActivity(section, genre);
     }
 
 }

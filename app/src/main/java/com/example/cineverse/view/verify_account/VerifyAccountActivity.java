@@ -13,7 +13,6 @@ import com.example.cineverse.R;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
-import com.example.cineverse.viewmodel.logged.verify_account.VerifyAccountViewModel;
 
 /**
  * The {@link VerifyAccountActivity} class represents the activity for email verification.
@@ -33,6 +32,7 @@ public class VerifyAccountActivity extends AppCompatActivity {
         setActionBar();
         setNavController();
         BackPressedHandler.handleOnBackPressedCallback(this, navController);
+        getWindow().setNavigationBarColor(android.R.attr.colorBackground);
     }
 
     /**

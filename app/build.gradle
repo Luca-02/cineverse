@@ -22,6 +22,8 @@ android {
         localProperties.load(project.rootProject.file("local.properties").newDataInputStream())
         resValue("string", "access_token_auth", localProperties.getProperty("access_token_auth"))
         resValue("string", "api_key_auth", localProperties.getProperty("api_key_auth"))
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {

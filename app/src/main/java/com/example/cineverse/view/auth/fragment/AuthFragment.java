@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.data.model.User;
 import com.example.cineverse.R;
 import com.example.cineverse.repository.auth.service.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
@@ -64,23 +64,23 @@ public class AuthFragment extends Fragment {
         binding = null;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        requireActivity().getWindow().addFlags(UI_OPTIONS);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        requireActivity().getWindow().clearFlags(UI_OPTIONS);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        requireActivity().getWindow().clearFlags(UI_OPTIONS);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        requireActivity().getWindow().addFlags(UI_OPTIONS);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        requireActivity().getWindow().clearFlags(UI_OPTIONS);
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        requireActivity().getWindow().clearFlags(UI_OPTIONS);
+//    }
 
     /**
      * Sets up the ViewModel for the fragment.

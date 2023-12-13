@@ -11,18 +11,18 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.cineverse.adapter.HomeSectionAdapter;
+import com.example.cineverse.adapter.home.HomeSectionAdapter;
+import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentAllContentBinding;
 import com.example.cineverse.view.verified_account.fragment.home.HomeFragment;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.HomeViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.HomeViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AllContentFragment extends Fragment
-        implements HomeSectionAdapter.OnClickListener {
+        implements HomeSectionAdapter.OnSectionClickListener {
 
     private FragmentAllContentBinding binding;
     private HomeViewModel viewModel;
@@ -39,8 +39,8 @@ public class AllContentFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setViewModel();
-        setListener();
         initContentSection(view);
+        setListener();
     }
 
     @Override
@@ -79,17 +79,20 @@ public class AllContentFragment extends Fragment
                 this
         );
 
-        binding.sectionRecyclerView.setLayoutManager(new LinearLayoutManager(
-                requireContext(), LinearLayoutManager.VERTICAL, false));
+        binding.sectionRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.sectionRecyclerView.setAdapter(sectionAdapter);
         binding.sectionRecyclerView.setHasFixedSize(true);
     }
 
     @Override
-    public void onViewAllClick(int sectionTitleStringId,
-                               Class<? extends AbstractSectionViewModel> viewModelClass) {
+    public void onViewAllClick(ContentSection section) {
         HomeFragment homeFragment = (HomeFragment) requireParentFragment().requireParentFragment();
-        homeFragment.openViewAllContentActivity(sectionTitleStringId, viewModelClass);
+        homeFragment.openViewAllContentActivity(section);
+    }
+
+    @Override
+    public void onGenreClick(ContentSection section, Genre genre) {
+
     }
 
 }

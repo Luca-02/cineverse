@@ -1,0 +1,31 @@
+package com.example.cineverse.viewmodel.verified_account.section.home.content.section;
+
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+
+import com.example.cineverse.data.source.content.ISectionContentRemoteDataSource;
+import com.example.cineverse.data.source.content.section.TodayTrendingTvRemoteDataSource;
+import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionTvViewModel;
+
+public class TodayTrendingTvViewModel
+        extends AbstractSectionTvViewModel {
+
+    /**
+     * Constructs an {@link TodayTrendingTvViewModel} object with the given {@link Application}.
+     *
+     * @param application The {@link Application} of the calling component.
+     */
+    public TodayTrendingTvViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    @Override
+    protected ISectionContentRemoteDataSource createRemoteDataSourceInstance() {
+        return new TodayTrendingTvRemoteDataSource(
+                getApplication().getApplicationContext(),
+                this
+        );
+    }
+
+}

@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.data.model.User;
 import com.example.cineverse.R;
 import com.example.cineverse.repository.auth.service.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
@@ -21,7 +21,6 @@ import com.example.cineverse.viewmodel.auth.service.LoginViewModel;
 import com.example.cineverse.databinding.FragmentLoginBinding;
 
 import java.util.Objects;
-import java.util.Properties;
 
 /**
  * The {@link LoginFragment} class represents the login screen of the application.

@@ -15,7 +15,7 @@ public class ConcreteUserViewModel
      * @param application The {@link Application} of the calling component.
      */
     public ConcreteUserViewModel(@NonNull Application application) {
-        super(application, new UserRepository(application.getBaseContext()));
+        super(application, new UserRepository(application.getApplicationContext()));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.cineverse.view.verified_account.fragment.home;
 
+import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.GENRE_TAG;
 import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.TITLE_STRING_ID_TAG;
 import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.VIEW_MODEL_CLASS_NAME_TAG;
 
@@ -8,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,8 +16,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.genre.Genre;
+import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentHomeBinding;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
 import com.google.android.material.chip.Chip;
 
 /**
@@ -79,11 +80,17 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void openViewAllContentActivity(@IdRes int sectionTitleStringId,
-                                           Class<? extends AbstractSectionViewModel> viewModelClass) {
+    public void openViewAllContentActivity(ContentSection section) {
         Bundle bundle = new Bundle();
-        bundle.putInt(TITLE_STRING_ID_TAG, sectionTitleStringId);
-        bundle.putString(VIEW_MODEL_CLASS_NAME_TAG, viewModelClass.getCanonicalName());
+        bundle.putInt(TITLE_STRING_ID_TAG, section.getSectionTitleStringId());
+        bundle.putString(VIEW_MODEL_CLASS_NAME_TAG, section.getViewModelClass().getCanonicalName());
+        navController.navigate(R.id.action_global_viewAllContentActivity, bundle);
+    }
+
+    public void openViewAllContentActivity(ContentSection section, Genre genre) {
+        Bundle bundle = new Bundle();
+        bundle.putString(VIEW_MODEL_CLASS_NAME_TAG, section.getViewModelClass().getCanonicalName());
+        bundle.putParcelable(GENRE_TAG, genre);
         navController.navigate(R.id.action_global_viewAllContentActivity, bundle);
     }
 

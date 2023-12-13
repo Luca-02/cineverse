@@ -27,7 +27,7 @@ public class AuthViewModel
      * @param application The {@link Application} of the calling component.
      */
     public AuthViewModel(@NonNull Application application) {
-        super(application, new GoogleAuthRepository(application.getBaseContext()));
+        super(application, new GoogleAuthRepository(application.getApplicationContext()));
         // Initialize GoogleSignInOptions
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(application.getString(R.string.default_web_client_id))

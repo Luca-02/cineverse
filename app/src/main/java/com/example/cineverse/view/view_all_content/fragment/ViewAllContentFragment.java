@@ -1,5 +1,7 @@
 package com.example.cineverse.view.view_all_content.fragment;
 
+import static com.example.cineverse.utils.constant.Api.STARTING_PAGE;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +10,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cineverse.adapter.ContentViewAllAdapter;
+import com.example.cineverse.adapter.home.ContentViewAllAdapter;
+import com.example.cineverse.data.model.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
-import com.example.cineverse.data.model.content.Failure;
 import com.example.cineverse.databinding.FragmentViewAllContentBinding;
 import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
-import com.example.cineverse.viewmodel.logged.verified_account.section.home.AbstractSectionViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -25,16 +26,21 @@ import java.util.List;
 
 public class ViewAllContentFragment extends Fragment {
 
+    private static final String SAVE_RECYCLER_VIEW_CONTENT_ID = "SaveRecyclerViewContent";
+
     private FragmentViewAllContentBinding binding;
-    private AbstractSectionViewModel viewModel;
+    private AbstractSectionContentViewModel viewModel;
     private ContentViewAllAdapter contentAdapter;
 
+    private RecyclerView recyclerView;
     private boolean isLoading = false;
+    private boolean savedInstanceStateIsNull = true;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentViewAllContentBinding.inflate(inflater, container, false);
+        recyclerView = binding.contentRecyclerView;
         return binding.getRoot();
     }
 
@@ -42,7 +48,10 @@ public class ViewAllContentFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setViewModel();
-        initContentSection();
+        if (viewModel != null) {
+            initContentSection(savedInstanceState);
+            setListener();
+        }
     }
 
     @Override
@@ -51,30 +60,37 @@ public class ViewAllContentFragment extends Fragment {
         binding = null;
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager != null) {
+            outState.putParcelableArrayList(SAVE_RECYCLER_VIEW_CONTENT_ID,
+                    (ArrayList<AbstractContent>) contentAdapter.getData());
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    public void restorePreviousState(Bundle savedInstanceState){
+        List<AbstractContent> dataset = savedInstanceState
+                .getParcelableArrayList(SAVE_RECYCLER_VIEW_CONTENT_ID);
+        contentAdapter.setData(dataset);
+    }
+
     /**
      * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
-        Class<? extends AbstractSectionViewModel> viewModelClass =
-                ((ViewAllContentActivity) requireActivity()).getViewModelClass();
-        if (viewModelClass != null) {
-            viewModel = new ViewModelProvider(this).get(viewModelClass);
+        viewModel = ((ViewAllContentActivity) requireActivity()).getViewModel(this);
+        if (viewModel != null) {
             viewModel.getContentLiveData().observe(getViewLifecycleOwner(), this::handleContent);
             viewModel.getFailureLiveData().observe(getViewLifecycleOwner(), this::handleFailure);
         }
     }
 
-    private void initContentSection() {
-        contentAdapter = new ContentViewAllAdapter(
-            requireContext(),
-                new ArrayList<>()
-        );
-
-        binding.contentRecyclerView.setLayoutManager(new LinearLayoutManager(
-                requireContext(), LinearLayoutManager.VERTICAL, false));
-        binding.contentRecyclerView.setAdapter(contentAdapter);
-        viewModel.fetchAndIncreasePage();
-
+    /**
+     * Sets up click listeners for UI elements in the fragment.
+     */
+    private void setListener() {
         binding.contentRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -84,21 +100,40 @@ public class ViewAllContentFragment extends Fragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
-                if (!isLoading) {
-                    if (linearLayoutManager != null &&
-                            linearLayoutManager.findLastCompletelyVisibleItemPosition() == contentAdapter.getItemCount() - 1) {
-                        viewModel.fetchAndIncreasePage();
-                        isLoading = true;
-                    }
+                if (!isLoading && !recyclerView.canScrollVertically(1)) {
+                    viewModel.fetchAndIncreasePage();
+                    isLoading = true;
                 }
             }
         });
     }
 
+    private void initContentSection(Bundle savedInstanceState) {
+        contentAdapter = new ContentViewAllAdapter(requireContext(), new ArrayList<>());
+
+        binding.contentRecyclerView.setAdapter(contentAdapter);
+        binding.contentRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        handleRecyclerViewState(savedInstanceState);
+    }
+
+    public void handleRecyclerViewState(Bundle savedInstanceState) {
+        savedInstanceStateIsNull = savedInstanceState == null;
+        if (savedInstanceStateIsNull) {
+            if (viewModel.getPage() == STARTING_PAGE) {
+                viewModel.fetchAndIncreasePage();
+            }
+        } else {
+            restorePreviousState(savedInstanceState);
+        }
+    }
+
     public void handleContent(List<? extends AbstractContent> abstractPosters) {
-        contentAdapter.setData(abstractPosters);
+        if (savedInstanceStateIsNull) {
+            contentAdapter.setData(abstractPosters);
+        } else {
+            savedInstanceStateIsNull = true;
+        }
         isLoading = false;
     }
 

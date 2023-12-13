@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.data.model.User;
 import com.example.cineverse.repository.auth.service.RegisterRepository;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.auth.service.RegisterViewModel;

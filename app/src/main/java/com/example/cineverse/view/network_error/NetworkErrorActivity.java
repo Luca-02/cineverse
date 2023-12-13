@@ -27,6 +27,7 @@ public class NetworkErrorActivity extends AppCompatActivity {
         setActionBar();
         setNavController();
         BackPressedHandler.handleOnBackPressedCallback(this, navController);
+        getWindow().setNavigationBarColor(android.R.attr.colorBackground);
         binding.materialToolbar.setNavigationOnClickListener(
                 view -> getOnBackPressedDispatcher().onBackPressed());
     }

@@ -1,10 +1,12 @@
 package com.example.cineverse.data.model.content;
 
+import com.example.cineverse.data.model.ApiResponse;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public abstract class AbstractContentApiResponse<T extends AbstractContent> {
+public abstract class AbstractContentApiResponse<T extends AbstractContent>
+        implements ApiResponse {
 
     private int page;
     private List<T> results;

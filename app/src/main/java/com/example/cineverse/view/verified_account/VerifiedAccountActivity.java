@@ -2,15 +2,15 @@ package com.example.cineverse.view.verified_account;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
 import com.example.cineverse.handler.callback.BackPressedHandler;
-import com.example.cineverse.R;
 import com.example.cineverse.view.auth.AuthActivity;
+import com.google.android.material.elevation.SurfaceColors;
 
 /**
  * The {@link VerifiedAccountActivity} class represents the main activity of the application after the user has logged in
@@ -19,28 +19,16 @@ import com.example.cineverse.view.auth.AuthActivity;
  */
 public class VerifiedAccountActivity extends AppCompatActivity {
 
-    private ActivityVerifiedAccountBinding binding;
     private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityVerifiedAccountBinding.inflate(getLayoutInflater());
+        ActivityVerifiedAccountBinding binding = ActivityVerifiedAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setActionBar();
         setNavController();
         BackPressedHandler.handleOnBackPressedCallback(this, navController);
-    }
-
-    /**
-     * Sets up the {@link ActionBar} with the provided Toolbar.
-     */
-    private void setActionBar() {
-        setSupportActionBar(binding.materialToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(null);
-        }
+        getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(this));
     }
 
     /**
