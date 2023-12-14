@@ -34,6 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:contentDescription="Background Image"
+                    android:background="#80C0D0D0"
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +104,7 @@
                 android:orientation="vertical">
 
                 <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/pager_profile_page"
+                    android:id="@+id/pager_profile_info"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 </androidx.viewpager2.widget.ViewPager2>
@@ -127,7 +128,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/fav_films"
-                            android:textSize="20sp"
+                            android:layout_marginTop="16dp"
+                            android:textSize="18sp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:padding="8dp"
@@ -140,15 +142,29 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
+                            android:clipToPadding="false"
+                            android:minHeight="200dp"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
                             app:layout_constraintTop_toBottomOf="@id/textViewFavouriteFilms"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
 
+                        <!-- Progress bar -->
+                        <ProgressBar
+                            android:id="@+id/progressBar_Favourite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@id/recyclerViewFavouriteFilms"
+                            app:layout_constraintEnd_toEndOf="@id/recyclerViewFavouriteFilms"
+                            app:layout_constraintStart_toStartOf="@id/recyclerViewFavouriteFilms"
+                            app:layout_constraintTop_toTopOf="@id/recyclerViewFavouriteFilms"
+                            tools:visibility="visible" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                 </LinearLayout>
-
 
                 <!-- Add your Favourite Films section here -->
 
@@ -165,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/recent_watched"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         android:padding="8dp"/>
 
@@ -179,13 +195,40 @@
                         android:padding="8dp"/>
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewRecentWatched"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"/>
-
                 <!-- Recent Reviews Vertical Scroll RecyclerView with See All -->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewRecentWatched"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:minHeight="200dp"
+                        android:padding="8dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar_RecentWatched"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="visible" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -198,7 +241,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/recent_reviews"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         android:padding="8dp"/>
 
@@ -212,15 +255,41 @@
                         android:padding="8dp"/>
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewRecentReviews"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"/>
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewRecentReviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:minHeight="200dp"
+                        android:padding="8dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar_RecentReviews"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="visible"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
-
-
 
         </androidx.core.widget.NestedScrollView>
 

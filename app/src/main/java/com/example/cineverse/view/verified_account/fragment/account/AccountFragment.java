@@ -18,6 +18,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.cineverse.R;
@@ -25,9 +27,15 @@ import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.verified_account.fragment.account.utils.AbstractSizeUpdate;
+import com.example.cineverse.view.verified_account.fragment.account.utils.ScreenSlidePagerAdapter;
+import com.example.cineverse.view.verified_account.fragment.account.utils.ZoomOutPageTransformer;
+import com.example.cineverse.view.verified_account.fragment.account.utils.account_data.ProfileInfoData;
 import com.example.cineverse.viewmodel.logged.verified_account.VerifiedAccountViewModel;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The {@link AccountFragment} class representing the user account section of the application.
@@ -48,6 +56,12 @@ public class AccountFragment extends Fragment {
     CollapsingToolbarLayout collapsingToolbarLayout;
     ConstraintLayout profile_ConstraintLayout;
 
+    /*
+    Pager View Info User Data
+     */
+    List<ProfileInfoData> infoList = new ArrayList<>();
+    private ViewPager2 viewPager;
+    private FragmentStateAdapter pagerAdapter;
 
 
     public AccountFragment() {
@@ -68,6 +82,7 @@ public class AccountFragment extends Fragment {
         setElements(view);
         setViewModel();
         setActionBar();
+        setInfoData(view);
         setAnimation();
         setListeners();
     }
@@ -79,10 +94,6 @@ public class AccountFragment extends Fragment {
         binding = null;
     }
 
-    /*
-    Menu Methods
-     */
-
     /**
      * Set Fragment Elements
      */
@@ -93,6 +104,19 @@ public class AccountFragment extends Fragment {
         size_updater = new AbstractSizeUpdate(){};
         collapsingToolbarLayout = view.findViewById(R.id.collapsingToolbarLayout);
         profile_ConstraintLayout = view.findViewById(R.id.profileConstraintLayout);
+
+        infoList.add(new ProfileInfoData("Film of the Year", 2023, R.drawable.search));
+        infoList.add(new ProfileInfoData("Total Movie", 100, R.drawable.search));
+        infoList.add(new ProfileInfoData("Likes", 500, R.drawable.search));
+        infoList.add(new ProfileInfoData("Reviews", 50, R.drawable.search));
+    }
+
+    public void setInfoData(View view){
+        //Initialize Pager and Adapter
+        viewPager = view.findViewById(R.id.pager_profile_info);
+        pagerAdapter = new ScreenSlidePagerAdapter(this, infoList);
+        viewPager.setPageTransformer(new ZoomOutPageTransformer());
+        viewPager.setAdapter(pagerAdapter);
     }
 
     /**
