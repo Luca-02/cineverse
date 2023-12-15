@@ -12,7 +12,7 @@ import static com.example.cineverse.utils.constant.Api.PAGE_PARAMETER;
 import static com.example.cineverse.utils.constant.Api.REGION_PARAMETER;
 import static com.example.cineverse.utils.constant.Api.WITH_GENRES_PARAMETER;
 
-import com.example.cineverse.data.model.content.section.ContentMovieApiResponse;
+import com.example.cineverse.data.model.content.section.MovieResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -22,7 +22,7 @@ import retrofit2.http.Query;
 public interface MovieApiService {
 
     @GET(NOW_PLAYING_MOVIE_ENDPOINT)
-    Call<ContentMovieApiResponse> getNowPlayingMovies(
+    Call<MovieResponse> getNowPlayingMovies(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -30,7 +30,7 @@ public interface MovieApiService {
     );
 
     @GET(POPULAR_MOVIE_ENDPOINT)
-    Call<ContentMovieApiResponse> getPopularMovies(
+    Call<MovieResponse> getPopularMovies(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -38,7 +38,7 @@ public interface MovieApiService {
     );
 
     @GET(TOP_RATED_MOVIE_ENDPOINT)
-    Call<ContentMovieApiResponse> getTopRatedMovies(
+    Call<MovieResponse> getTopRatedMovies(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -46,7 +46,7 @@ public interface MovieApiService {
     );
 
     @GET(UPCOMING_MOVIE_ENDPOINT)
-    Call<ContentMovieApiResponse> getUpcomingMovies(
+    Call<MovieResponse> getUpcomingMovies(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -54,14 +54,14 @@ public interface MovieApiService {
     );
 
     @GET(TODAY_TRENDING_MOVIE_ENDPOINT)
-    Call<ContentMovieApiResponse> getTodayTrendingMovies(
+    Call<MovieResponse> getTodayTrendingMovies(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Header(AUTHORIZATION_HEADER) String bearerAccessTokenAuth
     );
 
     @GET(DISCOVER_MOVIE_ENDPOINT)
-    Call<ContentMovieApiResponse> getMovieFromGenres(
+    Call<MovieResponse> getMovieFromGenres(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(WITH_GENRES_PARAMETER) int withGenres,

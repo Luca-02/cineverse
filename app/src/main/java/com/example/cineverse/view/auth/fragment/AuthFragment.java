@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -16,12 +15,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.example.cineverse.data.model.User;
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.User;
+import com.example.cineverse.databinding.FragmentAuthBinding;
 import com.example.cineverse.repository.auth.service.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.auth.service.AuthViewModel;
-import com.example.cineverse.databinding.FragmentAuthBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,7 +35,7 @@ import com.google.android.material.snackbar.Snackbar;
 public class AuthFragment extends Fragment {
 
     // Fullscreen flag
-    private static final int UI_OPTIONS = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+    // private static final int UI_OPTIONS = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
     private FragmentAuthBinding binding;
     private AuthViewModel viewModel;

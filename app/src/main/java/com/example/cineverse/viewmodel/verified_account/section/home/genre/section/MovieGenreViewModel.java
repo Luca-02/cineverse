@@ -4,7 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.data.source.genre.IGenresRemoteDataSource;
+import com.example.cineverse.data.source.genre.AbstractGenresRemoteDataSource;
 import com.example.cineverse.data.source.genre.section.MovieGenresRemoteDataSource;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.section.MovieFromGenreViewModel;
@@ -23,11 +23,8 @@ public class MovieGenreViewModel
     }
 
     @Override
-    protected IGenresRemoteDataSource createRemoteDataSourceInstance() {
-        return new MovieGenresRemoteDataSource(
-                getApplication().getApplicationContext(),
-                this
-        );
+    protected AbstractGenresRemoteDataSource createRemoteDataSourceInstance() {
+        return new MovieGenresRemoteDataSource(getApplication().getApplicationContext());
     }
 
     @Override

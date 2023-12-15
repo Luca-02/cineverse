@@ -4,8 +4,9 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.data.source.content.ISectionContentRemoteDataSource;
-import com.example.cineverse.data.source.content.section.NowPlayingMovieRemoteDataSource;
+import com.example.cineverse.data.model.content.section.MovieEntity;
+import com.example.cineverse.data.source.content.remote.AbstractSectionContentRemoteDataSource;
+import com.example.cineverse.data.source.content.remote.section.NowPlayingMovieRemoteDataSource;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionMovieViewModel;
 
 public class NowPlayingMovieViewModel
@@ -21,11 +22,8 @@ public class NowPlayingMovieViewModel
     }
 
     @Override
-    protected ISectionContentRemoteDataSource createRemoteDataSourceInstance() {
-        return new NowPlayingMovieRemoteDataSource(
-                getApplication().getApplicationContext(),
-                this
-        );
+    protected AbstractSectionContentRemoteDataSource<MovieEntity> createRemoteDataSourceInstance() {
+        return new NowPlayingMovieRemoteDataSource(getApplication().getApplicationContext());
     }
 
 }

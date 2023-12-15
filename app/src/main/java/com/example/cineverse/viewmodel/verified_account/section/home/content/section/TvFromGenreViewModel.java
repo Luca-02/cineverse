@@ -4,8 +4,9 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.data.source.content.ISectionContentRemoteDataSource;
-import com.example.cineverse.data.source.content.section.TvFromGenreRemoteDataSource;
+import com.example.cineverse.data.model.content.section.TvEntity;
+import com.example.cineverse.data.source.content.remote.AbstractSectionContentRemoteDataSource;
+import com.example.cineverse.data.source.content.remote.section.TvFromGenreRemoteDataSource;
 import com.example.cineverse.viewmodel.GlobalViewModelFactory;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionTvViewModel;
 
@@ -22,12 +23,8 @@ public class TvFromGenreViewModel
     }
 
     @Override
-    protected ISectionContentRemoteDataSource createRemoteDataSourceInstance() {
-        return new TvFromGenreRemoteDataSource(
-                getApplication().getApplicationContext(),
-                genreId,
-                this
-        );
+    protected AbstractSectionContentRemoteDataSource<TvEntity> createRemoteDataSourceInstance() {
+        return new TvFromGenreRemoteDataSource(getApplication().getApplicationContext(), genreId);
     }
 
     public static class Factory extends GlobalViewModelFactory<TvFromGenreViewModel> {

@@ -10,19 +10,25 @@ import com.example.cineverse.utils.ServiceLocator;
 import retrofit2.Call;
 
 public abstract class AbstractGenresRemoteDataSource
-        extends TMDBRemoteDataSource {
+        extends TMDBRemoteDataSource
+        implements IGenresRemoteDataSource {
 
     protected final GenreApiService genreApiService;
-    private final GenresResponseCallback callback;
+    private GenresResponseCallback callback;
 
-    public AbstractGenresRemoteDataSource(Context context, GenresResponseCallback callback) {
+    public AbstractGenresRemoteDataSource(Context context) {
         super(context);
         genreApiService = ServiceLocator.getInstance().getGenreApiService();
+    }
+
+    public void setCallback(GenresResponseCallback callback) {
         this.callback = callback;
     }
 
     protected void handlePosterApiCal(Call<GenreApiResponse> call) {
-        handlePosterApiCal(call, callback);
+        if (callback != null) {
+            handlePosterApiCal(call, callback);
+        }
     }
 
 }

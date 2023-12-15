@@ -12,7 +12,7 @@ import static com.example.cineverse.utils.constant.Api.Tv.TODAY_TRENDING_TV_ENDP
 import static com.example.cineverse.utils.constant.Api.Tv.TOP_RATED_TV_ENDPOINT;
 import static com.example.cineverse.utils.constant.Api.WITH_GENRES_PARAMETER;
 
-import com.example.cineverse.data.model.content.section.ContentTvApiResponse;
+import com.example.cineverse.data.model.content.section.TvResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -22,7 +22,7 @@ import retrofit2.http.Query;
 public interface TvApiService {
 
     @GET(AIRING_TODAY_TV_ENDPOINT)
-    Call<ContentTvApiResponse> getAiringTodayTv(
+    Call<TvResponse> getAiringTodayTv(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -30,7 +30,7 @@ public interface TvApiService {
     );
 
     @GET(ON_THE_AIR_TV_ENDPOINT)
-    Call<ContentTvApiResponse> getWeekAiringTv(
+    Call<TvResponse> getWeekAiringTv(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -38,7 +38,7 @@ public interface TvApiService {
     );
 
     @GET(POPULAR_TV_ENDPOINT)
-    Call<ContentTvApiResponse> getPopularTv(
+    Call<TvResponse> getPopularTv(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -46,7 +46,7 @@ public interface TvApiService {
     );
 
     @GET(TOP_RATED_TV_ENDPOINT)
-    Call<ContentTvApiResponse> getTopRatedTv(
+    Call<TvResponse> getTopRatedTv(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(REGION_PARAMETER) String region,
@@ -54,14 +54,14 @@ public interface TvApiService {
     );
 
     @GET(TODAY_TRENDING_TV_ENDPOINT)
-    Call<ContentTvApiResponse> getTodayTrendingTv(
+    Call<TvResponse> getTodayTrendingTv(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Header(AUTHORIZATION_HEADER) String bearerAccessTokenAuth
     );
 
     @GET(DISCOVER_TV_ENDPOINT)
-    Call<ContentTvApiResponse> getTvFromGenres(
+    Call<TvResponse> getTvFromGenres(
             @Query(LANGUAGE_PARAMETER) String language,
             @Query(PAGE_PARAMETER) int page,
             @Query(WITH_GENRES_PARAMETER) int withGenres,

@@ -4,8 +4,9 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.data.source.content.ISectionContentRemoteDataSource;
-import com.example.cineverse.data.source.content.section.TodayTrendingTvRemoteDataSource;
+import com.example.cineverse.data.model.content.section.TvEntity;
+import com.example.cineverse.data.source.content.remote.AbstractSectionContentRemoteDataSource;
+import com.example.cineverse.data.source.content.remote.section.TodayTrendingTvRemoteDataSource;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionTvViewModel;
 
 public class TodayTrendingTvViewModel
@@ -21,11 +22,8 @@ public class TodayTrendingTvViewModel
     }
 
     @Override
-    protected ISectionContentRemoteDataSource createRemoteDataSourceInstance() {
-        return new TodayTrendingTvRemoteDataSource(
-                getApplication().getApplicationContext(),
-                this
-        );
+    protected AbstractSectionContentRemoteDataSource<TvEntity> createRemoteDataSourceInstance() {
+        return new TodayTrendingTvRemoteDataSource(getApplication().getApplicationContext());
     }
 
 }

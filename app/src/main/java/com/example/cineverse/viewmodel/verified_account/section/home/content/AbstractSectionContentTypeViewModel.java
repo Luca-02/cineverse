@@ -4,26 +4,21 @@ import android.app.Application;
 
 import com.example.cineverse.data.model.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
-import com.example.cineverse.data.model.content.AbstractContentApiResponse;
-import com.example.cineverse.data.source.content.ISectionContentRemoteDataSource;
-import com.example.cineverse.data.source.content.SectionContentResponseCallback;
-import com.example.cineverse.repository.content.SectionContentRepository;
+import com.example.cineverse.data.model.content.AbstractContentResponse;
+import com.example.cineverse.data.source.content.remote.AbstractSectionContentRemoteDataSource;
+import com.example.cineverse.data.source.content.remote.SectionContentResponseCallback;
+import com.example.cineverse.repository.content.AbstractSectionContentRepository;
 
 public abstract class AbstractSectionContentTypeViewModel<T extends AbstractContent>
         extends AbstractSectionContentViewModel
         implements SectionContentResponseCallback<T> {
 
-    protected SectionContentRepository repository;
+    protected AbstractSectionContentRepository<T> repository;
     protected int genreId;
-
-    public AbstractSectionContentTypeViewModel(Application application) {
-        this(application, 0);
-    }
 
     public AbstractSectionContentTypeViewModel(Application application, int genreId) {
         super(application);
         this.genreId = genreId;
-        repository = new SectionContentRepository(createRemoteDataSourceInstance());
     }
 
     @Override
@@ -32,7 +27,7 @@ public abstract class AbstractSectionContentTypeViewModel<T extends AbstractCont
     }
 
     @Override
-    public void onResponse(AbstractContentApiResponse<T> response) {
+    public void onResponse(AbstractContentResponse<T> response) {
         if (response != null) {
             handleResponse(response.getResults(), getContentLiveData());
         }
@@ -45,6 +40,6 @@ public abstract class AbstractSectionContentTypeViewModel<T extends AbstractCont
         }
     }
 
-    protected abstract ISectionContentRemoteDataSource createRemoteDataSourceInstance();
+    protected abstract AbstractSectionContentRemoteDataSource<T> createRemoteDataSourceInstance();
 
 }

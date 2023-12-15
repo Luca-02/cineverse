@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public abstract class AbstractContent implements Parcelable {
 
-    protected int id;
+    private int id;
     @SerializedName("poster_path")
     protected String posterPath;
     @SerializedName("backdrop_path")

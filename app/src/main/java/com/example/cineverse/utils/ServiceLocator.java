@@ -2,6 +2,12 @@ package com.example.cineverse.utils;
 
 import static com.example.cineverse.utils.constant.Api.TMDB_API_BASE_URL;
 
+import android.content.Context;
+
+import com.example.cineverse.data.database.ContentSectionDatabase;
+import com.example.cineverse.data.database.dao.ContentDao;
+import com.example.cineverse.data.database.dao.SectionContentCrossRefDao;
+import com.example.cineverse.data.database.dao.SectionDao;
 import com.example.cineverse.service.api.GenreApiService;
 import com.example.cineverse.service.api.MovieApiService;
 import com.example.cineverse.service.api.TvApiService;
@@ -39,6 +45,18 @@ public class ServiceLocator {
 
     public GenreApiService getGenreApiService() {
         return getRetrofitService().create(GenreApiService.class);
+    }
+
+    public SectionDao getSectionDao(Context context) {
+        return ContentSectionDatabase.getInstance(context).sectionDao();
+    }
+
+    public SectionContentCrossRefDao getSectionContentCrossRefDao(Context context) {
+        return ContentSectionDatabase.getInstance(context).sectionContentCrossRefDao();
+    }
+
+    public ContentDao getContentDao(Context context) {
+        return ContentSectionDatabase.getInstance(context).contentDao();
     }
 
 }

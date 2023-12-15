@@ -9,21 +9,17 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.cineverse.data.model.Failure;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.genre.GenreApiResponse;
+import com.example.cineverse.data.source.genre.AbstractGenresRemoteDataSource;
 import com.example.cineverse.data.source.genre.GenresResponseCallback;
-import com.example.cineverse.data.source.genre.IGenresRemoteDataSource;
 import com.example.cineverse.exception.UnsupportedViewModelException;
 import com.example.cineverse.exception.ViewModelFactoryCreationException;
 import com.example.cineverse.repository.genre.GenreRepository;
 import com.example.cineverse.viewmodel.verified_account.section.home.AbstractSectionViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
-import com.example.cineverse.viewmodel.verified_account.section.home.content.section.MovieFromGenreViewModel;
-import com.example.cineverse.viewmodel.verified_account.section.home.content.section.TvFromGenreViewModel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class AbstractSectionGenreViewModel
         extends AbstractSectionViewModel
@@ -31,14 +27,10 @@ public abstract class AbstractSectionGenreViewModel
 
     protected GenreRepository repository;
     private MutableLiveData<List<Genre>> contentLiveData;
-    private final Map<Class<? extends AbstractSectionContentViewModel>, Class<? extends ViewModelProvider.Factory>> factoryMap;
 
     public AbstractSectionGenreViewModel(@NonNull Application application) {
         super(application);
-        repository = new GenreRepository(createRemoteDataSourceInstance());
-        factoryMap = new HashMap<>();
-        factoryMap.put(TvFromGenreViewModel.class, TvFromGenreViewModel.Factory.class);
-        factoryMap.put(MovieFromGenreViewModel.class, MovieFromGenreViewModel.Factory.class);
+        repository = new GenreRepository(createRemoteDataSourceInstance(), this);
     }
 
     public MutableLiveData<List<Genre>> getContentLiveData() {
@@ -103,6 +95,6 @@ public abstract class AbstractSectionGenreViewModel
     }
 
     public abstract Class<? extends AbstractSectionContentViewModel> getSectionContentViewModelClass();
-    protected abstract IGenresRemoteDataSource createRemoteDataSourceInstance();
+    protected abstract AbstractGenresRemoteDataSource createRemoteDataSourceInstance();
 
 }
