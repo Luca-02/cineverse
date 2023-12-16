@@ -8,6 +8,11 @@ import com.example.cineverse.data.source.genre.IGenresRemoteDataSource;
 
 import retrofit2.Call;
 
+/**
+ * The {@link TvGenresRemoteDataSource} class extends the
+ * {@link AbstractGenresRemoteDataSource} and provides common
+ * functionality for remote data sources related to TV genres content.
+ */
 public class TvGenresRemoteDataSource
         extends AbstractGenresRemoteDataSource
         implements IGenresRemoteDataSource {
@@ -16,11 +21,12 @@ public class TvGenresRemoteDataSource
         super(context);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void fetch() {
-        Call<GenreApiResponse> call =
-                genreApiService.getTvGenres(getLanguage(), getBearerAccessTokenAuth());
-        handlePosterApiCal(call);
+    protected Call<GenreApiResponse> createApiCall() {
+        return genreApiService.getTvGenres(getLanguage(), getBearerAccessTokenAuth());
     }
 
 }

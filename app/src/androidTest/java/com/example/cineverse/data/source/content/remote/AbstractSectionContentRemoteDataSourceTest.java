@@ -6,6 +6,7 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.example.cineverse.data.source.content.SectionTypeMappingManager;
 import com.example.cineverse.data.source.content.section.UpcomingMovieRemoteDataSource;
 
 import org.junit.Before;
@@ -23,7 +24,7 @@ public class AbstractSectionContentRemoteDataSourceTest {
     @Test
     public void getSection() {
         UpcomingMovieRemoteDataSource upcomingMovieRemoteDataSource = new UpcomingMovieRemoteDataSource(context);
-        assertEquals(upcomingMovieRemoteDataSource.getSection(), "upcoming_movie");
+        assertEquals(upcomingMovieRemoteDataSource.getSection(), SectionTypeMappingManager.SectionType.UPCOMING_MOVIE.getSection());
     }
 
 }

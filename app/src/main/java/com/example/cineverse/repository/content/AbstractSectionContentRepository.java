@@ -14,6 +14,11 @@ import com.example.cineverse.data.source.content.SectionContentLocalResponseCall
 import com.example.cineverse.data.source.content.SectionContentRemoteResponseCallback;
 import com.example.cineverse.utils.NetworkUtils;
 
+/**
+ * The {@link AbstractSectionContentRepository} class serves as the base repository for handling section-specific content.
+ *
+ * @param <T> The type parameter representing the {@link AbstractContent} subclass.
+ */
 public abstract class AbstractSectionContentRepository<T extends AbstractContent>
         implements ISectionContentRemoteDataSource,
         SectionContentRemoteResponseCallback<T>,
@@ -24,6 +29,14 @@ public abstract class AbstractSectionContentRepository<T extends AbstractContent
     protected final SectionContentLocalDataSource<T> localDataSource;
     protected final SectionContentRemoteResponseCallback<T> callback;
 
+    /**
+     * Constructor for AbstractSectionContentRepository.
+     *
+     * @param context         The application context.
+     * @param remoteDataSource The remote data source for section-specific content.
+     * @param contentType     The class type of the content.
+     * @param callback        The callback for handling remote responses.
+     */
     public AbstractSectionContentRepository(Context context,
                                             AbstractSectionContentRemoteDataSource<T> remoteDataSource,
                                             Class<T> contentType,
@@ -36,6 +49,11 @@ public abstract class AbstractSectionContentRepository<T extends AbstractContent
         localDataSource.setCallback(this);
     }
 
+    /**
+     * Fetches section-specific content based on the given page number.
+     *
+     * @param page The page number for fetching content.
+     */
     @Override
     public void fetch(int page) {
         if (NetworkUtils.isNetworkAvailable(context)) {
@@ -45,11 +63,21 @@ public abstract class AbstractSectionContentRepository<T extends AbstractContent
         }
     }
 
+    /**
+     * Handles local response callback for section-specific content.
+     *
+     * @param response The local response containing section-specific content.
+     */
     @Override
     public void onLocalResponse(AbstractContentResponse<T> response) {
         callback.onRemoteResponse(response);
     }
 
+    /**
+     * Handles remote response callback for section-specific content.
+     *
+     * @param response The remote response containing section-specific content.
+     */
     @Override
     public void onRemoteResponse(AbstractContentResponse<T> response) {
         if (response != null) {
@@ -61,6 +89,11 @@ public abstract class AbstractSectionContentRepository<T extends AbstractContent
         }
     }
 
+    /**
+     * Handles failure callback for section-specific content.
+     *
+     * @param failure The object representing the failure response.
+     */
     @Override
     public void onFailure(Failure failure) {
         callback.onFailure(failure);

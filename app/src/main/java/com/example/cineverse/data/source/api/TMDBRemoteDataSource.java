@@ -56,7 +56,7 @@ public class TMDBRemoteDataSource {
      * @param <Y>      The type parameter representing the expected API response.
      * @param <T>      The type parameter extending {@link ApiResponse}.
      */
-    protected <Y extends ApiResponse, T extends Y> void handlePosterApiCal(Call<T> call, BaseRemoteResponseCallback<Y> callback) {
+    protected <Y extends ApiResponse, T extends Y> void handlePosterApiCall(Call<T> call, BaseRemoteResponseCallback<Y> callback) {
         call.enqueue(new Callback<T>() {
             @Override
             public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {

@@ -74,7 +74,7 @@ public class SectionTypeMappingManager {
      * @return The section name.
      */
     public static String getSection(
-            Class<? extends AbstractSectionContentRemoteDataSource<? extends AbstractContent>> contentClass) {
+            Class<? extends AbstractSectionContentRemoteDataSource> contentClass) {
         SectionType sectionType = sectionMap.get(contentClass);
         return (sectionType != null) ? sectionType.getSection() : null;
     }

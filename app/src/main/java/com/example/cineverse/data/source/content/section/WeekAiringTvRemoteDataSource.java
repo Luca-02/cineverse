@@ -21,15 +21,13 @@ public class WeekAiringTvRemoteDataSource
      * {@inheritDoc}
      */
     @Override
-    public void fetch(int page) {
-        Call<TvResponse> call =
-                movieApiService.getWeekAiringTv(
-                        getLanguage(),
-                        page,
-                        getRegion(),
-                        getBearerAccessTokenAuth()
-                );
-        handlePosterApiCal(call);
+    protected Call<TvResponse> createApiCall(int page) {
+        return movieApiService.getWeekAiringTv(
+                getLanguage(),
+                page,
+                getRegion(),
+                getBearerAccessTokenAuth()
+        );
     }
 
 }

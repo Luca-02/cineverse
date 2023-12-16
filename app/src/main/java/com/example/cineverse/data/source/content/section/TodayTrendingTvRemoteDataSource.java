@@ -23,14 +23,12 @@ public class TodayTrendingTvRemoteDataSource
      * {@inheritDoc}
      */
     @Override
-    public void fetch(int page) {
-        Call<TvResponse> call =
-                movieApiService.getTodayTrendingTv(
-                        getLanguage(),
-                        page,
-                        getBearerAccessTokenAuth()
-                );
-        handlePosterApiCal(call);
+    protected Call<TvResponse> createApiCall(int page) {
+        return movieApiService.getTodayTrendingTv(
+                getLanguage(),
+                page,
+                getBearerAccessTokenAuth()
+        );
     }
 
 }

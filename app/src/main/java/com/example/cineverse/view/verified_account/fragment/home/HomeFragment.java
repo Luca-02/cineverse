@@ -19,6 +19,7 @@ import com.example.cineverse.R;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentHomeBinding;
+import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
 import com.google.android.material.chip.Chip;
 
 /**
@@ -80,6 +81,11 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Opens the {@link ViewAllContentActivity} for the specified section.
+     *
+     * @param section The {@link ContentSection} to display in the {@link ViewAllContentActivity}.
+     */
     public void openViewAllContentActivity(ContentSection section) {
         Bundle bundle = new Bundle();
         bundle.putInt(TITLE_STRING_ID_TAG, section.getSectionTitleStringId());
@@ -87,6 +93,12 @@ public class HomeFragment extends Fragment {
         navController.navigate(R.id.action_global_viewAllContentActivity, bundle);
     }
 
+    /**
+     * Opens the {@link ViewAllContentActivity} for the specified section and genre.
+     *
+     * @param section The {@link ContentSection} to display in the {@link ViewAllContentActivity}.
+     * @param genre   The {@link Genre} to filter content in the {@link ViewAllContentActivity}.
+     */
     public void openViewAllContentActivity(ContentSection section, Genre genre) {
         Bundle bundle = new Bundle();
         bundle.putString(VIEW_MODEL_CLASS_NAME_TAG, section.getViewModelClass().getCanonicalName());

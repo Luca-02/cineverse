@@ -23,15 +23,13 @@ public class TopRatedMovieRemoteDataSource
      * {@inheritDoc}
      */
     @Override
-    public void fetch(int page) {
-        Call<MovieResponse> call =
-                movieApiService.getTopRatedMovies(
-                        getLanguage(),
-                        page,
-                        getRegion(),
-                        getBearerAccessTokenAuth()
-                );
-        handlePosterApiCal(call);
+    protected Call<MovieResponse> createApiCall(int page) {
+        return movieApiService.getTopRatedMovies(
+                getLanguage(),
+                page,
+                getRegion(),
+                getBearerAccessTokenAuth()
+        );
     }
 
 }

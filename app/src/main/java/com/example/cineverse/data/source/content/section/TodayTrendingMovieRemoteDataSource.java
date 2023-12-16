@@ -23,14 +23,12 @@ public class TodayTrendingMovieRemoteDataSource
      * {@inheritDoc}
      */
     @Override
-    public void fetch(int page) {
-        Call<MovieResponse> call =
-                movieApiService.getTodayTrendingMovies(
-                        getLanguage(),
-                        page,
-                        getBearerAccessTokenAuth()
-                );
-        handlePosterApiCal(call);
+    protected Call<MovieResponse> createApiCall(int page) {
+        return movieApiService.getTodayTrendingMovies(
+                getLanguage(),
+                page,
+                getBearerAccessTokenAuth()
+        );
     }
 
 }

@@ -23,15 +23,13 @@ public class NowPlayingMovieRemoteDataSource
      * {@inheritDoc}
      */
     @Override
-    public void fetch(int page) {
-        Call<MovieResponse> call =
-                movieApiService.getNowPlayingMovies(
+    public Call<MovieResponse> createApiCall(int page) {
+        return movieApiService.getNowPlayingMovies(
                         getLanguage(),
                         page,
                         getRegion(),
                         getBearerAccessTokenAuth()
                 );
-        handlePosterApiCal(call);
     }
 
 }

@@ -21,15 +21,13 @@ public class UpcomingMovieRemoteDataSource
      * {@inheritDoc}
      */
     @Override
-    public void fetch(int page) {
-        Call<MovieResponse> call =
-                movieApiService.getUpcomingMovies(
-                        getLanguage(),
-                        page,
-                        getRegion(),
-                        getBearerAccessTokenAuth()
-                );
-        handlePosterApiCal(call);
+    protected Call<MovieResponse> createApiCall(int page) {
+        return movieApiService.getUpcomingMovies(
+                getLanguage(),
+                page,
+                getRegion(),
+                getBearerAccessTokenAuth()
+        );
     }
 
 }

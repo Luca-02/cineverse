@@ -26,15 +26,13 @@ public class TvFromGenreRemoteDataSource
      * {@inheritDoc}
      */
     @Override
-    public void fetch(int page) {
-        Call<TvResponse> call =
-                movieApiService.getTvFromGenres(
-                        getLanguage(),
-                        page,
-                        genreId,
-                        getBearerAccessTokenAuth()
-                );
-        handlePosterApiCal(call);
+    protected Call<TvResponse> createApiCall(int page) {
+        return movieApiService.getTvFromGenres(
+                getLanguage(),
+                page,
+                genreId,
+                getBearerAccessTokenAuth()
+        );
     }
 
 }

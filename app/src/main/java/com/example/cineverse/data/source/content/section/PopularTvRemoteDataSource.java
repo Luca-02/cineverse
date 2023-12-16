@@ -23,15 +23,13 @@ public class PopularTvRemoteDataSource
      * {@inheritDoc}
      */
     @Override
-    public void fetch(int page) {
-        Call<TvResponse> call =
-                movieApiService.getPopularTv(
-                        getLanguage(),
-                        page,
-                        getRegion(),
-                        getBearerAccessTokenAuth()
-                );
-        handlePosterApiCal(call);
+    protected Call<TvResponse> createApiCall(int page) {
+        return movieApiService.getPopularTv(
+                getLanguage(),
+                page,
+                getRegion(),
+                getBearerAccessTokenAuth()
+        );
     }
 
 }

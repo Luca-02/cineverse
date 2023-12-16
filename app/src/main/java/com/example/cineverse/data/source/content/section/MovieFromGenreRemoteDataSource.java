@@ -27,15 +27,13 @@ public class MovieFromGenreRemoteDataSource
      * {@inheritDoc}
      */
     @Override
-    public void fetch(int page) {
-        Call<MovieResponse> call =
-                movieApiService.getMovieFromGenres(
-                        getLanguage(),
-                        page,
-                        genreId,
-                        getBearerAccessTokenAuth()
-                );;
-        handlePosterApiCal(call);
+    protected Call<MovieResponse> createApiCall(int page) {
+        return movieApiService.getMovieFromGenres(
+                getLanguage(),
+                page,
+                genreId,
+                getBearerAccessTokenAuth()
+        );
     }
 
 }

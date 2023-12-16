@@ -51,9 +51,9 @@ public abstract class AbstractSectionContentRemoteDataSource<T extends AbstractC
      *
      * @param call The API call.
      */
-    protected <A extends AbstractContentResponse<T>> void handlePosterApiCal(Call<A> call) {
+    protected <A extends AbstractContentResponse<T>> void handlePosterApiCall(Call<A> call) {
         if (callback != null) {
-            handlePosterApiCal(call, callback);
+            handlePosterApiCall(call, callback);
         }
     }
 
@@ -62,6 +62,8 @@ public abstract class AbstractSectionContentRemoteDataSource<T extends AbstractC
      *
      * @return The section.
      */
-    public abstract String getSection();
+    public String getSection() {
+        return SectionTypeMappingManager.getSection(getClass());
+    }
 
 }
