@@ -3,6 +3,9 @@ package com.example.cineverse.data.model.genre;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * The {@link Genre} class represents a movie or TV show genre.
+ */
 public class Genre implements Parcelable {
 
     private int id;

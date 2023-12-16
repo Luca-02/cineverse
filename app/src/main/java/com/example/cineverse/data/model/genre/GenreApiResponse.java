@@ -1,9 +1,12 @@
 package com.example.cineverse.data.model.genre;
 
-import com.example.cineverse.data.model.ApiResponse;
+import com.example.cineverse.data.model.api.ApiResponse;
 
 import java.util.List;
 
+/**
+ * The {@link GenreApiResponse} class represents the response containing a list of genres.
+ */
 public class GenreApiResponse
         implements ApiResponse {
 

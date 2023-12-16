@@ -5,6 +5,7 @@ import static com.example.cineverse.utils.constant.Api.TMDB_IMAGE_ORIGINAL_SIZE_
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,25 +17,40 @@ import com.example.cineverse.utils.DateFormatUtils;
 
 import java.util.List;
 
+/**
+ * The {@link ContentViewAllAdapter} class is a RecyclerView adapter for displaying content items
+ * in a "View All" section. It uses a custom ViewHolder to bind data to the items.
+ */
 public class ContentViewAllAdapter
         extends RecyclerView.Adapter<ContentViewAllAdapter.ContentViewHolder> {
 
     private final Context context;
     private final List<AbstractContent> contentList;
 
+    /**
+     * Constructs a {@link ContentViewAllAdapter} with the specified context and content list.
+     *
+     * @param context     The application context.
+     * @param contentList The list of {@link AbstractContent} items to be displayed.
+     */
     public ContentViewAllAdapter(Context context, List<AbstractContent> contentList) {
         this.context = context;
         this.contentList = contentList;
     }
 
+    public List<AbstractContent> getData() {
+        return contentList;
+    }
+
+    /**
+     * Sets new data for the adapter and notifies observers of the data set change.
+     *
+     * @param newContentList The new list of {@link AbstractContent} items.
+     */
     public void setData(List<? extends AbstractContent> newContentList) {
         int start = contentList.size();
         contentList.addAll(newContentList);
         notifyItemRangeInserted(start, contentList.size());
-    }
-
-    public List<AbstractContent> getData() {
-        return contentList;
     }
 
     @NonNull
@@ -59,7 +75,7 @@ public class ContentViewAllAdapter
     }
 
     /**
-     * Custom ViewHolder to bind data to the RecyclerView items.
+     * Custom ViewHolder for displaying content items in the "View All" section.
      */
     public class ContentViewHolder extends RecyclerView.ViewHolder {
 
@@ -70,11 +86,16 @@ public class ContentViewAllAdapter
             this.binding = binding;
         }
 
+        /**
+         * Binds data to the ViewHolder.
+         *
+         * @param content The {@link AbstractContent} item to bind.
+         */
         public void bind(AbstractContent content) {
             String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getBackdropPath();
             Glide.with(context)
                     .load(imageUrl)
-                    .into(binding.imageView);
+                    .into((ImageView) binding.imageView);
             binding.titleTextView.setText(content.getName());
 
             String formatDate = DateFormatUtils.formatData(context, content.getReleaseDate());

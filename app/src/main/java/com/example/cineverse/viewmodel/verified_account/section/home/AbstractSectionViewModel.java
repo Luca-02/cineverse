@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.data.model.Failure;
+import com.example.cineverse.data.model.api.Failure;
 
 import org.jetbrains.annotations.NotNull;
 

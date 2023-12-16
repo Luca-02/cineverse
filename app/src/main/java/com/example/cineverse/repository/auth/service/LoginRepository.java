@@ -2,7 +2,6 @@ package com.example.cineverse.repository.auth.service;
 
 import android.content.Context;
 
-import com.example.cineverse.data.model.User;
 import com.example.cineverse.repository.auth.AbstractAuthRepository;
 import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
 import com.google.firebase.FirebaseNetworkException;
@@ -37,19 +36,18 @@ public class LoginRepository
      *
      * @param account   User's account (username or email) for login.
      * @param password  User's password for login.
-     * @param callback  Callback to handle authentication errors and status.
      */
-    public void login(String account, String password, AuthCallback callback) {
+    public void login(String account, String password) {
         if (!EmailValidator.getInstance().isValid(account)) {
             if (account.contains("@")) {
                 callback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
             } else {
-                userStorage.getFirebaseSource().getEmailFromUsername(account, context,
+                firebaseSource.getEmailFromUsername(account, context,
                         new UserFirebaseDatabaseServices.Callback<String>() {
                             @Override
                             public void onCallback(String email) {
                                 if (email != null) {
-                                    signInWithCredentials(email, password, callback);
+                                    signInWithCredentials(email, password);
                                 } else {
                                     callback.onError(Error.ERROR_NOT_FOUND_DISABLED);
                                 }
@@ -62,37 +60,25 @@ public class LoginRepository
                         });
             }
         } else {
-            signInWithCredentials(account, password, callback);
+            signInWithCredentials(account, password);
         }
     }
 
-    private void signInWithCredentials(String email, String password, AuthCallback callback) {
+    private void signInWithCredentials(String email, String password) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult -> handleSuccess(authResult, callback))
-                .addOnFailureListener(e -> handleFailure(e, callback));
+                .addOnSuccessListener(this::handleSuccess)
+                .addOnFailureListener(this::handleFailure);
     }
 
     /**
      * Handles successful authentication by saving user data locally.
      *
      * @param authResult The successful authentication result containing user information.
-     * @param callback   Callback to handle authentication errors and status.
      */
-    private void handleSuccess(AuthResult authResult, AuthCallback callback) {
+    private void handleSuccess(AuthResult authResult) {
         FirebaseUser firebaseUser = authResult.getUser();
         if (firebaseUser != null) {
-            userStorage.loginUser(firebaseUser.getUid(),
-                    new UserFirebaseDatabaseServices.Callback<User>() {
-                        @Override
-                        public void onCallback(User user) {
-                            handleUserAuthentication(user, callback);
-                        }
-
-                        @Override
-                        public void onNetworkUnavailable() {
-                            handleAuthenticationNetworkFailure(callback);
-                        }
-                    });
+            userStorage.login(firebaseUser.getUid());
         } else {
             handleAuthenticationFailure(callback);
         }
@@ -102,9 +88,8 @@ public class LoginRepository
      * Handles authentication failure scenarios by identifying the type of exception.
      *
      * @param exception The exception occurred during the authentication process.
-     * @param callback  Callback to handle authentication errors and status.
      */
-    private void handleFailure(Exception exception, ErrorAuthCallback callback) {
+    private void handleFailure(Exception exception) {
         if (exception instanceof FirebaseAuthInvalidUserException) {
             callback.onError(Error.ERROR_NOT_FOUND_DISABLED);
         } else if (exception instanceof FirebaseNetworkException) {

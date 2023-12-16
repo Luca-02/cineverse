@@ -5,6 +5,10 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The {@link AbstractContent} class is an abstract class representing the common attributes
+ * of content entities such as movies and TV shows.
+ */
 public abstract class AbstractContent implements Parcelable {
 
     private int id;

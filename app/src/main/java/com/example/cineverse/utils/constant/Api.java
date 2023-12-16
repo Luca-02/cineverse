@@ -5,6 +5,10 @@ public class Api {
     public static final String TMDB_API_BASE_URL = "https://api.themoviedb.org/3/";
     public static final String TMDB_IMAGE_ORIGINAL_SIZE_URL = "https://image.tmdb.org/t/p/original";
 
+    // Error
+    public static final int UNEXPECTED_ERROR_CODE = -1;
+    public static final String UNEXPECTED_ERROR_MESSAGE = "Unexpected error.";
+
     // General
     private static final String DISCOVER = "discover";
     private static final String TRENDING = "trending";

@@ -2,20 +2,54 @@ package com.example.cineverse.data.model.ui;
 
 import com.example.cineverse.viewmodel.verified_account.section.home.AbstractSectionViewModel;
 
+/**
+ * The {@link ContentSection} class represents a section of content in the UI, including information
+ * such as the section title, the associated {@link AbstractSectionViewModel}, the view type, and
+ * a flag indicating whether to force a refresh of the content in the section.
+ */
 public class ContentSection {
 
-    public static final int POSTER_TYPE = 0;
-    public static final int CAROUSEL_TYPE = 1;
-    public static final int GENRE_TYPE = 2;
+    /**
+     * The {@link ViewType} enum represents the different types of views for a content section,
+     * including POSTER_TYPE, CAROUSEL_TYPE, and GENRE_TYPE.
+     */
+    public enum ViewType {
+        POSTER_TYPE(0),
+        CAROUSEL_TYPE(1),
+        GENRE_TYPE(2);
+
+        private final int viewType;
+
+        ViewType(int viewType) {
+            this.viewType = viewType;
+        }
+
+        /**
+         * Gets the integer value associated with the view type.
+         *
+         * @return The integer value of the view type.
+         */
+        public int getViewType() {
+            return viewType;
+        }
+    }
 
     private final Integer sectionTitleStringId;
     private final Class<? extends AbstractSectionViewModel> viewModelClass;
-    private final int viewType;
+    private final ViewType viewType;
     private boolean forceRefresh;
 
+    /**
+     * Constructs a {@link ContentSection} with the specified section title string ID, view model class,
+     * and view type.
+     *
+     * @param sectionTitleStringId The resource ID for the section title string.
+     * @param viewModelClass       The class of the associated view model.
+     * @param viewType             The type of the content view.
+     */
     public ContentSection(Integer sectionTitleStringId,
                           Class<? extends AbstractSectionViewModel> viewModelClass,
-                          int viewType) {
+                          ViewType viewType) {
         this.sectionTitleStringId = sectionTitleStringId;
         this.viewModelClass = viewModelClass;
         this.viewType = viewType;
@@ -30,10 +64,15 @@ public class ContentSection {
         return viewModelClass;
     }
 
-    public int getViewType() {
+    public ViewType getViewType() {
         return viewType;
     }
 
+    /**
+     * Checks if a force refresh of the content in the section is required, and resets the flag if true.
+     *
+     * @return {@code true} if a force refresh is required, {@code false} otherwise.
+     */
     public boolean isForceRefresh() {
         if (forceRefresh) {
             forceRefresh = false;

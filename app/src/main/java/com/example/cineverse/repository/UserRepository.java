@@ -3,7 +3,7 @@ package com.example.cineverse.repository;
 import android.content.Context;
 
 import com.example.cineverse.data.model.User;
-import com.example.cineverse.data.storage.user.UserStorage;
+import com.example.cineverse.data.source.user.UserLocalSource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -22,7 +22,7 @@ public class UserRepository {
     protected static final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     protected final Context context;
-    protected final UserStorage userStorage;
+    protected final UserLocalSource localSource;
 
     /**
      * Constructs an {@link UserRepository} object with the given application {@link Context}.
@@ -31,7 +31,7 @@ public class UserRepository {
      */
     public UserRepository(Context context) {
         this.context = context;
-        userStorage = new UserStorage(context);
+        localSource = new UserLocalSource(context);
     }
 
     /**
@@ -49,7 +49,7 @@ public class UserRepository {
      * @return {@link User} representing the currently authenticated user, or {@code null} if not authenticated.
      */
     protected User getCurrentLocalUser() {
-        return userStorage.getLocalSource().getUser();
+        return localSource.getUser();
     }
 
     /**
@@ -57,7 +57,7 @@ public class UserRepository {
      */
     protected void clearAllUser() {
         firebaseAuth.signOut();
-        userStorage.getLocalSource().clearUser();
+        localSource.clearUser();
     }
 
     /**

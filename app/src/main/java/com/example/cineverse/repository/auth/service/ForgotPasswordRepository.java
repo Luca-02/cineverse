@@ -33,24 +33,21 @@ public class ForgotPasswordRepository
      * provided {@link ErrorAuthCallback}.
      *
      * @param email    User's email address for password reset.
-     * @param callback Callback to handle authentication errors and status.
      */
-    public void forgotPassword(String email, ErrorAuthCallback callback) {
+    public void forgotPassword(String email) {
         if (!EmailValidator.getInstance().isValid(email)) {
             callback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
             firebaseAuth.sendPasswordResetEmail(email)
-                    .addOnSuccessListener(authResult -> handleSuccess(callback))
-                    .addOnFailureListener(e -> handleFailure(e, callback));
+                    .addOnSuccessListener(authResult -> handleSuccess())
+                    .addOnFailureListener(this::handleFailure);
         }
     }
 
     /**
      * Handles the successful completion of the password reset operation.
-     *
-     * @param callback Callback to handle authentication errors and status.
      */
-    private void handleSuccess(ErrorAuthCallback callback) {
+    private void handleSuccess() {
         callback.onError(Error.SUCCESS);
     }
 
@@ -58,9 +55,8 @@ public class ForgotPasswordRepository
      * Handles password reset failure scenarios by identifying the type of exception.
      *
      * @param exception The exception occurred during the password reset process.
-     * @param callback  Callback to handle authentication errors and status.
      */
-    private void handleFailure(Exception exception, ErrorAuthCallback callback) {
+    private void handleFailure(Exception exception) {
         if (exception instanceof FirebaseAuthInvalidUserException) {
             callback.onError(Error.ERROR_NOT_FOUND_DISABLED);
         } else if (exception instanceof FirebaseNetworkException) {

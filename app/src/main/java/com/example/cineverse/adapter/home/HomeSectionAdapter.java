@@ -1,9 +1,6 @@
 package com.example.cineverse.adapter.home;
 
-import static com.example.cineverse.utils.constant.GlobalConstant.TAG;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +13,14 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cineverse.data.model.Failure;
+import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.CarouselContentSectionBinding;
 import com.example.cineverse.databinding.GenreSectionBinding;
 import com.example.cineverse.databinding.PosterContentSectionBinding;
 import com.example.cineverse.exception.NotAssignableViewModelException;
-import com.example.cineverse.exception.ViewTypeNotFoundException;
+import com.example.cineverse.exception.ContentSectionViewTypeNotFoundException;
 import com.example.cineverse.viewmodel.verified_account.section.home.AbstractSectionViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.genre.AbstractSectionGenreViewModel;
@@ -36,11 +33,31 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@link HomeSectionAdapter} class is a {@link RecyclerView.Adapter} for displaying content sections
+ * on the home screen. It uses custom ViewHolders to bind data to different types of content sections,
+ * such as posters, carousels, and genres.
+ */
 public class HomeSectionAdapter
         extends RecyclerView.Adapter<HomeSectionAdapter.SectionViewHolder> {
 
+    /**
+     * Callback interface for handling section clicks.
+     */
     public interface OnSectionClickListener {
+        /**
+         * Invoked when the "View All" chip is clicked.
+         *
+         * @param section The clicked {@link ContentSection}.
+         */
         void onViewAllClick(ContentSection section);
+
+        /**
+         * Invoked when a genre chip is clicked.
+         *
+         * @param section The clicked {@link ContentSection}.
+         * @param genre   The clicked {@link Genre}.
+         */
         void onGenreClick(ContentSection section, Genre genre);
     }
 
@@ -51,6 +68,16 @@ public class HomeSectionAdapter
     private final List<ContentSection> sectionList;
     private final OnSectionClickListener listener;
 
+    /**
+     * Constructs a {@link HomeSectionAdapter} with the specified parameters.
+     *
+     * @param owner              The ViewModelStoreOwner.
+     * @param context            The application context.
+     * @param viewLifecycleOwner The LifecycleOwner for observing LiveData.
+     * @param rootView           The root view of the RecyclerView.
+     * @param sectionList        The list of {@link ContentSection} items to be displayed.
+     * @param listener           The callback for handling section clicks.
+     */
     public HomeSectionAdapter(ViewModelStoreOwner owner,
                               Context context,
                               LifecycleOwner viewLifecycleOwner,
@@ -65,6 +92,9 @@ public class HomeSectionAdapter
         this.listener = listener;
     }
 
+    /**
+     * Refreshes all content sections by setting the force refresh flag.
+     */
     public void refresh() {
         for (ContentSection section : sectionList) {
             section.setForceRefresh(true);
@@ -75,20 +105,20 @@ public class HomeSectionAdapter
     @NonNull
     @Override
     public SectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        int viewType = sectionList.get(position).getViewType();
+        ContentSection.ViewType viewType = sectionList.get(position).getViewType();
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if (viewType == ContentSection.POSTER_TYPE) {
+        if (viewType == ContentSection.ViewType.POSTER_TYPE) {
             return new PosterSectionViewHolder(PosterContentSectionBinding.inflate(
                     inflater, parent, false));
-        } else if (viewType == ContentSection.CAROUSEL_TYPE) {
+        } else if (viewType == ContentSection.ViewType.CAROUSEL_TYPE) {
             return new CarouselSectionViewHolder(CarouselContentSectionBinding.inflate(
                     inflater, parent, false));
-        } else if (viewType == ContentSection.GENRE_TYPE) {
+        } else if (viewType == ContentSection.ViewType.GENRE_TYPE) {
             return new GenreSectionViewHolder(GenreSectionBinding.inflate(
                     inflater, parent, false));
         } else {
-            throw new ViewTypeNotFoundException(viewType);
+            throw new ContentSectionViewTypeNotFoundException(viewType);
         }
     }
 
@@ -132,19 +162,30 @@ public class HomeSectionAdapter
             super(itemView);
         }
 
-        public Observer<Failure> getFailureObserver() {
+        /**
+         * Gets an Observer for handling API failure.
+         *
+         * @return The Observer for handling API failure.
+         */
+        protected Observer<Failure> getFailureObserver() {
             return failure ->
                     Snackbar.make(rootView,
                             failure.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
         }
 
-        public void fetchContent(AbstractSectionViewModel viewModel, View view, boolean refresh) {
+        /**
+         * Fetches content from the ViewModel and updates the view.
+         *
+         * @param viewModel The ViewModel for the content section.
+         * @param view      The view to be updated.
+         * @param refresh   True if the content should be refreshed.
+         */
+        protected void fetchContent(AbstractSectionViewModel viewModel, View view, boolean refresh) {
             if (refresh) {
                 viewModel.emptyContentLiveDataList();
             }
 
             if (viewModel.isContentEmpty()) {
-                Log.d(TAG, "fetchContent");
                 viewModel.fetch();
                 if (view != null) {
                     view.setVisibility(View.VISIBLE);
@@ -152,7 +193,12 @@ public class HomeSectionAdapter
             }
         }
 
-        protected abstract void bind(ContentSection section);
+        /**
+         * Binds data to the ViewHolder.
+         *
+         * @param section The {@link ContentSection} to bind.
+         */
+        public abstract void bind(ContentSection section);
 
     }
 
@@ -168,7 +214,7 @@ public class HomeSectionAdapter
             super(itemView);
         }
 
-        public void setViewModel(ContentSection section, View fetchingView) {
+        protected void setViewModel(ContentSection section, View fetchingView) {
             Class<? extends AbstractSectionViewModel> viewModelClass = section.getViewModelClass();
             if (AbstractSectionContentViewModel.class.isAssignableFrom(viewModelClass)) {
                 viewModel = (AbstractSectionContentViewModel) new ViewModelProvider(owner).get(section.getViewModelClass());
@@ -185,7 +231,7 @@ public class HomeSectionAdapter
             viewModel.getFailureLiveData().observe(viewLifecycleOwner, getFailureObserver());
         }
 
-        public void setViewAllChipListener(Chip chip, ContentSection section) {
+        protected void setViewAllChipListener(Chip chip, ContentSection section) {
             chip.setOnClickListener(view ->
                     listener.onViewAllClick(section));
         }
@@ -218,7 +264,8 @@ public class HomeSectionAdapter
         }
 
         private void setRecyclerView() {
-            contentSectionAdapter = new ContentSectionAdapter(context, ContentSection.POSTER_TYPE, new ArrayList<>());
+            contentSectionAdapter = new ContentSectionAdapter(
+                    context, ContentSection.ViewType.POSTER_TYPE, new ArrayList<>());
             binding.contentSectionRecyclerView.setLayoutManager(new LinearLayoutManager(
                     context, LinearLayoutManager.HORIZONTAL, false));
             binding.contentSectionRecyclerView.setAdapter(contentSectionAdapter);
@@ -253,7 +300,7 @@ public class HomeSectionAdapter
 
         private void setRecyclerView() {
             contentSectionAdapter = new ContentSectionAdapter(
-                    context, ContentSection.CAROUSEL_TYPE, new ArrayList<>());
+                    context, ContentSection.ViewType.CAROUSEL_TYPE, new ArrayList<>());
             binding.contentSectionRecyclerView.setLayoutManager(
                     new CarouselLayoutManager(new HeroCarouselStrategy()));
 
@@ -287,13 +334,13 @@ public class HomeSectionAdapter
         }
 
         @Override
-        protected void bind(ContentSection section) {
+        public void bind(ContentSection section) {
             setRecyclerView(section);
-            setViewModel(section, null);
+            setViewModel(section);
             fetchContent(viewModel, null, section.isForceRefresh());
         }
 
-        public void setViewModel(ContentSection section, View fetchingView) {
+        private void setViewModel(ContentSection section) {
             Class<? extends AbstractSectionViewModel> viewModelClass = section.getViewModelClass();
             if (AbstractSectionGenreViewModel.class.isAssignableFrom(viewModelClass)) {
                 viewModel = (AbstractSectionGenreViewModel) new ViewModelProvider(owner).get(section.getViewModelClass());
@@ -303,9 +350,6 @@ public class HomeSectionAdapter
 
             viewModel.getContentLiveData().observe(viewLifecycleOwner, abstractPosters -> {
                 genreSectionAdapter.setData(abstractPosters);
-                if (fetchingView != null) {
-                    fetchingView.setVisibility(View.GONE);
-                }
             });
             viewModel.getFailureLiveData().observe(viewLifecycleOwner, getFailureObserver());
         }

@@ -7,12 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.cineverse.databinding.ActivityVerifyAccountBinding;
-import com.example.cineverse.handler.callback.BackPressedHandler;
 import com.example.cineverse.R;
+import com.example.cineverse.databinding.ActivityVerifyAccountBinding;
+import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
+import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 
 /**
  * The {@link VerifyAccountActivity} class represents the activity for email verification.

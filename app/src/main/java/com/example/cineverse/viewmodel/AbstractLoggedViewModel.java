@@ -5,7 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.repository.auth.logged.AbstractLoggedRepository;
+import com.example.cineverse.repository.auth.AbstractLoggedRepository;
 
 /**
  * The {@link AbstractLoggedViewModel} class extends {@link AbstractUserViewModel} and serves as the base class for ViewModels

@@ -19,6 +19,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
+/**
+ * The {@link MovieApiService} interface provides methods for accessing movie-related data from the
+ * external API.
+ */
 public interface MovieApiService {
 
     @GET(NOW_PLAYING_MOVIE_ENDPOINT)

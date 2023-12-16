@@ -4,7 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.cineverse.repository.auth.logged.status.VerifiedAccountRepository;
+import com.example.cineverse.repository.auth.logged.VerifiedAccountRepository;
 import com.example.cineverse.viewmodel.AbstractLoggedViewModel;
 
 public class VerifiedAccountViewModel

@@ -6,7 +6,7 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.cineverse.data.source.content.remote.section.UpcomingMovieRemoteDataSource;
+import com.example.cineverse.data.source.content.section.UpcomingMovieRemoteDataSource;
 
 import org.junit.Before;
 import org.junit.Test;

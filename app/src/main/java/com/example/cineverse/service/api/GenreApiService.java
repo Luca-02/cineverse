@@ -12,6 +12,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
+/**
+ * The {@link GenreApiService} interface provides methods for accessing genre-related data from the
+ * external API.
+ */
 public interface GenreApiService {
 
     @GET(GENRE_MOVIE_ENDPOINT)

@@ -2,16 +2,16 @@ package com.example.cineverse.viewmodel.verified_account.section.home.content;
 
 import android.app.Application;
 
-import com.example.cineverse.data.model.Failure;
+import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.content.AbstractContentResponse;
-import com.example.cineverse.data.source.content.remote.AbstractSectionContentRemoteDataSource;
-import com.example.cineverse.data.source.content.remote.SectionContentResponseCallback;
+import com.example.cineverse.data.source.content.AbstractSectionContentRemoteDataSource;
+import com.example.cineverse.data.source.content.SectionContentRemoteResponseCallback;
 import com.example.cineverse.repository.content.AbstractSectionContentRepository;
 
 public abstract class AbstractSectionContentTypeViewModel<T extends AbstractContent>
         extends AbstractSectionContentViewModel
-        implements SectionContentResponseCallback<T> {
+        implements SectionContentRemoteResponseCallback<T> {
 
     protected AbstractSectionContentRepository<T> repository;
     protected int genreId;
@@ -27,7 +27,7 @@ public abstract class AbstractSectionContentTypeViewModel<T extends AbstractCont
     }
 
     @Override
-    public void onResponse(AbstractContentResponse<T> response) {
+    public void onRemoteResponse(AbstractContentResponse<T> response) {
         if (response != null) {
             handleResponse(response.getResults(), getContentLiveData());
         }

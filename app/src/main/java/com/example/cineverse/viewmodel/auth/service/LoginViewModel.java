@@ -32,7 +32,7 @@ public class LoginViewModel
      * @param password The user's password for login.
      */
     public void login(String email, String password) {
-        userRepository.login(email, password, this);
+        userRepository.login(email, password);
     }
 
 }

@@ -19,6 +19,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
+/**
+ * The {@link TvApiService} interface provides methods for accessing TV-related data from the
+ * external API.
+ */
 public interface TvApiService {
 
     @GET(AIRING_TODAY_TV_ENDPOINT)

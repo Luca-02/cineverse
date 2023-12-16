@@ -2,17 +2,17 @@ package com.example.cineverse.repository.content;
 
 import android.content.Context;
 
-import com.example.cineverse.data.model.content.section.MovieEntity;
-import com.example.cineverse.data.source.content.remote.AbstractSectionContentRemoteDataSource;
-import com.example.cineverse.data.source.content.remote.SectionContentResponseCallback;
+import com.example.cineverse.data.model.content.section.Movie;
+import com.example.cineverse.data.source.content.AbstractSectionContentRemoteDataSource;
+import com.example.cineverse.data.source.content.SectionContentRemoteResponseCallback;
 
 public class SectionMovieRepository
-        extends AbstractSectionContentRepository<MovieEntity> {
+        extends AbstractSectionContentRepository<Movie> {
 
     public SectionMovieRepository(Context context,
-                                  AbstractSectionContentRemoteDataSource<MovieEntity> remoteDataSource,
-                                  SectionContentResponseCallback<MovieEntity> callback) {
-        super(context, remoteDataSource, MovieEntity.class, callback);
+                                  AbstractSectionContentRemoteDataSource<Movie> remoteDataSource,
+                                  SectionContentRemoteResponseCallback<Movie> callback) {
+        super(context, remoteDataSource, Movie.class, callback);
     }
 
 }

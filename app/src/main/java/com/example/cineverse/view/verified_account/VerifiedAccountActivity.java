@@ -8,7 +8,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
-import com.example.cineverse.handler.callback.BackPressedHandler;
+import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.google.android.material.elevation.SurfaceColors;
 

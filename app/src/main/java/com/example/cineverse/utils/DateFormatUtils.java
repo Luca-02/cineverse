@@ -10,8 +10,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * The {@link DateFormatUtils} class provides utility methods for formatting dates.
+ */
 public class DateFormatUtils {
 
+    /**
+     * Formats the given date string using the specified date format.
+     *
+     * @param context     The application context.
+     * @param dateString  The date string to format.
+     * @return A formatted date string, or {@code null} if formatting fails.
+     */
     public static String formatData(Context context, String dateString) {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat sdf = new SimpleDateFormat(RESPONSE_DATE_FORMAT);

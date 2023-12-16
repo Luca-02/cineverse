@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.cineverse.handler.callback.BackPressedHandler;
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityNetworkErrorBinding;
+import com.example.cineverse.handler.BackPressedHandler;
 
 /**
  * The {@link NetworkErrorActivity} class represents the activity shown to the user when there is a network error.

@@ -2,11 +2,11 @@ package com.example.cineverse.viewmodel.verified_account.section.home.content;
 
 import android.app.Application;
 
-import com.example.cineverse.data.model.content.section.MovieEntity;
+import com.example.cineverse.data.model.content.section.Movie;
 import com.example.cineverse.repository.content.SectionMovieRepository;
 
 public abstract class AbstractSectionMovieViewModel
-        extends AbstractSectionContentTypeViewModel<MovieEntity> {
+        extends AbstractSectionContentTypeViewModel<Movie> {
 
     public AbstractSectionMovieViewModel(Application application) {
         this(application, 0);

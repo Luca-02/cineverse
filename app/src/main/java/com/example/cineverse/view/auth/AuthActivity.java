@@ -7,18 +7,15 @@ import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityAuthBinding;
-import com.example.cineverse.handler.callback.BackPressedHandler;
-import com.example.cineverse.repository.auth.AbstractAuthRepository;
+import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.verify_account.VerifyAccountActivity;
-import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
 
 /**
  * The {@link AuthActivity} class serves as the entry point of the application for authentication-related flows.

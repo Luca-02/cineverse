@@ -6,11 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.cineverse.data.model.Failure;
+import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.genre.GenreApiResponse;
 import com.example.cineverse.data.source.genre.AbstractGenresRemoteDataSource;
-import com.example.cineverse.data.source.genre.GenresResponseCallback;
+import com.example.cineverse.data.source.genre.GenresRemoteResponseCallback;
 import com.example.cineverse.exception.UnsupportedViewModelException;
 import com.example.cineverse.exception.ViewModelFactoryCreationException;
 import com.example.cineverse.repository.genre.GenreRepository;
@@ -23,7 +23,7 @@ import java.util.List;
 
 public abstract class AbstractSectionGenreViewModel
         extends AbstractSectionViewModel
-        implements GenresResponseCallback {
+        implements GenresRemoteResponseCallback {
 
     protected GenreRepository repository;
     private MutableLiveData<List<Genre>> contentLiveData;
@@ -59,7 +59,7 @@ public abstract class AbstractSectionGenreViewModel
     }
 
     @Override
-    public void onResponse(GenreApiResponse response) {
+    public void onRemoteResponse(GenreApiResponse response) {
         if (response != null) {
             handleResponse(response.getGenres(), getContentLiveData());
         }
@@ -76,7 +76,7 @@ public abstract class AbstractSectionGenreViewModel
         Class<? extends AbstractSectionContentViewModel> viewModelClass =
                 getSectionContentViewModelClass();
         Class<? extends ViewModelProvider.Factory> factoryClass =
-                SectionGenreViewModelFactoryMapper.getFactoryClass(viewModelClass);
+                SectionGenreViewModelFactoryMappingManager.getFactoryClass(viewModelClass);
         if (factoryClass != null) {
             return createFactoryInstance(factoryClass, getApplication(), genreId);
         } else {

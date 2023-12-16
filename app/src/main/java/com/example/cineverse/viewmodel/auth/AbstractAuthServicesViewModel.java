@@ -31,6 +31,7 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
      */
     public AbstractAuthServicesViewModel(@NonNull Application application, T userRepository) {
         super(application, userRepository);
+        userRepository.setCallback(this);
     }
 
     public MutableLiveData<AbstractAuthRepository.Error> getErrorLiveData() {

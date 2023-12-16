@@ -19,7 +19,7 @@ public class TvGenresRemoteDataSource
     @Override
     public void fetch() {
         Call<GenreApiResponse> call =
-                genreApiService.getTvGenres(language, bearerAccessTokenAuth);
+                genreApiService.getTvGenres(getLanguage(), getBearerAccessTokenAuth());
         handlePosterApiCal(call);
     }
 

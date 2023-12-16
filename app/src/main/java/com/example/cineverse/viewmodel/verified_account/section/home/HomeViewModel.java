@@ -45,26 +45,26 @@ public class HomeViewModel
     public List<ContentSection> getMovieContentSection(boolean withGenreSection) {
         List<ContentSection> sectionList = new ArrayList<>();
         if (withGenreSection) {
-            sectionList.add(new ContentSection(null, MovieGenreViewModel.class, ContentSection.GENRE_TYPE));
+            sectionList.add(new ContentSection(null, MovieGenreViewModel.class, ContentSection.ViewType.GENRE_TYPE));
         }
-        sectionList.add(new ContentSection(R.string.popular_movie, PopularMovieViewModel.class, ContentSection.POSTER_TYPE));
-        sectionList.add(new ContentSection(R.string.top_rated_movie, TopRatedMovieViewModel.class, ContentSection.CAROUSEL_TYPE));
-        sectionList.add(new ContentSection(R.string.now_playing_movie, NowPlayingMovieViewModel.class, ContentSection.POSTER_TYPE));
-        sectionList.add(new ContentSection(R.string.upcoming_movie, UpcomingMovieViewModel.class, ContentSection.POSTER_TYPE));
-        sectionList.add(new ContentSection(R.string.today_trending_movie, TodayTrendingMovieViewModel.class, ContentSection.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.popular_movie, PopularMovieViewModel.class, ContentSection.ViewType.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.top_rated_movie, TopRatedMovieViewModel.class, ContentSection.ViewType.CAROUSEL_TYPE));
+        sectionList.add(new ContentSection(R.string.now_playing_movie, NowPlayingMovieViewModel.class, ContentSection.ViewType.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.upcoming_movie, UpcomingMovieViewModel.class, ContentSection.ViewType.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.today_trending_movie, TodayTrendingMovieViewModel.class, ContentSection.ViewType.POSTER_TYPE));
         return sectionList;
     }
 
     public List<ContentSection> getTvContentSection(boolean withGenreSection) {
         List<ContentSection> sectionList = new ArrayList<>();
         if (withGenreSection) {
-            sectionList.add(new ContentSection(null, TvGenreViewModel.class, ContentSection.GENRE_TYPE));
+            sectionList.add(new ContentSection(null, TvGenreViewModel.class, ContentSection.ViewType.GENRE_TYPE));
         }
-        sectionList.add(new ContentSection(R.string.popular_tv, PopularTvViewModel.class, ContentSection.POSTER_TYPE));
-        sectionList.add(new ContentSection(R.string.top_rated_tv, TopRatedTvViewModel.class, ContentSection.CAROUSEL_TYPE));
-        sectionList.add(new ContentSection(R.string.airing_today_tv, AiringTodayTvViewModel.class, ContentSection.POSTER_TYPE));
-        sectionList.add(new ContentSection(R.string.week_airing_tv, WeekAiringTvViewModel.class, ContentSection.POSTER_TYPE));
-        sectionList.add(new ContentSection(R.string.today_trending_tv, TodayTrendingTvViewModel.class, ContentSection.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.popular_tv, PopularTvViewModel.class, ContentSection.ViewType.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.top_rated_tv, TopRatedTvViewModel.class, ContentSection.ViewType.CAROUSEL_TYPE));
+        sectionList.add(new ContentSection(R.string.airing_today_tv, AiringTodayTvViewModel.class, ContentSection.ViewType.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.week_airing_tv, WeekAiringTvViewModel.class, ContentSection.ViewType.POSTER_TYPE));
+        sectionList.add(new ContentSection(R.string.today_trending_tv, TodayTrendingTvViewModel.class, ContentSection.ViewType.POSTER_TYPE));
         return sectionList;
     }
 

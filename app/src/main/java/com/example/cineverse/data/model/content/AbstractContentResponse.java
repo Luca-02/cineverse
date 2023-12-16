@@ -2,17 +2,22 @@ package com.example.cineverse.data.model.content;
 
 import static com.example.cineverse.utils.constant.Api.STARTING_PAGE;
 
-import com.example.cineverse.data.model.ApiResponse;
-import com.example.cineverse.data.model.content.section.ContentEntityDb;
-import com.example.cineverse.data.model.content.section.MovieEntity;
+import com.example.cineverse.data.model.api.ApiResponse;
+import com.example.cineverse.data.model.content.section.Movie;
 import com.example.cineverse.data.model.content.section.MovieResponse;
-import com.example.cineverse.data.model.content.section.TvEntity;
+import com.example.cineverse.data.model.content.section.Tv;
 import com.example.cineverse.data.model.content.section.TvResponse;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@link AbstractContentResponse} class is an abstract class representing the response
+ * structure for content entities such as movies and TV shows.
+ *
+ * @param <T> The type of content entities (e.g., Movie, Tv) that the response contains.
+ */
 public abstract class AbstractContentResponse<T extends AbstractContent>
         implements ApiResponse {
 
@@ -30,6 +35,11 @@ public abstract class AbstractContentResponse<T extends AbstractContent>
         this.totalResults = totalResults;
     }
 
+    /**
+     * Constructs an {@link AbstractContentResponse} instance with the provided list of results.
+     *
+     * @param results The list of content entities in the response.
+     */
     public AbstractContentResponse(List<T> results) {
         this(STARTING_PAGE, results, STARTING_PAGE, results.size());
     }
@@ -66,26 +76,41 @@ public abstract class AbstractContentResponse<T extends AbstractContent>
         this.results = results;
     }
 
+    /**
+     * Creates a response object based on the provided list of content entities and the content class type.
+     *
+     * @param contentEntityDbList The list of content entities retrieved from the database.
+     * @param contentClass        The class type of the content entities (e.g., {@link Movie}, {@link Tv}).
+     * @param <T>                 The type of content entities.
+     * @return The corresponding response object (e.g., {@link MovieResponse}, {@link TvResponse}).
+     */
     public static <T extends AbstractContent> Object createResponse(
             List<ContentEntityDb> contentEntityDbList, Class<T> contentClass) {
         List<T> convertedList = convertToContentList(contentEntityDbList, contentClass);
 
-        if (MovieEntity.class.isAssignableFrom(contentClass)) {
-            List<MovieEntity> convertedResult = (List<MovieEntity>) convertedList;
-            return new MovieResponse(STARTING_PAGE, convertedResult, STARTING_PAGE, convertedList.size());
-        } else if (TvEntity.class.isAssignableFrom(contentClass)) {
-            List<TvEntity> convertedResult = (List<TvEntity>) convertedList;
-            return new TvResponse(STARTING_PAGE, convertedResult, STARTING_PAGE, convertedList.size());
+        if (Movie.class.isAssignableFrom(contentClass)) {
+            List<Movie> convertedResult = (List<Movie>) convertedList;
+            return new MovieResponse(convertedResult);
+        } else if (Tv.class.isAssignableFrom(contentClass)) {
+            List<Tv> convertedResult = (List<Tv>) convertedList;
+            return new TvResponse(convertedResult);
         }
-        // Handle other content types if needed
         return null;
     }
 
+    /**
+     * Converts the list of content entities retrieved from the database to the desired type.
+     *
+     * @param contentEntityDbList The list of content entities retrieved from the database.
+     * @param contentClass        The class type of the content entities (e.g., {@link Movie}, {@link Tv}).
+     * @param <T>                 The type of content entities.
+     * @return The list of content entities of the desired type.
+     */
     private static <T extends AbstractContent> List<T> convertToContentList(
             List<ContentEntityDb> contentEntityDbList, Class<T> contentClass) {
         List<T> result = new ArrayList<>();
         for (ContentEntityDb entityDb : contentEntityDbList) {
-            result.add(ContentEntityDb.convertFromDbContent(entityDb, contentClass));
+            result.add(ContentEntityDb.convertFromContentEntityDb(entityDb, contentClass));
         }
         return result;
     }

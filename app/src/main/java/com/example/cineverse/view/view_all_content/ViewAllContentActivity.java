@@ -14,7 +14,7 @@ import com.example.cineverse.R;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.databinding.ActivityViewAllContentBinding;
 import com.example.cineverse.exception.ViewModelCreationException;
-import com.example.cineverse.handler.callback.BackPressedHandler;
+import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.genre.AbstractSectionGenreViewModel;
 

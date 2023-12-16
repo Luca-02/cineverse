@@ -16,25 +16,42 @@ import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.CarouselContentItemBinding;
 import com.example.cineverse.databinding.PosterContentItemBinding;
-import com.example.cineverse.exception.ViewTypeNotFoundException;
+import com.example.cineverse.exception.ContentSectionViewTypeNotFoundException;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.carousel.MaskableFrameLayout;
 
 import java.util.List;
 
+/**
+ * The {@link ContentSectionAdapter} class is a {@link RecyclerView.Adapter} that displays a list of
+ * content items with different view types such as posters and carousels.
+ * It uses custom ViewHolders to bind data and handles different content sections.
+ */
 public class ContentSectionAdapter
         extends RecyclerView.Adapter<ContentSectionAdapter.ContentViewHolder> {
 
     private final Context context;
-    private final int viewType;
+    private final ContentSection.ViewType viewType;
     private final List<AbstractContent> contentList;
 
-    public ContentSectionAdapter(Context context, int viewType, List<AbstractContent> contentList) {
+    /**
+     * Constructs a {@link ContentSectionAdapter} with the specified context, view type, and content list.
+     *
+     * @param context     The application context.
+     * @param viewType    The type of view to be displayed (e.g., posters or carousels).
+     * @param contentList The list of {@link AbstractContent} items to be displayed.
+     */
+    public ContentSectionAdapter(Context context, ContentSection.ViewType viewType, List<AbstractContent> contentList) {
         this.context = context;
         this.viewType = viewType;
         this.contentList = contentList;
     }
 
+    /**
+     * Sets new data for the adapter and notifies observers of the data set change.
+     *
+     * @param newContentList The new list of {@link AbstractContent} items.
+     */
     public void setData(List<? extends AbstractContent> newContentList) {
         int end = contentList.size();
         contentList.clear();
@@ -47,20 +64,20 @@ public class ContentSectionAdapter
     @Override
     public ContentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if (viewType == ContentSection.POSTER_TYPE) {
+        if (viewType == ContentSection.ViewType.POSTER_TYPE.getViewType()) {
             return new PosterViewHolder(PosterContentItemBinding.inflate(
                     inflater, parent, false));
-        } else if (viewType == ContentSection.CAROUSEL_TYPE) {
+        } else if (viewType == ContentSection.ViewType.CAROUSEL_TYPE.getViewType()) {
             return new CarouselViewHolder(CarouselContentItemBinding.inflate(
                     inflater, parent, false));
         } else {
-            throw new ViewTypeNotFoundException(viewType);
+            throw new ContentSectionViewTypeNotFoundException(this.viewType);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull ContentViewHolder holder, int position) {
-        holder.bind(contentList.get(position), position);
+        holder.bind(contentList.get(position));
     }
 
     @Override
@@ -73,16 +90,24 @@ public class ContentSectionAdapter
 
     @Override
     public int getItemViewType(int position) {
-        return viewType;
+        return viewType.getViewType();
     }
 
+    /**
+     * Abstract base class for RecyclerView ViewHolders.
+     */
     public abstract static class ContentViewHolder extends RecyclerView.ViewHolder {
 
         public ContentViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 
-        abstract void bind(AbstractContent posterMovie, int position);
+        /**
+         * Binds data to the ViewHolder.
+         *
+         * @param content The {@link AbstractContent} item to bind.
+         */
+        public abstract void bind(AbstractContent content);
 
     }
 
@@ -99,12 +124,12 @@ public class ContentSectionAdapter
         }
 
         @Override
-        public void bind(AbstractContent posterMovie, int position) {
-            String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + posterMovie.getPosterPath();
+        public void bind(AbstractContent content) {
+            String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getPosterPath();
             Glide.with(context)
                     .load(imageUrl)
                     .into(binding.posterImageView);
-            binding.titleTextView.setText(posterMovie.getName());
+            binding.titleTextView.setText(content.getName());
         }
 
     }
@@ -123,22 +148,17 @@ public class ContentSectionAdapter
 
         @SuppressLint("RestrictedApi")
         @Override
-        public void bind(AbstractContent posterMovie, int position) {
-            String rank = (position + 1) + "°";
-            String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + posterMovie.getBackdropPath();
+        public void bind(AbstractContent content) {
+            String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getBackdropPath();
             Glide.with(context)
                     .load(imageUrl)
                     .into(binding.carouselImageView);
-            binding.rankTextView.setText(rank);
-            binding.titleTextView.setText(posterMovie.getName());
+            binding.titleTextView.setText(content.getName());
 
             ((MaskableFrameLayout) itemView).setOnMaskChangedListener(maskRect -> {
                 float transitionX = maskRect.left;
                 float alpha = AnimationUtils
                         .lerp(1F, 0F, 0F, 80F, maskRect.left);
-
-                binding.rankTextView.setTranslationX(transitionX);
-                binding.rankTextView.setAlpha(alpha);
                 binding.titleTextView.setTranslationX(transitionX);
                 binding.titleTextView.setAlpha(alpha);
             });

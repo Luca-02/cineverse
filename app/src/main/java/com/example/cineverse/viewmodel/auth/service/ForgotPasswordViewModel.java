@@ -32,7 +32,7 @@ public class ForgotPasswordViewModel
      * @param email The user's email address for sending the password reset email.
      */
     public void forgotPassword(String email) {
-        userRepository.forgotPassword(email, this);
+        userRepository.forgotPassword(email);
     }
 
 }

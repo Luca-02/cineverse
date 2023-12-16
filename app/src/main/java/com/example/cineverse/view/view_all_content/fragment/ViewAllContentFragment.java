@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cineverse.adapter.home.ContentViewAllAdapter;
-import com.example.cineverse.data.model.Failure;
+import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.databinding.FragmentViewAllContentBinding;
 import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
