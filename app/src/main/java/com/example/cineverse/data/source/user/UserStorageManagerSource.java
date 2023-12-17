@@ -17,16 +17,17 @@ public class UserStorageManagerSource
     private final Context context;
     private final UserLocalSource localSource;
     private final UserFirebaseSource firebaseSource;
-    private Callback<User> callback;
+    private final FirebaseCallback<User> firebaseCallback;
 
-    public UserStorageManagerSource(Context context, UserLocalSource localSource, UserFirebaseSource firebaseSource) {
+    public UserStorageManagerSource(
+            Context context,
+            UserLocalSource localSource,
+            UserFirebaseSource firebaseSource,
+            FirebaseCallback<User> firebaseCallback) {
         this.context = context;
         this.localSource = localSource;
         this.firebaseSource = firebaseSource;
-    }
-
-    public void setCallback(Callback<User> callback) {
-        this.callback = callback;
+        this.firebaseCallback = firebaseCallback;
     }
 
     /**
@@ -36,10 +37,10 @@ public class UserStorageManagerSource
      * @param username The username to associate with the user.
      */
     public void register(FirebaseUser firebaseUser, String username) {
-        if (callback != null) {
+        if (firebaseCallback != null) {
             User user = new User(firebaseUser, username);
 
-            firebaseSource.saveUser(user, new Callback<Boolean>() {
+            firebaseSource.saveUser(user, new FirebaseCallback<Boolean>() {
                 @Override
                 public void onCallback(Boolean userSaved) {
                     handleUserSaveResult(userSaved, user);
@@ -47,7 +48,7 @@ public class UserStorageManagerSource
 
                 @Override
                 public void onNetworkUnavailable() {
-                    callback.onNetworkUnavailable();
+                    firebaseCallback.onNetworkUnavailable();
                 }
             });
         }
@@ -60,9 +61,9 @@ public class UserStorageManagerSource
      * @param firebaseUser The Firebase user object.
      */
     public void googleAuth(FirebaseUser firebaseUser) {
-        if (callback != null) {
+        if (firebaseCallback != null) {
             firebaseSource.getUserFromUid(firebaseUser.getUid(), context,
-                    new Callback<User>() {
+                    new FirebaseCallback<User>() {
                         @Override
                         public void onCallback(User user) {
                             if (user == null) {
@@ -74,7 +75,7 @@ public class UserStorageManagerSource
 
                         @Override
                         public void onNetworkUnavailable() {
-                            callback.onNetworkUnavailable();
+                            firebaseCallback.onNetworkUnavailable();
                         }
                     });
         }
@@ -86,20 +87,20 @@ public class UserStorageManagerSource
      * @param uid The UID of the user to log in.
      */
     public void login(String uid) {
-        if (callback != null) {
+        if (firebaseCallback != null) {
             firebaseSource.getUserFromUid(uid, context,
-                    new Callback<User>() {
+                    new FirebaseCallback<User>() {
                         @Override
                         public void onCallback(User user) {
                             if (user != null) {
                                 localSource.saveUser(user);
                             }
-                            callback.onCallback(user);
+                            firebaseCallback.onCallback(user);
                         }
 
                         @Override
                         public void onNetworkUnavailable() {
-                            callback.onNetworkUnavailable();
+                            firebaseCallback.onNetworkUnavailable();
                         }
                     });
         }
@@ -108,9 +109,9 @@ public class UserStorageManagerSource
     private void handleUserSaveResult(Boolean userSaved, User user) {
         if (userSaved != null && userSaved) {
             localSource.saveUser(user);
-            callback.onCallback(user);
+            firebaseCallback.onCallback(user);
         } else {
-            callback.onCallback(null);
+            firebaseCallback.onCallback(null);
         }
     }
 

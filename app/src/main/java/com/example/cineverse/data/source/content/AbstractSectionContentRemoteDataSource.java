@@ -22,19 +22,14 @@ public abstract class AbstractSectionContentRemoteDataSource<T extends AbstractC
         extends TMDBRemoteDataSource
         implements ISectionContentRemoteDataSource {
 
-    private SectionContentRemoteResponseCallback<T> callback;
+    private SectionContentRemoteResponseCallback<T> remoteResponseCallback;
 
     public AbstractSectionContentRemoteDataSource(Context context) {
         super(context);
     }
 
-    /**
-     * Sets the callback for handling remote response.
-     *
-     * @param callback The callback.
-     */
-    public void setCallback(SectionContentRemoteResponseCallback<T> callback) {
-        this.callback = callback;
+    public void setRemoteResponseCallback(SectionContentRemoteResponseCallback<T> remoteResponseCallback) {
+        this.remoteResponseCallback = remoteResponseCallback;
     }
 
     /**
@@ -52,8 +47,8 @@ public abstract class AbstractSectionContentRemoteDataSource<T extends AbstractC
      * @param call The API call.
      */
     protected <A extends AbstractContentResponse<T>> void handlePosterApiCall(Call<A> call) {
-        if (callback != null) {
-            handlePosterApiCall(call, callback);
+        if (remoteResponseCallback != null) {
+            handlePosterApiCall(call, remoteResponseCallback);
         }
     }
 

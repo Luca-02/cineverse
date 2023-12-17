@@ -14,6 +14,8 @@ import com.example.cineverse.repository.UserRepository;
 public abstract class AbstractLoggedRepository
         extends UserRepository {
 
+    private LoggedCallback loggedCallback;
+
     /**
      * Constructs an {@link AbstractLoggedRepository} object with the given application {@link Context} and initializes
      * {@link MutableLiveData} for observing user logout status.
@@ -24,15 +26,17 @@ public abstract class AbstractLoggedRepository
         super(context);
     }
 
+    public void setLoggedCallback(LoggedCallback loggedCallback) {
+        this.loggedCallback = loggedCallback;
+    }
+
     /**
      * Logs out the currently authenticated user by invoking {@link UserRepository#clearAllUser clearAllUser}
-     * method and communicates the logout status through the provided {@link LoggedCallback}.
-     *
-     * @param callback Callback to handle the result of the logout operation.
+     * method and communicates the logout status through {@link #loggedCallback}.
      */
-    public void logOut(LoggedCallback callback) {
+    public void logOut() {
         clearAllUser();
-        callback.onLogOut();
+        loggedCallback.onLogOut();
     }
 
     /**

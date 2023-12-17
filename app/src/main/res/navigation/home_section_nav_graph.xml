@@ -9,11 +9,7 @@
         android:id="@+id/sectionContentFragment"
         android:name="com.example.cineverse.view.verified_account.fragment.home.SectionContentFragment"
         android:label="fragment_section_content"
-        tools:layout="@layout/fragment_section_content">
-        <argument
-            android:name="sectionType"
-            app:argType="string" />
-    </fragment>
+        tools:layout="@layout/fragment_section_content" />
 
     <activity
         android:id="@+id/viewAllContentActivity"
@@ -23,28 +19,19 @@
 
     <action
         android:id="@+id/action_global_allContentFragment"
-        app:destination="@id/sectionContentFragment">
-        <argument
-            android:name="sectionType"
-            app:argType="string"
-            android:defaultValue="all" />
-    </action>
+        app:destination="@id/sectionContentFragment"
+        app:popUpTo="@id/home_section_nav_graph"
+        app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_global_movieContentFragment"
-        app:destination="@id/sectionContentFragment">
-        <argument
-            android:name="sectionType"
-            app:argType="string"
-            android:defaultValue="movie" />
-    </action>
+        app:destination="@id/sectionContentFragment"
+        app:popUpTo="@id/home_section_nav_graph"
+        app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_global_tvContentFragment"
-        app:destination="@id/sectionContentFragment">
-        <argument
-            android:name="sectionType"
-            app:argType="string"
-            android:defaultValue="tv" />
-    </action>
+        app:destination="@id/sectionContentFragment"
+        app:popUpTo="@id/home_section_nav_graph"
+        app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_global_viewAllContentActivity"
         app:destination="@id/viewAllContentActivity" />

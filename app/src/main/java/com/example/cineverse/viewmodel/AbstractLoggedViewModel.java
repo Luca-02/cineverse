@@ -30,6 +30,7 @@ public abstract class AbstractLoggedViewModel<T extends AbstractLoggedRepository
      */
     public AbstractLoggedViewModel(@NonNull Application application, T userRepository) {
         super(application, userRepository);
+        userRepository.setLoggedCallback(this);
     }
 
     public MutableLiveData<Boolean> getLoggedOutLiveData() {
@@ -43,7 +44,7 @@ public abstract class AbstractLoggedViewModel<T extends AbstractLoggedRepository
      * Initiates the user logout process.
      */
     public void logOut() {
-        userRepository.logOut(this);
+        userRepository.logOut();
     }
 
     /**

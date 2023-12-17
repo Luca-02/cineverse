@@ -7,6 +7,10 @@ import androidx.annotation.NonNull;
 import com.example.cineverse.repository.auth.logged.VerifiedAccountRepository;
 import com.example.cineverse.viewmodel.AbstractLoggedViewModel;
 
+/**
+ * The {@link VerifiedAccountViewModel} class represents the ViewModel for a verified user's account.
+ * It extends the {@link AbstractLoggedViewModel} class and provides access to the associated repository.
+ */
 public class VerifiedAccountViewModel
         extends AbstractLoggedViewModel<VerifiedAccountRepository> {
 

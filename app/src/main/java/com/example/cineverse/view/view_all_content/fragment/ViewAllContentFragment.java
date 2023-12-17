@@ -144,9 +144,12 @@ public class ViewAllContentFragment extends Fragment {
          * Message [Invalid page: Pages start at 1 and max at 500. They are expected to be an integer.]
          */
 
-        if (!failure.isSuccess() && failure.getStatusCode() != 22) {
-            Snackbar.make(requireView(),
-                    failure.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
+        if (failure != null) {
+            if (!failure.isSuccess() && failure.getStatusCode() != 22) {
+                Snackbar.make(requireView(),
+                        failure.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
+            }
+            viewModel.getFailureLiveData().setValue(null);
         }
     }
 

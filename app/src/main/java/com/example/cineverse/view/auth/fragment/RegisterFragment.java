@@ -87,6 +87,7 @@ public class RegisterFragment extends Fragment {
         binding.usernameInputLayout.setErrorEnabled(false);
         binding.emailInputLayout.setErrorEnabled(false);
         binding.passwordInputLayout.setErrorEnabled(false);
+        viewModel.getErrorLiveData().setValue(null);
     }
 
     /**
@@ -110,7 +111,7 @@ public class RegisterFragment extends Fragment {
      * @param bool {@code true} if there is a network error, {@code false} otherwise.
      */
     private void handleNetworkError(Boolean bool) {
-        if (bool) {
+        if (bool != null && bool) {
             ((AuthActivity) requireActivity()).openNetworkErrorActivity();
         }
         binding.passwordEditText.setText(null);
@@ -125,29 +126,31 @@ public class RegisterFragment extends Fragment {
      * @param error The type of registration error.
      */
     private void handleError(RegisterRepository.Error error) {
-        binding.passwordEditText.setText(null);
-        String errorString = getString(error.getError());
-        switch (error) {
-            case ERROR_INVALID_USERNAME_FORMAT:
-            case ERROR_USERNAME_ALREADY_EXISTS:
-                binding.usernameInputLayout.setError(errorString);
-                break;
-            case ERROR_INVALID_EMAIL_FORMAT:
-            case ERROR_INVALID_EMAIL:
-            case ERROR_EMAIL_ALREADY_EXISTS:
-                binding.emailInputLayout.setError(errorString);
-                break;
-            case ERROR_WEAK_PASSWORD:
-                binding.passwordInputLayout.setError(errorString);
-                break;
-            case ERROR_INVALID_CREDENTIAL:
-                binding.emailInputLayout.setError(errorString);
-                binding.passwordInputLayout.setError(errorString);
-                break;
-            case ERROR_AUTHENTICATION_FAILED:
-                Snackbar.make(binding.getRoot(),
-                        errorString, Snackbar.LENGTH_SHORT).show();
-                break;
+        if (error != null) {
+            binding.passwordEditText.setText(null);
+            String errorString = getString(error.getError());
+            switch (error) {
+                case ERROR_INVALID_USERNAME_FORMAT:
+                case ERROR_USERNAME_ALREADY_EXISTS:
+                    binding.usernameInputLayout.setError(errorString);
+                    break;
+                case ERROR_INVALID_EMAIL_FORMAT:
+                case ERROR_INVALID_EMAIL:
+                case ERROR_EMAIL_ALREADY_EXISTS:
+                    binding.emailInputLayout.setError(errorString);
+                    break;
+                case ERROR_WEAK_PASSWORD:
+                    binding.passwordInputLayout.setError(errorString);
+                    break;
+                case ERROR_INVALID_CREDENTIAL:
+                    binding.emailInputLayout.setError(errorString);
+                    binding.passwordInputLayout.setError(errorString);
+                    break;
+                case ERROR_AUTHENTICATION_FAILED:
+                    Snackbar.make(binding.getRoot(),
+                            errorString, Snackbar.LENGTH_SHORT).show();
+                    break;
+            }
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }

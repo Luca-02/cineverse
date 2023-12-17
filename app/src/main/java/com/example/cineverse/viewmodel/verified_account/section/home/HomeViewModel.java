@@ -23,6 +23,11 @@ import com.example.cineverse.viewmodel.verified_account.section.home.genre.secti
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@link HomeViewModel} class extends {@link VerifiedAccountViewModel} and represents the ViewModel
+ * for the home section of the application. It provides data for various content sections and genres
+ * displayed on the home screen.
+ */
 public class HomeViewModel
         extends VerifiedAccountViewModel {
 
@@ -35,6 +40,11 @@ public class HomeViewModel
         super(application);
     }
 
+    /**
+     * Retrieves a list of all content sections for the home screen.
+     *
+     * @return A list of {@link ContentSection} objects representing content sections.
+     */
     public List<ContentSection> getAllContentSection() {
         List<ContentSection> sectionList = new ArrayList<>();
         sectionList.addAll(getMovieContentSection(false));
@@ -42,6 +52,12 @@ public class HomeViewModel
         return sectionList;
     }
 
+    /**
+     * Retrieves a list of content sections related to movies.
+     *
+     * @param withGenreSection Flag indicating whether to include a genre section.
+     * @return A list of {@link ContentSection} objects representing movie content sections.
+     */
     public List<ContentSection> getMovieContentSection(boolean withGenreSection) {
         List<ContentSection> sectionList = new ArrayList<>();
         if (withGenreSection) {
@@ -55,6 +71,12 @@ public class HomeViewModel
         return sectionList;
     }
 
+    /**
+     * Retrieves a list of content sections related to TV shows.
+     *
+     * @param withGenreSection Flag indicating whether to include a genre section.
+     * @return A list of {@link ContentSection} objects representing TV content sections.
+     */
     public List<ContentSection> getTvContentSection(boolean withGenreSection) {
         List<ContentSection> sectionList = new ArrayList<>();
         if (withGenreSection) {

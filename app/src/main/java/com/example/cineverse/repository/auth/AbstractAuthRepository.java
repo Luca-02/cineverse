@@ -16,7 +16,7 @@ import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
  */
 public abstract class AbstractAuthRepository
         extends UserRepository
-        implements UserFirebaseDatabaseServices.Callback<User> {
+        implements UserFirebaseDatabaseServices.FirebaseCallback<User> {
 
     /**
      * {@link Error Error} enum representing possible authentication errors and associated string resources for error messages.
@@ -52,7 +52,7 @@ public abstract class AbstractAuthRepository
 
     protected final UserFirebaseSource firebaseSource;
     protected final UserStorageManagerSource userStorage;
-    protected AuthCallback callback;
+    protected AuthCallback authCallback;
 
     /**
      * Constructs an {@link AbstractAuthRepository} object with the given application.
@@ -62,21 +62,19 @@ public abstract class AbstractAuthRepository
     public AbstractAuthRepository(Context context) {
         super(context);
         firebaseSource = new UserFirebaseSource(context);
-        userStorage = new UserStorageManagerSource(context, localSource, firebaseSource);
+        userStorage = new UserStorageManagerSource(context, localSource, firebaseSource, this);
     }
 
-    public void setCallback(AuthCallback callback) {
-        this.callback = callback;
+    public void setAuthCallback(AuthCallback authCallback) {
+        this.authCallback = authCallback;
     }
 
     /**
      * Handles authentication failure by signing out from Firebase.
-     *
-     * @param callback Callback to handle authentication errors and status.
      */
-    protected void handleAuthenticationFailure(ErrorAuthCallback callback) {
+    protected void handleAuthenticationFailure() {
         firebaseAuth.signOut();
-        callback.onError(Error.ERROR_AUTHENTICATION_FAILED);
+        authCallback.onError(Error.ERROR_AUTHENTICATION_FAILED);
     }
 
     /**
@@ -86,10 +84,10 @@ public abstract class AbstractAuthRepository
      */
     @Override
     public void onCallback(User user) {
-        if (user != null) {
-            callback.onUserAuthentication(user);
+        if (user != null && authCallback != null) {
+            authCallback.onUserAuthentication(user);
         } else {
-            handleAuthenticationFailure(callback);
+            handleAuthenticationFailure();
         }
     }
 
@@ -98,8 +96,10 @@ public abstract class AbstractAuthRepository
      */
     @Override
     public void onNetworkUnavailable() {
-        firebaseAuth.signOut();
-        callback.onNetworkError();
+        if (authCallback != null) {
+            firebaseAuth.signOut();
+            authCallback.onNetworkError();
+        }
     }
 
     /**

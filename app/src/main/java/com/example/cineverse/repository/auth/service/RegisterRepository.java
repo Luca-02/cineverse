@@ -43,18 +43,18 @@ public class RegisterRepository
      */
     public void register(String username, String email, String password) {
         if (!UsernameValidator.getInstance().isValid(username)) {
-            callback.onError(Error.ERROR_INVALID_USERNAME_FORMAT);
+            authCallback.onError(Error.ERROR_INVALID_USERNAME_FORMAT);
         } else if (!EmailValidator.getInstance().isValid(email)) {
-            callback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
+            authCallback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
             firebaseSource.isUsernameSaved(username, context,
-                    new UserFirebaseDatabaseServices.Callback<Boolean>() {
+                    new UserFirebaseDatabaseServices.FirebaseCallback<Boolean>() {
                         @Override
                         public void onCallback(Boolean exist) {
                             if (exist == null) {
-                                callback.onError(Error.ERROR_AUTHENTICATION_FAILED);
+                                authCallback.onError(Error.ERROR_AUTHENTICATION_FAILED);
                             } else if (exist) {
-                                callback.onError(Error.ERROR_USERNAME_ALREADY_EXISTS);
+                                authCallback.onError(Error.ERROR_USERNAME_ALREADY_EXISTS);
                             } else {
                                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                                         .addOnSuccessListener(authResult ->
@@ -65,7 +65,7 @@ public class RegisterRepository
 
                         @Override
                         public void onNetworkUnavailable() {
-                            callback.onNetworkError();
+                            authCallback.onNetworkError();
                         }
                     });
         }
@@ -82,7 +82,7 @@ public class RegisterRepository
         if (firebaseUser != null) {
             userStorage.register(firebaseUser, username);
         } else {
-            handleAuthenticationFailure(callback);
+            handleAuthenticationFailure();
         }
     }
 
@@ -93,15 +93,15 @@ public class RegisterRepository
      */
     private void handleFailure(Exception exception) {
         if (exception instanceof FirebaseAuthWeakPasswordException) {
-            callback.onError(Error.ERROR_WEAK_PASSWORD);
+            authCallback.onError(Error.ERROR_WEAK_PASSWORD);
         } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-            callback.onError(Error.ERROR_INVALID_EMAIL);
+            authCallback.onError(Error.ERROR_INVALID_EMAIL);
         } else if (exception instanceof FirebaseAuthUserCollisionException) {
-            callback.onError(Error.ERROR_EMAIL_ALREADY_EXISTS);
+            authCallback.onError(Error.ERROR_EMAIL_ALREADY_EXISTS);
         } else if (exception instanceof FirebaseNetworkException) {
-            callback.onNetworkError();
+            authCallback.onNetworkError();
         } else {
-            callback.onError(Error.ERROR_INVALID_CREDENTIAL);
+            authCallback.onError(Error.ERROR_INVALID_CREDENTIAL);
         }
     }
 

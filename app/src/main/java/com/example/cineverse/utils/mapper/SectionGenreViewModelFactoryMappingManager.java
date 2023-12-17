@@ -1,4 +1,4 @@
-package com.example.cineverse.viewmodel.verified_account.section.home.genre;
+package com.example.cineverse.utils.mapper;
 
 import androidx.lifecycle.ViewModelProvider;
 

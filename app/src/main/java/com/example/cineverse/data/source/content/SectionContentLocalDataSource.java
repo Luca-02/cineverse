@@ -31,7 +31,7 @@ public class SectionContentLocalDataSource<T extends AbstractContent>
     private final SectionDao sectionDao;
     private final SectionContentCrossRefDao sectionContentCrossRefDao;
     private final ContentDao contentDao;
-    protected SectionContentLocalResponseCallback<T> callback;
+    protected SectionContentLocalResponseCallback<T> localResponseCallback;
 
     /**
      * Constructs a {@link SectionContentLocalDataSource} with the specified context and content type.
@@ -47,13 +47,8 @@ public class SectionContentLocalDataSource<T extends AbstractContent>
         contentDao = ServiceLocator.getInstance().getContentDao(context);
     }
 
-    /**
-     * Sets the callback to handle local responses.
-     *
-     * @param callback The callback to set.
-     */
-    public void setCallback(SectionContentLocalResponseCallback<T> callback) {
-        this.callback = callback;
+    public void setLocalResponseCallback(SectionContentLocalResponseCallback<T> localResponseCallback) {
+        this.localResponseCallback = localResponseCallback;
     }
 
     /**
@@ -61,7 +56,7 @@ public class SectionContentLocalDataSource<T extends AbstractContent>
      */
     @Override
     public void fetch(String section) {
-        if (callback != null && section != null) {
+        if (localResponseCallback != null && section != null) {
             ContentSectionDatabase.databaseWriteExecutor.execute(
                     () -> getLocalSectionContent(section));
         }
@@ -89,7 +84,7 @@ public class SectionContentLocalDataSource<T extends AbstractContent>
 
             AbstractContentResponse<T> response = (AbstractContentResponse<T>)
                     AbstractContentResponse.createResponse(contentEntityDbList, contentType);
-            callback.onLocalResponse(response);
+            localResponseCallback.onLocalResponse(response);
         }
     }
 

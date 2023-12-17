@@ -52,7 +52,7 @@ public class GoogleAuthRepository
                     .addOnSuccessListener(this::handleSuccess)
                     .addOnFailureListener(this::handleFailure);
         } catch (ApiException e) {
-            callback.onError(Error.ERROR_GOOGLE_SIGNIN_FAILED);
+            authCallback.onError(Error.ERROR_GOOGLE_SIGNIN_FAILED);
         }
     }
 
@@ -66,7 +66,7 @@ public class GoogleAuthRepository
         if (firebaseUser != null) {
             userStorage.googleAuth(firebaseUser);
         } else {
-            handleAuthenticationFailure(callback);
+            handleAuthenticationFailure();
         }
     }
 
@@ -77,15 +77,15 @@ public class GoogleAuthRepository
      */
     private void handleFailure(Exception exception) {
         if (exception instanceof FirebaseAuthInvalidUserException) {
-            callback.onError(Error.ERROR_NOT_FOUND_DISABLED);
+            authCallback.onError(Error.ERROR_NOT_FOUND_DISABLED);
         } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-            callback.onError(Error.ERROR_INVALID_CREDENTIAL);
+            authCallback.onError(Error.ERROR_INVALID_CREDENTIAL);
         } else if (exception instanceof FirebaseAuthUserCollisionException) {
-            callback.onError(Error.ERROR_EMAIL_ALREADY_EXISTS);
+            authCallback.onError(Error.ERROR_EMAIL_ALREADY_EXISTS);
         } else if (exception instanceof FirebaseNetworkException) {
-            callback.onNetworkError();
+            authCallback.onNetworkError();
         } else {
-            callback.onError(Error.ERROR_AUTHENTICATION_FAILED);
+            authCallback.onError(Error.ERROR_AUTHENTICATION_FAILED);
         }
     }
 

@@ -12,6 +12,10 @@ import com.example.cineverse.viewmodel.verified_account.section.home.AbstractSec
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@link AbstractSectionContentViewModel} class extends {@link AbstractSectionViewModel} and is an abstract
+ * base class for ViewModel classes representing various content sections in the home screen of the application.
+ */
 public abstract class AbstractSectionContentViewModel
         extends AbstractSectionViewModel {
 
@@ -35,17 +39,33 @@ public abstract class AbstractSectionContentViewModel
         return contentLiveData;
     }
 
-    @Override
-    public void emptyContentLiveDataList() {
-        getContentLiveData().setValue(new ArrayList<>());
-    }
-
+    /**
+     * Retrieves the current page number.
+     *
+     * @return The current page number.
+     */
     public int getPage() {
         return page;
     }
 
+    /**
+     * Increases the current page number.
+     */
     public void increasePage() {
         page++;
+    }
+
+    /**
+     * Initiates the process of fetching content and increases the page number.
+     */
+    public void fetchAndIncreasePage() {
+        fetch();
+        increasePage();
+    }
+
+    @Override
+    public void emptyContentLiveDataList() {
+        getContentLiveData().setValue(new ArrayList<>());
     }
 
     @Override
@@ -55,11 +75,6 @@ public abstract class AbstractSectionContentViewModel
             return content.isEmpty();
         }
         return true;
-    }
-
-    public void fetchAndIncreasePage() {
-        fetch();
-        increasePage();
     }
 
 }

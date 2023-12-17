@@ -45,8 +45,8 @@ public abstract class AbstractSectionContentRepository<T extends AbstractContent
         this.remoteDataSource = remoteDataSource;
         this.localDataSource = new SectionContentLocalDataSource<>(context, contentType);
         this.callback = callback;
-        remoteDataSource.setCallback(this);
-        localDataSource.setCallback(this);
+        remoteDataSource.setRemoteResponseCallback(this);
+        localDataSource.setLocalResponseCallback(this);
     }
 
     /**

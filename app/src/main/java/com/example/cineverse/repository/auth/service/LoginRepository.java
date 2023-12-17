@@ -40,22 +40,22 @@ public class LoginRepository
     public void login(String account, String password) {
         if (!EmailValidator.getInstance().isValid(account)) {
             if (account.contains("@")) {
-                callback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
+                authCallback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
             } else {
                 firebaseSource.getEmailFromUsername(account, context,
-                        new UserFirebaseDatabaseServices.Callback<String>() {
+                        new UserFirebaseDatabaseServices.FirebaseCallback<String>() {
                             @Override
                             public void onCallback(String email) {
                                 if (email != null) {
                                     signInWithCredentials(email, password);
                                 } else {
-                                    callback.onError(Error.ERROR_NOT_FOUND_DISABLED);
+                                    authCallback.onError(Error.ERROR_NOT_FOUND_DISABLED);
                                 }
                             }
 
                             @Override
                             public void onNetworkUnavailable() {
-                                callback.onNetworkError();
+                                authCallback.onNetworkError();
                             }
                         });
             }
@@ -80,7 +80,7 @@ public class LoginRepository
         if (firebaseUser != null) {
             userStorage.login(firebaseUser.getUid());
         } else {
-            handleAuthenticationFailure(callback);
+            handleAuthenticationFailure();
         }
     }
 
@@ -91,11 +91,11 @@ public class LoginRepository
      */
     private void handleFailure(Exception exception) {
         if (exception instanceof FirebaseAuthInvalidUserException) {
-            callback.onError(Error.ERROR_NOT_FOUND_DISABLED);
+            authCallback.onError(Error.ERROR_NOT_FOUND_DISABLED);
         } else if (exception instanceof FirebaseNetworkException) {
-            callback.onNetworkError();
+            authCallback.onNetworkError();
         } else {
-            callback.onError(Error.ERROR_WRONG_PASSWORD);
+            authCallback.onError(Error.ERROR_WRONG_PASSWORD);
         }
     }
 

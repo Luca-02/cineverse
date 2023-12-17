@@ -29,6 +29,8 @@ public class VerifyAccountViewModel
      */
     public VerifyAccountViewModel(@NonNull Application application) {
         super(application, new VerifyAccountRepository(application.getApplicationContext()));
+        userRepository.setSentEmailCallback(this);
+        userRepository.setReloadUserCallback(this);
     }
 
     public MutableLiveData<Boolean> getEmailSentLiveData() {
@@ -36,15 +38,6 @@ public class VerifyAccountViewModel
             emailSentLiveData = new MutableLiveData<>();
         }
         return emailSentLiveData;
-    }
-
-    /**
-     * Clears the {@link MutableLiveData} instance for email sent status.
-     * This method is typically used when the network error state is consumed, and you don't want
-     * to keep the last state in the LiveData.
-     */
-    public void clearEmailSentLiveData() {
-        emailSentLiveData = new MutableLiveData<>();
     }
 
     public MutableLiveData<Boolean> getEmailVerifiedLiveData() {
@@ -55,26 +48,17 @@ public class VerifyAccountViewModel
     }
 
     /**
-     * Clears the {@link MutableLiveData} instance for email verification status.
-     * This method is typically used when the network error state is consumed, and you don't want
-     * to keep the last state in the LiveData.
-     */
-    public void clearEmailVerifiedLiveData() {
-        emailVerifiedLiveData = new MutableLiveData<>();
-    }
-
-    /**
      * Initiates the process of sending an email verification to the user's email address.
      */
     public void sendEmailVerification() {
-        userRepository.sendEmailVerification(this);
+        userRepository.sendEmailVerification();
     }
 
     /**
      * Initiates the process of reloading the user's data from the server.
      */
     public void reloadUser() {
-        userRepository.reloadUser(this);
+        userRepository.reloadUser();
     }
 
     /**
@@ -87,7 +71,6 @@ public class VerifyAccountViewModel
     @Override
     public void onEmailSent(Boolean isSent) {
         getEmailSentLiveData().postValue(isSent);
-        clearEmailSentLiveData();
     }
 
     /**
@@ -100,7 +83,6 @@ public class VerifyAccountViewModel
     @Override
     public void onReloadUser(Boolean isVerified) {
         getEmailVerifiedLiveData().postValue(isVerified);
-        clearEmailVerifiedLiveData();
     }
 
 }

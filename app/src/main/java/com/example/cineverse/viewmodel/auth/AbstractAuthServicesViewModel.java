@@ -31,7 +31,7 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
      */
     public AbstractAuthServicesViewModel(@NonNull Application application, T userRepository) {
         super(application, userRepository);
-        userRepository.setCallback(this);
+        userRepository.setAuthCallback(this);
     }
 
     public MutableLiveData<AbstractAuthRepository.Error> getErrorLiveData() {
@@ -39,15 +39,6 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
             errorLiveData = new MutableLiveData<>();
         }
         return errorLiveData;
-    }
-
-    /**
-     * Clears the {@link MutableLiveData} instance for authentication-related errors status.
-     * This method is typically used when the authentication-related error state is consumed, and
-     * you don't want to keep the last state in the LiveData.
-     */
-    public void clearErrorLiveData() {
-        errorLiveData = new MutableLiveData<>();
     }
 
     /**
@@ -60,7 +51,6 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
     @Override
     public void onError(AbstractAuthRepository.Error error) {
         getErrorLiveData().postValue(error);
-        clearErrorLiveData();
     }
 
     /**

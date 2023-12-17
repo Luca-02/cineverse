@@ -1,5 +1,8 @@
 package com.example.cineverse.view.verified_account.fragment.home;
 
+import static com.example.cineverse.view.verified_account.fragment.home.SectionContentFragment.MOVIE_SECTION;
+import static com.example.cineverse.view.verified_account.fragment.home.SectionContentFragment.SECTION_TYPE_ARGS;
+import static com.example.cineverse.view.verified_account.fragment.home.SectionContentFragment.TV_SECTION;
 import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.GENRE_TAG;
 import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.TITLE_STRING_ID_TAG;
 import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.VIEW_MODEL_CLASS_NAME_TAG;
@@ -74,9 +77,13 @@ public class HomeFragment extends Fragment {
             if (selectedChip == binding.allChip) {
                 navController.navigate(R.id.action_global_allContentFragment);
             } else if (selectedChip == binding.movieChip) {
-                navController.navigate(R.id.action_global_movieContentFragment);
+                Bundle bundle = new Bundle();
+                bundle.putString(SECTION_TYPE_ARGS, MOVIE_SECTION);
+                navController.navigate(R.id.action_global_movieContentFragment, bundle);
             } else if (selectedChip == binding.tvChip) {
-                navController.navigate(R.id.action_global_tvContentFragment);
+                Bundle bundle = new Bundle();
+                bundle.putString(SECTION_TYPE_ARGS, TV_SECTION);
+                navController.navigate(R.id.action_global_tvContentFragment, bundle);
             }
         });
     }

@@ -10,6 +10,10 @@ import com.example.cineverse.viewmodel.verified_account.section.home.content.Abs
 import com.example.cineverse.viewmodel.verified_account.section.home.content.section.TvFromGenreViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.genre.AbstractSectionGenreViewModel;
 
+/**
+ * The {@link TvGenreViewModel} class represents the ViewModel for the TV genre section in the home screen.
+ * It extends the {@link AbstractSectionGenreViewModel} class.
+ */
 public class TvGenreViewModel
         extends AbstractSectionGenreViewModel {
 

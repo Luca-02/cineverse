@@ -14,6 +14,7 @@ import com.example.cineverse.data.source.genre.GenresRemoteResponseCallback;
 import com.example.cineverse.exception.UnsupportedViewModelException;
 import com.example.cineverse.exception.ViewModelFactoryCreationException;
 import com.example.cineverse.repository.genre.GenreRepository;
+import com.example.cineverse.utils.mapper.SectionGenreViewModelFactoryMappingManager;
 import com.example.cineverse.viewmodel.verified_account.section.home.AbstractSectionViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 
@@ -21,6 +22,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@link AbstractSectionGenreViewModel} class extend {@link AbstractSectionViewModel} is an
+ * abstract base class for ViewModel classes representing various genre sections in the home screen
+ * of the application.
+ */
 public abstract class AbstractSectionGenreViewModel
         extends AbstractSectionViewModel
         implements GenresRemoteResponseCallback {
@@ -28,6 +34,11 @@ public abstract class AbstractSectionGenreViewModel
     protected GenreRepository repository;
     private MutableLiveData<List<Genre>> contentLiveData;
 
+    /**
+     * Constructs an {@link AbstractSectionGenreViewModel} object with the given {@link Application}.
+     *
+     * @param application The {@link Application} of the calling component.
+     */
     public AbstractSectionGenreViewModel(@NonNull Application application) {
         super(application);
         repository = new GenreRepository(createRemoteDataSourceInstance(), this);
@@ -54,6 +65,7 @@ public abstract class AbstractSectionGenreViewModel
         return true;
     }
 
+    @Override
     public void fetch() {
         repository.fetch();
     }
@@ -72,6 +84,11 @@ public abstract class AbstractSectionGenreViewModel
         }
     }
 
+    /**
+     * Retrieves the ViewModel class for the associated content section.
+     *
+     * @return The {@link Class} representing the associated content section ViewModel.
+     */
     public ViewModelProvider.Factory getSectionContentFactory(int genreId) {
         Class<? extends AbstractSectionContentViewModel> viewModelClass =
                 getSectionContentViewModelClass();
@@ -94,7 +111,18 @@ public abstract class AbstractSectionGenreViewModel
         }
     }
 
+    /**
+     * Retrieves the class of the associated content section ViewModel.
+     *
+     * @return The {@link Class} representing the associated content section ViewModel.
+     */
     public abstract Class<? extends AbstractSectionContentViewModel> getSectionContentViewModelClass();
+
+    /**
+     * Creates an instance of the remote data source for genres.
+     *
+     * @return An instance of the {@link AbstractGenresRemoteDataSource}.
+     */
     protected abstract AbstractGenresRemoteDataSource createRemoteDataSourceInstance();
 
 }

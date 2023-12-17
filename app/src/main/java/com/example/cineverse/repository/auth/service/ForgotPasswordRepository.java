@@ -36,7 +36,7 @@ public class ForgotPasswordRepository
      */
     public void forgotPassword(String email) {
         if (!EmailValidator.getInstance().isValid(email)) {
-            callback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
+            authCallback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
             firebaseAuth.sendPasswordResetEmail(email)
                     .addOnSuccessListener(authResult -> handleSuccess())
@@ -48,7 +48,7 @@ public class ForgotPasswordRepository
      * Handles the successful completion of the password reset operation.
      */
     private void handleSuccess() {
-        callback.onError(Error.SUCCESS);
+        authCallback.onError(Error.SUCCESS);
     }
 
     /**
@@ -58,11 +58,11 @@ public class ForgotPasswordRepository
      */
     private void handleFailure(Exception exception) {
         if (exception instanceof FirebaseAuthInvalidUserException) {
-            callback.onError(Error.ERROR_NOT_FOUND_DISABLED);
+            authCallback.onError(Error.ERROR_NOT_FOUND_DISABLED);
         } else if (exception instanceof FirebaseNetworkException) {
-            callback.onNetworkError();
+            authCallback.onNetworkError();
         } else {
-            callback.onError(Error.ERROR_INVALID_CREDENTIAL);
+            authCallback.onError(Error.ERROR_INVALID_CREDENTIAL);
         }
     }
 

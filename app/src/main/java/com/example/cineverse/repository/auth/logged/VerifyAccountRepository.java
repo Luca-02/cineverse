@@ -10,10 +10,13 @@ import com.google.firebase.auth.FirebaseUser;
  * The {@link VerifyAccountRepository} class extends {@link AbstractLoggedRepository} and provides functionality
  * for verifying user email addresses. It allows users to request email verification, reload their user data,
  * and check whether their email is verified or not. It provides {@link SentEmailCallback}
- *  * and {@link ReloadUserCallback} to communicate the operation status to the caller.
+ * and {@link ReloadUserCallback} to communicate the operation status to the caller.
  */
 public class VerifyAccountRepository
         extends AbstractLoggedRepository {
+
+    private SentEmailCallback sentEmailCallback;
+    private ReloadUserCallback reloadUserCallback;
 
     /**
      * Constructs a {@link VerifyAccountRepository} object with the given application {@link Context}.
@@ -24,36 +27,40 @@ public class VerifyAccountRepository
         super(context);
     }
 
+    public void setSentEmailCallback(SentEmailCallback sentEmailCallback) {
+        this.sentEmailCallback = sentEmailCallback;
+    }
+
+    public void setReloadUserCallback(ReloadUserCallback reloadUserCallback) {
+        this.reloadUserCallback = reloadUserCallback;
+    }
+
     /**
      * Initiates a request to send email verification to the user's email address. Reloading user
      * data is performed to ensure up-to-date information before sending the verification email.
-     *
-     * @param callback Callback to handle the result of the email verification request.
      */
-    public void sendEmailVerification(SentEmailCallback callback) {
+    public void sendEmailVerification() {
         FirebaseUser user = getCurrentFirebaseUser();
         if (user != null) {
             user.reload()
-                    .addOnSuccessListener(unused -> handleReloadSendEmailSuccess(callback))
-                    .addOnFailureListener(e -> handleReloadSendEmailFailure(e, callback));
+                    .addOnSuccessListener(unused -> handleReloadSendEmailSuccess())
+                    .addOnFailureListener(this::handleReloadSendEmailFailure);
         } else {
-            callback.onEmailSent(null);
+            sentEmailCallback.onEmailSent(null);
         }
     }
 
     /**
      * Handles the successful reload and subsequent email verification request.
-     *
-     * @param callback Callback to handle the result of the email verification request.
      */
-    private void handleReloadSendEmailSuccess(SentEmailCallback callback) {
+    private void handleReloadSendEmailSuccess() {
         FirebaseUser reloadedUser = getCurrentFirebaseUser();
         if (reloadedUser != null) {
             reloadedUser.sendEmailVerification()
-                    .addOnSuccessListener(unused -> callback.onEmailSent(true))
-                    .addOnFailureListener(e -> callback.onEmailSent(false));
+                    .addOnSuccessListener(unused -> sentEmailCallback.onEmailSent(true))
+                    .addOnFailureListener(e -> sentEmailCallback.onEmailSent(false));
         } else {
-            callback.onEmailSent(null);
+            sentEmailCallback.onEmailSent(null);
         }
     }
 
@@ -61,55 +68,47 @@ public class VerifyAccountRepository
      * Handles failures during the reload operation and subsequent email verification request.
      *
      * @param exception The exception occurred during the reload operation.
-     * @param callback  Callback to handle the result of the email verification request.
      */
-    private void handleReloadSendEmailFailure(Exception exception, SentEmailCallback callback) {
+    private void handleReloadSendEmailFailure(Exception exception) {
         if (exception instanceof FirebaseNetworkException) {
-            callback.onNetworkError();
+            sentEmailCallback.onNetworkError();
         } else {
-            callback.onEmailSent(null);
+            sentEmailCallback.onEmailSent(null);
         }
     }
 
     /**
-     * Reloads the user's data and provides the email verification status through the
-     * provided {@link ReloadUserCallback}.
-     *
-     * @param callback Callback to handle the result of the user data reload operation.
+     * Reloads the user's data and provides the email verification status through {@link #reloadUserCallback}.
      */
-    public void reloadUser(ReloadUserCallback callback) {
+    public void reloadUser() {
         final FirebaseUser user = getCurrentFirebaseUser();
         if (user != null) {
             user.reload()
-                    .addOnSuccessListener(unused -> handleReloadSuccess(callback))
-                    .addOnFailureListener(e -> handleReloadFailure(e, callback));
+                    .addOnSuccessListener(unused -> handleReloadSuccess())
+                    .addOnFailureListener(this::handleReloadFailure);
         } else {
-            callback.onReloadUser(null);
+            reloadUserCallback.onReloadUser(null);
         }
     }
 
     /**
-     * Handles successful user data reload and provides the email verification status through the
-     * provided {@link ReloadUserCallback}.
-     *
-     * @param callback Callback to handle the result of the user data reload operation.
+     * Handles successful user data reload and provides the email verification status through {@link #reloadUserCallback}.
      */
-    private void handleReloadSuccess(ReloadUserCallback callback) {
-        callback.onReloadUser(isEmailVerified());
+    private void handleReloadSuccess() {
+        reloadUserCallback.onReloadUser(isEmailVerified());
     }
 
     /**
      * Handles reload operation failures, identifies the type of exception, and communicates
-     * appropriate errors or network issues through the provided {@link ReloadUserCallback}.
+     * appropriate errors or network issues through {@link #reloadUserCallback}.
      *
      * @param exception The exception occurred during the reload operation.
-     * @param callback  Callback to handle the result of the user data reload operation.
      */
-    private void handleReloadFailure(Exception exception, ReloadUserCallback callback) {
+    private void handleReloadFailure(Exception exception) {
         if (exception instanceof FirebaseNetworkException) {
-            callback.onNetworkError();
+            reloadUserCallback.onNetworkError();
         } else {
-            callback.onReloadUser(null);
+            reloadUserCallback.onReloadUser(null);
         }
     }
 

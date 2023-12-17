@@ -9,6 +9,9 @@ import com.example.cineverse.data.source.content.AbstractSectionContentRemoteDat
 import com.example.cineverse.data.source.content.section.TopRatedMovieRemoteDataSource;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionMovieViewModel;
 
+/**
+ * The {@link TopRatedMovieViewModel} class is a ViewModel for content section.
+ */
 public class TopRatedMovieViewModel
         extends AbstractSectionMovieViewModel {
 

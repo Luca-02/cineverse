@@ -167,10 +167,14 @@ public class HomeSectionAdapter
          *
          * @return The Observer for handling API failure.
          */
-        protected Observer<Failure> getFailureObserver() {
-            return failure ->
+        protected Observer<Failure> getFailureObserver(AbstractSectionViewModel viewModel) {
+            return failure -> {
+                if (failure != null) {
                     Snackbar.make(rootView,
                             failure.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
+                    viewModel.getFailureLiveData().setValue(null);
+                }
+            };
         }
 
         /**
@@ -228,7 +232,7 @@ public class HomeSectionAdapter
                     fetchingView.setVisibility(View.GONE);
                 }
             });
-            viewModel.getFailureLiveData().observe(viewLifecycleOwner, getFailureObserver());
+            viewModel.getFailureLiveData().observe(viewLifecycleOwner, getFailureObserver(viewModel));
         }
 
         protected void setViewAllChipListener(Chip chip, ContentSection section) {
@@ -351,7 +355,7 @@ public class HomeSectionAdapter
             viewModel.getContentLiveData().observe(viewLifecycleOwner, abstractPosters -> {
                 genreSectionAdapter.setData(abstractPosters);
             });
-            viewModel.getFailureLiveData().observe(viewLifecycleOwner, getFailureObserver());
+            viewModel.getFailureLiveData().observe(viewLifecycleOwner, getFailureObserver(viewModel));
         }
 
         private void setRecyclerView(ContentSection section) {

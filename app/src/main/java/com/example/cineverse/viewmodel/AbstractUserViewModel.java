@@ -61,15 +61,6 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
     }
 
     /**
-     * Clears the {@link MutableLiveData} instance for network error status.
-     * This method is typically used when the network error state is consumed, and you don't want
-     * to keep the last state in the LiveData.
-     */
-    public void clearNetworkErrorLiveData() {
-        networkErrorLiveData = new MutableLiveData<>();
-    }
-
-    /**
      * Initiates the process to gets the currently authenticated user.
      *
      * @return The currently authenticated {@link User} object or {@code null} if not authenticated.
@@ -90,12 +81,12 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
     /**
      * Overrides the {@link UserRepository.NetworkCallback#onNetworkError()} method
      * to handle the network error event and update the network error LiveData.
-     * Clears network error {@link MutableLiveData}.
+     * Trigger network error {@link MutableLiveData}.
      */
     @Override
     public void onNetworkError() {
         getNetworkErrorLiveData().postValue(true);
-        clearNetworkErrorLiveData();
+        getNetworkErrorLiveData().setValue(false);
     }
 
 }

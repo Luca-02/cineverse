@@ -10,6 +10,9 @@ import com.example.cineverse.data.source.content.section.TvFromGenreRemoteDataSo
 import com.example.cineverse.viewmodel.GlobalViewModelFactory;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionTvViewModel;
 
+/**
+ * The {@link TvFromGenreViewModel} class is a ViewModel for content section.
+ */
 public class TvFromGenreViewModel
         extends AbstractSectionTvViewModel {
 

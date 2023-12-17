@@ -27,12 +27,14 @@ import java.util.List;
 public class SectionContentFragment extends Fragment
         implements HomeSectionAdapter.OnSectionClickListener {
 
-    private static final String ARG_SECTION_TYPE = "sectionType";
-    private String sectionType;
+    public static final String SECTION_TYPE_ARGS = "sectionType";
+    public static final String MOVIE_SECTION = "movie";
+    public static final String TV_SECTION = "tv";
 
     private FragmentSectionContentBinding binding;
     private HomeViewModel viewModel;
     private HomeSectionAdapter sectionAdapter;
+    private String sectionType;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -60,8 +62,9 @@ public class SectionContentFragment extends Fragment
      * Extract arguments from the Bundle
      */
     private void extractArguments() {
-        if (getArguments() != null) {
-            sectionType = getArguments().getString(ARG_SECTION_TYPE);
+        Bundle args = getArguments();
+        if (args != null) {
+            sectionType = args.getString(SECTION_TYPE_ARGS);
         }
     }
 
@@ -89,16 +92,19 @@ public class SectionContentFragment extends Fragment
      */
     private void initContentSection(View view) {
         List<ContentSection> sectionList = new ArrayList<>();
-        switch (sectionType) {
-            case "movie":
-                sectionList.addAll(viewModel.getMovieContentSection(true));
-                break;
-            case "tv":
-                sectionList.addAll(viewModel.getTvContentSection(true));
-                break;
-            default:
-                sectionList.addAll(viewModel.getAllContentSection());
-                break;
+        if (sectionType != null) {
+            switch (sectionType) {
+                case "movie":
+                    sectionList.addAll(viewModel.getMovieContentSection(true));
+                    break;
+                case "tv":
+                    sectionList.addAll(viewModel.getTvContentSection(true));
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            sectionList.addAll(viewModel.getAllContentSection());
         }
 
         sectionAdapter = new HomeSectionAdapter(

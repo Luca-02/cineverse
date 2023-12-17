@@ -153,7 +153,7 @@ public class AuthFragment extends Fragment {
      * @param bool {@code true} if there is a network error, {@code false} otherwise.
      */
     private void handleNetworkError(Boolean bool) {
-        if (bool) {
+        if (bool != null && bool) {
             ((AuthActivity) requireActivity()).openNetworkErrorActivity();
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
@@ -165,10 +165,13 @@ public class AuthFragment extends Fragment {
      * @param error The type of authentication error that occurred.
      */
     private void handleError(LoginRepository.Error error) {
-        String errorString = getString(error.getError());
-        Snackbar.make(binding.getRoot(),
-                errorString, Snackbar.LENGTH_SHORT).show();
-        binding.progressIndicator.getRoot().setVisibility(View.GONE);
+        if (error != null) {
+            String errorString = getString(error.getError());
+            Snackbar.make(binding.getRoot(),
+                    errorString, Snackbar.LENGTH_SHORT).show();
+            binding.progressIndicator.getRoot().setVisibility(View.GONE);
+            viewModel.getErrorLiveData().setValue(null);
+        }
     }
 
 }

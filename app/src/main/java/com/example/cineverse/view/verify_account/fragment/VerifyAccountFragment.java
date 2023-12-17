@@ -140,7 +140,7 @@ public class VerifyAccountFragment extends Fragment {
      * @param loggedOut A boolean indicating whether the user has been logged out.
      */
     private void handleLoggedOutUser(Boolean loggedOut) {
-        if (loggedOut) {
+        if (loggedOut != null && loggedOut) {
             ((VerifyAccountActivity) requireActivity()).openAuthActivity();
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
@@ -192,7 +192,7 @@ public class VerifyAccountFragment extends Fragment {
      * @param bool A boolean indicating whether a network error has occurred.
      */
     private void handleNetworkError(Boolean bool) {
-        if (bool) {
+        if (bool != null && bool) {
             ((VerifyAccountActivity) requireActivity()).openNetworkErrorActivity();
         }
         binding.resentEmailButton.setEnabled(true);

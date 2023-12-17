@@ -20,7 +20,7 @@ public class GenreRepository
     public GenreRepository(AbstractGenresRemoteDataSource remoteDataSource, GenresRemoteResponseCallback callback) {
         this.remoteDataSource = remoteDataSource;
         this.callback = callback;
-        remoteDataSource.setCallback(this);
+        remoteDataSource.setRemoteResponseCallback(this);
     }
 
     /**

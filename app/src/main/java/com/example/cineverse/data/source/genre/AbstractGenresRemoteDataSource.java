@@ -19,20 +19,15 @@ public abstract class AbstractGenresRemoteDataSource
         implements IGenresRemoteDataSource {
 
     protected final GenreApiService genreApiService;
-    private GenresRemoteResponseCallback callback;
+    private GenresRemoteResponseCallback remoteResponseCallback;
 
     public AbstractGenresRemoteDataSource(Context context) {
         super(context);
         genreApiService = ServiceLocator.getInstance().getGenreApiService();
     }
 
-    /**
-     * Sets the callback for handling genre-related responses.
-     *
-     * @param callback The callback to set.
-     */
-    public void setCallback(GenresRemoteResponseCallback callback) {
-        this.callback = callback;
+    public void setRemoteResponseCallback(GenresRemoteResponseCallback callback) {
+        this.remoteResponseCallback = callback;
     }
 
     /**
@@ -56,8 +51,8 @@ public abstract class AbstractGenresRemoteDataSource
      * @param call The Retrofit call object for fetching genres.
      */
     protected void handlePosterApiCall(Call<GenreApiResponse> call) {
-        if (callback != null) {
-            handlePosterApiCall(call, callback);
+        if (remoteResponseCallback != null) {
+            handlePosterApiCall(call, remoteResponseCallback);
         }
     }
 
