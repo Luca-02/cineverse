@@ -144,4 +144,8 @@ public class SectionContentFragment extends Fragment
         homeFragment.openViewAllContentActivity(section, genre);
     }
 
+    public void test() {
+        binding.sectionRecyclerView.smoothScrollToPosition(0);
+    }
+
 }

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.CarouselContentItemBinding;
@@ -128,6 +129,7 @@ public class ContentSectionAdapter
             String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getPosterPath();
             Glide.with(context)
                     .load(imageUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into(binding.posterImageView);
             binding.titleTextView.setText(content.getName());
         }
@@ -152,6 +154,7 @@ public class ContentSectionAdapter
             String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getBackdropPath();
             Glide.with(context)
                     .load(imageUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into(binding.carouselImageView);
             binding.titleTextView.setText(content.getName());
 

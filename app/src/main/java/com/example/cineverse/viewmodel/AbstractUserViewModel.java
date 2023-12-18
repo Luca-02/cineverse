@@ -86,7 +86,6 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
     @Override
     public void onNetworkError() {
         getNetworkErrorLiveData().postValue(true);
-        getNetworkErrorLiveData().setValue(false);
     }
 
 }

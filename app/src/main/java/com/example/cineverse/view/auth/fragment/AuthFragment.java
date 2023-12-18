@@ -34,9 +34,6 @@ import com.google.android.material.snackbar.Snackbar;
  */
 public class AuthFragment extends Fragment {
 
-    // Fullscreen flag
-    // private static final int UI_OPTIONS = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
-
     private FragmentAuthBinding binding;
     private AuthViewModel viewModel;
     private GoogleSignInClient googleSignInClient;
@@ -62,24 +59,6 @@ public class AuthFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        requireActivity().getWindow().addFlags(UI_OPTIONS);
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        requireActivity().getWindow().clearFlags(UI_OPTIONS);
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        requireActivity().getWindow().clearFlags(UI_OPTIONS);
-//    }
 
     /**
      * Sets up the ViewModel for the fragment.
@@ -155,6 +134,7 @@ public class AuthFragment extends Fragment {
     private void handleNetworkError(Boolean bool) {
         if (bool != null && bool) {
             ((AuthActivity) requireActivity()).openNetworkErrorActivity();
+            viewModel.getNetworkErrorLiveData().setValue(null);
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }

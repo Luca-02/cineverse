@@ -16,15 +16,15 @@ public class Tv extends AbstractContent {
     @SerializedName("first_air_date")
     private String releaseDate;
 
-    public Tv(int id, String name, String releaseDate, String posterPath, String backdropPath) {
-        super(id, posterPath, backdropPath);
+    public Tv(int id, String name, String overview, String releaseDate, String posterPath, String backdropPath) {
+        super(id, overview, posterPath, backdropPath);
         this.name = name;
         this.releaseDate = releaseDate;
     }
 
     public Tv(ContentEntityDb entityDb) {
-        this(entityDb.getId(), entityDb.getName(), entityDb.getReleaseDate(),
-                entityDb.getPosterPath(), entityDb.getBackdropPath());
+        this(entityDb.getId(), entityDb.getName(), entityDb.getOverview(),
+                entityDb.getReleaseDate(), entityDb.getPosterPath(), entityDb.getBackdropPath());
     }
 
     @Override

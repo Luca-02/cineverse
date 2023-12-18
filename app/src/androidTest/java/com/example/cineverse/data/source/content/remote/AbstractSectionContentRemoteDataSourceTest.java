@@ -6,7 +6,7 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.cineverse.data.source.content.SectionTypeMappingManager;
+import com.example.cineverse.utils.mapper.SectionTypeMappingManager;
 import com.example.cineverse.data.source.content.section.UpcomingMovieRemoteDataSource;
 
 import org.junit.Before;

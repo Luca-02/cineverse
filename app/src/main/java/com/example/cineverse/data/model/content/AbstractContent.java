@@ -12,13 +12,15 @@ import com.google.gson.annotations.SerializedName;
 public abstract class AbstractContent implements Parcelable {
 
     private int id;
+    private String overview;
     @SerializedName("poster_path")
     protected String posterPath;
     @SerializedName("backdrop_path")
     protected String backdropPath;
 
-    public AbstractContent(int id, String posterPath, String backdropPath) {
+    public AbstractContent(int id, String overview, String posterPath, String backdropPath) {
         this.id = id;
+        this.overview = overview;
         this.posterPath = posterPath;
         this.backdropPath = backdropPath;
     }
@@ -29,6 +31,14 @@ public abstract class AbstractContent implements Parcelable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
     public String getPosterPath() {
@@ -63,12 +73,14 @@ public abstract class AbstractContent implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
+        dest.writeString(this.overview);
         dest.writeString(this.posterPath);
         dest.writeString(this.backdropPath);
     }
 
     protected AbstractContent(Parcel in) {
         this.id = in.readInt();
+        this.overview = in.readString();
         this.posterPath = in.readString();
         this.backdropPath = in.readString();
     }

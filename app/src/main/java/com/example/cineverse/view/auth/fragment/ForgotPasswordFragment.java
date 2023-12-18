@@ -104,6 +104,7 @@ public class ForgotPasswordFragment extends Fragment {
     private void handleNetworkError(Boolean bool) {
         if (bool != null && bool) {
             ((AuthActivity) requireActivity()).openNetworkErrorActivity();
+            viewModel.getNetworkErrorLiveData().setValue(null);
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }

@@ -194,6 +194,7 @@ public class VerifyAccountFragment extends Fragment {
     private void handleNetworkError(Boolean bool) {
         if (bool != null && bool) {
             ((VerifyAccountActivity) requireActivity()).openNetworkErrorActivity();
+            viewModel.getNetworkErrorLiveData().setValue(null);
         }
         binding.resentEmailButton.setEnabled(true);
         binding.progressIndicator.getRoot().setVisibility(View.GONE);

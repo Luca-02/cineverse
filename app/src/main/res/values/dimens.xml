@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- spacing -->
     <dimen name="double_spacing">32dp</dimen>
     <dimen name="standard_spacing">16dp</dimen>
@@ -20,4 +20,7 @@
     <!-- radius -->
     <dimen name="normal_radius">16dp</dimen>
     <dimen name="half_radius">8dp</dimen>
+
+    <!-- general -->
+    <dimen name="design_bottom_navigation_height" tools:override="true">56dp</dimen>
 </resources>

@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 
 import com.example.cineverse.data.model.content.section.Movie;
 import com.example.cineverse.data.model.content.section.Tv;
+import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +21,18 @@ public class ContentEntityDb {
     @PrimaryKey
     private final int id;
     private final String name;
+    private final String overview;
     private final String releaseDate;
     private final String posterPath;
     private final String backdropPath;
     private final String contentType;
     private final int position;
 
-    public ContentEntityDb(int id, String name, String releaseDate, String posterPath,
-                           String backdropPath, String contentType, int position) {
+    public ContentEntityDb(int id, String name, String overview, String releaseDate,
+                           String posterPath, String backdropPath, String contentType, int position) {
         this.id = id;
         this.name = name;
+        this.overview = overview;
         this.releaseDate = releaseDate;
         this.posterPath = posterPath;
         this.backdropPath = backdropPath;
@@ -48,6 +51,7 @@ public class ContentEntityDb {
         this(
                 content.getId(),
                 content.getName(),
+                content.getOverview(),
                 content.getReleaseDate(),
                 content.getPosterPath(),
                 content.getBackdropPath(),
@@ -62,6 +66,10 @@ public class ContentEntityDb {
 
     public String getName() {
         return name;
+    }
+
+    public String getOverview() {
+        return overview;
     }
 
     public String getReleaseDate() {

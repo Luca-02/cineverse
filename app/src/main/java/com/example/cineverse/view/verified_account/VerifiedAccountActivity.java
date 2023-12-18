@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
+import com.example.cineverse.databinding.DrawerMenuHeaderLayoutBinding;
 import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.google.android.material.elevation.SurfaceColors;
@@ -19,16 +20,21 @@ import com.google.android.material.elevation.SurfaceColors;
  */
 public class VerifiedAccountActivity extends AppCompatActivity {
 
+    private ActivityVerifiedAccountBinding binding;
     private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityVerifiedAccountBinding binding = ActivityVerifiedAccountBinding.inflate(getLayoutInflater());
+        binding = ActivityVerifiedAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setNavController();
         BackPressedHandler.handleOnBackPressedCallback(this, navController);
         getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(this));
+
+        DrawerMenuHeaderLayoutBinding drawerBinding =
+                DrawerMenuHeaderLayoutBinding.inflate(getLayoutInflater());
+        binding.navigationView.addHeaderView(drawerBinding.getRoot());
     }
 
     /**
@@ -51,6 +57,10 @@ public class VerifiedAccountActivity extends AppCompatActivity {
             navController.navigate(R.id.action_global_authActivity);
             finish();
         }
+    }
+
+    public void openDrawer() {
+        binding.drawerLayout.open();
     }
 
 }

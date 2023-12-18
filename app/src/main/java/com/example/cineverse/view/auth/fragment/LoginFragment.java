@@ -1,11 +1,8 @@
 package com.example.cineverse.view.auth.fragment;
 
-import static com.example.cineverse.utils.constant.GlobalConstant.TAG;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,6 +123,7 @@ public class LoginFragment extends Fragment {
     private void handleNetworkError(Boolean bool) {
         if (bool != null && bool) {
             ((AuthActivity) requireActivity()).openNetworkErrorActivity();
+            viewModel.getNetworkErrorLiveData().setValue(null);
         }
         binding.passwordEditText.setText(null);
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
@@ -137,7 +135,6 @@ public class LoginFragment extends Fragment {
      * @param error The type of authentication error that occurred.
      */
     private void handleError(LoginRepository.Error error) {
-        Log.d(TAG, "handleError: ");
         if (error != null) {
             binding.passwordEditText.setText(null);
             String errorString = getString(error.getError());

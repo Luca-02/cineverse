@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.content.AbstractContentResponse;
 import com.example.cineverse.data.source.api.TMDBRemoteDataSource;
+import com.example.cineverse.utils.mapper.SectionTypeMappingManager;
 
 import java.util.Locale;
 

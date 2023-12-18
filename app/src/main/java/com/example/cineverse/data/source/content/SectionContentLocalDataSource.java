@@ -9,7 +9,7 @@ import com.example.cineverse.data.database.dao.SectionDao;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.content.AbstractContentResponse;
 import com.example.cineverse.data.model.content.ContentEntityDb;
-import com.example.cineverse.data.model.content.ContentTypeMappingManager;
+import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.data.model.content.SectionContentCrossRef;
 import com.example.cineverse.data.model.content.SectionEntity;
 import com.example.cineverse.utils.ServiceLocator;

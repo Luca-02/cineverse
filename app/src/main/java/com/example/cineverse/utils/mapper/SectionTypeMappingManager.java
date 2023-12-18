@@ -1,6 +1,7 @@
-package com.example.cineverse.data.source.content;
+package com.example.cineverse.utils.mapper;
 
 import com.example.cineverse.data.model.content.AbstractContent;
+import com.example.cineverse.data.source.content.AbstractSectionContentRemoteDataSource;
 import com.example.cineverse.data.source.content.section.AiringTodayTvRemoteDataSource;
 import com.example.cineverse.data.source.content.section.NowPlayingMovieRemoteDataSource;
 import com.example.cineverse.data.source.content.section.PopularMovieRemoteDataSource;

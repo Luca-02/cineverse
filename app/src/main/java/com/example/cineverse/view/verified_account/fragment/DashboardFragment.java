@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
@@ -16,7 +15,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentDashboardBinding;
-import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 
 /**
  * The {@link DashboardFragment} class represents the dashboard of the application.
@@ -36,7 +34,6 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setActionBar();
         setNavController();
     }
 
@@ -44,17 +41,6 @@ public class DashboardFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    /**
-     * Sets up the {@link ActionBar} with the provided Toolbar.
-     */
-    private void setActionBar() {
-        ((VerifiedAccountActivity) requireActivity()).setSupportActionBar(binding.materialToolbar);
-        ActionBar actionBar = ((VerifiedAccountActivity) requireActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(null);
-        }
     }
 
     /**

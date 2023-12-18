@@ -22,8 +22,9 @@ import com.example.cineverse.R;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentHomeBinding;
+import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
-import com.google.android.material.chip.Chip;
+import com.google.android.material.tabs.TabLayout;
 
 /**
  * The {@link HomeFragment} class representing the home section of the application.
@@ -45,7 +46,9 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setNavController();
-        setListener(view);
+        setListener();
+        binding.materialToolbar.setNavigationOnClickListener(v ->
+                ((VerifiedAccountActivity) requireActivity()).openDrawer());
     }
 
     @Override
@@ -69,21 +72,32 @@ public class HomeFragment extends Fragment {
     /**
      * Sets up click listeners for UI elements in the fragment.
      */
-    private void setListener(View view) {
-        binding.chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
-            int selectedId = group.getCheckedChipId();
-            Chip selectedChip = view.findViewById(selectedId);
+    private void setListener() {
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int tabPosition = tab.getPosition();
+                if (tabPosition == 0) {
+                    navController.navigate(R.id.action_global_allContentFragment);
+                } else if (tabPosition == 1) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(SECTION_TYPE_ARGS, MOVIE_SECTION);
+                    navController.navigate(R.id.action_global_movieContentFragment, bundle);
+                } else if (tabPosition == 2) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(SECTION_TYPE_ARGS, TV_SECTION);
+                    navController.navigate(R.id.action_global_tvContentFragment, bundle);
+                }
+            }
 
-            if (selectedChip == binding.allChip) {
-                navController.navigate(R.id.action_global_allContentFragment);
-            } else if (selectedChip == binding.movieChip) {
-                Bundle bundle = new Bundle();
-                bundle.putString(SECTION_TYPE_ARGS, MOVIE_SECTION);
-                navController.navigate(R.id.action_global_movieContentFragment, bundle);
-            } else if (selectedChip == binding.tvChip) {
-                Bundle bundle = new Bundle();
-                bundle.putString(SECTION_TYPE_ARGS, TV_SECTION);
-                navController.navigate(R.id.action_global_tvContentFragment, bundle);
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                scrollOnTop();
             }
         });
     }
@@ -111,6 +125,18 @@ public class HomeFragment extends Fragment {
         bundle.putString(VIEW_MODEL_CLASS_NAME_TAG, section.getViewModelClass().getCanonicalName());
         bundle.putParcelable(GENRE_TAG, genre);
         navController.navigate(R.id.action_global_viewAllContentActivity, bundle);
+    }
+
+    public void scrollOnTop() {
+        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager()
+                .findFragmentById(R.id.homeFragmentContainerView);
+
+        if (navHostFragment != null) {
+            SectionContentFragment sectionContentFragment =
+                    (SectionContentFragment) navHostFragment
+                            .getChildFragmentManager().getFragments().get(0);
+            sectionContentFragment.test();
+        }
     }
 
 }

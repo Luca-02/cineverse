@@ -1,5 +1,6 @@
-package com.example.cineverse.data.model.content;
+package com.example.cineverse.utils.mapper;
 
+import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.content.section.Movie;
 import com.example.cineverse.data.model.content.section.Tv;
 

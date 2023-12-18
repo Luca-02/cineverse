@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.databinding.ViewAllContentItemBinding;
-import com.example.cineverse.utils.DateFormatUtils;
 
 import java.util.List;
 
@@ -95,11 +95,10 @@ public class ContentViewAllAdapter
             String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getBackdropPath();
             Glide.with(context)
                     .load(imageUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into((ImageView) binding.imageView);
             binding.titleTextView.setText(content.getName());
-
-            String formatDate = DateFormatUtils.formatData(context, content.getReleaseDate());
-            binding.releaseDateTextView.setText(formatDate);
+            binding.overviewTextView.setText(content.getOverview());
         }
 
     }
