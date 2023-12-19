@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:alpha="0.8" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/genreRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/standard_spacing"
+        android:paddingTop="@dimen/standard_spacing"
+        android:paddingEnd="@dimen/standard_spacing"
+        android:paddingBottom="72dp" />
+
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
+        android:id="@+id/closeMaterialCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_spacing"
+        app:cardBackgroundColor="?attr/colorTertiary"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        app:cardCornerRadius="360dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/outline_close"
+            android:padding="@dimen/standard_spacing"
+            app:tint="?attr/colorOnTertiary" />
+    </com.google.android.material.card.MaterialCardView>
+</RelativeLayout>

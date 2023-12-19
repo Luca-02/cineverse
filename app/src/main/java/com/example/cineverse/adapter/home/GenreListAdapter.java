@@ -7,17 +7,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cineverse.data.model.genre.Genre;
-import com.example.cineverse.databinding.GenreItemBinding;
+import com.example.cineverse.databinding.GenreListItemBinding;
 
 import java.util.List;
 
 /**
- * The {@link GenreSectionAdapter} class is a {@link RecyclerView.Adapter} for displaying genre items.
+ * The {@link GenreListAdapter} class is a {@link RecyclerView.Adapter} for displaying genre items.
  * It uses a custom ViewHolder to bind data to the genre items and provides a callback interface
  * for handling genre clicks.
  */
-public class GenreSectionAdapter
-        extends RecyclerView.Adapter<GenreSectionAdapter.GenreViewHolder> {
+public class GenreListAdapter
+        extends RecyclerView.Adapter<GenreListAdapter.GenreViewHolder> {
 
     /**
      * Callback interface for handling genre clicks.
@@ -34,13 +34,7 @@ public class GenreSectionAdapter
     private final List<Genre> genreList;
     private final OnGenreClickListener callback;
 
-    /**
-     * Constructs a {@link GenreSectionAdapter} with the specified genre list and callback.
-     *
-     * @param genreList The list of {@link Genre} items to be displayed.
-     * @param callback  The callback for handling genre clicks.
-     */
-    public GenreSectionAdapter(List<Genre> genreList, OnGenreClickListener callback) {
+    public GenreListAdapter(List<Genre> genreList, OnGenreClickListener callback) {
         this.genreList = genreList;
         this.callback = callback;
     }
@@ -62,13 +56,8 @@ public class GenreSectionAdapter
     @Override
     public GenreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new GenreViewHolder(GenreItemBinding.inflate(
+        return new GenreViewHolder(GenreListItemBinding.inflate(
                 inflater, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull GenreViewHolder holder, int position) {
-        holder.bind(genreList.get(position));
     }
 
     @Override
@@ -76,14 +65,19 @@ public class GenreSectionAdapter
         return genreList.size();
     }
 
+    @Override
+    public void onBindViewHolder(@NonNull GenreViewHolder holder, int position) {
+        holder.bind(genreList.get(position));
+    }
+
     /**
      * Custom ViewHolder for displaying genre items in the RecyclerView.
      */
     public class GenreViewHolder extends RecyclerView.ViewHolder {
 
-        private final GenreItemBinding binding;
+        private final GenreListItemBinding binding;
 
-        public GenreViewHolder(@NonNull GenreItemBinding binding) {
+        public GenreViewHolder(@NonNull GenreListItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

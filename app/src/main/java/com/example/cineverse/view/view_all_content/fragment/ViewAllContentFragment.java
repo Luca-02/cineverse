@@ -3,6 +3,7 @@ package com.example.cineverse.view.view_all_content.fragment;
 import static com.example.cineverse.utils.constant.Api.STARTING_PAGE;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cineverse.adapter.home.ContentViewAllAdapter;
+import com.example.cineverse.adapter.OnContentClickListener;
+import com.example.cineverse.adapter.view_all_content.ContentViewAllAdapter;
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.databinding.FragmentViewAllContentBinding;
+import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,7 +27,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewAllContentFragment extends Fragment {
+public class ViewAllContentFragment extends Fragment
+        implements OnContentClickListener {
 
     private static final String SAVE_RECYCLER_VIEW_CONTENT_ID = "SaveRecyclerViewContent";
 
@@ -110,7 +114,7 @@ public class ViewAllContentFragment extends Fragment {
     }
 
     private void initContentSection(Bundle savedInstanceState) {
-        contentAdapter = new ContentViewAllAdapter(requireContext(), new ArrayList<>());
+        contentAdapter = new ContentViewAllAdapter(requireContext(), new ArrayList<>(), this);
 
         binding.contentRecyclerView.setAdapter(contentAdapter);
         binding.contentRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -151,6 +155,17 @@ public class ViewAllContentFragment extends Fragment {
             }
             viewModel.getFailureLiveData().setValue(null);
         }
+    }
+
+    /**
+     * Handles the click event for a specific content in a content section.
+     *
+     * @param content The selected content.
+     */
+    @Override
+    public void onContentClick(AbstractContent content) {
+        Log.d(GlobalConstant.TAG, "onContentClick: " + content.getClass());
+        Log.d(GlobalConstant.TAG, "onContentClick: " + content);
     }
 
 }

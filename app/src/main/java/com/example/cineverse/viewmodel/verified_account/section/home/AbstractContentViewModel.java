@@ -11,20 +11,20 @@ import com.example.cineverse.data.model.api.Failure;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * The {@link AbstractSectionViewModel} class is an abstract base class for ViewModel classes
+ * The {@link AbstractContentViewModel} class is an abstract base class for ViewModel classes
  * representing various sections in the home screen of the application.
  */
-public abstract class AbstractSectionViewModel
+public abstract class AbstractContentViewModel
         extends AndroidViewModel {
 
     private MutableLiveData<Failure> failureLiveData;
 
     /**
-     * Constructs an {@link AbstractSectionViewModel} object with the given {@link Application}.
+     * Constructs an {@link AbstractContentViewModel} object with the given {@link Application}.
      *
      * @param application The {@link Application} of the calling component.
      */
-    public AbstractSectionViewModel(@NonNull Application application) {
+    public AbstractContentViewModel(@NonNull Application application) {
         super(application);
     }
 
@@ -53,11 +53,6 @@ public abstract class AbstractSectionViewModel
     public void handleFailure(@NotNull Failure failure) {
         getFailureLiveData().postValue(failure);
     }
-
-    /**
-     * Clears the content LiveData list.
-     */
-    public abstract void emptyContentLiveDataList();
 
     /**
      * Checks if the content LiveData list is empty.

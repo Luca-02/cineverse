@@ -24,27 +24,46 @@
             app:layout_scrollEffect="compress"
             app:navigationIcon="@drawable/outline_menu" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="fixed">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.tabs.TabItem
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="@string/all" />
+                android:clipChildren="false"
+                android:scrollbars="none"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/categoryChip"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:singleLine="true">
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="@string/movies" />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clipChildren="false"
+                    android:paddingStart="@dimen/standard_spacing"
+                    android:paddingEnd="@dimen/standard_spacing"
+                    app:singleSelection="true"/>
+            </HorizontalScrollView>
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_height="wrap_content"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/categoryChip"
+                style="@style/Widget.App.Chip.Assist"
                 android:layout_width="wrap_content"
-                android:text="@string/tv_series" />
-        </com.google.android.material.tabs.TabLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/standard_spacing"
+                android:text="@string/categories"
+                android:visibility="gone"
+                app:closeIcon="@drawable/outline_expand_more"
+                app:closeIconEnabled="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView

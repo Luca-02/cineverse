@@ -1,4 +1,4 @@
-package com.example.cineverse.adapter.home;
+package com.example.cineverse.adapter.view_all_content;
 
 import static com.example.cineverse.utils.constant.Api.TMDB_IMAGE_ORIGINAL_SIZE_URL;
 
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.example.cineverse.adapter.OnContentClickListener;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.databinding.ViewAllContentItemBinding;
 
@@ -26,16 +27,20 @@ public class ContentViewAllAdapter
 
     private final Context context;
     private final List<AbstractContent> contentList;
+    private final OnContentClickListener listener;
 
     /**
      * Constructs a {@link ContentViewAllAdapter} with the specified context and content list.
      *
      * @param context     The application context.
      * @param contentList The list of {@link AbstractContent} items to be displayed.
+     * @param listener The callback for handling content clicks.
      */
-    public ContentViewAllAdapter(Context context, List<AbstractContent> contentList) {
+    public ContentViewAllAdapter(Context context, List<AbstractContent> contentList,
+                                 OnContentClickListener listener) {
         this.context = context;
         this.contentList = contentList;
+        this.listener = listener;
     }
 
     public List<AbstractContent> getData() {
@@ -99,6 +104,7 @@ public class ContentViewAllAdapter
                     .into((ImageView) binding.imageView);
             binding.titleTextView.setText(content.getName());
             binding.overviewTextView.setText(content.getOverview());
+            itemView.setOnClickListener(v -> listener.onContentClick(content));
         }
 
     }

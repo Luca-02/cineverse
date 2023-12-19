@@ -7,17 +7,17 @@ import android.app.Application;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.content.AbstractContent;
-import com.example.cineverse.viewmodel.verified_account.section.home.AbstractSectionViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.AbstractContentViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@link AbstractSectionContentViewModel} class extends {@link AbstractSectionViewModel} and is an abstract
+ * The {@link AbstractSectionContentViewModel} class extends {@link AbstractContentViewModel} and is an abstract
  * base class for ViewModel classes representing various content sections in the home screen of the application.
  */
 public abstract class AbstractSectionContentViewModel
-        extends AbstractSectionViewModel {
+        extends AbstractContentViewModel {
 
     private MutableLiveData<List<? extends AbstractContent>> contentLiveData;
     private int page;
@@ -63,7 +63,6 @@ public abstract class AbstractSectionContentViewModel
         increasePage();
     }
 
-    @Override
     public void emptyContentLiveDataList() {
         getContentLiveData().setValue(new ArrayList<>());
     }

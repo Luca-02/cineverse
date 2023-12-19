@@ -8,6 +8,9 @@
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="account">Account</string>
+    <string name="good_morning">Good morning!</string>
+    <string name="good_afternoon">Good afternoon!</string>
+    <string name="good_evening">Good evening!</string>
 
     <!-- Error -->
     <string name="unexpected_error">Unexpected error has occurred</string>
@@ -72,6 +75,7 @@
     <string name="all">All</string>
     <string name="movies">Movies</string>
     <string name="tv_series">Tv Series</string>
+    <string name="categories">Categories</string>
 
     <!-- Home Section -->
     <string name="popular_movie">Popular Movie</string>

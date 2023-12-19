@@ -3,7 +3,7 @@ package com.example.cineverse.data.source.genre;
 import android.content.Context;
 
 import com.example.cineverse.data.model.content.section.MovieResponse;
-import com.example.cineverse.data.model.genre.GenreApiResponse;
+import com.example.cineverse.data.model.genre.GenreResponse;
 import com.example.cineverse.data.source.api.TMDBRemoteDataSource;
 import com.example.cineverse.service.api.GenreApiService;
 import com.example.cineverse.utils.ServiceLocator;
@@ -41,7 +41,7 @@ public abstract class AbstractGenresRemoteDataSource
      */
     @Override
     public void fetch() {
-        Call<GenreApiResponse> call = createApiCall();
+        Call<GenreResponse> call = createApiCall();
         handlePosterApiCall(call);
     }
 
@@ -50,7 +50,7 @@ public abstract class AbstractGenresRemoteDataSource
      *
      * @param call The Retrofit call object for fetching genres.
      */
-    protected void handlePosterApiCall(Call<GenreApiResponse> call) {
+    protected void handlePosterApiCall(Call<GenreResponse> call) {
         if (remoteResponseCallback != null) {
             handlePosterApiCall(call, remoteResponseCallback);
         }
@@ -61,6 +61,6 @@ public abstract class AbstractGenresRemoteDataSource
      *
      * @return A Retrofit {@link Call} representing the API call for fetching {@link MovieResponse}.
      */
-    protected abstract Call<GenreApiResponse> createApiCall();
+    protected abstract Call<GenreResponse> createApiCall();
 
 }

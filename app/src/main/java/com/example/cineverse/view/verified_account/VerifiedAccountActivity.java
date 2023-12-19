@@ -1,16 +1,20 @@
 package com.example.cineverse.view.verified_account;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
-import com.example.cineverse.databinding.DrawerMenuHeaderLayoutBinding;
 import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.auth.AuthActivity;
+import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 import com.google.android.material.elevation.SurfaceColors;
 
 /**
@@ -29,12 +33,10 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         binding = ActivityVerifiedAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setNavController();
+        setDrawerHeader();
+        setBlurView();
         BackPressedHandler.handleOnBackPressedCallback(this, navController);
         getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(this));
-
-        DrawerMenuHeaderLayoutBinding drawerBinding =
-                DrawerMenuHeaderLayoutBinding.inflate(getLayoutInflater());
-        binding.navigationView.addHeaderView(drawerBinding.getRoot());
     }
 
     /**
@@ -50,6 +52,33 @@ public class VerifiedAccountActivity extends AppCompatActivity {
     }
 
     /**
+     * Sets up the Blur View
+     */
+    private void setBlurView() {
+        float radius = 16f;
+
+        View decorView = getWindow().getDecorView();
+        ViewGroup rootView = decorView.findViewById(android.R.id.content);
+
+        Drawable windowBackground = decorView.getBackground();
+
+        binding.blurView.setupWith(rootView)
+                .setFrameClearDrawable(windowBackground)
+                .setBlurRadius(radius);
+        binding.blurView.setBlurEnabled(false);
+    }
+
+    /**
+     * Sets up the Navigation Drawer header.
+     */
+    private void setDrawerHeader() {
+        VerifiedAccountViewModel viewModel = new ViewModelProvider(this).get(VerifiedAccountViewModel.class);
+        DrawerHeaderManager drawerHeaderManager =
+                new DrawerHeaderManager(this, viewModel);
+        binding.navigationView.addHeaderView(drawerHeaderManager.getHeaderBinding());
+    }
+
+    /**
      * Opens the authentication activity ({@link AuthActivity}).
      */
     public void openAuthActivity() {
@@ -59,8 +88,15 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Open Navigation Drawer.
+     */
     public void openDrawer() {
         binding.drawerLayout.open();
+    }
+
+    public void enableBlur(boolean enable) {
+        binding.blurView.setBlurEnabled(enable);
     }
 
 }

@@ -5,14 +5,14 @@ import com.example.cineverse.data.model.api.ApiResponse;
 import java.util.List;
 
 /**
- * The {@link GenreApiResponse} class represents the response containing a list of genres.
+ * The {@link GenreResponse} class represents the response containing a list of genres.
  */
-public class GenreApiResponse
+public class GenreResponse
         implements ApiResponse {
 
     private List<Genre> genres;
 
-    public GenreApiResponse(List<Genre> genres) {
+    public GenreResponse(List<Genre> genres) {
         this.genres = genres;
     }
 

@@ -8,38 +8,37 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.genre.Genre;
-import com.example.cineverse.data.model.genre.GenreApiResponse;
+import com.example.cineverse.data.model.genre.GenreResponse;
 import com.example.cineverse.data.source.genre.AbstractGenresRemoteDataSource;
 import com.example.cineverse.data.source.genre.GenresRemoteResponseCallback;
 import com.example.cineverse.exception.UnsupportedViewModelException;
 import com.example.cineverse.exception.ViewModelFactoryCreationException;
 import com.example.cineverse.repository.genre.GenreRepository;
 import com.example.cineverse.utils.mapper.SectionGenreViewModelFactoryMappingManager;
-import com.example.cineverse.viewmodel.verified_account.section.home.AbstractSectionViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.AbstractContentViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@link AbstractSectionGenreViewModel} class extend {@link AbstractSectionViewModel} is an
+ * The {@link AbstractContentGenreViewModel} class extend {@link AbstractContentViewModel} is an
  * abstract base class for ViewModel classes representing various genre sections in the home screen
  * of the application.
  */
-public abstract class AbstractSectionGenreViewModel
-        extends AbstractSectionViewModel
+public abstract class AbstractContentGenreViewModel
+        extends AbstractContentViewModel
         implements GenresRemoteResponseCallback {
 
     protected GenreRepository repository;
     private MutableLiveData<List<Genre>> contentLiveData;
 
     /**
-     * Constructs an {@link AbstractSectionGenreViewModel} object with the given {@link Application}.
+     * Constructs an {@link AbstractContentGenreViewModel} object with the given {@link Application}.
      *
      * @param application The {@link Application} of the calling component.
      */
-    public AbstractSectionGenreViewModel(@NonNull Application application) {
+    public AbstractContentGenreViewModel(@NonNull Application application) {
         super(application);
         repository = new GenreRepository(createRemoteDataSourceInstance(), this);
     }
@@ -49,11 +48,6 @@ public abstract class AbstractSectionGenreViewModel
             contentLiveData = new MutableLiveData<>();
         }
         return contentLiveData;
-    }
-
-    @Override
-    public void emptyContentLiveDataList() {
-        getContentLiveData().setValue(new ArrayList<>());
     }
 
     @Override
@@ -71,7 +65,7 @@ public abstract class AbstractSectionGenreViewModel
     }
 
     @Override
-    public void onRemoteResponse(GenreApiResponse response) {
+    public void onRemoteResponse(GenreResponse response) {
         if (response != null) {
             handleResponse(response.getGenres(), getContentLiveData());
         }

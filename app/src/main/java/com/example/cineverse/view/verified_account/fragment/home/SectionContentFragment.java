@@ -1,9 +1,12 @@
 package com.example.cineverse.view.verified_account.fragment.home;
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,11 +14,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.cineverse.adapter.home.GenreListAdapter;
 import com.example.cineverse.adapter.home.HomeSectionAdapter;
+import com.example.cineverse.adapter.OnContentClickListener;
+import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentSectionContentBinding;
-import com.example.cineverse.viewmodel.verified_account.section.home.HomeViewModel;
+import com.example.cineverse.databinding.GenreListDialogLayoutBinding;
+import com.example.cineverse.utils.constant.GlobalConstant;
+import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
+import com.example.cineverse.viewmodel.verified_account.section.home.genre.AbstractContentGenreViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.genre.section.MovieContentGenreViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.genre.section.TvContentGenreViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +36,21 @@ import java.util.List;
  * This fragment is part of the home section of the application.
  */
 public class SectionContentFragment extends Fragment
-        implements HomeSectionAdapter.OnSectionClickListener {
+        implements HomeSectionAdapter.OnSectionClickListener,
+        GenreListAdapter.OnGenreClickListener,
+        OnContentClickListener {
 
     public static final String SECTION_TYPE_ARGS = "sectionType";
     public static final String MOVIE_SECTION = "movie";
     public static final String TV_SECTION = "tv";
 
     private FragmentSectionContentBinding binding;
-    private HomeViewModel viewModel;
+    private GenreListDialogLayoutBinding dialogBinding;
+    private AbstractContentGenreViewModel viewModel;
     private HomeSectionAdapter sectionAdapter;
+    private GenreListAdapter genreListAdapter;
     private String sectionType;
+    private Dialog dialog;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -48,6 +64,7 @@ public class SectionContentFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         extractArguments();
         setViewModel();
+        createGenreDialog();
         initContentSection(view);
         setListener();
     }
@@ -72,7 +89,47 @@ public class SectionContentFragment extends Fragment
      * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
-        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        if (sectionType != null) {
+            switch (sectionType) {
+                case MOVIE_SECTION:
+                    viewModel = new ViewModelProvider(this).get(MovieContentGenreViewModel.class);
+                    break;
+                case TV_SECTION:
+                    viewModel = new ViewModelProvider(this).get(TvContentGenreViewModel.class);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (viewModel != null) {
+            viewModel.getContentLiveData().observe(getViewLifecycleOwner(),
+                    genres -> genreListAdapter.setData(genres));
+        }
+    }
+
+    /**
+     * Create the Dialog for genre content list
+     */
+    private void createGenreDialog() {
+        dialogBinding = GenreListDialogLayoutBinding.inflate(getLayoutInflater());
+        dialog = new Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialogBinding.getRoot());
+        dialog.setOnShowListener(dialog -> {
+            dialogBinding.genreRecyclerView.smoothScrollToPosition(0);
+            blurBackground();
+        });
+        dialog.setOnDismissListener(dialog -> clearBlurBackground());
+
+        genreListAdapter = new GenreListAdapter(new ArrayList<>(), this);
+        dialogBinding.genreRecyclerView.setLayoutManager(new LinearLayoutManager(dialog.getContext()));
+        dialogBinding.genreRecyclerView.setAdapter(genreListAdapter);
+        dialogBinding.genreRecyclerView.setHasFixedSize(true);
+
+        if (viewModel != null && viewModel.isContentEmpty()) {
+            viewModel.fetch();
+        }
     }
 
     /**
@@ -83,6 +140,7 @@ public class SectionContentFragment extends Fragment
             sectionAdapter.refresh();
             binding.swipeContainer.setRefreshing(false);
         });
+        dialogBinding.closeMaterialCardView.setOnClickListener(v -> dialog.dismiss());
     }
 
     /**
@@ -94,17 +152,20 @@ public class SectionContentFragment extends Fragment
         List<ContentSection> sectionList = new ArrayList<>();
         if (sectionType != null) {
             switch (sectionType) {
-                case "movie":
-                    sectionList.addAll(viewModel.getMovieContentSection(true));
+                case MOVIE_SECTION:
+                    sectionList.addAll(HomeSectionContentManager
+                            .getMovieContentSection());
                     break;
-                case "tv":
-                    sectionList.addAll(viewModel.getTvContentSection(true));
+                case TV_SECTION:
+                    sectionList.addAll(HomeSectionContentManager
+                            .getTvContentSection());
                     break;
                 default:
                     break;
             }
         } else {
-            sectionList.addAll(viewModel.getAllContentSection());
+            sectionList.addAll(HomeSectionContentManager
+                    .getAllContentSection());
         }
 
         sectionAdapter = new HomeSectionAdapter(
@@ -113,12 +174,28 @@ public class SectionContentFragment extends Fragment
                 getViewLifecycleOwner(),
                 view,
                 sectionList,
-                this
-        );
+                this,
+                this);
 
         binding.sectionRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.sectionRecyclerView.setAdapter(sectionAdapter);
         binding.sectionRecyclerView.setHasFixedSize(true);
+    }
+
+    public void openDialog() {
+        dialog.show();
+    }
+
+    public void scrollOnTop() {
+        binding.sectionRecyclerView.smoothScrollToPosition(0);
+    }
+
+    private void blurBackground() {
+        ((VerifiedAccountActivity) requireActivity()).enableBlur(true);
+    }
+
+    private void clearBlurBackground() {
+        ((VerifiedAccountActivity) requireActivity()).enableBlur(false);
     }
 
     /**
@@ -135,17 +212,24 @@ public class SectionContentFragment extends Fragment
     /**
      * Handles the click event for a specific genre in a content section.
      *
-     * @param section The selected content section.
-     * @param genre   The selected genre.
+     * @param genre The selected genre.
      */
     @Override
-    public void onGenreClick(ContentSection section, Genre genre) {
+    public void onGenreClick(Genre genre) {
         HomeFragment homeFragment = (HomeFragment) requireParentFragment().requireParentFragment();
-        homeFragment.openViewAllContentActivity(section, genre);
+        homeFragment.openViewAllContentActivity(genre, viewModel.getClass());
+        dialog.dismiss();
     }
 
-    public void test() {
-        binding.sectionRecyclerView.smoothScrollToPosition(0);
+    /**
+     * Handles the click event for a specific content in a content section.
+     *
+     * @param content The selected content.
+     */
+    @Override
+    public void onContentClick(AbstractContent content) {
+        Log.d(GlobalConstant.TAG, "onContentClick: " + content.getClass());
+        Log.d(GlobalConstant.TAG, "onContentClick: " + content);
     }
 
 }

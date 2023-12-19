@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.example.cineverse.adapter.OnContentClickListener;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.CarouselContentItemBinding;
@@ -34,6 +35,7 @@ public class ContentSectionAdapter
     private final Context context;
     private final ContentSection.ViewType viewType;
     private final List<AbstractContent> contentList;
+    private final OnContentClickListener listener;
 
     /**
      * Constructs a {@link ContentSectionAdapter} with the specified context, view type, and content list.
@@ -41,11 +43,14 @@ public class ContentSectionAdapter
      * @param context     The application context.
      * @param viewType    The type of view to be displayed (e.g., posters or carousels).
      * @param contentList The list of {@link AbstractContent} items to be displayed.
+     * @param listener    The callback for handling content clicks.
      */
-    public ContentSectionAdapter(Context context, ContentSection.ViewType viewType, List<AbstractContent> contentList) {
+    public ContentSectionAdapter(Context context, ContentSection.ViewType viewType,
+                                 List<AbstractContent> contentList, OnContentClickListener listener) {
         this.context = context;
         this.viewType = viewType;
         this.contentList = contentList;
+        this.listener = listener;
     }
 
     /**
@@ -132,6 +137,7 @@ public class ContentSectionAdapter
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(binding.posterImageView);
             binding.titleTextView.setText(content.getName());
+            binding.materialCardView.setOnClickListener(v -> listener.onContentClick(content));
         }
 
     }
@@ -165,6 +171,7 @@ public class ContentSectionAdapter
                 binding.titleTextView.setTranslationX(transitionX);
                 binding.titleTextView.setAlpha(alpha);
             });
+            binding.carouselItemContainer.setOnClickListener(v -> listener.onContentClick(content));
         }
 
     }

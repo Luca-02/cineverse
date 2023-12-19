@@ -1,6 +1,6 @@
 package com.example.cineverse.data.source.genre;
 
-import com.example.cineverse.data.model.genre.GenreApiResponse;
+import com.example.cineverse.data.model.genre.GenreResponse;
 import com.example.cineverse.data.source.api.BaseRemoteResponseCallback;
 
 /**
@@ -8,5 +8,5 @@ import com.example.cineverse.data.source.api.BaseRemoteResponseCallback;
  * interface and specifies methods for handling responses related to genres.
  */
 public interface GenresRemoteResponseCallback
-        extends BaseRemoteResponseCallback<GenreApiResponse> {
+        extends BaseRemoteResponseCallback<GenreResponse> {
 }

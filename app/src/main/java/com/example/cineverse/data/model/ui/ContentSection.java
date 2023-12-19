@@ -1,10 +1,11 @@
 package com.example.cineverse.data.model.ui;
 
-import com.example.cineverse.viewmodel.verified_account.section.home.AbstractSectionViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.AbstractContentViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 
 /**
  * The {@link ContentSection} class represents a section of content in the UI, including information
- * such as the section title, the associated {@link AbstractSectionViewModel}, the view type, and
+ * such as the section title, the associated {@link AbstractContentViewModel}, the view type, and
  * a flag indicating whether to force a refresh of the content in the section.
  */
 public class ContentSection {
@@ -15,8 +16,7 @@ public class ContentSection {
      */
     public enum ViewType {
         POSTER_TYPE(0),
-        CAROUSEL_TYPE(1),
-        GENRE_TYPE(2);
+        CAROUSEL_TYPE(1);
 
         private final int viewType;
 
@@ -35,7 +35,7 @@ public class ContentSection {
     }
 
     private final Integer sectionTitleStringId;
-    private final Class<? extends AbstractSectionViewModel> viewModelClass;
+    private final Class<? extends AbstractSectionContentViewModel> viewModelClass;
     private final ViewType viewType;
     private boolean forceRefresh;
 
@@ -48,7 +48,7 @@ public class ContentSection {
      * @param viewType             The type of the content view.
      */
     public ContentSection(Integer sectionTitleStringId,
-                          Class<? extends AbstractSectionViewModel> viewModelClass,
+                          Class<? extends AbstractSectionContentViewModel> viewModelClass,
                           ViewType viewType) {
         this.sectionTitleStringId = sectionTitleStringId;
         this.viewModelClass = viewModelClass;
@@ -60,7 +60,7 @@ public class ContentSection {
         return sectionTitleStringId;
     }
 
-    public Class<? extends AbstractSectionViewModel> getViewModelClass() {
+    public Class<? extends AbstractSectionContentViewModel> getViewModelClass() {
         return viewModelClass;
     }
 

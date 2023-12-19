@@ -18,6 +18,7 @@ public class Api {
     public static final int STARTING_PAGE = 1;
 
     // Auth
+    public static final String BEARER_AUTHORIZATION_TAG = "Bearer";
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     // Query params
@@ -25,6 +26,7 @@ public class Api {
     public static final String PAGE_PARAMETER = "page";
     public static final String REGION_PARAMETER = "region";
     public static final String WITH_GENRES_PARAMETER = "with_genres";
+    public static final String QUERY_PARAMETER = "query";
 
     public static class Movie {
         private static final String MOVIE = "movie";
@@ -46,6 +48,11 @@ public class Api {
         public static final String TODAY_TRENDING_TV_ENDPOINT = TRENDING + "/" + TV + "/day";
         public static final String GENRE_TV_ENDPOINT = GENRE + "/" + TV + "/list";
         public static final String DISCOVER_TV_ENDPOINT = DISCOVER + "/" + TV;
+    }
+
+    public static class Search {
+        public static final String SEARCH = "search";
+        public static final String SEARCH_KEYWORD_ENDPOINT = SEARCH + "/keyword";
     }
 
 }

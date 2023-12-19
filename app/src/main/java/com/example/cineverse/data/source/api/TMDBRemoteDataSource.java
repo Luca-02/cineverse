@@ -1,5 +1,7 @@
 package com.example.cineverse.data.source.api;
 
+import static com.example.cineverse.utils.constant.Api.BEARER_AUTHORIZATION_TAG;
+
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,7 @@ import com.example.cineverse.data.model.api.Failure;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -30,6 +33,15 @@ public class TMDBRemoteDataSource {
     }
 
     /**
+     * Retrieves the Bearer access token for authentication from the resources.
+     *
+     * @return The Bearer access token string.
+     */
+    public String getBearerAccessTokenAuth() {
+        return BEARER_AUTHORIZATION_TAG + " " + context.getString(R.string.access_token_auth);
+    }
+
+    /**
      * Retrieves the language information from the resources.
      *
      * @return The language string.
@@ -39,12 +51,12 @@ public class TMDBRemoteDataSource {
     }
 
     /**
-     * Retrieves the Bearer access token for authentication from the resources.
+     * Gets the region based on the default locale.
      *
-     * @return The Bearer access token string.
+     * @return The region.
      */
-    public String getBearerAccessTokenAuth() {
-        return "Bearer " + context.getString(R.string.access_token_auth);
+    public String getRegion() {
+        return Locale.getDefault().getCountry();
     }
 
     /**

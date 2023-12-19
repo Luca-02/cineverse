@@ -2,7 +2,7 @@ package com.example.cineverse.data.source.genre.section;
 
 import android.content.Context;
 
-import com.example.cineverse.data.model.genre.GenreApiResponse;
+import com.example.cineverse.data.model.genre.GenreResponse;
 import com.example.cineverse.data.source.genre.AbstractGenresRemoteDataSource;
 import com.example.cineverse.data.source.genre.IGenresRemoteDataSource;
 
@@ -25,7 +25,7 @@ public class TvGenresRemoteDataSource
      * {@inheritDoc}
      */
     @Override
-    protected Call<GenreApiResponse> createApiCall() {
+    protected Call<GenreResponse> createApiCall() {
         return genreApiService.getTvGenres(getLanguage(), getBearerAccessTokenAuth());
     }
 

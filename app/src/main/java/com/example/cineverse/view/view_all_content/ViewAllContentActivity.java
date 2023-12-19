@@ -16,7 +16,7 @@ import com.example.cineverse.databinding.ActivityViewAllContentBinding;
 import com.example.cineverse.exception.ViewModelCreationException;
 import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
-import com.example.cineverse.viewmodel.verified_account.section.home.genre.AbstractSectionGenreViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.genre.AbstractContentGenreViewModel;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -90,7 +90,7 @@ public class ViewAllContentActivity extends AppCompatActivity {
 
                 if (AbstractSectionContentViewModel.class.isAssignableFrom(loadedClass)) {
                     return createContentViewModel(loadedClass, owner);
-                } else if (AbstractSectionGenreViewModel.class.isAssignableFrom(loadedClass) && genre != null) {
+                } else if (AbstractContentGenreViewModel.class.isAssignableFrom(loadedClass) && genre != null) {
                     return createGenreViewModel(loadedClass, owner);
                 } else {
                     return null;
@@ -110,10 +110,10 @@ public class ViewAllContentActivity extends AppCompatActivity {
 
     private AbstractSectionContentViewModel createGenreViewModel(Class<?> loadedClass, ViewModelStoreOwner owner)
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
-        Class<? extends AbstractSectionGenreViewModel> genreViewModelClass =
-                loadedClass.asSubclass(AbstractSectionGenreViewModel.class);
+        Class<? extends AbstractContentGenreViewModel> genreViewModelClass =
+                loadedClass.asSubclass(AbstractContentGenreViewModel.class);
 
-        AbstractSectionGenreViewModel genreViewModel = genreViewModelClass
+        AbstractContentGenreViewModel genreViewModel = genreViewModelClass
                 .getConstructor(Application.class)
                 .newInstance(getApplication());
 

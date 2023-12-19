@@ -7,8 +7,6 @@ import com.example.cineverse.data.model.content.AbstractContentResponse;
 import com.example.cineverse.data.source.api.TMDBRemoteDataSource;
 import com.example.cineverse.utils.mapper.SectionTypeMappingManager;
 
-import java.util.Locale;
-
 import retrofit2.Call;
 
 /**
@@ -31,15 +29,6 @@ public abstract class AbstractSectionContentRemoteDataSource<T extends AbstractC
 
     public void setRemoteResponseCallback(SectionContentRemoteResponseCallback<T> remoteResponseCallback) {
         this.remoteResponseCallback = remoteResponseCallback;
-    }
-
-    /**
-     * Gets the region based on the default locale.
-     *
-     * @return The region.
-     */
-    public String getRegion() {
-        return Locale.getDefault().getCountry();
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.example.cineverse.repository.genre;
 
 import com.example.cineverse.data.model.api.Failure;
-import com.example.cineverse.data.model.genre.GenreApiResponse;
+import com.example.cineverse.data.model.genre.GenreResponse;
 import com.example.cineverse.data.source.genre.AbstractGenresRemoteDataSource;
 import com.example.cineverse.data.source.genre.GenresRemoteResponseCallback;
 import com.example.cineverse.data.source.genre.IGenresRemoteDataSource;
@@ -37,7 +37,7 @@ public class GenreRepository
      * @param response Response containing genre data.
      */
     @Override
-    public void onRemoteResponse(GenreApiResponse response) {
+    public void onRemoteResponse(GenreResponse response) {
         callback.onRemoteResponse(response);
     }
 
