@@ -49,7 +49,7 @@ public class AuthActivity extends AppCompatActivity {
      */
     private void setActionBar() {
         setSupportActionBar(binding.materialToolbar);
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar =  getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(null);
         }

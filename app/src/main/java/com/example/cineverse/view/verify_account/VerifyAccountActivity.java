@@ -13,7 +13,7 @@ import com.example.cineverse.R;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
-import com.example.cineverse.viewmodel.logged.verify_account.VerifyAccountViewModel;
+import com.example.cineverse.viewmodel.logged.status.VerifyAccountViewModel;
 
 /**
  * The {@link VerifyAccountActivity} class represents the activity for email verification.
@@ -40,7 +40,7 @@ public class VerifyAccountActivity extends AppCompatActivity {
      */
     private void setActionBar() {
         setSupportActionBar(binding.materialToolbar);
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar =  getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(null);
         }

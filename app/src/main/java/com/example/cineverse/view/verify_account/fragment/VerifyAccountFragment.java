@@ -20,7 +20,7 @@ import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentVerifyAccountBinding;
 import com.example.cineverse.view.verify_account.VerifyAccountActivity;
-import com.example.cineverse.viewmodel.logged.verify_account.VerifyAccountViewModel;
+import com.example.cineverse.viewmodel.logged.status.VerifyAccountViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 /**
@@ -48,6 +48,12 @@ public class VerifyAccountFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setActionBarMenu();
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentVerifyAccountBinding.inflate(inflater, container, false);
@@ -57,7 +63,6 @@ public class VerifyAccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setActionBarMenu();
         setViewModel();
         setListeners();
     }

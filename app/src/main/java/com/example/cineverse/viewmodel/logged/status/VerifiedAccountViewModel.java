@@ -1,4 +1,4 @@
-package com.example.cineverse.viewmodel.logged.verified_account;
+package com.example.cineverse.viewmodel.logged.status;
 
 import android.app.Application;
 

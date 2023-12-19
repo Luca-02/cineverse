@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
-import com.example.cineverse.viewmodel.logged.verified_account.VerifiedAccountViewModel;
+import com.example.cineverse.viewmodel.logged.status.VerifiedAccountViewModel;
 
 /**
  * The {@link AccountFragment} class representing the user account section of the application.
@@ -26,6 +26,11 @@ public class AccountFragment extends Fragment {
 
     public AccountFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
