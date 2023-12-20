@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 /**
- * The {@link GlobalViewModelFactory} class is a custom ViewModelFactory that provides a single
+ * The {@link GlobalViewModelFactory} abstract class is a custom ViewModelFactory that provides a single
  * instance of a specified ViewModel.
  *
  * @param <T> The type of {@link ViewModel} for which the factory provides instances.
  */
-public class GlobalViewModelFactory<T extends ViewModel>
+public abstract class GlobalViewModelFactory<T extends ViewModel>
         implements ViewModelProvider.Factory {
 
     private final T viewModelInstance;

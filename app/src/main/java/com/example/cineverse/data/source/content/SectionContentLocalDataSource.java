@@ -2,6 +2,7 @@ package com.example.cineverse.data.source.content;
 
 import android.content.Context;
 
+import com.example.cineverse.data.database.ContentEntityManager;
 import com.example.cineverse.data.database.ContentSectionDatabase;
 import com.example.cineverse.data.database.dao.ContentDao;
 import com.example.cineverse.data.database.dao.SectionContentCrossRefDao;
@@ -9,10 +10,10 @@ import com.example.cineverse.data.database.dao.SectionDao;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.content.AbstractContentResponse;
 import com.example.cineverse.data.model.content.ContentEntityDb;
-import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.data.model.content.SectionContentCrossRef;
 import com.example.cineverse.data.model.content.SectionEntity;
 import com.example.cineverse.utils.ServiceLocator;
+import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,12 +126,7 @@ public class SectionContentLocalDataSource<T extends AbstractContent>
 
             sectionContentCrossRefDao.insertAll(crossRefs);
 
-            // Check if there are content without connections and remove them
-            for (ContentEntityDb entityDb : contentEntityDbList) {
-                if (sectionContentCrossRefDao.getContentCount(entityDb.getId()) == 0) {
-                    contentDao.delete(entityDb);
-                }
-            }
+            ContentEntityManager.removeContentEntityWithoutConnection(context, contentEntityDbList);
         }
     }
 

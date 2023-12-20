@@ -113,7 +113,7 @@ public class HomeSectionAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ContentSectionViewHolder holder, int position) {
-        holder.bind(sectionList.get(position));
+        holder.bind(sectionList.get(position), position);
     }
 
     @Override
@@ -154,8 +154,9 @@ public class HomeSectionAdapter
             super(itemView);
         }
 
-        protected void setViewModel(ContentSection section, View fetchingView) {
-            viewModel = new ViewModelProvider(owner).get(section.getViewModelClass());
+        protected void setViewModel(ContentSection section, int position, View fetchingView) {
+            viewModel = new ViewModelProvider(owner, section.getViewModelFactory())
+                    .get(String.valueOf(position), section.getViewModelClass());
 
             viewModel.getContentLiveData().observe(viewLifecycleOwner, abstractPosters -> {
                 contentSectionAdapter.setData(abstractPosters);
@@ -210,8 +211,9 @@ public class HomeSectionAdapter
          * Binds data to the ViewHolder.
          *
          * @param section The {@link ContentSection} to bind.
+         * @param position The section position.
          */
-        public abstract void bind(ContentSection section);
+        public abstract void bind(ContentSection section, int position);
 
     }
 
@@ -228,9 +230,9 @@ public class HomeSectionAdapter
         }
 
         @Override
-        public void bind(ContentSection section) {
+        public void bind(ContentSection section, int position) {
             initUi(section);
-            setViewModel(section, binding.fetchingHorizontalScrollView);
+            setViewModel(section, position, binding.fetchingHorizontalScrollView);
             fetchContent(viewModel, binding.fetchingHorizontalScrollView, section.isForceRefresh());
         }
 
@@ -263,9 +265,9 @@ public class HomeSectionAdapter
         }
 
         @Override
-        public void bind(ContentSection section) {
+        public void bind(ContentSection section, int position) {
             initUi(section);
-            setViewModel(section, null);
+            setViewModel(section, position, null);
             fetchContent(viewModel, null, section.isForceRefresh());
         }
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,13 +21,18 @@ import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.databinding.FragmentViewAllContentBinding;
 import com.example.cineverse.utils.constant.GlobalConstant;
-import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
+import com.example.cineverse.view.view_all_content.ViewAllContentController;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModelFactory;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@link ViewAllContentFragment} is a fragment responsible for displaying a list of content items in a specific section.
+ * It supports pagination and handles user interactions with the displayed content.
+ */
 public class ViewAllContentFragment extends Fragment
         implements OnContentClickListener {
 
@@ -74,6 +80,11 @@ public class ViewAllContentFragment extends Fragment
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Restores the previous state of the RecyclerView using the provided savedInstanceState.
+     *
+     * @param savedInstanceState The saved instance state bundle.
+     */
     public void restorePreviousState(Bundle savedInstanceState){
         List<AbstractContent> dataset = savedInstanceState
                 .getParcelableArrayList(SAVE_RECYCLER_VIEW_CONTENT_ID);
@@ -84,10 +95,16 @@ public class ViewAllContentFragment extends Fragment
      * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
-        viewModel = ((ViewAllContentActivity) requireActivity()).getViewModel(this);
-        if (viewModel != null) {
-            viewModel.getContentLiveData().observe(getViewLifecycleOwner(), this::handleContent);
-            viewModel.getFailureLiveData().observe(getViewLifecycleOwner(), this::handleFailure);
+        AbstractSectionContentViewModelFactory<?> viewModelFactory =
+                ViewAllContentController.getInstance().getViewModelFactory();
+        Class<? extends AbstractSectionContentViewModel> viewModelClass =
+                ViewAllContentController.getInstance().getViewModelClass();
+
+        if (viewModelFactory != null && viewModelClass != null) {
+            viewModel = new ViewModelProvider(this, viewModelFactory.newInstance())
+                    .get(viewModelClass);
+            viewModel.getContentLiveData().observe(this.getViewLifecycleOwner(), this::handleContent);
+            viewModel.getFailureLiveData().observe(this.getViewLifecycleOwner(), this::handleFailure);
         }
     }
 
@@ -121,6 +138,11 @@ public class ViewAllContentFragment extends Fragment
         handleRecyclerViewState(savedInstanceState);
     }
 
+    /**
+     * Handles the state of the RecyclerView, initializing it or restoring its state based on the provided savedInstanceState.
+     *
+     * @param savedInstanceState The saved instance state bundle.
+     */
     public void handleRecyclerViewState(Bundle savedInstanceState) {
         savedInstanceStateIsNull = savedInstanceState == null;
         if (savedInstanceStateIsNull) {
@@ -132,6 +154,11 @@ public class ViewAllContentFragment extends Fragment
         }
     }
 
+    /**
+     * Handles the content received from the ViewModel, updating the RecyclerView's data.
+     *
+     * @param abstractPosters The list of abstract posters received from the ViewModel.
+     */
     public void handleContent(List<? extends AbstractContent> abstractPosters) {
         if (savedInstanceStateIsNull) {
             contentAdapter.setData(abstractPosters);
@@ -141,6 +168,11 @@ public class ViewAllContentFragment extends Fragment
         isLoading = false;
     }
 
+    /**
+     * Handles a failure in fetching content, displaying a Snackbar message if applicable.
+     *
+     * @param failure The failure response received from the ViewModel.
+     */
     public void handleFailure(Failure failure) {
         /*
          * code [22]

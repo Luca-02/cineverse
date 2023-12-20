@@ -4,21 +4,15 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.genre.GenreResponse;
 import com.example.cineverse.data.source.genre.AbstractGenresRemoteDataSource;
 import com.example.cineverse.data.source.genre.GenresRemoteResponseCallback;
-import com.example.cineverse.exception.UnsupportedViewModelException;
-import com.example.cineverse.exception.ViewModelFactoryCreationException;
 import com.example.cineverse.repository.genre.GenreRepository;
-import com.example.cineverse.utils.mapper.SectionGenreViewModelFactoryMappingManager;
 import com.example.cineverse.viewmodel.verified_account.section.home.AbstractContentViewModel;
-import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -38,9 +32,10 @@ public abstract class AbstractContentGenreViewModel
      *
      * @param application The {@link Application} of the calling component.
      */
-    public AbstractContentGenreViewModel(@NonNull Application application) {
+    public AbstractContentGenreViewModel(@NonNull Application application,
+                                         AbstractGenresRemoteDataSource remoteDataSource) {
         super(application);
-        repository = new GenreRepository(createRemoteDataSourceInstance(), this);
+        repository = new GenreRepository(remoteDataSource, this);
     }
 
     public MutableLiveData<List<Genre>> getContentLiveData() {
@@ -77,46 +72,5 @@ public abstract class AbstractContentGenreViewModel
             handleFailure(failure);
         }
     }
-
-    /**
-     * Retrieves the ViewModel class for the associated content section.
-     *
-     * @return The {@link Class} representing the associated content section ViewModel.
-     */
-    public ViewModelProvider.Factory getSectionContentFactory(int genreId) {
-        Class<? extends AbstractSectionContentViewModel> viewModelClass =
-                getSectionContentViewModelClass();
-        Class<? extends ViewModelProvider.Factory> factoryClass =
-                SectionGenreViewModelFactoryMappingManager.getFactoryClass(viewModelClass);
-        if (factoryClass != null) {
-            return createFactoryInstance(factoryClass, getApplication(), genreId);
-        } else {
-            throw new UnsupportedViewModelException(viewModelClass);
-        }
-    }
-
-    private <T extends ViewModelProvider.Factory> T createFactoryInstance(
-            Class<T> factoryClass, Application application, int genreId) {
-        try {
-            return factoryClass.getConstructor(Application.class, int.class).newInstance(application, genreId);
-        } catch (InvocationTargetException | IllegalAccessException |
-                 InstantiationException | NoSuchMethodException e) {
-            throw new ViewModelFactoryCreationException(e);
-        }
-    }
-
-    /**
-     * Retrieves the class of the associated content section ViewModel.
-     *
-     * @return The {@link Class} representing the associated content section ViewModel.
-     */
-    public abstract Class<? extends AbstractSectionContentViewModel> getSectionContentViewModelClass();
-
-    /**
-     * Creates an instance of the remote data source for genres.
-     *
-     * @return An instance of the {@link AbstractGenresRemoteDataSource}.
-     */
-    protected abstract AbstractGenresRemoteDataSource createRemoteDataSourceInstance();
 
 }

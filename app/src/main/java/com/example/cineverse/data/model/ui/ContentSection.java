@@ -1,12 +1,12 @@
 package com.example.cineverse.data.model.ui;
 
-import com.example.cineverse.viewmodel.verified_account.section.home.AbstractContentViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
+import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModelFactory;
 
 /**
- * The {@link ContentSection} class represents a section of content in the UI, including information
- * such as the section title, the associated {@link AbstractContentViewModel}, the view type, and
- * a flag indicating whether to force a refresh of the content in the section.
+ * The {@link ContentSection} class represents a section of content in the UI, encapsulating
+ * information such as the section title, associated {@link AbstractSectionContentViewModelFactory}, view type,
+ * and a flag indicating whether a forced refresh of the content in the section is required.
  */
 public class ContentSection {
 
@@ -35,23 +35,23 @@ public class ContentSection {
     }
 
     private final Integer sectionTitleStringId;
-    private final Class<? extends AbstractSectionContentViewModel> viewModelClass;
+    private final AbstractSectionContentViewModelFactory<? extends AbstractSectionContentViewModel> viewModelFactory;
     private final ViewType viewType;
     private boolean forceRefresh;
 
     /**
-     * Constructs a {@link ContentSection} with the specified section title string ID, view model class,
+     * Constructs a {@link ContentSection} with the specified section title string ID, view model factory,
      * and view type.
      *
      * @param sectionTitleStringId The resource ID for the section title string.
-     * @param viewModelClass       The class of the associated view model.
+     * @param viewModelFactory     The factory for creating the associated view model.
      * @param viewType             The type of the content view.
      */
     public ContentSection(Integer sectionTitleStringId,
-                          Class<? extends AbstractSectionContentViewModel> viewModelClass,
+                          AbstractSectionContentViewModelFactory<? extends AbstractSectionContentViewModel> viewModelFactory,
                           ViewType viewType) {
         this.sectionTitleStringId = sectionTitleStringId;
-        this.viewModelClass = viewModelClass;
+        this.viewModelFactory = viewModelFactory;
         this.viewType = viewType;
         forceRefresh = false;
     }
@@ -60,8 +60,13 @@ public class ContentSection {
         return sectionTitleStringId;
     }
 
+    public AbstractSectionContentViewModelFactory
+            <? extends AbstractSectionContentViewModel> getViewModelFactory() {
+        return viewModelFactory;
+    }
+
     public Class<? extends AbstractSectionContentViewModel> getViewModelClass() {
-        return viewModelClass;
+        return viewModelFactory.getViewModelClass();
     }
 
     public ViewType getViewType() {

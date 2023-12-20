@@ -14,16 +14,21 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.cineverse.adapter.OnContentClickListener;
 import com.example.cineverse.adapter.home.GenreListAdapter;
 import com.example.cineverse.adapter.home.HomeSectionAdapter;
-import com.example.cineverse.adapter.OnContentClickListener;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.ui.ContentSection;
+import com.example.cineverse.data.source.content.section.MovieFromGenreRemoteDataSource;
+import com.example.cineverse.data.source.content.section.TvFromGenreRemoteDataSource;
 import com.example.cineverse.databinding.FragmentSectionContentBinding;
 import com.example.cineverse.databinding.GenreListDialogLayoutBinding;
 import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
+import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModelFactory;
+import com.example.cineverse.viewmodel.verified_account.section.home.content.section.SectionMovieViewModelFactory;
+import com.example.cineverse.viewmodel.verified_account.section.home.content.section.SectionTvViewModelFactory;
 import com.example.cineverse.viewmodel.verified_account.section.home.genre.AbstractContentGenreViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.genre.section.MovieContentGenreViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.genre.section.TvContentGenreViewModel;
@@ -46,7 +51,7 @@ public class SectionContentFragment extends Fragment
 
     private FragmentSectionContentBinding binding;
     private GenreListDialogLayoutBinding dialogBinding;
-    private AbstractContentGenreViewModel viewModel;
+    private AbstractContentGenreViewModel genreViewModel;
     private HomeSectionAdapter sectionAdapter;
     private GenreListAdapter genreListAdapter;
     private String sectionType;
@@ -92,18 +97,18 @@ public class SectionContentFragment extends Fragment
         if (sectionType != null) {
             switch (sectionType) {
                 case MOVIE_SECTION:
-                    viewModel = new ViewModelProvider(this).get(MovieContentGenreViewModel.class);
+                    genreViewModel = new ViewModelProvider(this).get(MovieContentGenreViewModel.class);
                     break;
                 case TV_SECTION:
-                    viewModel = new ViewModelProvider(this).get(TvContentGenreViewModel.class);
+                    genreViewModel = new ViewModelProvider(this).get(TvContentGenreViewModel.class);
                     break;
                 default:
                     break;
             }
         }
 
-        if (viewModel != null) {
-            viewModel.getContentLiveData().observe(getViewLifecycleOwner(),
+        if (genreViewModel != null) {
+            genreViewModel.getContentLiveData().observe(getViewLifecycleOwner(),
                     genres -> genreListAdapter.setData(genres));
         }
     }
@@ -127,8 +132,8 @@ public class SectionContentFragment extends Fragment
         dialogBinding.genreRecyclerView.setAdapter(genreListAdapter);
         dialogBinding.genreRecyclerView.setHasFixedSize(true);
 
-        if (viewModel != null && viewModel.isContentEmpty()) {
-            viewModel.fetch();
+        if (genreViewModel != null && genreViewModel.isContentEmpty()) {
+            genreViewModel.fetch();
         }
     }
 
@@ -154,18 +159,18 @@ public class SectionContentFragment extends Fragment
             switch (sectionType) {
                 case MOVIE_SECTION:
                     sectionList.addAll(HomeSectionContentManager
-                            .getMovieContentSection());
+                            .getMovieContentSection(requireActivity().getApplication()));
                     break;
                 case TV_SECTION:
                     sectionList.addAll(HomeSectionContentManager
-                            .getTvContentSection());
+                            .getTvContentSection(requireActivity().getApplication()));
                     break;
                 default:
                     break;
             }
         } else {
             sectionList.addAll(HomeSectionContentManager
-                    .getAllContentSection());
+                    .getAllContentSection(requireActivity().getApplication()));
         }
 
         sectionAdapter = new HomeSectionAdapter(
@@ -205,8 +210,10 @@ public class SectionContentFragment extends Fragment
      */
     @Override
     public void onViewAllClick(ContentSection section) {
-        HomeFragment homeFragment = (HomeFragment) requireParentFragment().requireParentFragment();
-        homeFragment.openViewAllContentActivity(section);
+        if (section != null) {
+            HomeFragment homeFragment = (HomeFragment) requireParentFragment().requireParentFragment();
+            homeFragment.openViewAllContentActivity(section);
+        }
     }
 
     /**
@@ -216,9 +223,30 @@ public class SectionContentFragment extends Fragment
      */
     @Override
     public void onGenreClick(Genre genre) {
-        HomeFragment homeFragment = (HomeFragment) requireParentFragment().requireParentFragment();
-        homeFragment.openViewAllContentActivity(genre, viewModel.getClass());
-        dialog.dismiss();
+        if (genre != null && sectionType != null) {
+            HomeFragment homeFragment = (HomeFragment) requireParentFragment().requireParentFragment();
+            AbstractSectionContentViewModelFactory<?> viewModelFactory = null;
+            switch (sectionType) {
+                case MOVIE_SECTION:
+                    viewModelFactory = new SectionMovieViewModelFactory(
+                            requireActivity().getApplication(),
+                            new MovieFromGenreRemoteDataSource(requireActivity().getApplication(), genre.getId())
+                    );
+                    break;
+                case TV_SECTION:
+                    viewModelFactory = new SectionTvViewModelFactory(
+                            requireActivity().getApplication(),
+                            new TvFromGenreRemoteDataSource(requireActivity().getApplication(), genre.getId())
+                    );
+                    break;
+                default:
+                    break;
+            }
+            if (viewModelFactory != null) {
+                homeFragment.openViewAllContentActivity(genre, viewModelFactory);
+                dialog.dismiss();
+            }
+        }
     }
 
     /**

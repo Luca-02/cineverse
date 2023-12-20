@@ -5,7 +5,6 @@ import static com.example.cineverse.view.verified_account.fragment.home.SectionC
 import static com.example.cineverse.view.verified_account.fragment.home.SectionContentFragment.TV_SECTION;
 import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.GENRE_TAG;
 import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.TITLE_STRING_ID_TAG;
-import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.VIEW_MODEL_CLASS_NAME_TAG;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,9 +26,12 @@ import com.example.cineverse.databinding.FragmentHomeBinding;
 import com.example.cineverse.databinding.HomeSectionChipLayoutBinding;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
-import com.example.cineverse.viewmodel.verified_account.section.home.genre.AbstractContentGenreViewModel;
+import com.example.cineverse.view.view_all_content.ViewAllContentController;
+import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModelFactory;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,10 +89,11 @@ public class HomeFragment extends Fragment {
      * Sets up Chip Group.
      */
     private void setChipGroup(View view) {
+        binding.chipGroup.removeAllViews();
         if (chipList == null) {
             chipList = new ArrayList<>();
             Chip movieChip = createChip(R.string.movies, MOVIE_CHIP_POSITION);
-            Chip tvChip = createChip(R.string.movies, TV_CHIP_POSITION);
+            Chip tvChip = createChip(R.string.tv_series, TV_CHIP_POSITION);
             binding.chipGroup.addView(movieChip);
             binding.chipGroup.addView(tvChip);
         } else {
@@ -200,22 +203,23 @@ public class HomeFragment extends Fragment {
      *
      * @param section The {@link ContentSection} to display in the {@link ViewAllContentActivity}.
      */
-    public void openViewAllContentActivity(ContentSection section) {
+    public void openViewAllContentActivity(@NotNull ContentSection section) {
+        ViewAllContentController.getInstance().setParameters(section.getViewModelFactory(), section.getViewModelClass());
         Bundle bundle = new Bundle();
         bundle.putInt(TITLE_STRING_ID_TAG, section.getSectionTitleStringId());
-        bundle.putString(VIEW_MODEL_CLASS_NAME_TAG, section.getViewModelClass().getCanonicalName());
         navController.navigate(R.id.action_global_viewAllContentActivity, bundle);
     }
 
     /**
-     * Opens the {@link ViewAllContentActivity} for the specified section and genre.
+     * Opens the {@link ViewAllContentActivity} for the specified genre using the provided {@link AbstractSectionContentViewModelFactory}.
      *
-     * @param genre     The {@link Genre} to filter content in the {@link ViewAllContentActivity}.
-     * @param viewModel The {@link AbstractContentGenreViewModel} used in the home section
+     * @param genre            The {@link Genre} to filter content in the {@link ViewAllContentActivity}.
+     * @param viewModelFactory The {@link AbstractSectionContentViewModelFactory} used to create the view model for
+     *                         the content from genre section.
      */
-    public void openViewAllContentActivity(Genre genre, Class<? extends AbstractContentGenreViewModel> viewModel) {
+    public void openViewAllContentActivity(@NotNull Genre genre, @NotNull AbstractSectionContentViewModelFactory<?> viewModelFactory) {
+        ViewAllContentController.getInstance().setParameters(viewModelFactory, viewModelFactory.getViewModelClass());
         Bundle bundle = new Bundle();
-        bundle.putString(VIEW_MODEL_CLASS_NAME_TAG, viewModel.getCanonicalName());
         bundle.putParcelable(GENRE_TAG, genre);
         navController.navigate(R.id.action_global_viewAllContentActivity, bundle);
     }

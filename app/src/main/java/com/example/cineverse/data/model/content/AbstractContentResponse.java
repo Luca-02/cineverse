@@ -84,7 +84,7 @@ public abstract class AbstractContentResponse<T extends AbstractContent>
      * @param <T>                 The type of content entities.
      * @return The corresponding response object (e.g., {@link MovieResponse}, {@link TvResponse}).
      */
-    public static <T extends AbstractContent> Object createResponse(
+    public static <T extends AbstractContent> AbstractContentResponse<?> createResponse(
             List<ContentEntityDb> contentEntityDbList, Class<T> contentClass) {
         List<T> convertedList = convertToContentList(contentEntityDbList, contentClass);
 

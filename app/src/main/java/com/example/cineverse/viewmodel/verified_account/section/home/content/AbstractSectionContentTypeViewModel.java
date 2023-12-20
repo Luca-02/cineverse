@@ -5,7 +5,6 @@ import android.app.Application;
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.content.AbstractContentResponse;
-import com.example.cineverse.data.source.content.AbstractSectionContentRemoteDataSource;
 import com.example.cineverse.data.source.content.SectionContentRemoteResponseCallback;
 import com.example.cineverse.repository.content.AbstractSectionContentRepository;
 
@@ -21,18 +20,15 @@ public abstract class AbstractSectionContentTypeViewModel<T extends AbstractCont
         implements SectionContentRemoteResponseCallback<T> {
 
     protected AbstractSectionContentRepository<T> repository;
-    protected int genreId;
 
     /**
      * Constructs an {@link AbstractSectionContentTypeViewModel} object with the given {@link Application}
      * and a genre ID specific to the content type.
      *
      * @param application The {@link Application} of the calling component.
-     * @param genreId     The genre ID associated with the content type.
      */
-    public AbstractSectionContentTypeViewModel(Application application, int genreId) {
+    public AbstractSectionContentTypeViewModel(Application application) {
         super(application);
-        this.genreId = genreId;
     }
 
     /**
@@ -66,12 +62,5 @@ public abstract class AbstractSectionContentTypeViewModel<T extends AbstractCont
             handleFailure(failure);
         }
     }
-
-    /**
-     * Creates an instance of the remote data source specific to the content type.
-     *
-     * @return An instance of the {@link AbstractSectionContentRemoteDataSource}.
-     */
-    protected abstract AbstractSectionContentRemoteDataSource<T> createRemoteDataSourceInstance();
 
 }
