@@ -1,33 +1,41 @@
 package com.example.cineverse.view.verified_account.fragment.search;
 
-import android.os.Bundle;
+        import android.os.Bundle;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.Adapter;
+        import android.widget.ListView;
+        import androidx.annotation.NonNull;
+        import androidx.annotation.Nullable;
+        import androidx.fragment.app.Fragment;
+        import androidx.lifecycle.ViewModelProvider;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import com.example.cineverse.databinding.FragmentSearchBinding;
-import com.example.cineverse.repository.logged.CustomAdapter;
-import com.example.cineverse.repository.logged.OnDeleteItemClickListener;
-import com.example.cineverse.repository.logged.SearchRepository;
+        import com.example.cineverse.R;
+        import com.example.cineverse.databinding.FragmentSearchBinding;
+        import com.example.cineverse.repository.logged.search.CustomAdapter;
+        import com.example.cineverse.repository.logged.search.OnDeleteItemClickListener;
+        import com.example.cineverse.viewmodel.logged.search.SearchViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
+        import java.util.ArrayList;
+        import java.util.List;
 
 /**
  * The {@link SearchFragment} class representing the search section of the application.
  * This fragment serves as one of the tabs in the BottomNavigationView.
  */
+
 public class SearchFragment extends Fragment implements OnDeleteItemClickListener {
 
     private FragmentSearchBinding binding;
     private CustomAdapter adapter;
+    private SearchViewModel viewModel;
 
-    public SearchFragment() {
-        // Required empty public constructor
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
     }
 
     @Override
@@ -42,33 +50,28 @@ public class SearchFragment extends Fragment implements OnDeleteItemClickListene
         super.onViewCreated(view, savedInstanceState);
         ListView listView = binding.listview;
 
-        //Popola il menu suggerimenti
-        if (getContext() != null) {
-            List<String> searchHistory = SearchRepository.getSearchHistory(getContext());
-            adapter = new CustomAdapter((ArrayList<String>) searchHistory, getContext());
-            adapter.setOnDeleteItemClickListener(this);
-            listView.setAdapter(adapter);
-        }
+        // Popola il menu suggerimenti
+        adapter = new CustomAdapter((List<String>) viewModel.getSearchHistoryLiveData().getValue(), getContext());
+        adapter.setOnDeleteItemClickListener(this);
+        listView.setAdapter(adapter);
+
+        viewModel.getSearchHistoryLiveData().observe(getViewLifecycleOwner(), searchHistory -> {
+            adapter.updateData((List<String>) searchHistory);
+            adapter.notifyDataSetChanged();
+            Log.d("TAG", "UI2");
+        });
 
         binding.searchView
                 .getEditText()
                 .setOnEditorActionListener(
                         (v, actionId, event) -> {
-                            SearchRepository.addToSearchHistory(getContext(), binding.searchView.getEditText().getText().toString());
-                            List<String> searchHistory = SearchRepository.getSearchHistory(getContext());
-                            adapter.updateData((ArrayList<String>) searchHistory);
-                            adapter.notifyDataSetChanged();
+                            viewModel.addToSearchHistory(binding.searchView.getEditText().getText().toString());
                             return false;
                         });
     }
+
     @Override
     public void onDeleteItemClick(int position) {
-        SearchRepository.removeFromSearchHistory(getContext(), position);
-
-        if (getContext() != null) {
-            List<String> searchHistory = SearchRepository.getSearchHistory(getContext());
-            adapter.updateData((ArrayList<String>) searchHistory);
-            adapter.notifyDataSetChanged();
-        }
+        viewModel.removeFromSearchHistory(position);
     }
 }
