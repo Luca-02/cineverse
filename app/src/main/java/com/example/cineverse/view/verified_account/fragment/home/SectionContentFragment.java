@@ -50,7 +50,7 @@ public class SectionContentFragment extends Fragment
     private AbstractContentGenreViewModel genreViewModel;
     private HomeSectionAdapter sectionAdapter;
     private String sectionType;
-    private GenreListDialog genreListDialog;
+    private GenreListDialogManager genreListDialogManager;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -104,8 +104,8 @@ public class SectionContentFragment extends Fragment
 
         if (genreViewModel != null) {
             genreViewModel.getContentLiveData().observe(getViewLifecycleOwner(), genres -> {
-                if (genreListDialog != null) {
-                    genreListDialog.setData(genres);
+                if (genreListDialogManager != null) {
+                    genreListDialogManager.setData(genres);
                 }
             });
         }
@@ -115,12 +115,12 @@ public class SectionContentFragment extends Fragment
      * Create the Dialog for genre content list
      */
     private void createGenreDialog() {
-        genreListDialog = new GenreListDialog(requireContext(), this);
-        genreListDialog.getDialog().setOnShowListener(dialog -> {
+        genreListDialogManager = new GenreListDialogManager(requireContext(), this);
+        genreListDialogManager.getDialog().setOnShowListener(dialog -> {
             blurBackground();
-            genreListDialog.scrollOnTop();
+            genreListDialogManager.scrollOnTop();
         });
-        genreListDialog.getDialog().setOnDismissListener(dialog ->
+        genreListDialogManager.getDialog().setOnDismissListener(dialog ->
                 clearBlurBackground());
 
         if (genreViewModel != null && genreViewModel.isContentEmpty()) {
@@ -178,8 +178,8 @@ public class SectionContentFragment extends Fragment
     }
 
     public void openDialog() {
-        if (genreListDialog != null) {
-            genreListDialog.getDialog().show();
+        if (genreListDialogManager != null) {
+            genreListDialogManager.getDialog().show();
         }
     }
 

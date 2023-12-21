@@ -16,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@link GenreListDialog} class represents a custom dialog for displaying a list of genres.
+ * The {@link GenreListDialogManager} class represents a custom dialog for displaying a list of genres.
  * It uses a GenreListAdapter to populate the RecyclerView with genre items.
  */
-public class GenreListDialog {
+public class GenreListDialogManager {
 
     private final Dialog dialog;
     private final GenreListDialogLayoutBinding dialogBinding;
@@ -31,7 +31,7 @@ public class GenreListDialog {
      * @param context The context in which the dialog will be shown.
      * @param genreClickListener Listener for handling genre item clicks.
      */
-    public GenreListDialog(
+    public GenreListDialogManager(
             Context context,
             GenreListAdapter.OnGenreClickListener genreClickListener) {
         dialogBinding = GenreListDialogLayoutBinding.inflate(LayoutInflater.from(context));

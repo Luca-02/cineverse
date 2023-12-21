@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -26,6 +27,7 @@ public class VerifiedAccountActivity extends AppCompatActivity {
 
     private ActivityVerifiedAccountBinding binding;
     private NavController navController;
+    private DrawerHeaderManager drawerHeaderManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setNavController();
         setDrawerHeader();
+        setViewModel();
         setBlurView();
         BackPressedHandler.handleOnBackPressedCallback(this, navController);
         getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(this));
@@ -49,6 +52,30 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
+    }
+
+    /**
+     * Sets up the ViewModel for the fragment.
+     */
+    private void setViewModel() {
+        VerifiedAccountViewModel viewModel = new ViewModelProvider(this)
+                .get(VerifiedAccountViewModel.class);
+        viewModel.getUserLiveData().observe(this, user -> {
+            if (user != null) {
+                drawerHeaderManager.setDrawerUserUi(user);
+            } else {
+                viewModel.logOut();
+            }
+        });
+    }
+
+    /**
+     * Sets up the Navigation Drawer header.
+     */
+    private void setDrawerHeader() {
+        drawerHeaderManager = new DrawerHeaderManager(this);
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        binding.navigationView.addHeaderView(drawerHeaderManager.getHeaderBinding());
     }
 
     /**
@@ -69,16 +96,6 @@ public class VerifiedAccountActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets up the Navigation Drawer header.
-     */
-    private void setDrawerHeader() {
-        VerifiedAccountViewModel viewModel = new ViewModelProvider(this).get(VerifiedAccountViewModel.class);
-        DrawerHeaderManager drawerHeaderManager =
-                new DrawerHeaderManager(this, viewModel);
-        binding.navigationView.addHeaderView(drawerHeaderManager.getHeaderBinding());
-    }
-
-    /**
      * Opens the authentication activity ({@link AuthActivity}).
      */
     public void openAuthActivity() {
@@ -95,6 +112,9 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         binding.drawerLayout.open();
     }
 
+    /**
+     * Enable blur effect.
+     */
     public void enableBlur(boolean enable) {
         binding.blurView.setBlurEnabled(enable);
     }
