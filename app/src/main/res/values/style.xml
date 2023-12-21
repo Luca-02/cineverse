@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- General -->
+    <style name="normalRadiusStyle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/normal_radius</item>
+    </style>
+
     <!-- Material Global Style -->
     <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerFamily">rounded</item>
@@ -29,5 +35,24 @@
     <!-- TextInputLayout -->
     <style name="Widget.App.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    </style>
+
+    <!-- Chip -->
+    <style name="Widget.App.Chip.Suggestion" parent="Widget.Material3.Chip.Suggestion">
+        <item name="chipCornerRadius">@dimen/normal_radius</item>
+    </style>
+
+    <style name="Widget.App.Chip.Assist" parent="Widget.Material3.Chip.Assist">
+        <item name="chipCornerRadius">@dimen/normal_radius</item>
+    </style>
+
+    <!-- Dialog -->
+    <style name="Theme.Translucent.NoTitleBar.Fullscreen.Dialog.Animation" parent="android:Theme.Translucent.NoTitleBar.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 </resources>

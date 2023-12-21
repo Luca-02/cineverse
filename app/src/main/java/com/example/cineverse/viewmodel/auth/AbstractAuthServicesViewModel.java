@@ -5,7 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.data.model.User;
 import com.example.cineverse.repository.auth.AbstractAuthRepository;
 import com.example.cineverse.viewmodel.AbstractUserViewModel;
 
@@ -31,6 +31,7 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
      */
     public AbstractAuthServicesViewModel(@NonNull Application application, T userRepository) {
         super(application, userRepository);
+        userRepository.setAuthCallback(this);
     }
 
     public MutableLiveData<AbstractAuthRepository.Error> getErrorLiveData() {
@@ -41,17 +42,9 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
     }
 
     /**
-     * Clears the {@link MutableLiveData} instance for authentication-related errors status.
-     * This method is typically used when the network error state is consumed, and you don't want
-     * to keep the last state in the LiveData.
-     */
-    public void clearErrorLiveData() {
-        errorLiveData = new MutableLiveData<>();
-    }
-
-    /**
      * Overrides the {@link AbstractAuthRepository.AuthCallback#onError(AbstractAuthRepository.Error)} method to handle
      * authentication-related errors and update the error LiveData.
+     * Clears authentication-related error {@link MutableLiveData}.
      *
      * @param error The authentication-related error.
      */

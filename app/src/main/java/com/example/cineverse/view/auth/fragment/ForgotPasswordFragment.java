@@ -1,6 +1,11 @@
 package com.example.cineverse.view.auth.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,17 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.cineverse.R;
+import com.example.cineverse.databinding.FragmentForgotPasswordBinding;
 import com.example.cineverse.repository.auth.service.ForgotPasswordRepository;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.auth.service.ForgotPasswordViewModel;
-import com.example.cineverse.databinding.FragmentForgotPasswordBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
@@ -35,10 +34,6 @@ public class ForgotPasswordFragment extends Fragment {
 
     private FragmentForgotPasswordBinding binding;
     private ForgotPasswordViewModel viewModel;
-
-    public ForgotPasswordFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -87,6 +82,7 @@ public class ForgotPasswordFragment extends Fragment {
      */
     private void disableErrorMessage() {
         binding.emailInputLayout.setErrorEnabled(false);
+        viewModel.getErrorLiveData().setValue(null);
     }
 
     /**
@@ -106,8 +102,9 @@ public class ForgotPasswordFragment extends Fragment {
      * @param bool {@code true} if there is a network error, {@code false} otherwise.
      */
     private void handleNetworkError(Boolean bool) {
-        if (bool) {
-            ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+        if (bool != null && bool) {
+            ((AuthActivity) requireActivity()).openNetworkErrorActivity();
+            viewModel.getNetworkErrorLiveData().setValue(null);
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
@@ -129,11 +126,12 @@ public class ForgotPasswordFragment extends Fragment {
      * @param result The type of password reset operation result.
      */
     private void handleError(ForgotPasswordRepository.Error result) {
-        viewModel.clearErrorLiveData();
-        if (result.isSuccess()) {
-            handleSuccess();
-        } else {
-            binding.emailInputLayout.setError(getString(result.getError()));
+        if (result != null) {
+            if (result.isSuccess()) {
+                handleSuccess();
+            } else {
+                binding.emailInputLayout.setError(getString(result.getError()));
+            }
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }

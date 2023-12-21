@@ -16,11 +16,11 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.data.model.User;
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentVerifyAccountBinding;
 import com.example.cineverse.view.verify_account.VerifyAccountActivity;
-import com.example.cineverse.viewmodel.logged.verify_account.VerifyAccountViewModel;
+import com.example.cineverse.viewmodel.verify_account.VerifyAccountViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 /**
@@ -42,10 +42,6 @@ public class VerifyAccountFragment extends Fragment {
     private FragmentVerifyAccountBinding binding;
     private VerifyAccountViewModel viewModel;
     private boolean isCountdownRunning = false;
-
-    public VerifyAccountFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -144,7 +140,7 @@ public class VerifyAccountFragment extends Fragment {
      * @param loggedOut A boolean indicating whether the user has been logged out.
      */
     private void handleLoggedOutUser(Boolean loggedOut) {
-        if (loggedOut) {
+        if (loggedOut != null && loggedOut) {
             ((VerifyAccountActivity) requireActivity()).openAuthActivity();
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
@@ -156,7 +152,6 @@ public class VerifyAccountFragment extends Fragment {
      * @param isSent A boolean indicating whether the email is sent successfully.
      */
     private void handleEmailSent(Boolean isSent) {
-        viewModel.clearEmailSentLiveData();
         if (isSent == null) {
             unexpectedError();
             binding.resentEmailButton.setEnabled(true);
@@ -178,7 +173,6 @@ public class VerifyAccountFragment extends Fragment {
      * @param isVerified A boolean indicating whether the email is verified.
      */
     private void handleEmailVerified(Boolean isVerified) {
-        viewModel.clearEmailVerifiedLiveData();
         if (isVerified == null) {
             unexpectedError();
         } else if (isVerified) {
@@ -198,8 +192,9 @@ public class VerifyAccountFragment extends Fragment {
      * @param bool A boolean indicating whether a network error has occurred.
      */
     private void handleNetworkError(Boolean bool) {
-        if (bool) {
-            ((VerifyAccountActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+        if (bool != null && bool) {
+            ((VerifyAccountActivity) requireActivity()).openNetworkErrorActivity();
+            viewModel.getNetworkErrorLiveData().setValue(null);
         }
         binding.resentEmailButton.setEnabled(true);
         binding.progressIndicator.getRoot().setVisibility(View.GONE);

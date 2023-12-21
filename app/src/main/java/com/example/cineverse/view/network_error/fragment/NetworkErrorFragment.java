@@ -18,10 +18,6 @@ public class NetworkErrorFragment extends Fragment {
 
     private FragmentNetworkErrorBinding binding;
 
-    public NetworkErrorFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -7,13 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.cineverse.databinding.ActivityVerifyAccountBinding;
-import com.example.cineverse.handler.callback.BackPressedHandler;
 import com.example.cineverse.R;
+import com.example.cineverse.databinding.ActivityVerifyAccountBinding;
+import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
-import com.example.cineverse.viewmodel.logged.verify_account.VerifyAccountViewModel;
+import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 
 /**
  * The {@link VerifyAccountActivity} class represents the activity for email verification.
@@ -33,6 +32,7 @@ public class VerifyAccountActivity extends AppCompatActivity {
         setActionBar();
         setNavController();
         BackPressedHandler.handleOnBackPressedCallback(this, navController);
+        getWindow().setNavigationBarColor(android.R.attr.colorBackground);
     }
 
     /**
@@ -80,15 +80,10 @@ public class VerifyAccountActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens the network error activity ({@link NetworkErrorActivity}) and clears network error LiveData in the
-     * passed AbstractAuthViewModel to avoid re-opening {@link NetworkErrorActivity} when a fragment that
-     * contains network error LiveData is recreated.
-     *
-     * @param viewModel The {@link VerifyAccountViewModel} associated with the current email verification context.
+     * Opens the network error activity ({@link NetworkErrorActivity}).
      */
-    public void openNetworkErrorActivity(VerifyAccountViewModel viewModel) {
+    public void openNetworkErrorActivity() {
         if (navController != null) {
-            viewModel.clearNetworkErrorLiveData();
             navController.navigate(R.id.action_global_networkErrorActivity);
         }
     }

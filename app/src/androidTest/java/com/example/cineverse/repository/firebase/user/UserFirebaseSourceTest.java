@@ -9,8 +9,8 @@ import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.cineverse.data.model.user.User;
-import com.example.cineverse.data.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.data.model.User;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
 import com.example.cineverse.data.source.user.UserFirebaseSource;
 
 import org.junit.Before;
@@ -38,7 +38,7 @@ public class UserFirebaseSourceTest {
 
         String inputUsername = "milanesiluca2002";
         userFirebaseSource.getEmailFromUsername(inputUsername, context,
-                new UserFirebaseDatabaseServices.Callback<String>() {
+                new UserFirebaseDatabaseServices.FirebaseCallback<String>() {
                     @Override
                     public void onCallback(String email) {
                         assertNotNull(email);
@@ -61,7 +61,7 @@ public class UserFirebaseSourceTest {
 
         String inputUsername = "gVAAnz1sdReOF6p7lpvJwWoW7Z72";
         userFirebaseSource.getUserFromUid(inputUsername, context,
-                new UserFirebaseDatabaseServices.Callback<User>() {
+                new UserFirebaseDatabaseServices.FirebaseCallback<User>() {
                     @Override
                     public void onCallback(User user) {
                         assertNotNull(user);
@@ -87,7 +87,7 @@ public class UserFirebaseSourceTest {
 
         String inputUsername = "milanesiluca2002";
         userFirebaseSource.isUsernameSaved(inputUsername, context,
-                new UserFirebaseDatabaseServices.Callback<Boolean>() {
+                new UserFirebaseDatabaseServices.FirebaseCallback<Boolean>() {
                     @Override
                     public void onCallback(Boolean exist) {
                         assertNotNull(exist);
@@ -110,7 +110,7 @@ public class UserFirebaseSourceTest {
 
         String inputUsername = "test200";
         userFirebaseSource.isUsernameSaved(inputUsername, context,
-                new UserFirebaseDatabaseServices.Callback<Boolean>() {
+                new UserFirebaseDatabaseServices.FirebaseCallback<Boolean>() {
                     @Override
                     public void onCallback(Boolean exist) {
                         assertNotNull(exist);

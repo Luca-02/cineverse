@@ -3,8 +3,11 @@ package com.example.cineverse.repository.auth;
 import android.content.Context;
 
 import com.example.cineverse.R;
-import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.data.model.User;
+import com.example.cineverse.data.source.user.UserFirebaseSource;
+import com.example.cineverse.data.source.user.UserStorageManagerSource;
 import com.example.cineverse.repository.UserRepository;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
 
 /**
  * The {@link AbstractAuthRepository} class extends {@link UserRepository} and serves as
@@ -12,7 +15,8 @@ import com.example.cineverse.repository.UserRepository;
  * and {@link AuthCallback} to communicate the authentication error and status to the caller.
  */
 public abstract class AbstractAuthRepository
-        extends UserRepository {
+        extends UserRepository
+        implements UserFirebaseDatabaseServices.FirebaseCallback<User> {
 
     /**
      * {@link Error Error} enum representing possible authentication errors and associated string resources for error messages.
@@ -46,6 +50,10 @@ public abstract class AbstractAuthRepository
         }
     }
 
+    protected final UserFirebaseSource firebaseSource;
+    protected final UserStorageManagerSource userStorage;
+    protected AuthCallback authCallback;
+
     /**
      * Constructs an {@link AbstractAuthRepository} object with the given application.
      *
@@ -53,40 +61,45 @@ public abstract class AbstractAuthRepository
      */
     public AbstractAuthRepository(Context context) {
         super(context);
+        firebaseSource = new UserFirebaseSource(context);
+        userStorage = new UserStorageManagerSource(context, localSource, firebaseSource, this);
+    }
+
+    public void setAuthCallback(AuthCallback authCallback) {
+        this.authCallback = authCallback;
+    }
+
+    /**
+     * Handles authentication failure by signing out from Firebase.
+     */
+    protected void handleAuthenticationFailure() {
+        firebaseAuth.signOut();
+        authCallback.onError(Error.ERROR_AUTHENTICATION_FAILED);
     }
 
     /**
      * Handles the authentication process for the user.
      *
-     * @param user     The authenticated user.
-     * @param callback Callback to handle authentication errors and status.
+     * @param user The authenticated user.
      */
-    protected void handleUserAuthentication(User user, AuthCallback callback) {
-        if (user != null) {
-            callback.onUserAuthentication(user);
+    @Override
+    public void onCallback(User user) {
+        if (user != null && authCallback != null) {
+            authCallback.onUserAuthentication(user);
         } else {
-            handleAuthenticationFailure(callback);
+            handleAuthenticationFailure();
         }
     }
 
     /**
-     * Handles authentication failure by signing out from Firebase.
-     *
-     * @param callback Callback to handle authentication errors and status.
-     */
-    protected void handleAuthenticationFailure(ErrorAuthCallback callback) {
-        firebaseAuth.signOut();
-        callback.onError(Error.ERROR_AUTHENTICATION_FAILED);
-    }
-
-    /**
      * Handles authentication network failure by signing out from Firebase.
-     *
-     * @param callback Callback to handle authentication errors and status.
      */
-    protected void handleAuthenticationNetworkFailure(ErrorAuthCallback callback) {
-        firebaseAuth.signOut();
-        callback.onNetworkError();
+    @Override
+    public void onNetworkUnavailable() {
+        if (authCallback != null) {
+            firebaseAuth.signOut();
+            authCallback.onNetworkError();
+        }
     }
 
     /**

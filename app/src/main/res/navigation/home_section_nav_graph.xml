@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_section_nav_graph"
+    app:startDestination="@id/sectionContentFragment">
+
+    <fragment
+        android:id="@+id/sectionContentFragment"
+        android:name="com.example.cineverse.view.verified_account.fragment.home.SectionContentFragment"
+        android:label="fragment_section_content"
+        tools:layout="@layout/fragment_section_content" />
+
+    <activity
+        android:id="@+id/viewAllContentActivity"
+        android:name="com.example.cineverse.view.view_all_content.ViewAllContentActivity"
+        android:label="ViewAllContentActivity"
+        tools:layout="@layout/activity_view_all_content" />
+
+    <action
+        android:id="@+id/action_global_allContentFragment"
+        app:destination="@id/sectionContentFragment"
+        app:popUpTo="@id/home_section_nav_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_movieContentFragment"
+        app:destination="@id/sectionContentFragment"
+        app:popUpTo="@id/home_section_nav_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_tvContentFragment"
+        app:destination="@id/sectionContentFragment"
+        app:popUpTo="@id/home_section_nav_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_viewAllContentActivity"
+        app:destination="@id/viewAllContentActivity" />
+</navigation>

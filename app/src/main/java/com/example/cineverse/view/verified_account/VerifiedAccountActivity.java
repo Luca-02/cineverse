@@ -1,16 +1,22 @@
 package com.example.cineverse.view.verified_account;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
-import com.example.cineverse.handler.callback.BackPressedHandler;
 import com.example.cineverse.R;
+import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
+import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.auth.AuthActivity;
+import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
+import com.google.android.material.elevation.SurfaceColors;
 
 /**
  * The {@link VerifiedAccountActivity} class represents the main activity of the application after the user has logged in
@@ -21,26 +27,19 @@ public class VerifiedAccountActivity extends AppCompatActivity {
 
     private ActivityVerifiedAccountBinding binding;
     private NavController navController;
+    private DrawerHeaderManager drawerHeaderManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityVerifiedAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setActionBar();
         setNavController();
+        setDrawerHeader();
+        setViewModel();
+        setBlurView();
         BackPressedHandler.handleOnBackPressedCallback(this, navController);
-    }
-
-    /**
-     * Sets up the {@link ActionBar} with the provided Toolbar.
-     */
-    private void setActionBar() {
-        setSupportActionBar(binding.materialToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(null);
-        }
+        getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(this));
     }
 
     /**
@@ -56,6 +55,47 @@ public class VerifiedAccountActivity extends AppCompatActivity {
     }
 
     /**
+     * Sets up the ViewModel for the fragment.
+     */
+    private void setViewModel() {
+        VerifiedAccountViewModel viewModel = new ViewModelProvider(this)
+                .get(VerifiedAccountViewModel.class);
+        viewModel.getUserLiveData().observe(this, user -> {
+            if (user != null) {
+                drawerHeaderManager.setDrawerUserUi(user);
+            } else {
+                viewModel.logOut();
+            }
+        });
+    }
+
+    /**
+     * Sets up the Navigation Drawer header.
+     */
+    private void setDrawerHeader() {
+        drawerHeaderManager = new DrawerHeaderManager(this);
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        binding.navigationView.addHeaderView(drawerHeaderManager.getHeaderBinding());
+    }
+
+    /**
+     * Sets up the Blur View
+     */
+    private void setBlurView() {
+        float radius = 16f;
+
+        View decorView = getWindow().getDecorView();
+        ViewGroup rootView = decorView.findViewById(android.R.id.content);
+
+        Drawable windowBackground = decorView.getBackground();
+
+        binding.blurView.setupWith(rootView)
+                .setFrameClearDrawable(windowBackground)
+                .setBlurRadius(radius);
+        binding.blurView.setBlurEnabled(false);
+    }
+
+    /**
      * Opens the authentication activity ({@link AuthActivity}).
      */
     public void openAuthActivity() {
@@ -63,6 +103,20 @@ public class VerifiedAccountActivity extends AppCompatActivity {
             navController.navigate(R.id.action_global_authActivity);
             finish();
         }
+    }
+
+    /**
+     * Open Navigation Drawer.
+     */
+    public void openDrawer() {
+        binding.drawerLayout.open();
+    }
+
+    /**
+     * Enable blur effect.
+     */
+    public void enableBlur(boolean enable) {
+        binding.blurView.setBlurEnabled(enable);
     }
 
 }

@@ -3,7 +3,7 @@ package com.example.cineverse.data.source.user;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.data.model.User;
 import com.google.gson.Gson;
 
 /**
@@ -47,11 +47,10 @@ public class UserLocalSource {
     /**
      * Retrieves the stored user information from shared preferences.
      *
-     * @param context The context used to access shared preferences.
      * @return The {@link User} object representing the stored user information,
      *         or {@code null} if no user information is stored.
      */
-    public User getUser(Context context) {
+    public User getUser() {
         SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String userJson = preferences.getString(USER_KEY, null);
 
@@ -65,10 +64,8 @@ public class UserLocalSource {
 
     /**
      * Clears the stored user information from shared preferences.
-     *
-     * @param context The {@link Context} used to access shared preferences.
      */
-    public void clearUser(Context context) {
+    public void clearUser() {
         SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(USER_KEY);

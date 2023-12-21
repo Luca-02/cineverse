@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -16,12 +15,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.User;
+import com.example.cineverse.databinding.FragmentAuthBinding;
 import com.example.cineverse.repository.auth.service.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.auth.service.AuthViewModel;
-import com.example.cineverse.databinding.FragmentAuthBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.snackbar.Snackbar;
@@ -35,17 +34,10 @@ import com.google.android.material.snackbar.Snackbar;
  */
 public class AuthFragment extends Fragment {
 
-    // Fullscreen flag
-    private static final int UI_OPTIONS = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
-
     private FragmentAuthBinding binding;
     private AuthViewModel viewModel;
     private GoogleSignInClient googleSignInClient;
     private ActivityResultLauncher<Intent> googleSignInLauncher;
-
-    public AuthFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -66,24 +58,6 @@ public class AuthFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        requireActivity().getWindow().addFlags(UI_OPTIONS);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        requireActivity().getWindow().clearFlags(UI_OPTIONS);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        requireActivity().getWindow().clearFlags(UI_OPTIONS);
     }
 
     /**
@@ -158,8 +132,9 @@ public class AuthFragment extends Fragment {
      * @param bool {@code true} if there is a network error, {@code false} otherwise.
      */
     private void handleNetworkError(Boolean bool) {
-        if (bool) {
-            ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+        if (bool != null && bool) {
+            ((AuthActivity) requireActivity()).openNetworkErrorActivity();
+            viewModel.getNetworkErrorLiveData().setValue(null);
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }
@@ -170,11 +145,13 @@ public class AuthFragment extends Fragment {
      * @param error The type of authentication error that occurred.
      */
     private void handleError(LoginRepository.Error error) {
-        viewModel.clearErrorLiveData();
-        String errorString = getString(error.getError());
-        Snackbar.make(binding.getRoot(),
-                errorString, Snackbar.LENGTH_SHORT).show();
-        binding.progressIndicator.getRoot().setVisibility(View.GONE);
+        if (error != null) {
+            String errorString = getString(error.getError());
+            Snackbar.make(binding.getRoot(),
+                    errorString, Snackbar.LENGTH_SHORT).show();
+            binding.progressIndicator.getRoot().setVisibility(View.GONE);
+            viewModel.getErrorLiveData().setValue(null);
+        }
     }
 
 }

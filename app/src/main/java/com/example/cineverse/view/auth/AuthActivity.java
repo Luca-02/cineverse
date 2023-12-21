@@ -5,20 +5,18 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityAuthBinding;
-import com.example.cineverse.handler.callback.BackPressedHandler;
-import com.example.cineverse.repository.auth.AbstractAuthRepository;
+import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.verify_account.VerifyAccountActivity;
-import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
 
 /**
  * The {@link AuthActivity} class serves as the entry point of the application for authentication-related flows.
@@ -33,6 +31,7 @@ public class AuthActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityAuthBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -40,6 +39,7 @@ public class AuthActivity extends AppCompatActivity {
         setNavController();
         handleOnDestinationChangedListener();
         BackPressedHandler.handleOnBackPressedCallback(this, navController);
+        getWindow().setNavigationBarColor(android.R.attr.colorBackground);
         binding.materialToolbar.setNavigationOnClickListener(
                 view -> getOnBackPressedDispatcher().onBackPressed());
     }
@@ -119,16 +119,10 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens the network error activity ({@link NetworkErrorActivity}) and clears network error {@link LiveData} in the
-     * passed {@link AbstractAuthServicesViewModel} to avoid re-opening {@link NetworkErrorActivity} when a fragment that
-     * contains network error {@link LiveData} is recreated.
-     *
-     * @param viewModel The {@link AbstractAuthServicesViewModel} associated with the current authentication context.
+     * Opens the network error activity ({@link NetworkErrorActivity}).
      */
-    public <T extends AbstractAuthRepository> void openNetworkErrorActivity(
-            AbstractAuthServicesViewModel<T> viewModel) {
+    public void openNetworkErrorActivity() {
         if (navController != null) {
-            viewModel.clearNetworkErrorLiveData();
             navController.navigate(R.id.action_global_networkErrorActivity);
         }
     }

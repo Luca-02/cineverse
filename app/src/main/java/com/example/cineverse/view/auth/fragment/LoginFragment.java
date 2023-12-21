@@ -13,12 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.User;
+import com.example.cineverse.databinding.FragmentLoginBinding;
 import com.example.cineverse.repository.auth.service.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.auth.service.LoginViewModel;
-import com.example.cineverse.databinding.FragmentLoginBinding;
 
 import java.util.Objects;
 
@@ -33,10 +33,6 @@ public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     private LoginViewModel viewModel;
-
-    public LoginFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -91,6 +87,7 @@ public class LoginFragment extends Fragment {
     private void disableErrorMessage() {
         binding.accountInputLayout.setErrorEnabled(false);
         binding.passwordInputLayout.setErrorEnabled(false);
+        viewModel.getErrorLiveData().setValue(null);
     }
 
     /**
@@ -124,8 +121,9 @@ public class LoginFragment extends Fragment {
      * @param bool {@code true} if there is a network error, {@code false} otherwise.
      */
     private void handleNetworkError(Boolean bool) {
-        if (bool) {
-            ((AuthActivity) requireActivity()).openNetworkErrorActivity(viewModel);
+        if (bool != null && bool) {
+            ((AuthActivity) requireActivity()).openNetworkErrorActivity();
+            viewModel.getNetworkErrorLiveData().setValue(null);
         }
         binding.passwordEditText.setText(null);
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
@@ -137,17 +135,18 @@ public class LoginFragment extends Fragment {
      * @param error The type of authentication error that occurred.
      */
     private void handleError(LoginRepository.Error error) {
-        viewModel.clearErrorLiveData();
-        binding.passwordEditText.setText(null);
-        String errorString = getString(error.getError());
-        switch (error) {
-            case ERROR_INVALID_EMAIL_FORMAT:
-            case ERROR_NOT_FOUND_DISABLED:
-                binding.accountInputLayout.setError(errorString);
-                break;
-            case ERROR_WRONG_PASSWORD:
-                binding.passwordInputLayout.setError(errorString);
-                break;
+        if (error != null) {
+            binding.passwordEditText.setText(null);
+            String errorString = getString(error.getError());
+            switch (error) {
+                case ERROR_INVALID_EMAIL_FORMAT:
+                case ERROR_NOT_FOUND_DISABLED:
+                    binding.accountInputLayout.setError(errorString);
+                    break;
+                case ERROR_WRONG_PASSWORD:
+                    binding.passwordInputLayout.setError(errorString);
+                    break;
+            }
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
     }

@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
+        android:fitsSystemWindows="true"
         tools:context=".view.auth.fragment.LoginFragment">
 
         <include
@@ -50,7 +51,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/half_standard_spacing"
+                    android:layout_marginTop="@dimen/half_spacing"
                     android:layout_marginBottom="@dimen/standard_spacing"
                     android:gravity="center"
                     android:text="@string/signin_to_continue"
@@ -60,11 +61,11 @@
                     android:id="@+id/accountInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/half_standard_spacing"
+                    android:layout_marginBottom="@dimen/half_spacing"
                     android:hint="@string/username_email"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:startIconDrawable="@drawable/person">
+                    app:startIconDrawable="@drawable/outline_person">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/accountEditText"
@@ -95,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/half_standard_spacing"
+                    android:layout_marginTop="@dimen/half_spacing"
                     android:clickable="true"
                     android:text="@string/forgot_password_question_u"
                     android:textColor="?colorPrimary"

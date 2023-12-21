@@ -24,10 +24,6 @@ public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
 
-    public DashboardFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,10 +51,10 @@ public class DashboardFragment extends Fragment {
      */
     private void setNavController() {
         NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager()
-                .findFragmentById(R.id.navHostFragment);
+                .findFragmentById(R.id.dashboardFragmentContainerView);
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
-            NavigationUI.setupWithNavController(binding.bottomNav, navController);
+            NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
         }
     }
 

@@ -23,7 +23,7 @@ public class ForgotPasswordViewModel
      * @param application The {@link Application} of the calling component.
      */
     public ForgotPasswordViewModel(@NonNull Application application) {
-        super(application, new ForgotPasswordRepository(application.getBaseContext()));
+        super(application, new ForgotPasswordRepository(application.getApplicationContext()));
     }
 
     /**
@@ -32,7 +32,7 @@ public class ForgotPasswordViewModel
      * @param email The user's email address for sending the password reset email.
      */
     public void forgotPassword(String email) {
-        userRepository.forgotPassword(email, this);
+        userRepository.forgotPassword(email);
     }
 
 }
