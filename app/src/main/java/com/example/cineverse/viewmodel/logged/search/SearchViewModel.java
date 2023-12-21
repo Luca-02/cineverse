@@ -13,27 +13,31 @@ import java.util.List;
 public class SearchViewModel extends AndroidViewModel {
 
     private final SearchRepository repository;
-    private final MutableLiveData<List<String>> searchHistoryLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<String>> searchHistoryLiveData;
 
     public SearchViewModel(@NonNull Application application) {
         super(application);
         repository = new SearchRepository(application.getApplicationContext());
-        loadSearchHistory(); // Carica la cronologia all'inizio
     }
 
     public LiveData<List<String>> getSearchHistoryLiveData() {
+        if (searchHistoryLiveData == null) {
+            searchHistoryLiveData = new MutableLiveData<>();
+        }
         return searchHistoryLiveData;
     }
 
-    private void loadSearchHistory() {
+    public void loadSearchHistory() {
         List<String> searchHistory = repository.getSearchHistory();
         Log.d("TAG", "loadvm"+searchHistory.toString());
-        searchHistoryLiveData.setValue(searchHistory);
+        searchHistoryLiveData.postValue(searchHistory);
     }
 
     public void addToSearchHistory(String query) {
-        repository.addToSearchHistory(query);
-        loadSearchHistory();
+        if (!query.trim().isEmpty()){
+            repository.addToSearchHistory(query);
+            loadSearchHistory();
+        }
     }
 
     public void removeFromSearchHistory(int position) {

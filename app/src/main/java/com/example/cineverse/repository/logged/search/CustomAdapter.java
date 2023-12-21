@@ -11,22 +11,18 @@ import android.widget.TextView;
 
 import com.example.cineverse.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomAdapter extends BaseAdapter implements ListAdapter {
-    private List<String> list;
-    private Context context;
 
-    private OnDeleteItemClickListener deleteItemClickListener;
+    private final Context context;
+    private final List<String> list;
+    private final OnDeleteItemClickListener deleteItemClickListener;
 
-    public CustomAdapter(List<String> list, Context context) {
-        this.list = list;
+    public CustomAdapter(Context context, List<String> list, OnDeleteItemClickListener deleteItemClickListener) {
         this.context = context;
-    }
-
-    public void setOnDeleteItemClickListener(OnDeleteItemClickListener listener) {
-        this.deleteItemClickListener = listener;
+        this.list = list;
+        this.deleteItemClickListener = deleteItemClickListener;
     }
 
     @Override
