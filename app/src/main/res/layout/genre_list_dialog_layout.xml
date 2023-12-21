@@ -19,9 +19,9 @@
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:paddingStart="@dimen/standard_spacing"
-        android:paddingTop="@dimen/standard_spacing"
-        android:paddingEnd="@dimen/standard_spacing"
+        android:paddingStart="@dimen/double_spacing"
+        android:paddingTop="@dimen/double_spacing"
+        android:paddingEnd="@dimen/double_spacing"
         android:paddingBottom="72dp" />
 
     <com.google.android.material.card.MaterialCardView
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_spacing"
-        app:cardBackgroundColor="?attr/colorTertiary"
+        app:cardBackgroundColor="?attr/colorSecondary"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:clickable="true"
@@ -41,6 +41,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/outline_close"
             android:padding="@dimen/standard_spacing"
-            app:tint="?attr/colorOnTertiary" />
+            app:tint="?attr/colorOnSecondary" />
     </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

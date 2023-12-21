@@ -1,12 +1,10 @@
 package com.example.cineverse.view.verified_account.fragment.home;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +21,6 @@ import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.data.source.content.section.MovieFromGenreRemoteDataSource;
 import com.example.cineverse.data.source.content.section.TvFromGenreRemoteDataSource;
 import com.example.cineverse.databinding.FragmentSectionContentBinding;
-import com.example.cineverse.databinding.GenreListDialogLayoutBinding;
 import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModelFactory;
@@ -50,12 +47,10 @@ public class SectionContentFragment extends Fragment
     public static final String TV_SECTION = "tv";
 
     private FragmentSectionContentBinding binding;
-    private GenreListDialogLayoutBinding dialogBinding;
     private AbstractContentGenreViewModel genreViewModel;
     private HomeSectionAdapter sectionAdapter;
-    private GenreListAdapter genreListAdapter;
     private String sectionType;
-    private Dialog dialog;
+    private GenreListDialog genreListDialog;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -108,8 +103,11 @@ public class SectionContentFragment extends Fragment
         }
 
         if (genreViewModel != null) {
-            genreViewModel.getContentLiveData().observe(getViewLifecycleOwner(),
-                    genres -> genreListAdapter.setData(genres));
+            genreViewModel.getContentLiveData().observe(getViewLifecycleOwner(), genres -> {
+                if (genreListDialog != null) {
+                    genreListDialog.setData(genres);
+                }
+            });
         }
     }
 
@@ -117,20 +115,13 @@ public class SectionContentFragment extends Fragment
      * Create the Dialog for genre content list
      */
     private void createGenreDialog() {
-        dialogBinding = GenreListDialogLayoutBinding.inflate(getLayoutInflater());
-        dialog = new Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(dialogBinding.getRoot());
-        dialog.setOnShowListener(dialog -> {
-            dialogBinding.genreRecyclerView.smoothScrollToPosition(0);
+        genreListDialog = new GenreListDialog(requireContext(), this);
+        genreListDialog.getDialog().setOnShowListener(dialog -> {
             blurBackground();
+            genreListDialog.scrollOnTop();
         });
-        dialog.setOnDismissListener(dialog -> clearBlurBackground());
-
-        genreListAdapter = new GenreListAdapter(new ArrayList<>(), this);
-        dialogBinding.genreRecyclerView.setLayoutManager(new LinearLayoutManager(dialog.getContext()));
-        dialogBinding.genreRecyclerView.setAdapter(genreListAdapter);
-        dialogBinding.genreRecyclerView.setHasFixedSize(true);
+        genreListDialog.getDialog().setOnDismissListener(dialog ->
+                clearBlurBackground());
 
         if (genreViewModel != null && genreViewModel.isContentEmpty()) {
             genreViewModel.fetch();
@@ -145,7 +136,6 @@ public class SectionContentFragment extends Fragment
             sectionAdapter.refresh();
             binding.swipeContainer.setRefreshing(false);
         });
-        dialogBinding.closeMaterialCardView.setOnClickListener(v -> dialog.dismiss());
     }
 
     /**
@@ -188,7 +178,9 @@ public class SectionContentFragment extends Fragment
     }
 
     public void openDialog() {
-        dialog.show();
+        if (genreListDialog != null) {
+            genreListDialog.getDialog().show();
+        }
     }
 
     public void scrollOnTop() {
@@ -244,7 +236,6 @@ public class SectionContentFragment extends Fragment
             }
             if (viewModelFactory != null) {
                 homeFragment.openViewAllContentActivity(genre, viewModelFactory);
-                dialog.dismiss();
             }
         }
     }
