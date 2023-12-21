@@ -19,6 +19,11 @@ public class NetworkErrorFragment extends Fragment {
     private FragmentNetworkErrorBinding binding;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNetworkErrorBinding.inflate(inflater, container, false);
