@@ -1,4 +1,4 @@
-package com.example.cineverse.view.verified_account.fragment.account.utils;
+package com.example.cineverse.utils.utils_account;
 
 import android.content.Context;
 

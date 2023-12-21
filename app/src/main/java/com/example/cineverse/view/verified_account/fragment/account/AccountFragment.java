@@ -2,11 +2,8 @@ package com.example.cineverse.view.verified_account.fragment.account;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,26 +11,33 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.account_model.MovieModel;
 import com.example.cineverse.data.model.user.User;
 import com.example.cineverse.databinding.FragmentAccountBinding;
+import com.example.cineverse.utils.utils_account.JSONParserUtil;
+import com.example.cineverse.utils.utils_account.adapter.RVItem_AccountAdapter;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
-import com.example.cineverse.view.verified_account.fragment.account.utils.AbstractSizeUpdate;
-import com.example.cineverse.view.verified_account.fragment.account.utils.ScreenSlidePagerAdapter;
-import com.example.cineverse.view.verified_account.fragment.account.utils.ZoomOutPageTransformer;
-import com.example.cineverse.view.verified_account.fragment.account.utils.account_data.ProfileInfoData;
+import com.example.cineverse.utils.utils_account.AbstractSizeUpdate;
+import com.example.cineverse.utils.utils_account.adapter.ScreenSlidePagerAdapter;
+import com.example.cineverse.utils.utils_account.ZoomOutPageTransformer;
+import com.example.cineverse.utils.utils_account.account_data.ProfileInfoData;
 import com.example.cineverse.viewmodel.logged.verified_account.VerifiedAccountViewModel;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +49,6 @@ public class AccountFragment extends Fragment {
 
     private FragmentAccountBinding binding;
     private VerifiedAccountViewModel viewModel;
-
     private Toolbar toolbar;
     private ImageView profile_account_image;
     private TextView userName;
@@ -63,6 +66,17 @@ public class AccountFragment extends Fragment {
     private ViewPager2 viewPager;
     private FragmentStateAdapter pagerAdapter;
 
+    /*
+    Display Movie RecycleView
+     */
+    RecyclerView rVRecentWatched;
+    RVItem_AccountAdapter rvItemAdapter;
+    List<MovieModel> newList;
+
+    /*
+    Constant
+     */
+    private static final int ITEMS_MV_TV_TO_DISPLAY = 10;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -105,10 +119,21 @@ public class AccountFragment extends Fragment {
         collapsingToolbarLayout = view.findViewById(R.id.collapsingToolbarLayout);
         profile_ConstraintLayout = view.findViewById(R.id.profileConstraintLayout);
 
-        infoList.add(new ProfileInfoData("Film of the Year", 2023, R.drawable.search));
-        infoList.add(new ProfileInfoData("Total Movie", 100, R.drawable.search));
-        infoList.add(new ProfileInfoData("Likes", 500, R.drawable.search));
-        infoList.add(new ProfileInfoData("Reviews", 50, R.drawable.search));
+        infoList.add(new ProfileInfoData("Film of the Year", 0, R.drawable.search));
+        infoList.add(new ProfileInfoData("Total Movie", 0, R.drawable.search));
+        infoList.add(new ProfileInfoData("Likes", 0, R.drawable.search));
+        infoList.add(new ProfileInfoData("Reviews", 0, R.drawable.search));
+
+        rVRecentWatched = view.findViewById(R.id.recyclerViewRecentWatched);
+        RecyclerView.LayoutManager layoutManager =
+                new LinearLayoutManager(requireContext(),
+                        LinearLayoutManager.HORIZONTAL, false);
+
+        newList = getMovieWithGson();
+        rvItemAdapter = new RVItem_AccountAdapter(getContext(), newList, ITEMS_MV_TV_TO_DISPLAY);
+        rVRecentWatched.setLayoutManager(layoutManager);
+        rVRecentWatched.setAdapter(rvItemAdapter);
+
     }
 
     public void setInfoData(View view){
@@ -135,8 +160,6 @@ public class AccountFragment extends Fragment {
         initialImageSizePx = profile_account_image.getLayoutParams().width; // Assuming width and height are the same
         initialTextSizePx = (int) userName.getTextSize(); // Initial text size in pixels
 
-        Log.d("IMAGE", String.valueOf(initialImageSizePx));
-        Log.d("TEXT", String.valueOf(initialTextSizePx));
         // Add an offset listener to the AppBarLayout
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isColorChanged = false;
@@ -242,4 +265,19 @@ public class AccountFragment extends Fragment {
         }
     }
 
+    /**
+     * Returns the list of News using Gson.
+     * @return The list of News.
+     */
+    private List<MovieModel> getMovieWithGson(){
+        JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
+
+        try {
+            return jsonParserUtil.parseJSONFileWithGson("movieapi-test.json").getmData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

@@ -155,7 +155,7 @@
                             android:id="@+id/progressBar_Favourite"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@id/recyclerViewFavouriteFilms"
                             app:layout_constraintEnd_toEndOf="@id/recyclerViewFavouriteFilms"
                             app:layout_constraintStart_toStartOf="@id/recyclerViewFavouriteFilms"
@@ -190,9 +190,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/see_all"
-                        android:textColor="@color/black"
+                        android:textColor="@color/light_blue_900"
                         android:textSize="16sp"
-                        android:padding="8dp"/>
+                        android:padding="8dp"
+                        android:clickable="true"/>
                 </LinearLayout>
 
                 <!-- Recent Reviews Vertical Scroll RecyclerView with See All -->
@@ -250,9 +251,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/see_all"
-                        android:textColor="@color/black"
+                        android:textColor="@color/light_blue_900"
                         android:textSize="16sp"
-                        android:padding="8dp"/>
+                        android:padding="8dp"
+                        android:clickable="true"/>
                 </LinearLayout>
 
 

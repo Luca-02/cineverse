@@ -1,8 +1,7 @@
-package com.example.cineverse.view.verified_account.fragment.account;
+package com.example.cineverse.view.verified_account.fragment.account.fragment_infousr;
 
 import android.os.Bundle;
 
-import androidx.annotation.DrawableRes;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;

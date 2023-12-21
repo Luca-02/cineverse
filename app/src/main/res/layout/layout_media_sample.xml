@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/light_blue_900">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/sliderViewPagerMedia"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <View
+                android:id="@+id/fadingEdge"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edge_fading"
+                app:layout_constraintBottom_toBottomOf="@+id/sliderViewPagerMedia"
+                android:visibility="visible"/>
+
+            <LinearLayout
+                android:id="@+id/sliderIndicators"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:gravity="end|center_vertical"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/fadingEdge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageMedia"/>
+
+            <ImageView
+                android:id="@+id/backButton"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/back_button"
+                android:contentDescription="Back Arrow"
+                android:padding="3sp"
+                android:src="@drawable/arrow_back_24px"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white"/>
+
+            <ImageView
+                android:id="@+id/imageMedia"
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="10sp"
+                android:scaleType="centerCrop"
+                android:visibility="visible"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/sliderViewPagerMedia"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sliderViewPagerMedia" />
+
+
+            <TextView
+                android:id="@+id/titleMedia"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8sp"
+                android:layout_marginEnd="8sp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:includeFontPadding="false"
+                android:maxLines="2"
+                android:text="Titolo"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imageMedia"
+                app:layout_constraintTop_toBottomOf="@id/sliderViewPagerMedia"/>
+
+            <TextView
+                android:id="@+id/other1Media"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4sp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:includeFontPadding="false"
+                android:maxLines="2"
+                android:text="Other1"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@id/titleMedia"
+                app:layout_constraintStart_toStartOf="@id/titleMedia"
+                app:layout_constraintTop_toBottomOf="@id/titleMedia"/>
+
+            <TextView
+                android:id="@+id/other2Media"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4sp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:includeFontPadding="false"
+                android:maxLines="2"
+                android:text="Other2"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@id/titleMedia"
+                app:layout_constraintStart_toStartOf="@id/titleMedia"
+                app:layout_constraintTop_toBottomOf="@id/other1Media"/>
+
+            <TextView
+                android:id="@+id/releaseMedia"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4sp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:includeFontPadding="false"
+                android:maxLines="2"
+                android:text="YearReleased"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@id/titleMedia"
+                app:layout_constraintStart_toStartOf="@id/titleMedia"
+                app:layout_constraintTop_toBottomOf="@id/other2Media"/>
+
+            <TextView
+                android:id="@+id/descriptionSectionMedia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8sp"
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="8sp"
+                android:fontFamily="sans-serif"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="2sp"
+                android:maxLines="1"
+                android:text="Description"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/imageMedia"
+                />
+
+            <TextView
+                android:id="@+id/textDescriptionMedia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8sp"
+                android:layout_marginTop="10sp"
+                android:layout_marginEnd="8sp"
+                android:fontFamily="sans-serif"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="2sp"
+                android:maxLines="3"
+                android:text="Dan Morgan is many things: a devoted husband, a loving father, a celebrated car salesman. He's also a former assassin. And when his past catches up to his present, he's forced to take his unsuspecting family on a road trip unlike any other."
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/descriptionSectionMedia"
+                />
+
+            <TextView
+                android:id="@+id/readMoreDescriptionMedia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:fontFamily="sans-serif"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="2sp"
+                android:text="Read More"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/textDescriptionMedia"
+                app:layout_constraintStart_toStartOf="@id/textDescriptionMedia"
+                />
+
+            <View
+                android:id="@+id/dividerPage1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="8sp"
+                android:layout_marginTop="20sp"
+                android:layout_marginEnd="8sp"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/readMoreDescriptionMedia"/>
+
+            <LinearLayout
+                android:id="@+id/sectionInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="8sp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/dividerPage1">
+                
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="Star Rating"
+                    android:src="@drawable/ic_star_24"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/ratingMedia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5sp"
+                    android:fontFamily="sans-serif"
+                    android:includeFontPadding="false"
+                    android:text="7.8"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8sp"
+                    android:includeFontPadding="false"
+                    android:text="-"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/genreMedia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8sp"
+                    android:fontFamily="sans-serif"
+                    android:includeFontPadding="false"
+                    android:text="Genre"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8sp"
+                    android:includeFontPadding="false"
+                    android:text="-"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/timeMedia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8sp"
+                    android:fontFamily="sans-serif"
+                    android:includeFontPadding="false"
+                    android:text="Time"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/dividerPage2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="8sp"
+                android:layout_marginTop="8sp"
+                android:layout_marginEnd="8sp"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/sectionInfo"/>
+            
+            <TextView
+                android:id="@+id/castMedia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8sp"
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="8sp"
+                android:fontFamily="sans-serif"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="2sp"
+                android:maxLines="1"
+                android:text="Cast"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/dividerPage2"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/castSectionMedia"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/castMedia"/>
+
+            <TextView
+                android:id="@+id/commentsMedia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8sp"
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="8sp"
+                android:fontFamily="sans-serif"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="2sp"
+                android:maxLines="1"
+                android:text="Comments"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/castSectionMedia"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentSectionMedia"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/commentsMedia"/>
+                
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/insertCommentButton"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/back_button"
+        android:contentDescription="Insert Button"
+        android:padding="3sp"
+        android:src="@drawable/insert_comments_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:tint="@color/white"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

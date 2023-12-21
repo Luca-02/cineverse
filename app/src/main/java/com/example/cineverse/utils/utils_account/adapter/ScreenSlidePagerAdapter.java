@@ -1,4 +1,4 @@
-package com.example.cineverse.view.verified_account.fragment.account.utils;
+package com.example.cineverse.utils.utils_account.adapter;
 
 import android.util.Log;
 
@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.cineverse.view.verified_account.fragment.account.ProfileInfoDataPager;
-import com.example.cineverse.view.verified_account.fragment.account.utils.account_data.ProfileInfoData;
+import com.example.cineverse.utils.utils_account.account_data.ProfileInfoData;
+import com.example.cineverse.view.verified_account.fragment.account.fragment_infousr.ProfileInfoDataPager;
 
 import java.util.List;
 
