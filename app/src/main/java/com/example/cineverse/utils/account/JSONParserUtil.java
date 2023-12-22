@@ -1,4 +1,4 @@
-package com.example.cineverse.utils.utils_account;
+package com.example.cineverse.utils.account;
 
 import android.app.Application;
 

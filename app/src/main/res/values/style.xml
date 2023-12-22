@@ -55,4 +55,9 @@
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
+
+    <!-- Profile Account -->
+    <style name="IconAccount">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

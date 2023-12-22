@@ -1,7 +1,6 @@
-package com.example.cineverse.utils.utils_account.adapter;
+package com.example.cineverse.utils.account.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

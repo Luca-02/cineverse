@@ -1,4 +1,4 @@
-package com.example.cineverse.utils.utils_account.account_data;
+package com.example.cineverse.utils.account.account_data;
 
 import androidx.annotation.DrawableRes;
 

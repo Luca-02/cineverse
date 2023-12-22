@@ -26,16 +26,17 @@ import com.example.cineverse.R;
 import com.example.cineverse.data.model.account_model.MovieModel;
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.databinding.FragmentAccountBinding;
-import com.example.cineverse.utils.utils_account.JSONParserUtil;
-import com.example.cineverse.utils.utils_account.adapter.RVItem_AccountAdapter;
+import com.example.cineverse.utils.account.JSONParserUtil;
+import com.example.cineverse.utils.account.adapter.RVItem_AccountAdapter;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
-import com.example.cineverse.utils.utils_account.AbstractSizeUpdate;
-import com.example.cineverse.utils.utils_account.adapter.ScreenSlidePagerAdapter;
-import com.example.cineverse.utils.utils_account.ZoomOutPageTransformer;
-import com.example.cineverse.utils.utils_account.account_data.ProfileInfoData;
+import com.example.cineverse.utils.account.AbstractSizeUpdate;
+import com.example.cineverse.utils.account.adapter.ScreenSlidePagerAdapter;
+import com.example.cineverse.utils.account.ZoomOutPageTransformer;
+import com.example.cineverse.utils.account.account_data.ProfileInfoData;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class AccountFragment extends Fragment {
     private int initialTextSizePx; // Initial text size of username in pixels
     private AbstractSizeUpdate size_updater;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    MaterialButtonToggleGroup materialButtonToggleGroup;
     ConstraintLayout profile_ConstraintLayout, consMoviesLayout, consSeriesLayout;
 
     /*
@@ -76,7 +78,7 @@ public class AccountFragment extends Fragment {
     /*
     Constant
      */
-    private static final int ITEMS_MV_TV_TO_DISPLAY = 10;
+    private static final int ITEMS_MV_TV_TO_DISPLAY = 20;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -115,12 +117,29 @@ public class AccountFragment extends Fragment {
         profile_account_image = view.findViewById(R.id.profile_image);
         appBarLayout = view.findViewById(R.id.account_appBarLayout);
         userName = view.findViewById(R.id.userName);
-
+        materialButtonToggleGroup = view.findViewById(R.id.materialToggleGroup);
         consMoviesLayout = view.findViewById(R.id.constMoviesLayout);
         consSeriesLayout = view.findViewById(R.id.constSeriesLayout);
+        materialButtonToggleGroup.check(R.id.buttonMovies);
 
-        consMoviesLayout.setVisibility(View.VISIBLE);
-        consSeriesLayout.setVisibility(View.VISIBLE);
+        materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                if (isChecked){
+                    if (checkedId == R.id.buttonMovies){
+                        consMoviesLayout.setVisibility(View.VISIBLE);
+                        consSeriesLayout.setVisibility(View.GONE);
+                    }
+
+                    else if (checkedId == R.id.buttonSeries){
+                        consSeriesLayout.setVisibility(View.VISIBLE);
+                        consMoviesLayout.setVisibility(View.GONE);
+                    }
+
+                }
+            }
+        });
+
         size_updater = new AbstractSizeUpdate(){};
         collapsingToolbarLayout = view.findViewById(R.id.collapsingToolbarLayout);
         profile_ConstraintLayout = view.findViewById(R.id.profileConstraintLayout);
@@ -134,12 +153,11 @@ public class AccountFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.HORIZONTAL, false);
-
+        
         newList = getMovieWithGson();
         rvItemAdapter = new RVItem_AccountAdapter(getContext(), newList, ITEMS_MV_TV_TO_DISPLAY);
         rVRecentWatched.setLayoutManager(layoutManager);
         rVRecentWatched.setAdapter(rvItemAdapter);
-
     }
 
     public void setInfoData(View view){
