@@ -10,6 +10,9 @@
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="account">Account</string>
+    <string name="good_morning">Good morning!</string>
+    <string name="good_afternoon">Good afternoon!</string>
+    <string name="good_evening">Good evening!</string>
 
     <!-- Error -->
     <string name="unexpected_error">Unexpected error has occurred</string>
@@ -91,6 +94,7 @@
 
     <!-- Profile Account -->
     <string name="fav_films">Favourite Movies</string>
+    <string name="fav_series">Favourite Series</string>
     <string name="recent_watched">Recent Watched</string>
     <string name="recent_reviews">Recent Reviews</string>
     <string name="see_all">See All</string>

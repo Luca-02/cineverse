@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/standard_spacing"
     tools:context=".view.verified_account.fragment.account.AccountFragment">
 
 
@@ -32,7 +31,7 @@
                 <ImageView
                     android:id="@+id/backgroundImage"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="300dp"
                     android:contentDescription="Background Image"
                     android:background="#80C0D0D0"
                     android:scaleType="centerCrop"
@@ -66,13 +65,13 @@
                         android:layout_height="50dp"
                         android:contentDescription="Profile Image"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/account"
+                        android:src="@drawable/account_icon_24px"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <!-- User Name -->
                     <TextView
-                        android:id="@+id/userEmail"
+                        android:id="@+id/userName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -110,29 +109,31 @@
                 </androidx.viewpager2.widget.ViewPager2>
 
 
-                <!-- Favourite Films Horizontal Scroll RecyclerView -->
+                <!-- Favourite Movies and Series Horizontal Scroll RecyclerView -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
-                    <!-- Add Favourite Films content here -->
                     <!-- Favourite Films Horizontal Scroll RecyclerView with Centered Title -->
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constMoviesLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/textViewFavouriteFilms"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/fav_films"
+                            android:text= ""
                             android:layout_marginTop="16dp"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_title"
                             android:textColor="@color/black"
                             android:textStyle="bold"
-                            android:padding="8dp"
+                            android:paddingTop="2dp"
+                            android:gravity="center"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
@@ -152,7 +153,7 @@
 
                         <!-- Progress bar -->
                         <ProgressBar
-                            android:id="@+id/progressBar_Favourite"
+                            android:id="@+id/progressBar_Favourite1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:visibility="visible"
@@ -160,6 +161,59 @@
                             app:layout_constraintEnd_toEndOf="@id/recyclerViewFavouriteFilms"
                             app:layout_constraintStart_toStartOf="@id/recyclerViewFavouriteFilms"
                             app:layout_constraintTop_toTopOf="@id/recyclerViewFavouriteFilms"
+                            tools:visibility="visible" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constSeriesLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/textViewFavouriteSeries"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text= ""
+                            android:layout_marginTop="16dp"
+                            android:textSize="@dimen/text_title"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:paddingTop="2dp"
+                            android:gravity="center"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewFavouriteSeries"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:clipToPadding="false"
+                            android:minHeight="200dp"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            app:layout_constraintTop_toBottomOf="@id/textViewFavouriteSeries"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <!-- Progress bar -->
+                        <ProgressBar
+                            android:id="@+id/progressBar_Favourite2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="@id/recyclerViewFavouriteSeries"
+                            app:layout_constraintEnd_toEndOf="@id/recyclerViewFavouriteSeries"
+                            app:layout_constraintStart_toStartOf="@id/recyclerViewFavouriteSeries"
+                            app:layout_constraintTop_toTopOf="@id/recyclerViewFavouriteSeries"
                             tools:visibility="visible" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -173,7 +227,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -181,19 +236,20 @@
                         android:layout_height="wrap_content"
                         android:text="@string/recent_watched"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_medium"
                         android:textStyle="bold"
-                        android:padding="8dp"/>
+                        android:padding="8dp" />
 
-                    <TextView
+                    <com.google.android.material.chip.Chip
                         android:id="@+id/seeAllRecentWatched"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/see_all"
+                        android:text="@string/view_all"
                         android:textColor="@color/light_blue_900"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_normal"
                         android:padding="8dp"
-                        android:clickable="true"/>
+                        android:clickable="true"
+                        app:chipCornerRadius="50dp"/>
                 </LinearLayout>
 
                 <!-- Recent Reviews Vertical Scroll RecyclerView with See All -->
@@ -210,6 +266,8 @@
                         android:minHeight="200dp"
                         android:padding="8dp"
                         android:paddingStart="12dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
                         android:paddingEnd="12dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -234,7 +292,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -242,18 +302,19 @@
                         android:layout_height="wrap_content"
                         android:text="@string/recent_reviews"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_medium"
                         android:textStyle="bold"
                         android:padding="8dp"/>
 
-                    <TextView
+                    <com.google.android.material.chip.Chip
                         android:id="@+id/seeAllRecentReviews"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/see_all"
+                        android:text="@string/view_all"
                         android:textColor="@color/light_blue_900"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_normal"
                         android:padding="8dp"
+                        app:chipCornerRadius="50dp"
                         android:clickable="true"/>
                 </LinearLayout>
 
@@ -269,6 +330,8 @@
                         android:clipToPadding="false"
                         android:minHeight="200dp"
                         android:padding="8dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -281,7 +344,6 @@
                         style="?android:attr/progressBarStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

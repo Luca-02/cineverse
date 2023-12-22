@@ -221,7 +221,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:contentDescription="Star Rating"
-                    android:src="@drawable/ic_star_24"
+                    android:src="@drawable/star_account_24"
                     app:tint="@color/white" />
 
                 <TextView

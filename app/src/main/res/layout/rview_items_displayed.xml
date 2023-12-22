@@ -38,12 +38,12 @@
 
 
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/rview_image_item"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="130dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearanceOverlay="@style/normalRadiusStyle"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardCornerRadius="10dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,7 +24,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.account_model.MovieModel;
-import com.example.cineverse.data.model.user.User;
+import com.example.cineverse.data.model.User;
 import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.example.cineverse.utils.utils_account.JSONParserUtil;
 import com.example.cineverse.utils.utils_account.adapter.RVItem_AccountAdapter;
@@ -33,7 +33,7 @@ import com.example.cineverse.utils.utils_account.AbstractSizeUpdate;
 import com.example.cineverse.utils.utils_account.adapter.ScreenSlidePagerAdapter;
 import com.example.cineverse.utils.utils_account.ZoomOutPageTransformer;
 import com.example.cineverse.utils.utils_account.account_data.ProfileInfoData;
-import com.example.cineverse.viewmodel.logged.verified_account.VerifiedAccountViewModel;
+import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
@@ -57,7 +57,7 @@ public class AccountFragment extends Fragment {
     private int initialTextSizePx; // Initial text size of username in pixels
     private AbstractSizeUpdate size_updater;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    ConstraintLayout profile_ConstraintLayout;
+    ConstraintLayout profile_ConstraintLayout, consMoviesLayout, consSeriesLayout;
 
     /*
     Pager View Info User Data
@@ -114,15 +114,21 @@ public class AccountFragment extends Fragment {
     public void setElements(View view){
         profile_account_image = view.findViewById(R.id.profile_image);
         appBarLayout = view.findViewById(R.id.account_appBarLayout);
-        userName = view.findViewById(R.id.userEmail);
+        userName = view.findViewById(R.id.userName);
+
+        consMoviesLayout = view.findViewById(R.id.constMoviesLayout);
+        consSeriesLayout = view.findViewById(R.id.constSeriesLayout);
+
+        consMoviesLayout.setVisibility(View.VISIBLE);
+        consSeriesLayout.setVisibility(View.VISIBLE);
         size_updater = new AbstractSizeUpdate(){};
         collapsingToolbarLayout = view.findViewById(R.id.collapsingToolbarLayout);
         profile_ConstraintLayout = view.findViewById(R.id.profileConstraintLayout);
 
-        infoList.add(new ProfileInfoData("Film of the Year", 0, R.drawable.search));
-        infoList.add(new ProfileInfoData("Total Movie", 0, R.drawable.search));
-        infoList.add(new ProfileInfoData("Likes", 0, R.drawable.search));
-        infoList.add(new ProfileInfoData("Reviews", 0, R.drawable.search));
+        infoList.add(new ProfileInfoData("Film of the Year", 0, R.drawable.star_account_24));
+        infoList.add(new ProfileInfoData("Total Movie", 0, R.drawable.tv_series_account_24px));
+        infoList.add(new ProfileInfoData("Likes", 0, R.drawable.favorite_account_24px));
+        infoList.add(new ProfileInfoData("Reviews", 0, R.drawable.reviews_account_24px));
 
         rVRecentWatched = view.findViewById(R.id.recyclerViewRecentWatched);
         RecyclerView.LayoutManager layoutManager =
@@ -170,8 +176,10 @@ public class AccountFragment extends Fragment {
                 float collapsePercent = Math.abs(verticalOffset / (float) appBarLayout.getTotalScrollRange());
 
                 // Calculate new sizes based on the collapse percentage
-                int newSize = size_updater.calculateNewSize(collapsePercent, initialImageSizePx, size_updater.dpToPx(getContext(),40)); // Initial and final size in pixels
-                int newTextSize = size_updater.calculateNewTextSize(collapsePercent, initialTextSizePx, size_updater.dpToPx(getContext(),18)); // Initial and final text size in pixels
+                int newSize = size_updater.calculateNewSize(collapsePercent,
+                        initialImageSizePx, size_updater.dpToPx(getContext(),40)); // Initial and final size in pixels
+                int newTextSize = size_updater.calculateNewTextSize(collapsePercent,
+                        initialTextSizePx, size_updater.dpToPx(getContext(),18)); // Initial and final text size in pixels
 
 
                 if (scrollRange == -1) {
@@ -243,7 +251,14 @@ public class AccountFragment extends Fragment {
      */
     private void handleUser(User user) {
         if (user != null) {
-            binding.userEmail.setText(String.format("%s", user.getUsername()));
+            binding.userName.setText(String.format("%s", user.getUsername()));
+
+            binding.textViewFavouriteFilms.setText(String.format("%s" + "'s\n" +
+                    getResources().getString(R.string.fav_films), user.getUsername()));
+
+            binding.textViewFavouriteSeries.setText(String.format("%s" + "'s\n" +
+                    getResources().getString(R.string.fav_series), user.getUsername()));
+
             if (user.getPhotoUrl() != null) {
                 Glide.with(this)
                         .load(user.getPhotoUrl())
