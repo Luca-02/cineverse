@@ -31,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:contentDescription="Background Image"
-                    android:background="#80C0D0D0"
+                    android:background="@color/cardview_dark_background"
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
 
 
                 <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbar"
+                    android:id="@+id/toolbarAccount"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/Theme.AppCompat.Light"
@@ -54,7 +54,7 @@
                     android:layout_gravity="bottom"
                     android:padding="12dp"
                     app:layout_collapseMode="pin"
-                    android:background="#80C0C0C0">
+                    android:background="@color/md_theme_dark_inverseOnSurface">
 
                     <!-- Profile Image -->
                     <com.google.android.material.imageview.ShapeableImageView
@@ -75,8 +75,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text=""
-                        android:textColor="@color/black"
                         android:textSize="20sp"
+                        android:textColor="@color/white"
                         android:textStyle="bold"
                         android:padding="8dp"
                         app:layout_constraintStart_toEndOf="@id/profile_image"
@@ -108,10 +108,6 @@
                 </androidx.viewpager2.widget.ViewPager2>
 
 
-               <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content">
-
                    <com.google.android.material.button.MaterialButtonToggleGroup
                        android:id="@+id/materialToggleGroup"
                        android:layout_width="wrap_content"
@@ -133,15 +129,14 @@
                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                        android:text="@string/tv_series"/>
                    </com.google.android.material.button.MaterialButtonToggleGroup>
-               </LinearLayout>
-                <!-- Favourite Movies and Series Horizontal Scroll RecyclerView -->
+
+                <!-- Favourite Movies and Series with Recycler View-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
-                    <!-- Favourite Films Horizontal Scroll RecyclerView with Centered Title -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constMoviesLayout"
                         android:layout_width="match_parent"
@@ -155,7 +150,6 @@
                             android:text= ""
                             android:layout_marginTop="16dp"
                             android:textSize="@dimen/text_title"
-                            android:textColor="@color/black"
                             android:textStyle="bold"
                             android:paddingTop="2dp"
                             android:gravity="center"
@@ -169,7 +163,7 @@
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:clipToPadding="false"
-                            android:minHeight="200dp"
+                            android:minHeight="220dp"
                             android:paddingStart="12dp"
                             android:paddingEnd="12dp"
                             app:layout_constraintTop_toBottomOf="@id/textViewFavouriteFilms"
@@ -185,8 +179,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/recyclerViewFavouriteFilms"
                             app:layout_constraintEnd_toEndOf="@id/recyclerViewFavouriteFilms"
                             app:layout_constraintStart_toStartOf="@id/recyclerViewFavouriteFilms"
-                            app:layout_constraintTop_toTopOf="@id/recyclerViewFavouriteFilms"
-                            tools:visibility="visible" />
+                            app:layout_constraintTop_toTopOf="@id/recyclerViewFavouriteFilms" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
@@ -208,7 +201,6 @@
                             android:text= ""
                             android:layout_marginTop="16dp"
                             android:textSize="@dimen/text_title"
-                            android:textColor="@color/black"
                             android:textStyle="bold"
                             android:paddingTop="2dp"
                             android:gravity="center"
@@ -222,7 +214,7 @@
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:clipToPadding="false"
-                            android:minHeight="200dp"
+                            android:minHeight="220dp"
                             android:paddingStart="12dp"
                             android:paddingEnd="12dp"
                             app:layout_constraintTop_toBottomOf="@id/textViewFavouriteSeries"
@@ -234,17 +226,16 @@
                             android:id="@+id/progressBar_Favourite2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@id/recyclerViewFavouriteSeries"
                             app:layout_constraintEnd_toEndOf="@id/recyclerViewFavouriteSeries"
                             app:layout_constraintStart_toStartOf="@id/recyclerViewFavouriteSeries"
-                            app:layout_constraintTop_toTopOf="@id/recyclerViewFavouriteSeries"
-                            tools:visibility="visible" />
+                            app:layout_constraintTop_toTopOf="@id/recyclerViewFavouriteSeries" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
-                <!-- Add your Favourite Films section here -->
+
                 <!-- Recent Watched Horizontal Scroll RecyclerView with See All -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -259,7 +250,6 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/recent_watched"
-                        android:textColor="@color/black"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="bold"
                         android:layout_marginStart="6dp"/>
@@ -275,8 +265,6 @@
                         android:clickable="true"
                         app:chipCornerRadius="50dp"/>
                 </LinearLayout>
-
-                <!-- Recent Reviews Vertical Scroll RecyclerView with See All -->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -298,14 +286,15 @@
                         style="?android:attr/progressBarStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:visibility="visible" />
+                        android:visibility="visible" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+                <!-- Recent Reviews Vertical Scroll RecyclerView with See All -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -319,7 +308,6 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/recent_reviews"
-                        android:textColor="@color/black"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="bold"
                         android:layout_marginStart="6dp"/>
@@ -336,7 +324,6 @@
                         android:clickable="true"/>
                 </LinearLayout>
 
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -346,12 +333,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
-                        android:minHeight="200dp"
-                        android:padding="8dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:minHeight="220dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -366,7 +348,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:visibility="visible"/>
+                        android:visibility="visible"/>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
