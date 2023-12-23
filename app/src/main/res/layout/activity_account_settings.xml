@@ -6,13 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".view.settings_account.AccountSettingsActivity">
 
-    <TextView
-        android:id="@+id/textView2"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarSettings"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonLogOutSettings"
+        app:layout_constraintTop_toBottomOf="@id/toolbarSettings"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/settings_nav_graph" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonLogOutSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Setting Account Activity"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="@dimen/double_spacing"
+
+        android:text="Log Out"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
