@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settings_nav_grap"
+    app:startDestination="@id/optionSettingsFragment">
+
+    <fragment
+        android:id="@+id/optionSettingsFragment"
+        android:name="com.example.cineverse.view.settings_account.fragment.OptionSettingsFragment"
+        android:label="fragment_option_settings"
+        tools:layout="@layout/fragment_option_settings" >
+        <action
+            android:id="@+id/action_optionSettingsFragment_to_usernameSettingsFragment2"
+            app:destination="@id/usernameSettingsFragment2" />
+        <action
+            android:id="@+id/action_optionSettingsFragment_to_changeThemeSettingsFragment"
+            app:destination="@id/changeThemeSettingsFragment" />
+        <action
+            android:id="@+id/action_optionSettingsFragment_to_deleteSettingsFragment2"
+            app:destination="@id/deleteSettingsFragment2" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/usernameSettingsFragment2"
+        android:name="com.example.cineverse.view.settings_account.fragment.option_settings.UsernameSettingsFragment"
+        android:label="fragment_username_settings"
+        tools:layout="@layout/fragment_username_settings" >
+        <action
+            android:id="@+id/action_usernameSettingsFragment2_to_optionSettingsFragment"
+            app:destination="@id/optionSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeThemeSettingsFragment"
+        android:name="com.example.cineverse.view.settings_account.fragment.option_settings.ChangeThemeSettingsFragment"
+        android:label="fragment_change_theme_setting"
+        tools:layout="@layout/fragment_change_theme_setting" >
+        <action
+            android:id="@+id/action_changeThemeSettingsFragment_to_optionSettingsFragment"
+            app:destination="@id/optionSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deleteSettingsFragment2"
+        android:name="com.example.cineverse.view.settings_account.fragment.option_settings.DeleteSettingsFragment"
+        android:label="fragment_delete_settings"
+        tools:layout="@layout/fragment_delete_settings" >
+        <action
+            android:id="@+id/action_deleteSettingsFragment2_to_optionSettingsFragment"
+            app:destination="@id/optionSettingsFragment" />
+    </fragment>
+
+</navigation>
