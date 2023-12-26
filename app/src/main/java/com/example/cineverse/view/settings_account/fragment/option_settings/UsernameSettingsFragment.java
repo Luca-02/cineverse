@@ -2,13 +2,20 @@ package com.example.cineverse.view.settings_account.fragment.option_settings;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cineverse.R;
+import com.example.cineverse.databinding.FragmentOptionSettingsBinding;
+import com.example.cineverse.databinding.FragmentUsernameSettingsBinding;
+import com.google.android.material.appbar.MaterialToolbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,8 +24,8 @@ import com.example.cineverse.R;
  */
 public class UsernameSettingsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private FragmentUsernameSettingsBinding binding;
+    private MaterialToolbar materialToolbar;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -61,6 +68,12 @@ public class UsernameSettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_username_settings, container, false);
+        binding = FragmentUsernameSettingsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

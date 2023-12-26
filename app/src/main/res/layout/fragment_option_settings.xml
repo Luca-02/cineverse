@@ -6,29 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".view.settings_account.fragment.OptionSettingsFragment">
 
-   <Button
-       android:id="@+id/buttonChangeUsername"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="Change Username"
-       app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintLeft_toLeftOf="parent"/>
 
-    <Button
-        android:id="@+id/buttonChangeTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Theme"
-        app:layout_constraintTop_toBottomOf="@id/buttonChangeUsername"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="parent">
 
-    <Button
-        android:id="@+id/buttonDeleteAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete Account"
-        app:layout_constraintTop_toBottomOf="@id/buttonChangeTheme"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
 
+            <Button
+                android:id="@+id/buttonChangeUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Change Username"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/buttonChangeTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Change Theme"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonChangeUsername" />
+
+            <Button
+                android:id="@+id/buttonDeleteAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete Account"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonChangeTheme" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

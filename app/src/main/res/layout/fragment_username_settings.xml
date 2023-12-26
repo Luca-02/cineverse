@@ -8,12 +8,49 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/change_name_topText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Username Settings Fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="15dp"
+        android:text="Change Username"
+        android:textSize="@dimen/text_normal"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_margin="@dimen/double_spacing"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/change_name_topText">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="@dimen/text_normal" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/name_username_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Username"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,9 +10,13 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentOptionSettingsBinding;
+import com.example.cineverse.view.settings_account.AccountSettingsActivity;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,10 +25,8 @@ import com.example.cineverse.databinding.FragmentOptionSettingsBinding;
  */
 public class OptionSettingsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
     private FragmentOptionSettingsBinding binding;
+    MaterialButton materialButton;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -95,5 +97,11 @@ public class OptionSettingsFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.action_optionSettingsFragment_to_deleteSettingsFragment2);
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }
