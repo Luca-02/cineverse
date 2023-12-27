@@ -11,17 +11,17 @@ import com.example.cineverse.data.model.genre.GenreResponse;
 import com.example.cineverse.data.source.genre.AbstractGenresRemoteDataSource;
 import com.example.cineverse.data.source.genre.GenresRemoteResponseCallback;
 import com.example.cineverse.repository.genre.GenreRepository;
-import com.example.cineverse.viewmodel.verified_account.section.home.AbstractContentViewModel;
+import com.example.cineverse.viewmodel.verified_account.AbstractFailureResponseViewModel;
 
 import java.util.List;
 
 /**
- * The {@link AbstractContentGenreViewModel} class extend {@link AbstractContentViewModel} is an
+ * The {@link AbstractContentGenreViewModel} class extend {@link AbstractFailureResponseViewModel} is an
  * abstract base class for ViewModel classes representing various genre sections in the home screen
  * of the application.
  */
 public abstract class AbstractContentGenreViewModel
-        extends AbstractContentViewModel
+        extends AbstractFailureResponseViewModel
         implements GenresRemoteResponseCallback {
 
     protected GenreRepository repository;
@@ -45,7 +45,6 @@ public abstract class AbstractContentGenreViewModel
         return contentLiveData;
     }
 
-    @Override
     public boolean isContentEmpty() {
         List<Genre> content = getContentLiveData().getValue();
         if (content != null) {
@@ -54,7 +53,6 @@ public abstract class AbstractContentGenreViewModel
         return true;
     }
 
-    @Override
     public void fetch() {
         repository.fetch();
     }

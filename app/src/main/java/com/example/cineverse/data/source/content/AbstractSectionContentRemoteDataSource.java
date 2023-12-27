@@ -38,7 +38,7 @@ public abstract class AbstractSectionContentRemoteDataSource<T extends AbstractC
      */
     protected <A extends AbstractContentResponse<T>> void handlePosterApiCall(Call<A> call) {
         if (remoteResponseCallback != null) {
-            handlePosterApiCall(call, remoteResponseCallback);
+            handleApiCall(call, remoteResponseCallback);
         }
     }
 

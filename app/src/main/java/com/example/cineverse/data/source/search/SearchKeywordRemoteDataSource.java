@@ -37,7 +37,7 @@ public class SearchKeywordRemoteDataSource
     public void fetch(String query, int page) {
         Call<KeywordResponse> call =
                 searchApiServices.searchKeyword(query, page, getBearerAccessTokenAuth());
-        handlePosterApiCall(call, remoteResponseCallback);
+        handleApiCall(call, remoteResponseCallback);
     }
 
 }

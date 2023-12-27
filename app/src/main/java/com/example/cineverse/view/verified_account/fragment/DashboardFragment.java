@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentDashboardBinding;
+import com.google.android.material.search.SearchView;
 
 /**
  * The {@link DashboardFragment} class represents the dashboard of the application.
@@ -24,11 +26,6 @@ import com.example.cineverse.databinding.FragmentDashboardBinding;
 public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -62,6 +59,14 @@ public class DashboardFragment extends Fragment {
             NavController navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
         }
+    }
+
+    public SearchView getSearchView() {
+        return binding.searchView;
+    }
+
+    public RecyclerView getKeywordRecyclerView() {
+        return binding.keywordRecyclerView;
     }
 
 }

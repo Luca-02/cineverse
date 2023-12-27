@@ -90,4 +90,10 @@
     <string name="week_airing_tv">Airing this week Tv Series</string>
     <string name="view_all">View all</string>
     <string name="genre">Genre</string>
+
+    <!-- Search -->
+    <string name="search_history">Search History</string>
+    <string name="no_item_search_history">No items saved in your search history</string>
+    <string name="microphone">Microphone</string>
+    <string name="speak_to_text">Speak to text</string>
 </resources>

@@ -1,47 +1,63 @@
 package com.example.cineverse.repository.search;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.cineverse.data.model.api.Failure;
+import com.example.cineverse.data.model.search.KeywordResponse;
+import com.example.cineverse.data.model.search.QueryHistory;
+import com.example.cineverse.data.source.search.KeywordRemoteDataSource;
+import com.example.cineverse.data.source.search.KeywordRemoteResponseCallback;
+import com.example.cineverse.data.source.search.SearchHistoryLocalDataSource;
+import com.example.cineverse.utils.constant.GlobalConstant;
+import com.google.firebase.database.core.utilities.Tree;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
-public class SearchRepository {
+public class SearchRepository
+        implements KeywordRemoteResponseCallback {
 
-    private static final String PREF_NAME = "SearchHistoryPrefs";
-    private Context context;
+    private final SearchHistoryLocalDataSource historyLocalDataSource;
+    private final KeywordRemoteDataSource keywordRemoteDataSource;
+    private final KeywordRemoteResponseCallback keywordRemoteResponseCallback;
 
-    public SearchRepository(Context context) {
-        this.context = context;
+    public SearchRepository(Context context, KeywordRemoteResponseCallback remoteResponseCallback) {
+        this.keywordRemoteResponseCallback = remoteResponseCallback;
+        historyLocalDataSource = new SearchHistoryLocalDataSource(context);
+        keywordRemoteDataSource = new KeywordRemoteDataSource(context, this);
     }
 
-    public List<String> getSearchHistory() {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        Set<String> stringSet = prefs.getStringSet("searchHistory", new HashSet<>());
-        Log.d("TAG", "repo "+stringSet.toString());
-        return new ArrayList<>(stringSet);
+    public List<QueryHistory> getSearchHistory() {
+        Set<QueryHistory> searchHistorySet = historyLocalDataSource.getSearchHistory();
+        return new ArrayList<>(searchHistorySet);
     }
 
-    public void saveSearchHistory(List<String> searchHistory) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Set<String> stringSet = new HashSet<>(searchHistory);
-        editor.putStringSet("searchHistory", stringSet);
-        editor.apply();
+    public QueryHistory addToSearchHistory(String query) {
+        if (!query.trim().isEmpty()) {
+            return historyLocalDataSource.addQuery(query);
+        }
+        return null;
     }
 
-    public void addToSearchHistory(String query) {
-        List<String> searchHistory = getSearchHistory();
-        searchHistory.add(query);
-        saveSearchHistory(searchHistory);
+    public void removeFromSearchHistory(QueryHistory queryHistory) {
+        historyLocalDataSource.removeQuery(queryHistory);
     }
 
-    public void removeFromSearchHistory(int position) {
-        List<String> searchHistory = getSearchHistory();
-        searchHistory.remove(position);
-        saveSearchHistory(searchHistory);
+    public void fetchKeyword(String query) {
+        keywordRemoteDataSource.fetch(query);
     }
+
+    @Override
+    public void onRemoteResponse(KeywordResponse response) {
+        keywordRemoteResponseCallback.onRemoteResponse(response);
+    }
+
+    @Override
+    public void onFailure(Failure failure) {
+        keywordRemoteResponseCallback.onFailure(failure);
+    }
+
 }

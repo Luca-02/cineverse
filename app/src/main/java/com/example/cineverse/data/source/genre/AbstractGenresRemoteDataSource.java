@@ -52,7 +52,7 @@ public abstract class AbstractGenresRemoteDataSource
      */
     protected void handlePosterApiCall(Call<GenreResponse> call) {
         if (remoteResponseCallback != null) {
-            handlePosterApiCall(call, remoteResponseCallback);
+            handleApiCall(call, remoteResponseCallback);
         }
     }
 
