@@ -105,6 +105,7 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         }
     }
 
+
     /**
      * Open Navigation Drawer.
      */

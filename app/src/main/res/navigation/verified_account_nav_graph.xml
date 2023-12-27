@@ -22,4 +22,14 @@
         app:destination="@id/authActivity"
         app:popUpTo="@id/verified_account_nav_graph"
         app:popUpToInclusive="true" />
+
+    <activity
+        android:id="@+id/accountSettingsActivity"
+        android:name="com.example.cineverse.view.settings_account.AccountSettingsActivity"
+        android:label="activity_account_settings"
+        tools:layout="@layout/activity_account_settings" />
+
+    <action
+        android:id="@+id/action_global_accountSettingsActivity"
+        app:destination="@id/accountSettingsActivity" />
 </navigation>

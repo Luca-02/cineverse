@@ -107,7 +107,14 @@
 
     <!-- Profile menu settings-->
     <string name="setting_menu">Settings</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete_settings_name">Delete</string>
+    <string name="account_settings_name">Account</string>
+    <string name="theme_settings_name">Theme</string>
+
+
+
+
+    <!-- Settings -->
+
 
 </resources>

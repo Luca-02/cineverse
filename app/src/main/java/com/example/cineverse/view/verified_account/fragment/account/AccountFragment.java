@@ -84,10 +84,6 @@ public class AccountFragment extends Fragment {
      */
     private static final int ITEMS_MV_TV_TO_DISPLAY = 20;
 
-    public AccountFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
