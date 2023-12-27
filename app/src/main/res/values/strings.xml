@@ -107,7 +107,7 @@
 
     <!-- Profile menu settings-->
     <string name="setting_menu">Settings</string>
-    <string name="delete_settings_name">Delete</string>
+    <string name="delete_settings_name">Delete Your Account</string>
     <string name="account_settings_name">Account</string>
     <string name="theme_settings_name">Theme</string>
 

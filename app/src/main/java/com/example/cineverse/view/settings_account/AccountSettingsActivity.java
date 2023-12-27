@@ -22,8 +22,6 @@ import com.google.android.material.button.MaterialButton;
 public class AccountSettingsActivity extends AppCompatActivity {
 
     private ActivityAccountSettingsBinding binding;
-    private MaterialButton materialButton;
-
     private NavController navController;
 
     @Override
@@ -32,11 +30,12 @@ public class AccountSettingsActivity extends AppCompatActivity {
         binding = ActivityAccountSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setActionBar();
-        BackPressedHandler.handleOnBackPressedCallback(this, navController);
         getWindow().setNavigationBarColor(android.R.attr.colorBackground);
         binding.toolbarSettings.setNavigationOnClickListener(
                 view -> getOnBackPressedDispatcher().onBackPressed());
     }
+
+
 
     @Override
     protected void onDestroy() {

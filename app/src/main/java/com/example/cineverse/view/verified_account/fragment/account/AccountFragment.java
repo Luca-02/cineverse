@@ -242,8 +242,7 @@ public class AccountFragment extends Fragment {
                 viewModel.logOut();
                 return true;
             } else if (itemId == R.id.settingProfile) {
-                Intent intent = new Intent(getContext(), AccountSettingsActivity.class);
-                startActivity(intent);
+                ((VerifiedAccountActivity) getContext()).openAccountSettingsActivity();
                 return true;
             } else {
                 // if you do nothing, returning false

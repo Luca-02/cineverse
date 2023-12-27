@@ -105,6 +105,11 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         }
     }
 
+    public void openAccountSettingsActivity() {
+        if (navController != null) {
+            navController.navigate(R.id.action_global_accountSettingsActivity);
+        }
+    }
 
     /**
      * Open Navigation Drawer.
