@@ -2,6 +2,7 @@ package com.example.cineverse.view.settings_account.fragment.option_settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,9 @@ public class ChangeThemeSettingsFragment extends Fragment {
 
     private FragmentChangeThemeSettingBinding binding;
     private ActionBar actionBar;
+
+    private int currentNightMode;
+    private boolean nightModeResult;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -40,6 +45,12 @@ public class ChangeThemeSettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        nightModeResult = verificaThemeCorrente();
+        if (nightModeResult) {
+            binding.switchMode.setChecked(true);
+        } else {
+            binding.switchMode.setChecked(false);
+        }
         setNightModeFragment();
         setActionBar();
 
@@ -50,14 +61,29 @@ public class ChangeThemeSettingsFragment extends Fragment {
 
     }
 
+    private boolean verificaThemeCorrente(){
+        currentNightMode = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        boolean isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
+
+        if (isNightMode)
+        {
+            Log.d("night", "Night Mode On");
+        }else {
+            Log.d("day", "Night Mode Off");
+        }
+        return isNightMode;
+    }
 
     private void setNightModeFragment(){
        binding.switchMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
            @Override
            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                if (isChecked) {
+                   binding.switchMode.setChecked(true);
                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
                } else {
+                   binding.switchMode.setChecked(false);
                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                }
            }

@@ -6,27 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentOptionSettingsBinding;
-import com.example.cineverse.view.settings_account.AccountSettingsActivity;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.button.MaterialButton;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link OptionSettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class OptionSettingsFragment extends Fragment {
 
     private FragmentOptionSettingsBinding binding;
-    MaterialButton materialButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +27,6 @@ public class OptionSettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         binding.buttonChangeUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +47,7 @@ public class OptionSettingsFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.action_optionSettingsFragment_to_deleteSettingsFragment2);
             }
         });
+
     }
 
     @Override

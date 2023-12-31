@@ -111,10 +111,17 @@
     <string name="account_settings_name">Account</string>
     <string name="theme_settings_name">Theme</string>
 
+    <!-- Settings Pages-->
+    <string name="theme_title">Change Theme</string>
+    <string name="theme_mode_section">Mode</string>
 
+    <string name="username_title">Change Username</string>
+    <string name="username_section">Username</string>
+    <string name="username_button_bottom">Change Username</string>
 
+    <string name="delete_account_text">By clicking on the button below your Account will be deleted permanently.</string>
+    <string name="delete_button_bottom">Delete Account</string>
 
-    <!-- Settings -->
 
 
 </resources>

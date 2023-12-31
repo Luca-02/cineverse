@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".view.settings_account.fragment.option_settings.ChangeThemeSettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/change_theme_topText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:text="Change Theme"
+        android:text="@string/theme_title"
         android:textSize="@dimen/text_normal"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mode"
+            android:text="@string/theme_mode_section"
             android:layout_weight="1"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"

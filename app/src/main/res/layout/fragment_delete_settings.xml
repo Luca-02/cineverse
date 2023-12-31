@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_margin="@dimen/double_spacing"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_56dp"
+        android:layout_height="100dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent">
@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete Your account"
+            android:text="@string/delete_account_text"
             android:layout_weight="1"
             android:textStyle="bold"
             android:gravity="center"
@@ -30,7 +30,8 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete Account"
+        android:layout_marginBottom="50dp"
+        android:text="@string/delete_button_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
