@@ -38,7 +38,7 @@ public abstract class AbstractSectionTvRemoteDataSource
     @Override
     public void fetch(int page) {
         Call<TvResponse> call = createApiCall(page);
-        handlePosterApiCall(call);
+        handleSectionContentApiCall(call);
     }
 
     /**

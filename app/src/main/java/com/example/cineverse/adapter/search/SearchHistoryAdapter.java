@@ -37,11 +37,9 @@ public class SearchHistoryAdapter
     }
 
     public void addQuery(QueryHistory queryHistory) {
-        if (queryHistory != null) {
-            queryList.add(0, queryHistory);
-            notifyItemInserted(0);
-            searchQueryListener.onDataChange(queryList.size());
-        }
+        queryList.add(0, queryHistory);
+        notifyItemInserted(0);
+        searchQueryListener.onDataChange(queryList.size());
     }
 
     public void deleteQuery(QueryHistory queryHistory) {

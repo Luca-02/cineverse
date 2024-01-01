@@ -29,7 +29,7 @@
         app:menu="@menu/home_bottom_nav"
         tools:ignore="PrivateResource" />
 
-    <com.google.android.material.search.SearchView
+    <com.example.cineverse.data.model.ui.CustomSearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -43,5 +43,5 @@
             android:id="@+id/keywordRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </com.google.android.material.search.SearchView>
+    </com.example.cineverse.data.model.ui.CustomSearchView>
 </androidx.constraintlayout.widget.ConstraintLayout>

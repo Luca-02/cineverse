@@ -107,5 +107,9 @@ dependencies {
     // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:$room_version")
 
+    // Blur View
     implementation 'com.github.Dimezis:BlurView:version-2.0.3'
+
+    // Jackson
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
 }

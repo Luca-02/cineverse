@@ -38,7 +38,6 @@ public class AuthActivity extends AppCompatActivity {
         setActionBar();
         setNavController();
         handleOnDestinationChangedListener();
-        BackPressedHandler.handleOnBackPressedCallback(this, navController);
         getWindow().setNavigationBarColor(android.R.attr.colorBackground);
         binding.materialToolbar.setNavigationOnClickListener(
                 view -> getOnBackPressedDispatcher().onBackPressed());

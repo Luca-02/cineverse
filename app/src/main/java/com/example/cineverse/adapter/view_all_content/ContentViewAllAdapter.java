@@ -4,6 +4,7 @@ import static com.example.cineverse.utils.constant.Api.TMDB_IMAGE_ORIGINAL_SIZE_
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -103,7 +104,12 @@ public class ContentViewAllAdapter
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into((ImageView) binding.imageView);
             binding.titleTextView.setText(content.getName());
-            binding.overviewTextView.setText(content.getOverview());
+            if (!content.getOverview().isEmpty()) {
+                binding.overviewTextView.setVisibility(View.VISIBLE);
+                binding.overviewTextView.setText(content.getOverview());
+            } else {
+                binding.overviewTextView.setVisibility(View.GONE);
+            }
             itemView.setOnClickListener(v -> listener.onContentClick(content));
         }
 

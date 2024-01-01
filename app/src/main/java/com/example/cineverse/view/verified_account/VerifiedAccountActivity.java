@@ -14,7 +14,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
-import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
@@ -39,7 +38,6 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         setDrawerHeader();
         setViewModel();
         setBlurView();
-        BackPressedHandler.handleOnBackPressedCallback(this, navController);
     }
 
     /**

@@ -1,26 +1,23 @@
 package com.example.cineverse.viewmodel.verified_account.section.search;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.search.Keyword;
 import com.example.cineverse.data.model.search.KeywordResponse;
 import com.example.cineverse.data.model.search.QueryHistory;
-import com.example.cineverse.data.source.search.KeywordRemoteResponseCallback;
+import com.example.cineverse.data.source.search.SearchKeywordRemoteResponseCallback;
 import com.example.cineverse.repository.search.SearchRepository;
-import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.viewmodel.verified_account.AbstractFailureResponseViewModel;
 
 import java.util.List;
 
 public class SearchViewModel
         extends AbstractFailureResponseViewModel
-        implements KeywordRemoteResponseCallback {
+        implements SearchKeywordRemoteResponseCallback {
 
     private final SearchRepository repository;
     private MutableLiveData<List<QueryHistory>> searchHistoryLiveData;

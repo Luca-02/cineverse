@@ -1,6 +1,9 @@
 package com.example.cineverse.view.verified_account.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,13 +14,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.ui.CustomSearchView;
 import com.example.cineverse.databinding.FragmentDashboardBinding;
-import com.google.android.material.search.SearchView;
 
 /**
  * The {@link DashboardFragment} class represents the dashboard of the application.
@@ -61,7 +60,7 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    public SearchView getSearchView() {
+    public CustomSearchView getSearchView() {
         return binding.searchView;
     }
 

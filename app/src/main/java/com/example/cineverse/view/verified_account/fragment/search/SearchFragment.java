@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +26,12 @@ import com.example.cineverse.R;
 import com.example.cineverse.adapter.search.KeywordAdapter;
 import com.example.cineverse.adapter.search.SearchHistoryAdapter;
 import com.example.cineverse.data.model.search.QueryHistory;
+import com.example.cineverse.data.model.ui.CustomSearchView;
 import com.example.cineverse.databinding.FragmentSearchBinding;
-import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.verified_account.fragment.DashboardFragment;
 import com.example.cineverse.viewmodel.verified_account.section.search.SearchViewModel;
-import com.google.android.material.search.SearchView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -41,14 +40,13 @@ import java.util.Locale;
  * The {@link SearchFragment} class representing the search section of the application.
  * This fragment serves as one of the tabs in the BottomNavigationView.
  */
-
 public class SearchFragment extends Fragment
         implements SearchHistoryAdapter.OnSearchQueryListener {
 
     private FragmentSearchBinding binding;
     private SearchViewModel viewModel;
     private SearchHistoryAdapter searchHistoryAdapter;
-    private SearchView searchView;
+    private CustomSearchView searchView;
     private RecyclerView keywordRecyclerView;
     private KeywordAdapter keywordAdapter;
 
@@ -108,11 +106,14 @@ public class SearchFragment extends Fragment
         viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         viewModel.getSearchHistoryLiveData().observe(getViewLifecycleOwner(), searchHistory ->
                 searchHistoryAdapter.setData(searchHistory));
-        viewModel.getKeywordLiveData().observe(getViewLifecycleOwner(), keywords -> {
-            keywordAdapter.setData(keywords);
-        });
+        viewModel.getKeywordLiveData().observe(getViewLifecycleOwner(), keywords ->
+                keywordAdapter.setData(keywords));
         viewModel.getFailureLiveData().observe(getViewLifecycleOwner(), failure -> {
-
+            if (failure != null) {
+                Snackbar.make(binding.getRoot(),
+                        failure.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
+                viewModel.getFailureLiveData().setValue(null);
+            }
         });
     }
 
@@ -154,9 +155,12 @@ public class SearchFragment extends Fragment
                 (v, actionId, event) -> {
                     QueryHistory queryHistory = viewModel.addToSearchHistory(
                             searchView.getEditText().getText().toString());
-                    searchHistoryAdapter.addQuery(queryHistory);
-                    searchView.hide();
-                    openSearchResult(queryHistory.getQuery());
+                    // Check if the query inserted is not null, so if is not an empty string
+                    if (queryHistory != null) {
+                        searchView.hide();
+                        searchHistoryAdapter.addQuery(queryHistory);
+                        openSearchResult(queryHistory.getQuery());
+                    }
                     return false;
                 });
 

@@ -69,27 +69,29 @@ public class TMDBRemoteDataSource {
      * @param <T>      The type parameter extending {@link ApiResponse}.
      */
     protected <Y extends ApiResponse, T extends Y> void handleApiCall(Call<T> call, BaseRemoteResponseCallback<Y> callback) {
-        call.enqueue(new Callback<T>() {
-            @Override
-            public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-                if (response.body() != null && response.isSuccessful()) {
-                    if (response.code() == 200) {
-                        T bodyResponse = response.body();
-                        callback.onRemoteResponse(bodyResponse);
+        if (callback != null) {
+            call.enqueue(new Callback<T>() {
+                @Override
+                public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
+                    if (response.isSuccessful()) {
+                        if (response.code() == 200) {
+                            T bodyResponse = response.body();
+                            callback.onRemoteResponse(bodyResponse);
+                        } else {
+                            callback.onFailure(Failure.getUnexpectedError());
+                        }
                     } else {
-                        callback.onFailure(Failure.getUnexpectedError());
+                        Failure failure = parseFailureResponse(response.errorBody());
+                        callback.onFailure(failure != null ? failure : Failure.getUnexpectedError());
                     }
-                } else {
-                    Failure failure = parseFailureResponse(response.errorBody());
-                    callback.onFailure(failure != null ? failure : Failure.getUnexpectedError());
                 }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
-                callback.onFailure(Failure.getUnexpectedError());
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
+                    callback.onFailure(Failure.getUnexpectedError());
+                }
+            });
+        }
     }
 
     /**

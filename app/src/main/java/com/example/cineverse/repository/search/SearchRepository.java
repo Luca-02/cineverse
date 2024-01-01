@@ -1,33 +1,29 @@
 package com.example.cineverse.repository.search;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.search.KeywordResponse;
 import com.example.cineverse.data.model.search.QueryHistory;
-import com.example.cineverse.data.source.search.KeywordRemoteDataSource;
-import com.example.cineverse.data.source.search.KeywordRemoteResponseCallback;
+import com.example.cineverse.data.source.search.SearchKeywordRemoteDataSource;
+import com.example.cineverse.data.source.search.SearchKeywordRemoteResponseCallback;
 import com.example.cineverse.data.source.search.SearchHistoryLocalDataSource;
-import com.example.cineverse.utils.constant.GlobalConstant;
-import com.google.firebase.database.core.utilities.Tree;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class SearchRepository
-        implements KeywordRemoteResponseCallback {
+        implements SearchKeywordRemoteResponseCallback {
 
     private final SearchHistoryLocalDataSource historyLocalDataSource;
-    private final KeywordRemoteDataSource keywordRemoteDataSource;
-    private final KeywordRemoteResponseCallback keywordRemoteResponseCallback;
+    private final SearchKeywordRemoteDataSource searchKeywordRemoteDataSource;
+    private final SearchKeywordRemoteResponseCallback searchKeywordRemoteResponseCallback;
 
-    public SearchRepository(Context context, KeywordRemoteResponseCallback remoteResponseCallback) {
-        this.keywordRemoteResponseCallback = remoteResponseCallback;
+    public SearchRepository(Context context, SearchKeywordRemoteResponseCallback remoteResponseCallback) {
+        this.searchKeywordRemoteResponseCallback = remoteResponseCallback;
         historyLocalDataSource = new SearchHistoryLocalDataSource(context);
-        keywordRemoteDataSource = new KeywordRemoteDataSource(context, this);
+        searchKeywordRemoteDataSource = new SearchKeywordRemoteDataSource(context, this);
     }
 
     public List<QueryHistory> getSearchHistory() {
@@ -47,17 +43,17 @@ public class SearchRepository
     }
 
     public void fetchKeyword(String query) {
-        keywordRemoteDataSource.fetch(query);
+        searchKeywordRemoteDataSource.fetch(query);
     }
 
     @Override
     public void onRemoteResponse(KeywordResponse response) {
-        keywordRemoteResponseCallback.onRemoteResponse(response);
+        searchKeywordRemoteResponseCallback.onRemoteResponse(response);
     }
 
     @Override
     public void onFailure(Failure failure) {
-        keywordRemoteResponseCallback.onFailure(failure);
+        searchKeywordRemoteResponseCallback.onFailure(failure);
     }
 
 }

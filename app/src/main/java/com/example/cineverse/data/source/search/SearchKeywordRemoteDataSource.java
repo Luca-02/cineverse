@@ -1,5 +1,7 @@
 package com.example.cineverse.data.source.search;
 
+import static com.example.cineverse.utils.constant.Api.STARTING_PAGE;
+
 import android.content.Context;
 
 import com.example.cineverse.data.model.search.KeywordResponse;
@@ -20,8 +22,7 @@ public class SearchKeywordRemoteDataSource
     private final SearchApiServices searchApiServices;
     private final SearchKeywordRemoteResponseCallback remoteResponseCallback;
 
-    public SearchKeywordRemoteDataSource(
-            Context context, SearchKeywordRemoteResponseCallback remoteResponseCallback) {
+    public SearchKeywordRemoteDataSource(Context context, SearchKeywordRemoteResponseCallback remoteResponseCallback) {
         super(context);
         this.remoteResponseCallback = remoteResponseCallback;
         searchApiServices = ServiceLocator.getInstance().getSearchApiServices();
@@ -31,12 +32,11 @@ public class SearchKeywordRemoteDataSource
      * Fetches keyword search results from the TMDB API.
      *
      * @param query The search query string.
-     * @param page  The page number of the search results.
      * @see SearchApiServices#searchKeyword(String, int, String)
      */
-    public void fetch(String query, int page) {
-        Call<KeywordResponse> call =
-                searchApiServices.searchKeyword(query, page, getBearerAccessTokenAuth());
+    public void fetch(String query) {
+        Call<KeywordResponse> call = searchApiServices
+                .searchKeyword(query, STARTING_PAGE, getBearerAccessTokenAuth());
         handleApiCall(call, remoteResponseCallback);
     }
 
