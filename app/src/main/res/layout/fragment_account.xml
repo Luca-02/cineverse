@@ -29,7 +29,7 @@
                 <ImageView
                     android:id="@+id/backgroundImage"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="250dp"
                     android:contentDescription="Background Image"
                     android:background="@color/cardview_dark_background"
                     android:scaleType="centerCrop"
