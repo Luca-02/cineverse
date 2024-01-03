@@ -40,6 +40,11 @@ public class AuthFragment extends Fragment {
     private ActivityResultLauncher<Intent> googleSignInLauncher;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentAuthBinding.inflate(inflater, container, false);

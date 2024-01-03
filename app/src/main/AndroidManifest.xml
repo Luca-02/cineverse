@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".theme.CineVerse"
@@ -50,6 +51,7 @@
             android:exported="false" />
         <activity
             android:name=".view.verified_account.VerifiedAccountActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="false" />
     </application>
 

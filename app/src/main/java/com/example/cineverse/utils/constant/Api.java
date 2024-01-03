@@ -10,9 +10,9 @@ public class Api {
     public static final String UNEXPECTED_ERROR_MESSAGE = "Unexpected error.";
 
     // General
-    private static final String DISCOVER = "discover";
-    private static final String TRENDING = "trending";
-    private static final String GENRE = "genre";
+    public static final String DISCOVER = "discover";
+    public static final String TRENDING = "trending";
+    public static final String GENRE = "genre";
 
     public static final String RESPONSE_DATE_FORMAT = "yyyy-MM-dd";
     public static final int STARTING_PAGE = 1;
@@ -29,7 +29,7 @@ public class Api {
     public static final String QUERY_PARAMETER = "query";
 
     public static class Movie {
-        private static final String MOVIE = "movie";
+        public static final String MOVIE = "movie";
         public static final String NOW_PLAYING_MOVIE_ENDPOINT = MOVIE + "/now_playing";
         public static final String POPULAR_MOVIE_ENDPOINT = MOVIE + "/popular";
         public static final String TOP_RATED_MOVIE_ENDPOINT = MOVIE + "/top_rated";
@@ -40,7 +40,7 @@ public class Api {
     }
 
     public static class Tv {
-        private static final String TV = "tv";
+        public static final String TV = "tv";
         public static final String AIRING_TODAY_TV_ENDPOINT = TV + "/airing_today";
         public static final String ON_THE_AIR_TV_ENDPOINT = TV + "/on_the_air";
         public static final String POPULAR_TV_ENDPOINT = TV + "/popular";
@@ -53,6 +53,7 @@ public class Api {
     public static class Search {
         public static final String SEARCH = "search";
         public static final String SEARCH_KEYWORD_ENDPOINT = SEARCH + "/keyword";
+        public static final String SEARCH_MULTI_ENDPOINT = SEARCH + "/multi";
     }
 
 }

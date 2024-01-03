@@ -32,14 +32,12 @@ public abstract class AbstractSectionContentRemoteDataSource<T extends AbstractC
     }
 
     /**
-     * Handles the API call for fetching poster data and invokes the callback.
+     * Handles the API call for fetching section content data and invokes the callback.
      *
      * @param call The API call.
      */
-    protected <A extends AbstractContentResponse<T>> void handlePosterApiCall(Call<A> call) {
-        if (remoteResponseCallback != null) {
-            handlePosterApiCall(call, remoteResponseCallback);
-        }
+    protected <A extends AbstractContentResponse<T>> void handleSectionContentApiCall(Call<A> call) {
+        handleApiCall(call, remoteResponseCallback);
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.example.cineverse.data.source.content.remote;
+package com.example.cineverse.data.source.content.section;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -7,7 +7,6 @@ import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.cineverse.utils.mapper.SectionTypeMappingManager;
-import com.example.cineverse.data.source.content.section.UpcomingMovieRemoteDataSource;
 
 import org.junit.Before;
 import org.junit.Test;

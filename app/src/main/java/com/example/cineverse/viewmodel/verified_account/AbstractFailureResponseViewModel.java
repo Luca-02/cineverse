@@ -1,4 +1,4 @@
-package com.example.cineverse.viewmodel.verified_account.section.home;
+package com.example.cineverse.viewmodel.verified_account;
 
 import android.app.Application;
 
@@ -10,21 +10,17 @@ import com.example.cineverse.data.model.api.Failure;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * The {@link AbstractContentViewModel} class is an abstract base class for ViewModel classes
- * representing various sections in the home screen of the application.
- */
-public abstract class AbstractContentViewModel
+public abstract class AbstractFailureResponseViewModel
         extends AndroidViewModel {
 
     private MutableLiveData<Failure> failureLiveData;
 
     /**
-     * Constructs an {@link AbstractContentViewModel} object with the given {@link Application}.
+     * Constructs an {@link AbstractFailureResponseViewModel} object with the given {@link Application}.
      *
      * @param application The {@link Application} of the calling component.
      */
-    public AbstractContentViewModel(@NonNull Application application) {
+    public AbstractFailureResponseViewModel(@NonNull Application application) {
         super(application);
     }
 
@@ -53,17 +49,5 @@ public abstract class AbstractContentViewModel
     public void handleFailure(@NotNull Failure failure) {
         getFailureLiveData().postValue(failure);
     }
-
-    /**
-     * Checks if the content LiveData list is empty.
-     *
-     * @return True if the content LiveData list is empty, false otherwise.
-     */
-    public abstract boolean isContentEmpty();
-
-    /**
-     * Initiates the data fetching process.
-     */
-    public abstract void fetch();
 
 }

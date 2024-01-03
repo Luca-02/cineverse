@@ -12,8 +12,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.ui.CustomSearchView;
 import com.example.cineverse.databinding.FragmentDashboardBinding;
 
 /**
@@ -56,6 +58,14 @@ public class DashboardFragment extends Fragment {
             NavController navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
         }
+    }
+
+    public CustomSearchView getSearchView() {
+        return binding.searchView;
+    }
+
+    public RecyclerView getKeywordRecyclerView() {
+        return binding.keywordRecyclerView;
     }
 
 }

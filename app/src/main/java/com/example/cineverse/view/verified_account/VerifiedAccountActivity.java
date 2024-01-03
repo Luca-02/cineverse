@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,10 +14,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
-import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
-import com.google.android.material.elevation.SurfaceColors;
 
 /**
  * The {@link VerifiedAccountActivity} class represents the main activity of the application after the user has logged in
@@ -31,6 +30,7 @@ public class VerifiedAccountActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityVerifiedAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -38,8 +38,6 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         setDrawerHeader();
         setViewModel();
         setBlurView();
-        BackPressedHandler.handleOnBackPressedCallback(this, navController);
-        getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(this));
     }
 
     /**
@@ -121,6 +119,10 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         if (navController != null) {
             navController.navigate(R.id.action_global_accountRecentReviews);
         }
+    }
+
+    public void openResultSearchActivity(String query) {
+        // ...
     }
 
     /**

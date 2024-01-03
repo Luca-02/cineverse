@@ -37,7 +37,7 @@ public abstract class AbstractSectionMovieRemoteDataSource
     @Override
     public void fetch(int page) {
         Call<MovieResponse> call = createApiCall(page);
-        handlePosterApiCall(call);
+        handleSectionContentApiCall(call);
     }
 
     /**

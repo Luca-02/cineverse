@@ -24,5 +24,4 @@ public class MovieResponse extends AbstractContentResponse<Movie> {
         super(convertedResult);
     }
 
-
 }

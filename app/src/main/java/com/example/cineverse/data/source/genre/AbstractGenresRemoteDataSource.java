@@ -42,18 +42,7 @@ public abstract class AbstractGenresRemoteDataSource
     @Override
     public void fetch() {
         Call<GenreResponse> call = createApiCall();
-        handlePosterApiCall(call);
-    }
-
-    /**
-     * Handles the API call for fetching genres and delegates the response to the callback.
-     *
-     * @param call The Retrofit call object for fetching genres.
-     */
-    protected void handlePosterApiCall(Call<GenreResponse> call) {
-        if (remoteResponseCallback != null) {
-            handlePosterApiCall(call, remoteResponseCallback);
-        }
+        handleApiCall(call, remoteResponseCallback);
     }
 
     /**

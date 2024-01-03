@@ -31,7 +31,6 @@ public class VerifyAccountActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setActionBar();
         setNavController();
-        BackPressedHandler.handleOnBackPressedCallback(this, navController);
         getWindow().setNavigationBarColor(android.R.attr.colorBackground);
     }
 

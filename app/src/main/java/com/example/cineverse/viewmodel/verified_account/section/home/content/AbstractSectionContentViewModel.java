@@ -7,17 +7,17 @@ import android.app.Application;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.content.AbstractContent;
-import com.example.cineverse.viewmodel.verified_account.section.home.AbstractContentViewModel;
+import com.example.cineverse.viewmodel.verified_account.AbstractFailureResponseViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@link AbstractSectionContentViewModel} class extends {@link AbstractContentViewModel} and is an abstract
+ * The {@link AbstractSectionContentViewModel} class extends {@link AbstractFailureResponseViewModel} and is an abstract
  * base class for ViewModel classes representing various content sections in the home screen of the application.
  */
 public abstract class AbstractSectionContentViewModel
-        extends AbstractContentViewModel {
+        extends AbstractFailureResponseViewModel {
 
     private MutableLiveData<List<? extends AbstractContent>> contentLiveData;
     private int page;
@@ -67,7 +67,6 @@ public abstract class AbstractSectionContentViewModel
         getContentLiveData().setValue(new ArrayList<>());
     }
 
-    @Override
     public boolean isContentEmpty() {
         List<? extends AbstractContent> content = getContentLiveData().getValue();
         if (content != null) {
@@ -75,5 +74,10 @@ public abstract class AbstractSectionContentViewModel
         }
         return true;
     }
+
+    /**
+     * Initiates the data fetching process.
+     */
+    public abstract void fetch();
 
 }
