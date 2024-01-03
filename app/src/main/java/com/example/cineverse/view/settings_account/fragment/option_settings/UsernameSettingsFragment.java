@@ -115,7 +115,6 @@ public class UsernameSettingsFragment extends Fragment {
         TextInputEditText text_edit_dialog = dialog.findViewById(R.id.editText_newUsername);
         MaterialButton button_dialog = dialog.findViewById(R.id.confirm_change_button);
         TextInputLayout edit_layout_dialog = dialog.findViewById(R.id.inputedit_layout);
-        MaterialButton button_layout_dialog = dialog.findViewById(R.id.confirm_change_button);
 
         text_edit_dialog.addTextChangedListener(new TextWatcher() {
             @Override
@@ -164,7 +163,9 @@ public class UsernameSettingsFragment extends Fragment {
     }
 
     private void changeUsrNameDB(String new_username){
+
         Log.d("new_usr", new_username);
+
     }
 
 

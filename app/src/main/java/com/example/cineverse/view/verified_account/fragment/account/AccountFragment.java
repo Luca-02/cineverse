@@ -28,12 +28,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.cineverse.R;
-import com.example.cineverse.data.model.account_model.MovieModel;
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.databinding.FragmentAccountBinding;
-import com.example.cineverse.utils.account.JSONParserUtil;
 import com.example.cineverse.utils.account.SizeModifierAccount;
-import com.example.cineverse.utils.account.adapter.RVItem_AccountAdapter;
 import com.example.cineverse.view.settings_account.AccountSettingsActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.utils.account.adapter.ScreenSlidePagerAdapter;
@@ -56,7 +53,6 @@ public class AccountFragment extends Fragment {
 
     private FragmentAccountBinding binding;
     private VerifiedAccountViewModel viewModel;
-    private ProgressBar progressBarFav1, progressBarFav2;
     private ImageView profile_account_image;
     private TextView userName;
     private AppBarLayout appBarLayout;
@@ -109,8 +105,6 @@ public class AccountFragment extends Fragment {
         consMoviesLayout = view.findViewById(R.id.constMoviesLayout);
         consSeriesLayout = view.findViewById(R.id.constSeriesLayout);
         materialButtonToggleGroup.check(R.id.buttonMovies);
-        progressBarFav1 = view.findViewById(R.id.progressBar_Favourite1);
-        progressBarFav2 = view.findViewById(R.id.progressBar_Favourite2);
         profile_ConstraintLayout = view.findViewById(R.id.profileConstraintLayout);
 
         sizemodifier = new SizeModifierAccount();
@@ -125,7 +119,6 @@ public class AccountFragment extends Fragment {
 
                     else if (checkedId == R.id.buttonSeries){
                         consSeriesLayout.setVisibility(View.VISIBLE);
-                        progressBarFav2.setVisibility(View.VISIBLE);
                         consMoviesLayout.setVisibility(View.GONE);
                     }
                 }
@@ -238,7 +231,7 @@ public class AccountFragment extends Fragment {
         binding.seeAllRecentReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((VerifiedAccountActivity) getContext()).openViewAllRecenteReviewsActivity();
+                ((VerifiedAccountActivity) getContext()).openViewAllRecentReviewsActivity();
             }
         });
 

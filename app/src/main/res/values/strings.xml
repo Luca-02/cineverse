@@ -112,8 +112,8 @@
     <string name="theme_settings_name">Theme</string>
 
     <!-- View All Account -->
-    <string name="recent_to_watch_title">Recent To Watch</string>
-    <string name="recent_reviews_title">Recent Reviews</string>
+    <string name="recent_to_watch_title">To Watch</string>
+    <string name="recent_reviews_title">Reviews</string>
 
     <!-- Settings Pages-->
     <string name="theme_title">Change Theme</string>
@@ -125,6 +125,8 @@
 
     <string name="delete_account_text">By clicking on the button below your Account will be deleted permanently.</string>
     <string name="delete_button_bottom">Delete Account</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

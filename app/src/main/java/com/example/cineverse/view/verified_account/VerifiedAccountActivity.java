@@ -117,7 +117,7 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         }
     }
 
-    public void openViewAllRecenteReviewsActivity() {
+    public void openViewAllRecentReviewsActivity() {
         if (navController != null) {
             navController.navigate(R.id.action_global_accountRecentReviews);
         }

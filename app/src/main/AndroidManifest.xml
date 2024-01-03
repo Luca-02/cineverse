@@ -17,10 +17,10 @@
         android:theme="@style/Theme.CineVerse"
         tools:targetApi="31">
         <activity
-            android:name=".view.verified_account.fragment.account.view_all_section.ViewAllRecentReviewsActivity"
+            android:name=".view.verified_account.view_all_section_account.ViewAllRecentReviewsActivity"
             android:exported="false" />
         <activity
-            android:name=".view.verified_account.fragment.account.view_all_section.ViewAllRecentToWatchActivity"
+            android:name=".view.verified_account.view_all_section_account.ViewAllRecentToWatchActivity"
             android:exported="false" />
         <activity
             android:name=".view.settings_account.AccountSettingsActivity"

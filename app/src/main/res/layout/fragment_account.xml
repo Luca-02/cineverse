@@ -156,23 +156,13 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
 
-                        <!-- Progress bar -->
-                        <ProgressBar
-                            android:id="@+id/progressBar_Favourite1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toBottomOf="@id/recyclerViewFavouriteFilms"
-                            app:layout_constraintEnd_toEndOf="@id/recyclerViewFavouriteFilms"
-                            app:layout_constraintStart_toStartOf="@id/recyclerViewFavouriteFilms"
-                            app:layout_constraintTop_toTopOf="@id/recyclerViewFavouriteFilms" />
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
                 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constSeriesLayout"
@@ -192,17 +182,6 @@
                             app:layout_constraintTop_toTopOf="@id/constSeriesLayout"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
-
-                        <!-- Progress bar -->
-                        <ProgressBar
-                            android:id="@+id/progressBar_Favourite2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            app:layout_constraintBottom_toBottomOf="@id/recyclerViewFavouriteSeries"
-                            app:layout_constraintEnd_toEndOf="@id/recyclerViewFavouriteSeries"
-                            app:layout_constraintStart_toStartOf="@id/recyclerViewFavouriteSeries"
-                            app:layout_constraintTop_toTopOf="@id/recyclerViewFavouriteSeries" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -252,16 +231,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ProgressBar
-                        android:id="@+id/progressBar_RecentWatched"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:visibility="visible" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -308,18 +277,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBar_RecentReviews"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:visibility="visible"/>
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
