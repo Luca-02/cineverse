@@ -32,4 +32,23 @@
     <action
         android:id="@+id/action_global_accountSettingsActivity"
         app:destination="@id/accountSettingsActivity" />
+
+    <activity
+        android:id="@+id/viewAllRecentReviewsActivity"
+        android:name="com.example.cineverse.view.verified_account.fragment.account.view_all_section.ViewAllRecentReviewsActivity"
+        android:label="ViewAllRecentReviewsActivity"
+        tools:layout="@layout/activity_view_all_recent_reviews"/>
+
+    <action
+        android:id="@+id/action_global_accountRecentToWatch"
+        app:destination="@id/viewAllRecentReviewsActivity" />
+
+    <activity
+        android:id="@+id/viewAllRecentToWatchActivity"
+        android:name="com.example.cineverse.view.verified_account.fragment.account.view_all_section.ViewAllRecentToWatchActivity"
+        android:label="ViewAllRecentToWatchActivity"
+        tools:layout="@layout/activity_view_all_recent_to_watch"/>
+    <action
+        android:id="@+id/action_global_accountRecentReviews"
+        app:destination="@id/viewAllRecentToWatchActivity" />
 </navigation>

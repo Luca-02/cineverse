@@ -34,7 +34,7 @@
         android:id="@+id/changeThemeSettingsFragment"
         android:name="com.example.cineverse.view.settings_account.fragment.option_settings.ChangeThemeSettingsFragment"
         android:label="fragment_change_theme_setting"
-        tools:layout="@layout/fragment_change_theme_setting" >
+        tools:layout="@layout/fragment_change_theme_settings" >
         <action
             android:id="@+id/action_changeThemeSettingsFragment_to_optionSettingsFragment"
             app:destination="@id/optionSettingsFragment" />

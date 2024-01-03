@@ -19,15 +19,13 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import com.example.cineverse.R;
-import com.example.cineverse.databinding.FragmentChangeThemeSettingBinding;
-import com.example.cineverse.databinding.FragmentOptionSettingsBinding;
+import com.example.cineverse.databinding.FragmentChangeThemeSettingsBinding;
 import com.example.cineverse.view.settings_account.AccountSettingsActivity;
-import com.google.android.material.appbar.MaterialToolbar;
 
 
 public class ChangeThemeSettingsFragment extends Fragment {
 
-    private FragmentChangeThemeSettingBinding binding;
+    private FragmentChangeThemeSettingsBinding binding;
     private ActionBar actionBar;
 
     private int currentNightMode;
@@ -38,7 +36,7 @@ public class ChangeThemeSettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentChangeThemeSettingBinding.inflate(inflater, container, false);
+        binding = FragmentChangeThemeSettingsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

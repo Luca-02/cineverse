@@ -143,20 +143,6 @@
                         android:layout_height="wrap_content"
                         android:visibility="visible">
 
-                        <TextView
-                            android:id="@+id/textViewFavouriteFilms"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text= ""
-                            android:layout_marginTop="16dp"
-                            android:textSize="@dimen/text_title"
-                            android:textStyle="bold"
-                            android:paddingTop="2dp"
-                            android:gravity="center"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
-
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerViewFavouriteFilms"
                             android:layout_width="match_parent"
@@ -166,7 +152,7 @@
                             android:minHeight="220dp"
                             android:paddingStart="12dp"
                             android:paddingEnd="12dp"
-                            app:layout_constraintTop_toBottomOf="@id/textViewFavouriteFilms"
+                            app:layout_constraintTop_toTopOf="@id/constMoviesLayout"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -194,20 +180,6 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone">
 
-                        <TextView
-                            android:id="@+id/textViewFavouriteSeries"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text= ""
-                            android:layout_marginTop="16dp"
-                            android:textSize="@dimen/text_title"
-                            android:textStyle="bold"
-                            android:paddingTop="2dp"
-                            android:gravity="center"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
-
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerViewFavouriteSeries"
                             android:layout_width="match_parent"
@@ -217,7 +189,7 @@
                             android:minHeight="220dp"
                             android:paddingStart="12dp"
                             android:paddingEnd="12dp"
-                            app:layout_constraintTop_toBottomOf="@id/textViewFavouriteSeries"
+                            app:layout_constraintTop_toTopOf="@id/constSeriesLayout"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
 

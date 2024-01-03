@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,18 +73,6 @@ public class AccountFragment extends Fragment {
     private ViewPager2 viewPager;
     private FragmentStateAdapter pagerAdapter;
 
-    /*
-    Display Movie RecycleView
-     */
-    RecyclerView rVRecentWatched;
-    RVItem_AccountAdapter rvItemAdapter;
-    List<MovieModel> newList;
-
-    /*
-    Constant
-     */
-    private static final int ITEMS_MV_TV_TO_DISPLAY = 20;
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,6 +89,7 @@ public class AccountFragment extends Fragment {
         setViewPager(view);
         setAnimation();
         setToolbarAccountEvent();
+        viewAllPageSection();
     }
 
     @Override
@@ -146,20 +136,6 @@ public class AccountFragment extends Fragment {
         infoList.add(new ProfileInfoData("Total Movie", 0, R.drawable.tv_series_account_24px));
         infoList.add(new ProfileInfoData("Likes", 0, R.drawable.favorite_account_24px));
         infoList.add(new ProfileInfoData("Reviews", 0, R.drawable.reviews_account_24px));
-
-       // showRecentMovies(view);
-    }
-
-    private void showRecentMovies(View view){
-        rVRecentWatched = view.findViewById(R.id.recyclerViewRecentWatched);
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(requireContext(),
-                        LinearLayoutManager.HORIZONTAL, false);
-
-        newList = getMovieWithGson();
-        rvItemAdapter = new RVItem_AccountAdapter(getContext(), newList, ITEMS_MV_TV_TO_DISPLAY);
-        rVRecentWatched.setLayoutManager(layoutManager);
-        rVRecentWatched.setAdapter(rvItemAdapter);
 
     }
 
@@ -251,6 +227,23 @@ public class AccountFragment extends Fragment {
         });
     }
 
+    private void viewAllPageSection(){
+        binding.seeAllRecentWatched.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((VerifiedAccountActivity) getContext()).openViewAllRecentToWatchActivity();
+            }
+        });
+
+        binding.seeAllRecentReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((VerifiedAccountActivity) getContext()).openViewAllRecenteReviewsActivity();
+            }
+        });
+
+    }
+
     /**
      * Handles the user's authentication status and updates the UI accordingly.
      *
@@ -259,13 +252,6 @@ public class AccountFragment extends Fragment {
     private void handleUser(User user) {
         if (user != null) {
             binding.userName.setText(String.format("%s", user.getUsername()));
-
-            binding.textViewFavouriteFilms.setText(String.format("%s" + "'s\n" +
-                    getResources().getString(R.string.fav_films), user.getUsername()));
-
-            binding.textViewFavouriteSeries.setText(String.format("%s" + "'s\n" +
-                    getResources().getString(R.string.fav_series), user.getUsername()));
-
             if (user.getPhotoUrl() != null) {
                 Glide.with(this)
                         .load(user.getPhotoUrl())
@@ -285,21 +271,5 @@ public class AccountFragment extends Fragment {
         if (loggedOut) {
             ((VerifiedAccountActivity) requireActivity()).openAuthActivity();
         }
-    }
-
-    /**
-     * Returns the list of News using Gson.
-     * @return The list of News.
-     */
-    private List<MovieModel> getMovieWithGson(){
-        JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
-
-        try {
-            return jsonParserUtil.parseJSONFileWithGson("movieapi-test.json").getmData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 }

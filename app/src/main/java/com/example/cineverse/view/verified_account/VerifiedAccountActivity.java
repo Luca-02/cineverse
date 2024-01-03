@@ -111,6 +111,18 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         }
     }
 
+    public void openViewAllRecentToWatchActivity() {
+        if (navController != null) {
+            navController.navigate(R.id.action_global_accountRecentToWatch);
+        }
+    }
+
+    public void openViewAllRecenteReviewsActivity() {
+        if (navController != null) {
+            navController.navigate(R.id.action_global_accountRecentReviews);
+        }
+    }
+
     /**
      * Open Navigation Drawer.
      */

@@ -95,7 +95,7 @@
     <!-- Profile Account -->
     <string name="fav_films">Favourite Movies</string>
     <string name="fav_series">Favourite Series</string>
-    <string name="recent_watched">Recent Watched</string>
+    <string name="recent_watched">Recent To Watch</string>
     <string name="recent_reviews">Recent Reviews</string>
     <string name="see_all">See All</string>
 
@@ -111,6 +111,10 @@
     <string name="account_settings_name">Account</string>
     <string name="theme_settings_name">Theme</string>
 
+    <!-- View All Account -->
+    <string name="recent_to_watch_title">Recent To Watch</string>
+    <string name="recent_reviews_title">Recent Reviews</string>
+
     <!-- Settings Pages-->
     <string name="theme_title">Change Theme</string>
     <string name="theme_mode_section">Mode</string>
@@ -121,7 +125,6 @@
 
     <string name="delete_account_text">By clicking on the button below your Account will be deleted permanently.</string>
     <string name="delete_button_bottom">Delete Account</string>
-
 
 
 </resources>
