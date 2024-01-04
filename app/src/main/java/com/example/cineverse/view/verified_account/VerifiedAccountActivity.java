@@ -1,5 +1,6 @@
 package com.example.cineverse.view.verified_account;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -27,6 +29,10 @@ public class VerifiedAccountActivity extends AppCompatActivity {
     private ActivityVerifiedAccountBinding binding;
     private NavController navController;
     private DrawerHeaderManager drawerHeaderManager;
+    private SharedPreferences sharedPreferences;
+    private boolean isNightMode;
+    private static final String THEME_PREFERENCES = "theme_prefs";
+    private static final String THEME_NIGHT_MODE = "isNightMode";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,7 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         setDrawerHeader();
         setViewModel();
         setBlurView();
+        loadDataPreferences();
     }
 
     /**
@@ -91,6 +98,21 @@ public class VerifiedAccountActivity extends AppCompatActivity {
                 .setFrameClearDrawable(windowBackground)
                 .setBlurRadius(radius);
         binding.blurView.setBlurEnabled(false);
+    }
+
+    /*
+    ** Retrieve the saved theme mode from SharedPreferences
+    *  and apply the appropriate theme based on the saved mode
+     */
+    private void loadDataPreferences(){
+        sharedPreferences = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE);
+        isNightMode = sharedPreferences.getBoolean(THEME_NIGHT_MODE, false);
+
+        if (isNightMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 
     /**

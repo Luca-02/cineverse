@@ -1,5 +1,6 @@
 package com.example.cineverse.view;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 

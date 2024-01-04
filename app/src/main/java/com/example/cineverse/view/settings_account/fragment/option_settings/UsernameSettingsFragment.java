@@ -36,6 +36,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+/**
+ * The {@link UsernameSettingsFragment} : display actual username and let the user
+ * change his Username
+ */
 public class UsernameSettingsFragment extends Fragment {
 
     private FragmentUsernameSettingsBinding binding;

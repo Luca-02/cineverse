@@ -8,9 +8,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,16 +22,17 @@ import android.widget.CompoundButton;
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentChangeThemeSettingsBinding;
 import com.example.cineverse.view.settings_account.AccountSettingsActivity;
+import com.example.cineverse.viewmodel.theme_app.ThemeViewModel;
 
 
 public class ChangeThemeSettingsFragment extends Fragment {
 
     private FragmentChangeThemeSettingsBinding binding;
     private ActionBar actionBar;
-
     private int currentNightMode;
     private boolean nightModeResult;
-    private SharedPreferences sharedPreferences;
+
+    private ThemeViewModel themeViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,12 +45,15 @@ public class ChangeThemeSettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        themeViewModel = new ViewModelProvider(requireActivity()).get(ThemeViewModel.class);
+
         nightModeResult = verificaThemeCorrente();
         if (nightModeResult) {
             binding.switchMode.setChecked(true);
         } else {
             binding.switchMode.setChecked(false);
         }
+
         setNightModeFragment();
         setActionBar();
 
@@ -62,7 +67,6 @@ public class ChangeThemeSettingsFragment extends Fragment {
     private boolean verificaThemeCorrente(){
         currentNightMode = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         boolean isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
-
         if (isNightMode)
         {
             Log.d("night", "Night Mode On");
@@ -78,12 +82,12 @@ public class ChangeThemeSettingsFragment extends Fragment {
            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                if (isChecked) {
                    binding.switchMode.setChecked(true);
-                   AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
                } else {
                    binding.switchMode.setChecked(false);
-                   AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                }
+
+               themeViewModel.setNightMode(requireContext(),isChecked);
            }
        });
 
