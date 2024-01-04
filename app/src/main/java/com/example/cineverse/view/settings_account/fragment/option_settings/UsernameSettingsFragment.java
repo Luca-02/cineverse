@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.databinding.FragmentUsernameSettingsBinding;
+import com.example.cineverse.repository.settings.ChangeUsernameRepository;
 import com.example.cineverse.view.settings_account.AccountSettingsActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 import com.google.android.material.button.MaterialButton;
@@ -47,6 +48,7 @@ public class UsernameSettingsFragment extends Fragment {
     private String username;
     private String last_username;
     private User currentUser;
+    ChangeUsernameRepository changeUsernameRepository;
     private ActionBar actionBar;
     private MutableLiveData<String> liveString = new MutableLiveData<>();
 
@@ -76,6 +78,22 @@ public class UsernameSettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        changeUsernameRepository = new ChangeUsernameRepository(getContext());
+        changeUsernameRepository.setUsernameChangeCallback(new ChangeUsernameRepository
+                .UsernameChangeCallback() {
+            @Override
+            public void isSuccess(Boolean isChanged) {
+                if (isChanged != null && isChanged) {
+                    Log.d("ChangeUsernameRepository", "Username changed successfully");
+                } else {
+                    Log.e("ChangeUsernameRepository", "Failed to change username or network error occurred");
+                }
+            }
+            @Override
+            public void onNetworkError() {
+                Log.e("ChangeUsernameRepository", "Network error occurred while changing username");
+            }
+        });
         setViewModel();
         setActionBar();
         if (actionBar != null)
@@ -174,42 +192,8 @@ public class UsernameSettingsFragment extends Fragment {
             binding.nameUsernameChange.setText(currentUser.getUsername());
         }
 
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (firebaseUser != null) {
-            String uid = firebaseUser.getUid();
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
-                    .child(uid).child("username");
-            userRef.setValue(newUsername)
-                    .addOnSuccessListener(aVoid -> {
-                        Log.d("UpdateUsername", "Username updated successfully");
-                    })
-                    .addOnFailureListener(e -> {
-                        // Handle the Failure
-                        Log.e("UpdateUsername", "Failed to update username: " + e.getMessage());
-                    });
-
-            DatabaseReference usernamesRef = FirebaseDatabase.getInstance().getReference().child("usernames");
-
-        //Remove the old username value
-            usernamesRef.child(last_username).removeValue()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            usernamesRef.child(newUsername).setValue(uid)
-                                    .addOnSuccessListener(aVoid -> {
-                                        // Success
-                                        Log.d("UpdateUsername", "Username updated successfully in 'usernames' node");
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        // Failure
-                                        Log.e("UpdateUsername", "Failed to add new username entry: " + e.getMessage());
-                                    });
-                        } else {
-                            // Handle the Failure in removing old username entry
-                            Log.e("UpdateUsername", "Failed to remove old username entry: " + task.getException().getMessage());
-                        }
-                    });
-        }
+        changeUsernameRepository.changeUserReferences(newUsername);
+        changeUsernameRepository.changeUsernamesReferences(last_username,newUsername);
     }
 
     private void alertChanges(){
