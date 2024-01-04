@@ -1,9 +1,13 @@
 package com.example.cineverse.data.model.content;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.util.Locale;
 
 /**
  * The {@link AbstractContent} class is an abstract class representing the common attributes
@@ -11,18 +15,21 @@ import com.google.gson.annotations.SerializedName;
  */
 public abstract class AbstractContent implements Parcelable {
 
-    private int id;
-    private String overview;
+    protected int id;
+    protected String overview;
     @SerializedName("poster_path")
     protected String posterPath;
     @SerializedName("backdrop_path")
     protected String backdropPath;
+    @SerializedName("original_language")
+    private String originalLanguage;
 
-    public AbstractContent(int id, String overview, String posterPath, String backdropPath) {
+    public AbstractContent(int id, String overview, String posterPath, String backdropPath, String originalLanguage) {
         this.id = id;
         this.overview = overview;
         this.posterPath = posterPath;
         this.backdropPath = backdropPath;
+        this.originalLanguage = originalLanguage;
     }
 
     public int getId() {
@@ -57,6 +64,19 @@ public abstract class AbstractContent implements Parcelable {
         this.backdropPath = backdropPath;
     }
 
+    public String getOriginalLanguage() {
+        return originalLanguage;
+    }
+
+    public void setOriginalLanguage(String originalLanguage) {
+        this.originalLanguage = originalLanguage;
+    }
+
+    public String getCountryName() {
+        Locale locale = new Locale(originalLanguage);
+        return locale.getDisplayLanguage(locale);
+    }
+
     public abstract String getName();
 
     public abstract void setName(String name);
@@ -76,6 +96,7 @@ public abstract class AbstractContent implements Parcelable {
         dest.writeString(this.overview);
         dest.writeString(this.posterPath);
         dest.writeString(this.backdropPath);
+        dest.writeString(this.originalLanguage);
     }
 
     protected AbstractContent(Parcel in) {
@@ -83,6 +104,7 @@ public abstract class AbstractContent implements Parcelable {
         this.overview = in.readString();
         this.posterPath = in.readString();
         this.backdropPath = in.readString();
+        this.originalLanguage = in.readString();
     }
 
 }

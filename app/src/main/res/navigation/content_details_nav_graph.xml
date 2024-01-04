@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_details_nav_graph"
+    app:startDestination="@id/contentDetailsFragment">
+
+    <fragment
+        android:id="@+id/contentDetailsFragment"
+        android:name="com.example.cineverse.view.details.fragment.ContentDetailsFragment"
+        android:label="fragment_content_details"
+        tools:layout="@layout/fragment_content_details" />
+
+    <activity
+        android:id="@+id/networkErrorActivity"
+        android:name="com.example.cineverse.view.network_error.NetworkErrorActivity"
+        android:label="activity_network_error"
+        tools:layout="@layout/activity_network_error" />
+
+    <action
+        android:id="@+id/action_global_networkErrorActivity"
+        app:destination="@id/networkErrorActivity" />
+</navigation>

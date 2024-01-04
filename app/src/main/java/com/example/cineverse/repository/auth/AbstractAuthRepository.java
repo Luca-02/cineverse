@@ -7,7 +7,8 @@ import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.source.user.UserFirebaseSource;
 import com.example.cineverse.data.source.user.UserStorageManagerSource;
 import com.example.cineverse.repository.UserRepository;
-import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.service.firebase.FirebaseCallback;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseService;
 
 /**
  * The {@link AbstractAuthRepository} class extends {@link UserRepository} and serves as
@@ -16,7 +17,7 @@ import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
  */
 public abstract class AbstractAuthRepository
         extends UserRepository
-        implements UserFirebaseDatabaseServices.FirebaseCallback<User> {
+        implements FirebaseCallback<User> {
 
     /**
      * {@link Error Error} enum representing possible authentication errors and associated string resources for error messages.

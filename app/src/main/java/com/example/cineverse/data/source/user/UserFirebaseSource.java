@@ -6,7 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.cineverse.data.model.User;
-import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.service.firebase.FirebaseCallback;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseService;
 import com.example.cineverse.utils.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,11 +18,11 @@ import com.google.firebase.database.ValueEventListener;
 
 /**
  * The {@link UserFirebaseSource} class provides methods to interact with the Firebase Realtime Database
- * for user-related operations. It extends the functionality of {@link UserFirebaseDatabaseServices}.
+ * for user-related operations. It extends the functionality of {@link UserFirebaseDatabaseService}.
  * It includes methods for saving a user, checking if a user is saved, and handling the transaction to
  * save a user's information.
  */
-public class UserFirebaseSource extends UserFirebaseDatabaseServices {
+public class UserFirebaseSource extends UserFirebaseDatabaseService {
 
     private final Context context;
 

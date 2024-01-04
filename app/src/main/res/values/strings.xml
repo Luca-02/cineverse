@@ -96,4 +96,12 @@
     <string name="no_item_search_history">No items saved in your search history</string>
     <string name="microphone">Microphone</string>
     <string name="speak_to_text">Speak to text</string>
+
+    <!-- Content Details -->
+    <string name="cast">Cast</string>
+    <string name="n_minutes">%1$d minutes</string>
+    <string name="n_season">%1$d season</string>
+    <string name="recent_review">Recent Reviews</string>
+    <string name="to_watch">To Watch</string>
+    <string name="review">Review</string>
 </resources>

@@ -16,10 +16,18 @@
         android:name="com.example.cineverse.view.auth.AuthActivity"
         android:label="activity_auth"
         tools:layout="@layout/activity_auth" />
+    <activity
+        android:id="@+id/contentDetailsActivity"
+        android:name="com.example.cineverse.view.details.ContentDetailsActivity"
+        android:label="ContentDetailsActivity"
+        tools:layout="@layout/activity_content_details" />
 
     <action
         android:id="@+id/action_global_authActivity"
         app:destination="@id/authActivity"
         app:popUpTo="@id/verified_account_nav_graph"
         app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_contentDetailsActivity"
+        app:destination="@id/contentDetailsActivity" />
 </navigation>

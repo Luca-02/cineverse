@@ -13,8 +13,10 @@ public class Api {
     public static final String DISCOVER = "discover";
     public static final String TRENDING = "trending";
     public static final String GENRE = "genre";
+    public static final String APPEND_TO_RESPONSE_PARAMETER = "append_to_response";
+    public static final String APPEND_TO_RESPONSE_DEFAULT_PARAMETER = "credits,videos,similar";
 
-    public static final String RESPONSE_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String RESPONSE_DATE_FORMAT = "yyyy-mm-dd";
     public static final int STARTING_PAGE = 1;
 
     // Auth
@@ -30,6 +32,7 @@ public class Api {
 
     public static class Movie {
         public static final String MOVIE = "movie";
+        public static final String MOVIE_ID = "movie_id";
         public static final String NOW_PLAYING_MOVIE_ENDPOINT = MOVIE + "/now_playing";
         public static final String POPULAR_MOVIE_ENDPOINT = MOVIE + "/popular";
         public static final String TOP_RATED_MOVIE_ENDPOINT = MOVIE + "/top_rated";
@@ -37,10 +40,12 @@ public class Api {
         public static final String TODAY_TRENDING_MOVIE_ENDPOINT = TRENDING + "/" + MOVIE + "/day";
         public static final String GENRE_MOVIE_ENDPOINT = GENRE + "/" + MOVIE + "/list";
         public static final String DISCOVER_MOVIE_ENDPOINT = DISCOVER + "/" + MOVIE;
+        public static final String MOVIE_DETAILS_ENDPOINT = MOVIE + "/{" + MOVIE_ID + "}";
     }
 
     public static class Tv {
         public static final String TV = "tv";
+        public static final String TV_ID = "series_id";
         public static final String AIRING_TODAY_TV_ENDPOINT = TV + "/airing_today";
         public static final String ON_THE_AIR_TV_ENDPOINT = TV + "/on_the_air";
         public static final String POPULAR_TV_ENDPOINT = TV + "/popular";
@@ -48,6 +53,7 @@ public class Api {
         public static final String TODAY_TRENDING_TV_ENDPOINT = TRENDING + "/" + TV + "/day";
         public static final String GENRE_TV_ENDPOINT = GENRE + "/" + TV + "/list";
         public static final String DISCOVER_TV_ENDPOINT = DISCOVER + "/" + TV;
+        public static final String TV_DETAILS_ENDPOINT = TV + "/{" + TV_ID + "}";
     }
 
     public static class Search {

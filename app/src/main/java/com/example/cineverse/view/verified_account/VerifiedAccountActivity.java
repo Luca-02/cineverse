@@ -1,5 +1,8 @@
 package com.example.cineverse.view.verified_account;
 
+import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_ID_TAG;
+import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_TYPE_STRING_TAG;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +16,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.content.AbstractContent;
+import com.example.cineverse.data.model.content.section.Movie;
+import com.example.cineverse.data.model.content.section.Tv;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
+import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
@@ -100,6 +107,17 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         if (navController != null) {
             navController.navigate(R.id.action_global_authActivity);
             finish();
+        }
+    }
+
+    public void openContentDetailsActivity(AbstractContent content) {
+        if (navController != null) {
+            if (content.getClass().isAssignableFrom(Movie.class) || content.getClass().isAssignableFrom(Tv.class)) {
+                Bundle bundle = new Bundle();
+                bundle.putString(CONTENT_TYPE_STRING_TAG, ContentTypeMappingManager.getContentType(content.getClass()));
+                bundle.putInt(CONTENT_ID_TAG, content.getId());
+                navController.navigate(R.id.action_global_contentDetailsActivity, bundle);
+            }
         }
     }
 

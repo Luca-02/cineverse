@@ -1,7 +1,6 @@
 package com.example.cineverse.view.verified_account.fragment.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.data.source.content.section.MovieFromGenreRemoteDataSource;
 import com.example.cineverse.data.source.content.section.TvFromGenreRemoteDataSource;
 import com.example.cineverse.databinding.FragmentSectionContentBinding;
-import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModelFactory;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.section.SectionMovieViewModelFactory;
@@ -247,8 +245,7 @@ public class SectionContentFragment extends Fragment
      */
     @Override
     public void onContentClick(AbstractContent content) {
-        Log.d(GlobalConstant.TAG, "onContentClick: " + content.getClass());
-        Log.d(GlobalConstant.TAG, "onContentClick: " + content);
+        ((VerifiedAccountActivity) requireActivity()).openContentDetailsActivity(content);
     }
 
 }
