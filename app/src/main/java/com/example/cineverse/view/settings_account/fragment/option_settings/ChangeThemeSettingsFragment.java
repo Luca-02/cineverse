@@ -1,15 +1,11 @@
 package com.example.cineverse.view.settings_account.fragment.option_settings;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,7 +18,7 @@ import android.widget.CompoundButton;
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentChangeThemeSettingsBinding;
 import com.example.cineverse.view.settings_account.AccountSettingsActivity;
-import com.example.cineverse.viewmodel.theme_app.ThemeViewModel;
+import com.example.cineverse.viewmodel.settings.theme_app.ThemeViewModel;
 
 
 public class ChangeThemeSettingsFragment extends Fragment {

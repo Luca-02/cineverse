@@ -11,14 +11,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -26,15 +24,17 @@ import android.widget.ImageView;
 
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.User;
-import com.example.cineverse.databinding.FragmentOptionSettingsBinding;
 import com.example.cineverse.databinding.FragmentUsernameSettingsBinding;
 import com.example.cineverse.view.settings_account.AccountSettingsActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * The {@link UsernameSettingsFragment} : display actual username and let the user
@@ -44,11 +44,11 @@ public class UsernameSettingsFragment extends Fragment {
 
     private FragmentUsernameSettingsBinding binding;
     private VerifiedAccountViewModel viewModel;
-    private String current_usr;
+    private String username;
+    private String last_username;
+    private User currentUser;
     private ActionBar actionBar;
     private MutableLiveData<String> liveString = new MutableLiveData<>();
-
-
 
     /**
      * Called to create and return the view hierarchy associated with the fragment.
@@ -76,7 +76,6 @@ public class UsernameSettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setViewModel();
         setActionBar();
         if (actionBar != null)
@@ -95,7 +94,7 @@ public class UsernameSettingsFragment extends Fragment {
     private void setViewModel(){
         viewModel = new ViewModelProvider(this).get(VerifiedAccountViewModel.class);
         viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::getUserName);
-    }
+   }
 
     private void setActionBar(){
         actionBar = ((AccountSettingsActivity)requireActivity()).getSupportActionBar();
@@ -104,7 +103,8 @@ public class UsernameSettingsFragment extends Fragment {
     private void getUserName(User user){
         if (user != null) {
             binding.nameUsernameChange.setText(String.format("%s", user.getUsername()));
-            current_usr = user.getUsername();
+            currentUser = user;
+            username = user.getUsername();
             binding.nameUsernameChange.setHint(null);
         }
     }
@@ -120,10 +120,10 @@ public class UsernameSettingsFragment extends Fragment {
         MaterialButton button_dialog = dialog.findViewById(R.id.confirm_change_button);
         TextInputLayout edit_layout_dialog = dialog.findViewById(R.id.inputedit_layout);
 
+        button_dialog.setEnabled(false);
         text_edit_dialog.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -133,7 +133,7 @@ public class UsernameSettingsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (liveString.getValue().equals(current_usr)) {
+                if (liveString.getValue().equals(username)) {
                     edit_layout_dialog.setError("Don't use the same username");
                     button_dialog.setEnabled(false);
                 }else{
@@ -156,6 +156,7 @@ public class UsernameSettingsFragment extends Fragment {
             public void onClick(View v) {
                 changeUsrNameDB(liveString.getValue());
                 dialog.dismiss();
+                alertChanges();
             }
         });
 
@@ -166,12 +167,60 @@ public class UsernameSettingsFragment extends Fragment {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    private void changeUsrNameDB(String new_username){
+    private void changeUsrNameDB(String newUsername){
+        if (!newUsername.isEmpty()){
+            last_username = currentUser.getUsername();
+            currentUser.updateUsername(newUsername);
+            binding.nameUsernameChange.setText(currentUser.getUsername());
+        }
 
-        Log.d("new_usr", new_username);
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        if (firebaseUser != null) {
+            String uid = firebaseUser.getUid();
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                    .child(uid).child("username");
+            userRef.setValue(newUsername)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("UpdateUsername", "Username updated successfully");
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle the Failure
+                        Log.e("UpdateUsername", "Failed to update username: " + e.getMessage());
+                    });
+
+            DatabaseReference usernamesRef = FirebaseDatabase.getInstance().getReference().child("usernames");
+
+        //Remove the old username value
+            usernamesRef.child(last_username).removeValue()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            usernamesRef.child(newUsername).setValue(uid)
+                                    .addOnSuccessListener(aVoid -> {
+                                        // Success
+                                        Log.d("UpdateUsername", "Username updated successfully in 'usernames' node");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // Failure
+                                        Log.e("UpdateUsername", "Failed to add new username entry: " + e.getMessage());
+                                    });
+                        } else {
+                            // Handle the Failure in removing old username entry
+                            Log.e("UpdateUsername", "Failed to remove old username entry: " + task.getException().getMessage());
+                        }
+                    });
+        }
     }
 
+    private void alertChanges(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext())
+                .setTitle(R.string.alert_changes_title)
+                .setMessage(R.string.alert_changes_body)
+                .setPositiveButton(R.string.alert_changes_okay, null);
+
+        builder.create();
+        builder.show();
+    }
 
     /**
      * Called when the fragment is no longer in use.
@@ -183,5 +232,4 @@ public class UsernameSettingsFragment extends Fragment {
         ((AccountSettingsActivity)requireActivity()).setActionBarStyle();
         binding = null;
     }
-
 }

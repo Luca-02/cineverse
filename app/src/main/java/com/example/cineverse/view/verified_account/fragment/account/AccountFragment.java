@@ -1,6 +1,5 @@
 package com.example.cineverse.view.verified_account.fragment.account;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -8,22 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -32,17 +24,14 @@ import com.example.cineverse.R;
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.example.cineverse.utils.account.SizeModifierAccount;
-import com.example.cineverse.view.settings_account.AccountSettingsActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.utils.account.adapter.ScreenSlidePagerAdapter;
 import com.example.cineverse.utils.account.ZoomOutPageTransformer;
 import com.example.cineverse.utils.account.account_data.ProfileInfoData;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +40,6 @@ import java.util.List;
  * This fragment serves as one of the tabs in the BottomNavigationView.
  */
 public class AccountFragment extends Fragment {
-
     private FragmentAccountBinding binding;
     private VerifiedAccountViewModel viewModel;
     private ImageView profile_account_image;
@@ -61,7 +49,7 @@ public class AccountFragment extends Fragment {
     private int initialImageSizePx; // Initial size of profile picture in pixels
     private int initialTextSizePx; // Initial text size of username in pixels
     MaterialButtonToggleGroup materialButtonToggleGroup;
-    ConstraintLayout profile_ConstraintLayout, consMoviesLayout, consSeriesLayout;
+    ConstraintLayout consMoviesLayout, consSeriesLayout;
 
     /*
     Pager View Info User Data
@@ -96,7 +84,9 @@ public class AccountFragment extends Fragment {
     }
 
     /**
-     * Set Fragment Elements
+     *
+     * @param view
+     * Set elements in my Fragment
      */
     private void setElements(View view){
         profile_account_image = view.findViewById(R.id.profile_image);
@@ -106,7 +96,6 @@ public class AccountFragment extends Fragment {
         consMoviesLayout = view.findViewById(R.id.constMoviesLayout);
         consSeriesLayout = view.findViewById(R.id.constSeriesLayout);
         materialButtonToggleGroup.check(R.id.buttonMovies);
-        profile_ConstraintLayout = view.findViewById(R.id.profileConstraintLayout);
 
         sizemodifier = new SizeModifierAccount();
         materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
@@ -164,14 +153,14 @@ public class AccountFragment extends Fragment {
                 if (scrollRange + verticalOffset == 0) {
                     // Collapsed
                     if (!isColorChanged) {
-                        profile_ConstraintLayout.setBackgroundColor(Color.TRANSPARENT);
+                        binding.profileConstraintLayout.setBackgroundColor(Color.TRANSPARENT);
                         userName.setTextColor(getContext().getResources().getColor(R.color.white));
                         isColorChanged = true;
                     }
                 } else {
                     // Expanded or in-between
                     if (isColorChanged) {
-                        profile_ConstraintLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.md_theme_dark_inverseOnSurface));
+                        binding.profileConstraintLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.md_theme_dark_inverseOnSurface));
                         isColorChanged = false;
                     }
                 }
@@ -180,8 +169,12 @@ public class AccountFragment extends Fragment {
         });
     }
 
-    /*
-    Update Size of Elments profile image account and Username
+    /**
+     *
+     * @param newSize
+     * @param newTextSize
+     *
+     * Update size of profile elements while scrolling
      */
     private void updateSize(int newSize, int newTextSize) {
         // Update the size of profileImage and userName

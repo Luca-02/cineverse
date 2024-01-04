@@ -6,24 +6,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentDeleteSettingsBinding;
-import com.example.cineverse.databinding.FragmentOptionSettingsBinding;
 import com.example.cineverse.view.settings_account.AccountSettingsActivity;
-import com.google.android.material.appbar.MaterialToolbar;
 
 
 public class DeleteSettingsFragment extends Fragment {
 
     private FragmentDeleteSettingsBinding binding;
     private ActionBar actionBar;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

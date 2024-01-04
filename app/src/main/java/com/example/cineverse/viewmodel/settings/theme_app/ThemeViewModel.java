@@ -1,4 +1,4 @@
-package com.example.cineverse.viewmodel.theme_app;
+package com.example.cineverse.viewmodel.settings.theme_app;
 
 import android.content.Context;
 import android.content.SharedPreferences;

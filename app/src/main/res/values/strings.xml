@@ -125,10 +125,13 @@
 
     <string name="delete_account_text">By clicking on the button below your Account will be deleted permanently.</string>
     <string name="delete_button_bottom">Delete Account</string>
+
+    <string name="alert_changes_title">Username Updated</string>
+    <string name="alert_changes_body">Please log in again in order to make the changes!</string>
+    <string name="alert_changes_okay">Ok</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
 
     <!-- Search -->
     <string name="search_history">Search History</string>

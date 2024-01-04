@@ -1,7 +1,5 @@
 package com.example.cineverse.view.settings_account;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -10,19 +8,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.View;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityAccountSettingsBinding;
-import com.example.cineverse.databinding.ActivityAuthBinding;
-import com.example.cineverse.handler.BackPressedHandler;
-import com.example.cineverse.viewmodel.theme_app.ThemeViewModel;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.button.MaterialButton;
+import com.example.cineverse.viewmodel.settings.theme_app.ThemeViewModel;
 
 /**
  * The {@link AccountSettingsActivity} : manages the other Settings Fragments

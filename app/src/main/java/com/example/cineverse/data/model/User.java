@@ -91,4 +91,13 @@ public class User {
         return stringBuilder.toString();
     }
 
+    /**
+     *
+     * @param username
+     * Update the User's username
+     */
+    public void updateUsername(String username){
+        this.username = username;
+    }
+
 }
