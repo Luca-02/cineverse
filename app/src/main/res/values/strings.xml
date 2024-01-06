@@ -127,7 +127,7 @@
     <string name="delete_button_bottom">Delete Account</string>
 
     <string name="alert_changes_title">Username Updated</string>
-    <string name="alert_changes_body">Please log in again in order to make the changes!</string>
+    <string name="alert_changes_body">Please log in again in order to apply the changes!</string>
     <string name="alert_changes_okay">Ok</string>
 
     <!-- TODO: Remove or change this placeholder text -->
