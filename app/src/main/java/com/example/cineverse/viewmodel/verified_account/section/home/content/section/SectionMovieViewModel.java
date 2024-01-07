@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.example.cineverse.data.model.content.section.Movie;
 import com.example.cineverse.data.source.content.AbstractSectionContentRemoteDataSource;
-import com.example.cineverse.repository.content.SectionMovieRepository;
+import com.example.cineverse.repository.content.section.SectionMovieRepository;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentTypeViewModel;
 
 /**

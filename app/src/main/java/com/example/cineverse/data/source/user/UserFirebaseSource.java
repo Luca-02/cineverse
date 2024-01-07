@@ -51,7 +51,7 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
     }
 
     private void checkIfUserSaved(User user, FirebaseCallback<Boolean> firebaseCallback) {
-        isUserSaved(user.getUid(), context, new FirebaseCallback<Boolean>() {
+        isUserSaved(context, user.getUid(), new FirebaseCallback<Boolean>() {
             @Override
             public void onCallback(Boolean isUserSaved) {
                 handleUserSavedResult(isUserSaved, user, firebaseCallback);
@@ -126,11 +126,11 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
     /**
      * Checks if a username is saved in the usernames database.
      *
-     * @param username The username to check.
      * @param context The context used to check network availability.
+     * @param username The username to check.
      * @param firebaseCallback The callback to handle the result.
      */
-    public void isUsernameSaved(String username, Context context, final FirebaseCallback<Boolean> firebaseCallback) {
+    public void isUsernameSaved(Context context, String username, final FirebaseCallback<Boolean> firebaseCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             Query query = usernamesDatabase.child(username);
 
@@ -154,11 +154,11 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
     /**
      * Checks if a user with a specific UID is saved in the users database.
      *
-     * @param uid The UID to check.
      * @param context The context used to check network availability.
+     * @param uid The UID to check.
      * @param firebaseCallback The callback to handle the result.
      */
-    public void isUserSaved(String uid, Context context, final FirebaseCallback<Boolean> firebaseCallback) {
+    public void isUserSaved(Context context, String uid, final FirebaseCallback<Boolean> firebaseCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             Query query = usersDatabase.child(uid);
 
@@ -182,11 +182,11 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
     /**
      * Retrieves a {@code User} object from the users database using the UID.
      *
-     * @param uid The UID of the user.
      * @param context The context used to check network availability.
+     * @param uid The UID of the user.
      * @param firebaseCallback The callback to handle the result.
      */
-    public void getUserFromUid(String uid, Context context, final FirebaseCallback<User> firebaseCallback) {
+    public void getUserFromUid(Context context, String uid, final FirebaseCallback<User> firebaseCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             Query query = usersDatabase.child(uid);
 
@@ -214,11 +214,11 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
     /**
      * Retrieves the email associated with a username from the usernames database.
      *
-     * @param username The username to retrieve the email for.
      * @param context The context used to check network availability.
+     * @param username The username to retrieve the email for.
      * @param firebaseCallback The callback to handle the result.
      */
-    public void getEmailFromUsername(String username, Context context, final FirebaseCallback<String> firebaseCallback) {
+    public void getEmailFromUsername(Context context, String username, final FirebaseCallback<String> firebaseCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             Query uidQuery = usernamesDatabase.child(username);
 
@@ -228,7 +228,7 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
                     if (dataSnapshot.exists()) {
                         String uid = dataSnapshot.getValue(String.class);
                         if (uid != null) {
-                            getEmailFromUid(uid, context, firebaseCallback);
+                            getEmailFromUid(context, uid, firebaseCallback);
                         } else {
                             firebaseCallback.onCallback(null);
                         }
@@ -250,11 +250,11 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
     /**
      * Retrieves the email associated with a UID from the users database.
      *
-     * @param uid The UID to retrieve the email for.
      * @param context The context used to check network availability.
+     * @param uid The UID to retrieve the email for.
      * @param firebaseCallback The callback to handle the result.
      */
-    public void getEmailFromUid(String uid, Context context, final FirebaseCallback<String> firebaseCallback) {
+    public void getEmailFromUid(Context context, String uid, final FirebaseCallback<String> firebaseCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             Query emailQuery = usersDatabase.child(uid).child("email");
 

@@ -1,10 +1,11 @@
-package com.example.cineverse.repository.content;
+package com.example.cineverse.repository.content.section;
 
 import android.content.Context;
 
 import com.example.cineverse.data.model.content.section.Tv;
 import com.example.cineverse.data.source.content.AbstractSectionContentRemoteDataSource;
 import com.example.cineverse.data.source.content.SectionContentRemoteResponseCallback;
+import com.example.cineverse.repository.content.AbstractSectionContentRepository;
 
 /**
  * The {@link SectionTvRepository} class extends the {@link AbstractSectionContentRepository}

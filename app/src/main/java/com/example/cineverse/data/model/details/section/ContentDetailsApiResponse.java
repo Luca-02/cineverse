@@ -29,8 +29,8 @@ public interface ContentDetailsApiResponse extends ApiResponse {
 
     void setVideos(ContentVideos videos);
 
-    String getTimestamp();
+    Long getTimestamp();
 
-    void setTimestamp(String timestamp);
+    void setTimestamp(Long timestamp);
 
 }

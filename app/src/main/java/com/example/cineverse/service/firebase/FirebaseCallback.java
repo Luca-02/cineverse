@@ -1,5 +1,7 @@
 package com.example.cineverse.service.firebase;
 
+import com.example.cineverse.service.NetworkCallback;
+
 /**
  * The {@link FirebaseCallback <T>} interface extends {@link NetworkCallback} and defines a method
  * to handle asynchronous callbacks with one parameter.

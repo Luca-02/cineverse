@@ -63,7 +63,7 @@ public class UserStorageManagerSource
      */
     public void googleAuth(FirebaseUser firebaseUser) {
         if (firebaseCallback != null) {
-            firebaseSource.getUserFromUid(firebaseUser.getUid(), context,
+            firebaseSource.getUserFromUid(context, firebaseUser.getUid(),
                     new FirebaseCallback<User>() {
                         @Override
                         public void onCallback(User user) {
@@ -89,7 +89,7 @@ public class UserStorageManagerSource
      */
     public void login(String uid) {
         if (firebaseCallback != null) {
-            firebaseSource.getUserFromUid(uid, context,
+            firebaseSource.getUserFromUid(context, uid,
                     new FirebaseCallback<User>() {
                         @Override
                         public void onCallback(User user) {

@@ -1,6 +1,8 @@
 package com.example.cineverse.data.model;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -10,7 +12,7 @@ import java.util.Random;
  * The {@link User} class represents a user with essential information such as UID, username,
  * email, and photo URL.
  */
-public class User {
+public class User implements Parcelable {
 
     private String uid;
     private String username;
@@ -29,6 +31,13 @@ public class User {
         } else {
             this.photoUrl = null;
         }
+    }
+
+    public User(String uid, String username, String email, String photoUrl) {
+        this.uid = uid;
+        this.username = username;
+        this.email = email;
+        this.photoUrl = photoUrl;
     }
 
     public String getUid() {
@@ -90,5 +99,38 @@ public class User {
 
         return stringBuilder.toString();
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.uid);
+        dest.writeString(this.username);
+        dest.writeString(this.email);
+        dest.writeString(this.photoUrl);
+    }
+
+    protected User(Parcel in) {
+        this.uid = in.readString();
+        this.username = in.readString();
+        this.email = in.readString();
+        this.photoUrl = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
 }

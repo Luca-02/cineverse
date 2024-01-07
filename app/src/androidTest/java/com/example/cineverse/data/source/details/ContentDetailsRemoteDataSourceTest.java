@@ -68,10 +68,6 @@ public class ContentDetailsRemoteDataSourceTest {
                 System.out.println("response");
                 assertNotNull(response);
                 System.out.println(response);
-                System.out.println(response.getGenres().size());
-                System.out.println(response.getCredits().getCast().size());
-                System.out.println(response.getSeasons().size());
-                System.out.println(response.getVideos().getResults().size());
                 latch.countDown();
             }
 

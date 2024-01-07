@@ -18,7 +18,7 @@ import com.example.cineverse.viewmodel.AbstractUserViewModel;
  */
 public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthRepository>
         extends AbstractUserViewModel<T>
-        implements AbstractAuthRepository.AuthCallback {
+        implements AbstractAuthRepository.AuthErrorCallback {
 
     private MutableLiveData<AbstractAuthRepository.Error> errorLiveData;
 
@@ -42,7 +42,7 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
     }
 
     /**
-     * Overrides the {@link AbstractAuthRepository.AuthCallback#onError(AbstractAuthRepository.Error)} method to handle
+     * Overrides the {@link AbstractAuthRepository.AuthErrorCallback#onError(AbstractAuthRepository.Error)} method to handle
      * authentication-related errors and update the error LiveData.
      * Clears authentication-related error {@link MutableLiveData}.
      *
@@ -54,7 +54,7 @@ public abstract class AbstractAuthServicesViewModel<T extends AbstractAuthReposi
     }
 
     /**
-     * Overrides the {@link AbstractAuthRepository.AuthCallback#onUserAuthentication(User)} method
+     * Overrides the {@link AbstractAuthRepository.AuthErrorCallback#onUserAuthentication(User)} method
      * to handle successful user authentication and update the user LiveData.
      *
      * @param user The authenticated user.

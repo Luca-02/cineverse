@@ -21,6 +21,9 @@ import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.databinding.FragmentViewAllContentBinding;
 import com.example.cineverse.utils.constant.GlobalConstant;
+import com.example.cineverse.view.details.ContentDetailsActivityOpener;
+import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
+import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
 import com.example.cineverse.view.view_all_content.ViewAllContentController;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModelFactory;
@@ -196,8 +199,11 @@ public class ViewAllContentFragment extends Fragment
      */
     @Override
     public void onContentClick(AbstractContent content) {
-        Log.d(GlobalConstant.TAG, "onContentClick: " + content.getClass());
-        Log.d(GlobalConstant.TAG, "onContentClick: " + content);
+        ContentDetailsActivityOpener.openContentDetailsActivity(
+                requireContext(),
+                ((ViewAllContentActivity) requireActivity()).getNavController(),
+                content
+        );
     }
 
 }

@@ -1,16 +1,23 @@
 package com.example.cineverse.view.details.fragment;
 
+import static com.example.cineverse.utils.constant.Api.RESPONSE_DATE_FORMAT;
 import static com.example.cineverse.utils.constant.Api.TMDB_IMAGE_ORIGINAL_SIZE_URL;
+import static com.example.cineverse.view.details.fragment.ReviewContentFragment.CONTENT_TAG;
+import static com.example.cineverse.view.details.fragment.ReviewDetailsFragment.USER_REVIEW_TAG;
+import static com.example.cineverse.view.details.fragment.ViewAllCastCrewFragment.CREDITS_TAG;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
@@ -18,24 +25,39 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.cineverse.R;
 import com.example.cineverse.adapter.details.CastAdapter;
 import com.example.cineverse.adapter.details.GenreAdapter;
+import com.example.cineverse.adapter.details.ReviewAdapter;
+import com.example.cineverse.data.model.User;
+import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.details.section.ContentDetailsApiResponse;
 import com.example.cineverse.data.model.details.section.MovieDetails;
 import com.example.cineverse.data.model.details.section.TvDetails;
+import com.example.cineverse.data.model.review.Review;
+import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.FragmentContentDetailsBinding;
-import com.example.cineverse.utils.DateFormatUtils;
+import com.example.cineverse.handler.ReviewUiHandler;
+import com.example.cineverse.utils.DateTimeUtils;
+import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.view.details.ContentDetailsActivity;
 import com.example.cineverse.viewmodel.details.AbstractContentDetailsViewModel;
 import com.example.cineverse.viewmodel.details.section.MovieDetailsViewModel;
 import com.example.cineverse.viewmodel.details.section.TvDetailsViewModel;
+import com.example.cineverse.viewmodel.review.ReviewViewModel;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.snackbar.Snackbar;
 
-public class ContentDetailsFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ContentDetailsFragment extends Fragment
+        implements ReviewAdapter.OnReviewClickListener {
 
     private FragmentContentDetailsBinding binding;
-    private AbstractContentDetailsViewModel<? extends ContentDetailsApiResponse> viewModel;
+    private AbstractContentDetailsViewModel<? extends ContentDetailsApiResponse> contentDetailsViewModel;
+    private ReviewViewModel reviewViewModel;
+    private ContentDetailsApiResponse contentDetails;
+    private ReviewAdapter reviewAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -48,9 +70,8 @@ public class ContentDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setViewModel();
-        initContentDetails();
-        binding.materialToolbar.setNavigationOnClickListener(v ->
-                requireActivity().getOnBackPressedDispatcher().onBackPressed());
+        setContentDetails();
+        setListener();
     }
 
     @Override
@@ -67,34 +88,44 @@ public class ContentDetailsFragment extends Fragment {
                 ((ContentDetailsActivity) requireActivity()).getContentType();
 
         if (contentType.equals(ContentTypeMappingManager.ContentType.MOVIE.getType())) {
-            viewModel = new ViewModelProvider(this).get(MovieDetailsViewModel.class);
+            contentDetailsViewModel = new ViewModelProvider(this).get(MovieDetailsViewModel.class);
         } else if (contentType.equals(ContentTypeMappingManager.ContentType.TV.getType())) {
-            viewModel = new ViewModelProvider(this).get(TvDetailsViewModel.class);
+            contentDetailsViewModel = new ViewModelProvider(this).get(TvDetailsViewModel.class);
         }
 
-        if (viewModel != null) {
-            viewModel.getContentDetailsLiveData().observe(getViewLifecycleOwner(), this::handleContentDetails);
-            viewModel.getFailureLiveData().observe(getViewLifecycleOwner(), failure -> {
-                if (failure != null) {
-                    Snackbar.make(binding.getRoot(),
-                            failure.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
-                    viewModel.getFailureLiveData().setValue(null);
-                }
-            });
-            viewModel.getAddedToWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleAddedToWatch);
-            viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), bool -> {
-                if (bool != null && bool) {
-                    ((ContentDetailsActivity) requireActivity()).openNetworkErrorActivity();
-                    viewModel.getNetworkErrorLiveData().setValue(null);
-                }
-            });
+        if (contentDetailsViewModel != null) {
+            contentDetailsViewModel.getContentDetailsLiveData().observe(getViewLifecycleOwner(), this::handleContentDetails);
+            contentDetailsViewModel.getTimestampInWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleTimestampInWatchlist);
+            contentDetailsViewModel.getAddedToWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleAddedToWatch);
+            contentDetailsViewModel.getRemovedToWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleRemovedToWatch);
+            contentDetailsViewModel.getFailureLiveData().observe(getViewLifecycleOwner(), this::handleFailure);
+            contentDetailsViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
         }
+
+        reviewViewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
+        reviewViewModel.getCurrentUserReviewLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReviewLiveData);
+        reviewViewModel.getRecentContentReviewLiveData().observe(getViewLifecycleOwner(), this::handleRecentContentReviewLiveData);
+        reviewViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
     }
 
-    private void initContentDetails() {
+    private void setContentDetails() {
         int contentId =
                 ((ContentDetailsActivity) requireActivity()).getContentId();
-        viewModel.fetchDetails(contentId);
+        if (contentDetails == null) {
+            contentDetailsViewModel.fetchDetails(contentId);
+        }
+        reviewAdapter = new ReviewAdapter(requireContext(), new ArrayList<>(), this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        binding.recentReviewRecyclerView.setLayoutManager(layoutManager);
+        binding.recentReviewRecyclerView.setAdapter(reviewAdapter);
+    }
+
+    private void setListener() {
+        binding.reviewButton.setOnClickListener(v -> openReviewContentFragment());
+        binding.viewAllCastCrewChip.setOnClickListener(v -> openViewAllCastCrewFragment());
+        binding.yourReviewLayout.getRoot().setOnClickListener(v -> openReviewContentFragment());
+        binding.materialToolbar.setNavigationOnClickListener(v ->
+                requireActivity().getOnBackPressedDispatcher().onBackPressed());
     }
 
     private void handleContentDetails(ContentDetailsApiResponse contentDetailsApiResponse) {
@@ -102,6 +133,10 @@ public class ContentDetailsFragment extends Fragment {
             handleMovieDetails((MovieDetails) contentDetailsApiResponse);
         } else if (TvDetails.class.isAssignableFrom(contentDetailsApiResponse.getClass())) {
             handleTvDetails((TvDetails) contentDetailsApiResponse);
+        }
+
+        if (contentDetailsViewModel.isFirstTimeLoadTimestampInWatchlist()) {
+            contentDetailsViewModel.getTimestampForContentInWatchlist((AbstractContent) contentDetails);
         }
     }
 
@@ -126,21 +161,33 @@ public class ContentDetailsFragment extends Fragment {
     }
 
     private void setContentUi(AbstractContent content) {
-        String backdropImageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getBackdropPath();
-        Glide.with(requireActivity())
-                .load(backdropImageUrl)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(binding.backdropImageView);
+        if (content.getBackdropPath() == null) {
+            int padding = getResources().getDimensionPixelOffset(R.dimen.double_spacing);
+            binding.backdropImageView.setPadding(padding, padding, padding, padding);
+            binding.backdropImageView.setImageResource(R.drawable.outline_image_not_supported);
+        } else {
+            String backdropImageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getBackdropPath();
+            Glide.with(requireActivity())
+                    .load(backdropImageUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(binding.backdropImageView);
+        }
 
-        String posterImageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getPosterPath();
-        Glide.with(requireActivity())
-                .load(posterImageUrl)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(binding.posterImageView);
+        if (content.getPosterPath() == null) {
+            int padding = requireContext().getResources().getDimensionPixelOffset(R.dimen.double_spacing);
+            binding.posterImageView.setPadding(padding, padding, padding, padding);
+            binding.posterImageView.setImageResource(R.drawable.outline_image_not_supported);
+        } else {
+            String posterImageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getPosterPath();
+            Glide.with(requireActivity())
+                    .load(posterImageUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(binding.posterImageView);
+        }
 
         binding.titleTextView.setText(content.getName());
         binding.releaseDateChip.setText(
-                DateFormatUtils.formatData(requireActivity(), content.getReleaseDate()));
+                DateTimeUtils.formatDate(requireActivity(), RESPONSE_DATE_FORMAT, content.getReleaseDate()));
         binding.originalLanguageChip.setText(content.getCountryName());
         if (content.getOverview().isEmpty()) {
             binding.overviewTextView.setVisibility(View.GONE);
@@ -148,11 +195,16 @@ public class ContentDetailsFragment extends Fragment {
             binding.overviewTextView.setText(content.getOverview());
         }
 
-        binding.ToWatchButton.setOnClickListener(v ->
-                viewModel.addContentToWatchlist(content));
+        if (reviewViewModel.getCurrentUserReviewLiveData().getValue() == null) {
+            reviewViewModel.getContentReviewOfCurrentUser(content);
+        }
+        if (reviewViewModel.getRecentContentReviewLiveData().getValue() == null) {
+            reviewViewModel.getRecentContentReview(content);
+        }
     }
 
     private void setContentDetailsUi(ContentDetailsApiResponse contentDetails) {
+        this.contentDetails = contentDetails;
         if (contentDetails.getTagline().isEmpty()) {
             binding.taglineTextView.setVisibility(View.GONE);
         } else {
@@ -164,14 +216,117 @@ public class ContentDetailsFragment extends Fragment {
         binding.genreRecyclerView.setLayoutManager(layoutManager);
         binding.genreRecyclerView.setAdapter(genreAdapter);
 
-        CastAdapter castAdapter = new CastAdapter(requireContext(), contentDetails.getCredits().getCast());
+        CastAdapter castAdapter = new CastAdapter(
+                requireContext(), contentDetails.getCredits().getCast(), true);
         binding.castRecyclerView.setLayoutManager(new LinearLayoutManager(
                 requireContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.castRecyclerView.setAdapter(castAdapter);
+        binding.castRecyclerView.setHasFixedSize(false);
     }
 
-    private void handleAddedToWatch(Boolean added) {
+    private void handleCurrentUserReviewLiveData(Review review) {
+        User user = contentDetailsViewModel.getCurrentUser();
+        if (user != null && review != null) {
+            binding.yourReviewTextView.setVisibility(View.VISIBLE);
+            binding.yourReviewLayout.getRoot().setVisibility(View.VISIBLE);
+            ReviewUiHandler.setReviewUi(
+                    requireContext(), binding.yourReviewLayout, user, review);
+        } else if (review == null) {
+            binding.yourReviewTextView.setVisibility(View.GONE);
+            binding.yourReviewLayout.getRoot().setVisibility(View.GONE);
+        }
+    }
 
+    private void handleRecentContentReviewLiveData(List<UserReview> userReviewList) {
+        reviewAdapter.setData(userReviewList);
+        if (userReviewList.size() > 0) {
+            binding.recentReviewConstraintLayout.setVisibility(View.VISIBLE);
+            binding.recentReviewRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            binding.recentReviewConstraintLayout.setVisibility(View.GONE);
+            binding.recentReviewRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    private void handleTimestampInWatchlist(Long timestamp) {
+        if (contentDetails != null) {
+            contentDetails.setTimestamp(timestamp);
+            handleToWatchButton();
+            contentDetailsViewModel.setFirstTimeLoadTimestampInWatchlist(false);
+        }
+    }
+
+    private void handleAddedToWatch(Long timestamp) {
+        if (timestamp != null) {
+            contentDetails.setTimestamp(timestamp);
+            contentDetailsViewModel.getTimestampInWatchlistLiveData().setValue(timestamp);
+            Snackbar.make(binding.getRoot(),
+                    R.string.added_to_watch_list, Snackbar.LENGTH_SHORT).show();
+            contentDetailsViewModel.getAddedToWatchlistLiveData().setValue(null);
+        }
+    }
+
+    private void handleRemovedToWatch(Boolean removed) {
+        if (removed != null && removed) {
+            contentDetails.setTimestamp(null);
+            contentDetailsViewModel.getTimestampInWatchlistLiveData().setValue(null);
+            Snackbar.make(binding.getRoot(),
+                    R.string.removed_to_watch_list, Snackbar.LENGTH_SHORT).show();
+            contentDetailsViewModel.getRemovedToWatchlistLiveData().setValue(null);
+        }
+    }
+
+    private void handleToWatchButton() {
+        if (contentDetails.getTimestamp() != null) {
+            binding.toWatchButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.outline_done));
+            binding.toWatchButton.setOnClickListener(v ->
+                    contentDetailsViewModel.removeContentToWatchlist((AbstractContent) contentDetails));
+        } else {
+            binding.toWatchButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.outline_add));
+            binding.toWatchButton.setOnClickListener(v ->
+                    contentDetailsViewModel.addContentToWatchlist((AbstractContent) contentDetails));
+        }
+    }
+
+    private void handleFailure(Failure failure) {
+        if (failure != null) {
+            Snackbar.make(binding.getRoot(),
+                    failure.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
+            contentDetailsViewModel.getFailureLiveData().setValue(null);
+        }
+    }
+
+    private void handleNetworkError(Boolean bool) {
+        if (bool != null && bool) {
+            ((ContentDetailsActivity) requireActivity()).openNetworkErrorActivity();
+            contentDetailsViewModel.getNetworkErrorLiveData().setValue(null);
+        }
+    }
+
+    private void openReviewContentFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(CONTENT_TAG, (AbstractContent) contentDetails);
+        Navigation.findNavController(requireView())
+                .navigate(R.id.action_contentDetailsFragment_to_reviewContentFragment, bundle);
+    }
+
+    private void openViewAllCastCrewFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(CREDITS_TAG, contentDetails.getCredits());
+        Navigation.findNavController(requireView())
+                .navigate(R.id.action_contentDetailsFragment_to_viewAllCastCrewFragment, bundle);
+    }
+
+    private void openReviewDetailsFragment(UserReview userReview) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(USER_REVIEW_TAG, userReview);
+        Navigation.findNavController(requireView())
+                .navigate(R.id.action_contentDetailsFragment_to_reviewDetailsFragment, bundle);
+    }
+
+    @Override
+    public void onUserReviewClick(UserReview userReview) {
+        openReviewDetailsFragment(userReview);
     }
 
 }

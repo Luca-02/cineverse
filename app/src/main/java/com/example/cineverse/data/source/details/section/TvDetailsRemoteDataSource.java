@@ -1,12 +1,13 @@
 package com.example.cineverse.data.source.details.section;
 
-import static com.example.cineverse.utils.constant.Api.APPEND_TO_RESPONSE_DEFAULT_PARAMETER;
+import static com.example.cineverse.utils.constant.Api.AGGREGATE_CREDITS;
+import static com.example.cineverse.utils.constant.Api.SIMILAR;
+import static com.example.cineverse.utils.constant.Api.VIDEOS;
 
 import android.content.Context;
 
 import com.example.cineverse.data.model.details.section.TvDetails;
 import com.example.cineverse.data.source.details.AbstractContentDetailsRemoteDataSource;
-import com.example.cineverse.data.source.details.ContentDetailsRemoteResponseCallback;
 
 import retrofit2.Call;
 
@@ -18,8 +19,9 @@ public class TvDetailsRemoteDataSource
     }
 
     public Call<TvDetails> createApiCall(int tvId) {
+        String appendToResponse = AGGREGATE_CREDITS + "," + VIDEOS + "," + SIMILAR;
         return detailsApiService.getTvDetails(
-                tvId, APPEND_TO_RESPONSE_DEFAULT_PARAMETER, getLanguage(), getBearerAccessTokenAuth());
+                tvId, appendToResponse, getLanguage(), getBearerAccessTokenAuth());
     }
 
 }

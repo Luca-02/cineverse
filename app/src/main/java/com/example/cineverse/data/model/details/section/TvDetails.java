@@ -1,11 +1,11 @@
 package com.example.cineverse.data.model.details.section;
 
 import com.example.cineverse.data.model.content.section.Tv;
-import com.example.cineverse.data.model.content.section.TvResponse;
 import com.example.cineverse.data.model.details.ContentVideos;
 import com.example.cineverse.data.model.details.Credits;
 import com.example.cineverse.data.model.details.Season;
 import com.example.cineverse.data.model.genre.Genre;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -15,9 +15,10 @@ public class TvDetails extends Tv implements ContentDetailsApiResponse {
     private String status;
     private String tagline;
     private List<Season> seasons;
+    @SerializedName("aggregate_credits")
     private Credits credits;
     private ContentVideos videos;
-    private String timestamp;
+    private Long timestamp;
 
     public TvDetails(int id, String name, String overview, String releaseDate,
                      String posterPath, String backdropPath, String originalLanguage,
@@ -91,13 +92,31 @@ public class TvDetails extends Tv implements ContentDetailsApiResponse {
     }
 
     @Override
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
     @Override
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
+    @Override
+    public String toString() {
+        return "TvDetails{" +
+                "\ngenres=" + genres +
+                "\n, status='" + status + '\'' +
+                "\n, tagline='" + tagline + '\'' +
+                "\n, seasons=" + seasons +
+                "\n, credits=" + credits +
+                "\n, videos=" + videos +
+                "\n, timestamp=" + timestamp +
+                "\n, name='" + name + '\'' +
+                "\n, releaseDate='" + releaseDate + '\'' +
+                "\n, id=" + id +
+                "\n, overview='" + overview + '\'' +
+                "\n, posterPath='" + posterPath + '\'' +
+                "\n, backdropPath='" + backdropPath + '\'' +
+                '}';
+    }
 }

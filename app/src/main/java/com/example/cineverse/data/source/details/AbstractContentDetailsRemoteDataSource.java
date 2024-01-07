@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.example.cineverse.data.model.details.section.ContentDetailsApiResponse;
 import com.example.cineverse.data.source.api.TMDBRemoteDataSource;
-import com.example.cineverse.data.source.user.WatchlistFirebaseSource;
 import com.example.cineverse.service.api.DetailsApiService;
 import com.example.cineverse.utils.ServiceLocator;
 

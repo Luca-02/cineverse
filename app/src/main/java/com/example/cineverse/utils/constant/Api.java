@@ -13,8 +13,11 @@ public class Api {
     public static final String DISCOVER = "discover";
     public static final String TRENDING = "trending";
     public static final String GENRE = "genre";
+    public static final String CREDITS = "credits";
+    public static final String AGGREGATE_CREDITS = "aggregate_credits";
+    public static final String VIDEOS = "videos";
+    public static final String SIMILAR = "similar";
     public static final String APPEND_TO_RESPONSE_PARAMETER = "append_to_response";
-    public static final String APPEND_TO_RESPONSE_DEFAULT_PARAMETER = "credits,videos,similar";
 
     public static final String RESPONSE_DATE_FORMAT = "yyyy-mm-dd";
     public static final int STARTING_PAGE = 1;

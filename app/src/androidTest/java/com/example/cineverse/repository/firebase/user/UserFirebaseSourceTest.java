@@ -11,7 +11,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.service.firebase.FirebaseCallback;
-import com.example.cineverse.service.firebase.UserFirebaseDatabaseService;
 import com.example.cineverse.data.source.user.UserFirebaseSource;
 
 import org.junit.Before;
@@ -38,7 +37,7 @@ public class UserFirebaseSourceTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         String inputUsername = "milanesiluca2002";
-        userFirebaseSource.getEmailFromUsername(inputUsername, context,
+        userFirebaseSource.getEmailFromUsername(context, inputUsername,
                 new FirebaseCallback<String>() {
                     @Override
                     public void onCallback(String email) {
@@ -61,7 +60,7 @@ public class UserFirebaseSourceTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         String inputUsername = "gVAAnz1sdReOF6p7lpvJwWoW7Z72";
-        userFirebaseSource.getUserFromUid(inputUsername, context,
+        userFirebaseSource.getUserFromUid(context, inputUsername,
                 new FirebaseCallback<User>() {
                     @Override
                     public void onCallback(User user) {
@@ -87,7 +86,7 @@ public class UserFirebaseSourceTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         String inputUsername = "milanesiluca2002";
-        userFirebaseSource.isUsernameSaved(inputUsername, context,
+        userFirebaseSource.isUsernameSaved(context, inputUsername,
                 new FirebaseCallback<Boolean>() {
                     @Override
                     public void onCallback(Boolean exist) {
@@ -110,7 +109,7 @@ public class UserFirebaseSourceTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         String inputUsername = "test200";
-        userFirebaseSource.isUsernameSaved(inputUsername, context,
+        userFirebaseSource.isUsernameSaved(context, inputUsername,
                 new FirebaseCallback<Boolean>() {
                     @Override
                     public void onCallback(Boolean exist) {

@@ -1,6 +1,5 @@
 package com.example.cineverse.service.firebase;
 
-import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.google.firebase.database.DatabaseReference;
 
 public class WatchlistFirebaseDatabaseService

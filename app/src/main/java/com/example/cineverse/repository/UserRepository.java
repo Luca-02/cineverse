@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.source.user.UserLocalSource;
+import com.example.cineverse.service.NetworkCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -95,16 +96,6 @@ public class UserRepository {
     public boolean isEmailVerified() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         return user != null && user.isEmailVerified();
-    }
-
-    /**
-     * Callback interface for handling network-related errors.
-     */
-    public interface NetworkCallback {
-        /**
-         * Invoked when there is a network error
-         */
-        void onNetworkError();
     }
 
 }

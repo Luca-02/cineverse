@@ -1,16 +1,25 @@
 package com.example.cineverse.view.view_all_content;
 
+import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_ID_TAG;
+import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_TYPE_STRING_TAG;
+
 import android.os.Bundle;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.content.AbstractContent;
+import com.example.cineverse.data.model.content.section.Movie;
+import com.example.cineverse.data.model.content.section.Tv;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.databinding.ActivityViewAllContentBinding;
-import com.example.cineverse.handler.BackPressedHandler;
+import com.example.cineverse.utils.NetworkUtils;
+import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
+import com.example.cineverse.view.details.ContentDetailsActivityOpener;
 
 /**
  * The {@link ViewAllContentActivity} is an activity responsible for displaying a list of content items
@@ -36,6 +45,7 @@ public class ViewAllContentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityViewAllContentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -56,7 +66,7 @@ public class ViewAllContentActivity extends AppCompatActivity {
     /**
      * Retrieves extra data from the intent bundle, including the title string ID and genre.
      */
-    public void getExtras() {
+    private void getExtras() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             titleStringId = bundle.getInt(TITLE_STRING_ID_TAG);
@@ -89,6 +99,10 @@ public class ViewAllContentActivity extends AppCompatActivity {
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
+    }
+
+    public NavController getNavController() {
+        return navController;
     }
 
 }

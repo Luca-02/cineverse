@@ -1,7 +1,6 @@
 package com.example.cineverse.data.model.details.section;
 
 import com.example.cineverse.data.model.content.section.Movie;
-import com.example.cineverse.data.model.content.section.MovieResponse;
 import com.example.cineverse.data.model.details.ContentVideos;
 import com.example.cineverse.data.model.details.Credits;
 import com.example.cineverse.data.model.genre.Genre;
@@ -16,7 +15,7 @@ public class MovieDetails extends Movie implements ContentDetailsApiResponse {
     private int runtime;
     private Credits credits;
     private ContentVideos videos;
-    private String timestamp;
+    private Long timestamp;
 
     public MovieDetails(int id, String name, String overview, String releaseDate,
                         String posterPath, String backdropPath, String originalLanguage,
@@ -90,12 +89,12 @@ public class MovieDetails extends Movie implements ContentDetailsApiResponse {
     }
 
     @Override
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
     @Override
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 

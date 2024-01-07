@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.example.cineverse.R;
 import com.example.cineverse.adapter.OnContentClickListener;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.databinding.ViewAllContentItemBinding;
@@ -98,11 +99,18 @@ public class ContentViewAllAdapter
          * @param content The {@link AbstractContent} item to bind.
          */
         public void bind(AbstractContent content) {
-            String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getBackdropPath();
-            Glide.with(context)
-                    .load(imageUrl)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into((ImageView) binding.imageView);
+            if (content.getPosterPath() == null) {
+                int padding = context.getResources().getDimensionPixelOffset(R.dimen.double_spacing);
+                ((ImageView) binding.imageView).setPadding(padding, padding, padding, padding);
+                ((ImageView) binding.imageView).setImageResource(R.drawable.outline_image_not_supported);
+            } else {
+                ((ImageView) binding.imageView).setPadding(0, 0, 0, 0);
+                String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getBackdropPath();
+                Glide.with(context)
+                        .load(imageUrl)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into((ImageView) binding.imageView);
+            }
             binding.titleTextView.setText(content.getName());
             if (!content.getOverview().isEmpty()) {
                 binding.overviewTextView.setVisibility(View.VISIBLE);
