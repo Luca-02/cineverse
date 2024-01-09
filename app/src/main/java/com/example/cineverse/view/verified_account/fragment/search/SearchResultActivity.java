@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityAuthBinding;
 
-public class searchResultActivity extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity {
     private ActivityAuthBinding binding;
     private NavController navController;
 
