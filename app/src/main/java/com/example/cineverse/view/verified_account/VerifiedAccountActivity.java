@@ -104,7 +104,8 @@ public class VerifiedAccountActivity extends AppCompatActivity {
     }
 
     public void openResultSearchActivity(String query) {
-        // ...
+        navController.navigate(R.id.action_global_searchResultActivity);
+        finish();
     }
 
     /**

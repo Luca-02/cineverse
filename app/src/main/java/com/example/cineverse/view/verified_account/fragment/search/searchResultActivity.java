@@ -1,4 +1,4 @@
-package com.example.cineverse.view.auth;
+package com.example.cineverse.view.verified_account.fragment.search;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,13 +13,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityAuthBinding;
-import com.example.cineverse.handler.BackPressedHandler;
-import com.example.cineverse.view.network_error.NetworkErrorActivity;
-import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
-import com.example.cineverse.view.verify_account.VerifyAccountActivity;
 
-public class AuthActivity extends AppCompatActivity {
-
+public class searchResultActivity extends AppCompatActivity {
     private ActivityAuthBinding binding;
     private NavController navController;
 
@@ -41,10 +36,10 @@ public class AuthActivity extends AppCompatActivity {
         setSupportActionBar(binding.materialToolbar);
         ActionBar actionBar =  getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(null);
+            actionBar.setTitle(query);
         }
     }
-
+    
     private void setNavController() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragmentContainerView);
@@ -53,9 +48,6 @@ public class AuthActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Handles the OnDestinationChangedListener to apply animations based on destination changes.
-     */
     private void handleOnDestinationChangedListener() {
         final Animation enterAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         final Animation exitAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
@@ -84,33 +76,4 @@ public class AuthActivity extends AppCompatActivity {
                 }
         );
     }
-
-    /**
-     * Opens the {@link VerifiedAccountActivity} or {@link VerifyAccountActivity} based on the email verification status.
-     * If the email is verified, it navigates the user to the verified email screen ({@link VerifiedAccountActivity}).
-     * If not, it navigates to the email verification screen ({@link VerifyAccountActivity}).
-     *
-     * @param isEmailVerified A boolean indicating whether the user's email is verified.
-     *                        {@code true} if the email is verified, {@code false} otherwise.
-     */
-    public void openLoggedActivity(boolean isEmailVerified) {
-        if (navController != null) {
-            if (isEmailVerified) {
-                navController.navigate(R.id.action_global_verifiedAccountActivity);
-            } else {
-                navController.navigate(R.id.action_global_verifyAccountActivity);
-            }
-            finish();
-        }
-    }
-
-    /**
-     * Opens the network error activity ({@link NetworkErrorActivity}).
-     */
-    public void openNetworkErrorActivity() {
-        if (navController != null) {
-            navController.navigate(R.id.action_global_networkErrorActivity);
-        }
-    }
-
 }
