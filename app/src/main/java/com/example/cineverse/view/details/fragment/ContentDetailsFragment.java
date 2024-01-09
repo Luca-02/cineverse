@@ -2,12 +2,10 @@ package com.example.cineverse.view.details.fragment;
 
 import static com.example.cineverse.utils.constant.Api.RESPONSE_DATE_FORMAT;
 import static com.example.cineverse.utils.constant.Api.TMDB_IMAGE_ORIGINAL_SIZE_URL;
-import static com.example.cineverse.view.details.fragment.ReviewContentFragment.CONTENT_TAG;
 import static com.example.cineverse.view.details.fragment.ReviewDetailsFragment.USER_REVIEW_TAG;
 import static com.example.cineverse.view.details.fragment.ViewAllCastCrewFragment.CREDITS_TAG;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,19 +23,17 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.cineverse.R;
 import com.example.cineverse.adapter.details.CastAdapter;
 import com.example.cineverse.adapter.details.GenreAdapter;
-import com.example.cineverse.adapter.details.ReviewAdapter;
-import com.example.cineverse.data.model.User;
+import com.example.cineverse.adapter.review.OnReviewClickListener;
+import com.example.cineverse.adapter.review.ReviewAdapter;
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.details.section.ContentDetailsApiResponse;
 import com.example.cineverse.data.model.details.section.MovieDetails;
 import com.example.cineverse.data.model.details.section.TvDetails;
-import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.FragmentContentDetailsBinding;
 import com.example.cineverse.handler.ReviewUiHandler;
 import com.example.cineverse.utils.DateTimeUtils;
-import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.view.details.ContentDetailsActivity;
 import com.example.cineverse.viewmodel.details.AbstractContentDetailsViewModel;
@@ -51,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContentDetailsFragment extends Fragment
-        implements ReviewAdapter.OnReviewClickListener {
+        implements OnReviewClickListener {
 
     private FragmentContentDetailsBinding binding;
     private AbstractContentDetailsViewModel<? extends ContentDetailsApiResponse> contentDetailsViewModel;
@@ -103,8 +99,9 @@ public class ContentDetailsFragment extends Fragment
         }
 
         reviewViewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
-        reviewViewModel.getCurrentUserReviewLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReviewLiveData);
-        reviewViewModel.getRecentContentReviewLiveData().observe(getViewLifecycleOwner(), this::handleRecentContentReviewLiveData);
+        reviewViewModel.getContentRatingLiveData().observe(getViewLifecycleOwner(), this::handleContentRating);
+        reviewViewModel.getCurrentUserReviewLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReview);
+        reviewViewModel.getPagedContentReviewLiveData().observe(this.getViewLifecycleOwner(), this::handlePagedContentReview);
         reviewViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
     }
 
@@ -115,15 +112,15 @@ public class ContentDetailsFragment extends Fragment
             contentDetailsViewModel.fetchDetails(contentId);
         }
         reviewAdapter = new ReviewAdapter(requireContext(), new ArrayList<>(), this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        binding.recentReviewRecyclerView.setLayoutManager(layoutManager);
+        binding.recentReviewRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recentReviewRecyclerView.setAdapter(reviewAdapter);
     }
 
     private void setListener() {
         binding.reviewButton.setOnClickListener(v -> openReviewContentFragment());
-        binding.viewAllCastCrewChip.setOnClickListener(v -> openViewAllCastCrewFragment());
         binding.yourReviewLayout.getRoot().setOnClickListener(v -> openReviewContentFragment());
+        binding.viewAllCastCrewChip.setOnClickListener(v -> openViewAllCastCrewFragment());
+        binding.viewAllReviewChip.setOnClickListener(v -> openViewAllReviewContentFragment());
         binding.materialToolbar.setNavigationOnClickListener(v ->
                 requireActivity().getOnBackPressedDispatcher().onBackPressed());
     }
@@ -195,11 +192,14 @@ public class ContentDetailsFragment extends Fragment
             binding.overviewTextView.setText(content.getOverview());
         }
 
+        if (reviewViewModel.getContentRatingLiveData().getValue() == null) {
+            reviewViewModel.getContentRating(content);
+        }
         if (reviewViewModel.getCurrentUserReviewLiveData().getValue() == null) {
             reviewViewModel.getContentReviewOfCurrentUser(content);
         }
-        if (reviewViewModel.getRecentContentReviewLiveData().getValue() == null) {
-            reviewViewModel.getRecentContentReview(content);
+        if (reviewViewModel.getPagedContentReviewLiveData().getValue() == null) {
+            reviewViewModel.getPagedContentReviewOfContent(content);
         }
     }
 
@@ -224,25 +224,33 @@ public class ContentDetailsFragment extends Fragment
         binding.castRecyclerView.setHasFixedSize(false);
     }
 
-    private void handleCurrentUserReviewLiveData(Review review) {
-        User user = contentDetailsViewModel.getCurrentUser();
-        if (user != null && review != null) {
+    private void handleContentRating(Double rating) {
+        if (rating != null && !rating.isNaN() && !rating.isInfinite()) {
+            binding.ratingContentChip.setVisibility(View.VISIBLE);
+            binding.ratingContentChip.setText(String.valueOf(rating));
+        } else {
+            binding.ratingContentChip.setVisibility(View.GONE);
+        }
+    }
+
+    private void handleCurrentUserReview(UserReview userReview) {
+        if (userReview != null && userReview.getReview() != null) {
             binding.yourReviewTextView.setVisibility(View.VISIBLE);
             binding.yourReviewLayout.getRoot().setVisibility(View.VISIBLE);
-            ReviewUiHandler.setReviewUi(
-                    requireContext(), binding.yourReviewLayout, user, review);
-        } else if (review == null) {
+            ReviewUiHandler.setReviewUi(requireContext(), binding.yourReviewLayout, userReview);
+        } else {
             binding.yourReviewTextView.setVisibility(View.GONE);
             binding.yourReviewLayout.getRoot().setVisibility(View.GONE);
         }
     }
 
-    private void handleRecentContentReviewLiveData(List<UserReview> userReviewList) {
-        reviewAdapter.setData(userReviewList);
+    private void handlePagedContentReview(List<UserReview> userReviewList) {
         if (userReviewList.size() > 0) {
+            reviewAdapter.setData(userReviewList.subList(0, Math.min(userReviewList.size(), 3)));
             binding.recentReviewConstraintLayout.setVisibility(View.VISIBLE);
             binding.recentReviewRecyclerView.setVisibility(View.VISIBLE);
         } else {
+            reviewAdapter.clearData();
             binding.recentReviewConstraintLayout.setVisibility(View.GONE);
             binding.recentReviewRecyclerView.setVisibility(View.GONE);
         }
@@ -305,7 +313,7 @@ public class ContentDetailsFragment extends Fragment
 
     private void openReviewContentFragment() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(CONTENT_TAG, (AbstractContent) contentDetails);
+        bundle.putParcelable(ReviewContentFragment.CONTENT_TAG, (AbstractContent) contentDetails);
         Navigation.findNavController(requireView())
                 .navigate(R.id.action_contentDetailsFragment_to_reviewContentFragment, bundle);
     }
@@ -317,16 +325,19 @@ public class ContentDetailsFragment extends Fragment
                 .navigate(R.id.action_contentDetailsFragment_to_viewAllCastCrewFragment, bundle);
     }
 
-    private void openReviewDetailsFragment(UserReview userReview) {
+    private void openViewAllReviewContentFragment() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(USER_REVIEW_TAG, userReview);
+        bundle.putParcelable(ViewAllReviewContentFragment.CONTENT_TAG, (AbstractContent) contentDetails);
         Navigation.findNavController(requireView())
-                .navigate(R.id.action_contentDetailsFragment_to_reviewDetailsFragment, bundle);
+                .navigate(R.id.action_contentDetailsFragment_to_viewAllReviewContentFragment, bundle);
     }
 
     @Override
     public void onUserReviewClick(UserReview userReview) {
-        openReviewDetailsFragment(userReview);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(USER_REVIEW_TAG, userReview);
+        Navigation.findNavController(requireView())
+                .navigate(R.id.action_contentDetailsFragment_to_reviewDetailsFragment, bundle);
     }
 
 }

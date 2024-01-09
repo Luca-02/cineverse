@@ -1,6 +1,6 @@
 package com.example.cineverse.data.source.review;
 
-import static com.example.cineverse.utils.constant.GlobalConstant.RECENT_LIMIT_COUNT;
+import static com.example.cineverse.utils.constant.GlobalConstant.START_TIMESTAMP_VALUE;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -10,13 +10,12 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.model.content.section.Movie;
-import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
+import com.example.cineverse.service.firebase.FirebaseCallback;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -24,26 +23,31 @@ import java.util.concurrent.TimeUnit;
 public class ReviewFirebaseSourceTest {
 
     private Context context;
+    private ReviewFirebaseSource reviewFirebaseSource;
+    private final CountDownLatch latch = new CountDownLatch(1);
 
     @Before
     public void setup() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-    }
-
-    @Test
-    public void getContentReviewOfUserTest() throws InterruptedException {
-        final CountDownLatch latch = new CountDownLatch(1);
-        ReviewFirebaseSource reviewFirebaseSource = new ReviewFirebaseSource(context, new ReviewFirebaseCallback() {
+        reviewFirebaseSource = new ReviewFirebaseSource(context, new ReviewFirebaseCallback() {
             @Override
-            public void onContentReviewOfUser(Review review) {
-                assertNotNull(review);
-                System.out.println(review);
+            public void onContentRating(Double rating) {
+                assertNotNull(rating);
+                System.out.println(rating);
                 latch.countDown();
             }
 
             @Override
-            public void onAddedContentReviewOfUser(boolean added) {
-                assertTrue(added);
+            public void onContentReviewOfUser(UserReview userReview) {
+                assertNotNull(userReview);
+                System.out.println(userReview);
+                latch.countDown();
+            }
+
+            @Override
+            public void onAddedContentReviewOfUser(UserReview userReview) {
+                assertNotNull(userReview);
+                System.out.println(userReview);
                 latch.countDown();
             }
 
@@ -54,20 +58,15 @@ public class ReviewFirebaseSourceTest {
             }
 
             @Override
-            public void onRecentContentReview(List<UserReview> recentReviews) {
-                assertNotNull(recentReviews);
-                System.out.println(recentReviews);
-                latch.countDown();
-            }
-
-            @Override
-            public void onContentReviewOfContent(List<UserReview> userReviewList, int pageSize, long lastTimestamp) {
+            public void onPagedContentReviewOfContent(List<UserReview> userReviewList, long lastTimestamp) {
                 assertNotNull(userReviewList);
+                System.out.println("-----");
+                System.out.println(userReviewList.size());
                 for (UserReview i : userReviewList) {
-                    System.out.println(i.getReview().getTimestamp() + " - " + i.getReview().getReview());
+                    System.out.println(i.getUser() + " - " + i.getReview());
                 }
-                System.out.println(pageSize);
                 System.out.println(lastTimestamp);
+                System.out.println("-----");
                 latch.countDown();
             }
 
@@ -77,7 +76,10 @@ public class ReviewFirebaseSourceTest {
                 latch.countDown();
             }
         });
+    }
 
+    @Test
+    public void getContentReviewOfUserTest() throws InterruptedException {
         User user = new User("ztat6FiSrNSs3fxfx0GmXRKMBlr2", null, null, null);
         Movie movie = new Movie(238, null, null, null,
                 null, null, null);
@@ -86,101 +88,33 @@ public class ReviewFirebaseSourceTest {
     }
 
     @Test
-    public void getRecentContentReview() throws InterruptedException {
-        final CountDownLatch latch = new CountDownLatch(1);
-        ReviewFirebaseSource reviewFirebaseSource = new ReviewFirebaseSource(context, new ReviewFirebaseCallback() {
-            @Override
-            public void onContentReviewOfUser(Review review) {
-                assertNotNull(review);
-                System.out.println(review);
-                latch.countDown();
-            }
-
-            @Override
-            public void onAddedContentReviewOfUser(boolean added) {
-                assertTrue(added);
-                latch.countDown();
-            }
-
-            @Override
-            public void onRemovedContentReviewOfUser(boolean removed) {
-                assertTrue(removed);
-                latch.countDown();
-            }
-
-            @Override
-            public void onRecentContentReview(List<UserReview> recentReviews) {
-                assertNotNull(recentReviews);
-                for (UserReview i : recentReviews) {
-                    System.out.println(i.getReview().getTimestamp() + " - " + i.getReview().getReview());
-                }
-                latch.countDown();
-            }
-
-            @Override
-            public void onContentReviewOfContent(List<UserReview> userReviewList, int pageSize, long lastTimestamp) {
-                assertNotNull(userReviewList);
-                for (UserReview i : userReviewList) {
-                    System.out.println(i.getReview().getTimestamp() + " - " + i.getReview().getReview());
-                }
-                System.out.println(pageSize);
-                System.out.println(lastTimestamp);
-                latch.countDown();
-            }
-
-            @Override
-            public void onNetworkUnavailable() {
-                System.out.println("NetworkUnavailable");
-                latch.countDown();
-            }
-        });
-
+    public void getContentReviewOfContentTest() throws InterruptedException {
         Movie movie = new Movie(238, null, null, null,
                 null, null, null);
-        reviewFirebaseSource.getRecentContentReview(movie, RECENT_LIMIT_COUNT);
+        reviewFirebaseSource.getPagedContentReviewOfContent(movie, 5, START_TIMESTAMP_VALUE);
         latch.await(5, TimeUnit.SECONDS);
     }
 
     @Test
-    public void getContentReviewOfContentTest() throws InterruptedException {
-        final CountDownLatch latch = new CountDownLatch(1);
-        ReviewFirebaseSource reviewFirebaseSource = new ReviewFirebaseSource(context, new ReviewFirebaseCallback() {
-            @Override
-            public void onContentReviewOfUser(Review review) {
-                assertNotNull(review);
-                System.out.println(review);
-                latch.countDown();
-            }
+    public void getContentRatingTest() throws InterruptedException {
+        Movie movie = new Movie(238, null, null, null,
+                null, null, null);
+        reviewFirebaseSource.getContentRating(movie);
+        latch.await(5, TimeUnit.SECONDS);
+    }
 
+    @Test
+    public void addLikeOfUserToContentReviewTest() throws InterruptedException {
+        User user1 = new User("test", null, null, null);
+        User user2 = new User("ztat6FiSrNSs3fxfx0GmXRKMBlr2", null, null, null);
+        Movie movie = new Movie(238, null, null, null,
+                null, null, null);
+        UserReview userReview = new UserReview(user2, null);
+        reviewFirebaseSource.addLikeOfUserToContentReview(user1, movie, userReview, new FirebaseCallback<Boolean>() {
             @Override
-            public void onAddedContentReviewOfUser(boolean added) {
-                assertTrue(added);
-                latch.countDown();
-            }
-
-            @Override
-            public void onRemovedContentReviewOfUser(boolean removed) {
-                assertTrue(removed);
-                latch.countDown();
-            }
-
-            @Override
-            public void onRecentContentReview(List<UserReview> recentReviews) {
-                assertNotNull(recentReviews);
-                System.out.println(recentReviews);
-                latch.countDown();
-            }
-
-            @Override
-            public void onContentReviewOfContent(List<UserReview> userReviewList, int pageSize, long lastTimestamp) {
-                assertNotNull(userReviewList);
-                System.out.println("-----");
-                for (UserReview i : userReviewList) {
-                    System.out.println(i.getReview().getTimestamp() + " - " + i.getUserId());
-                }
-                System.out.println(pageSize);
-                System.out.println(lastTimestamp);
-                System.out.println("-----");
+            public void onCallback(Boolean data) {
+                assertNotNull(data);
+                System.out.println(data);
                 latch.countDown();
             }
 
@@ -190,10 +124,30 @@ public class ReviewFirebaseSourceTest {
                 latch.countDown();
             }
         });
+        latch.await(5, TimeUnit.SECONDS);
+    }
 
+    @Test
+    public void removeLikeOfUserToContentReviewTest() throws InterruptedException {
+        User user1 = new User("test2", null, null, null);
+        User user2 = new User("ztat6FiSrNSs3fxfx0GmXRKMBlr2", null, null, null);
         Movie movie = new Movie(238, null, null, null,
                 null, null, null);
-        reviewFirebaseSource.getContentReviewOfContent(movie, 2, 2);
+        UserReview userReview = new UserReview(user2, null);
+        reviewFirebaseSource.removeLikeOfUserToContentReview(user1, movie, userReview, new FirebaseCallback<Boolean>() {
+            @Override
+            public void onCallback(Boolean data) {
+                assertNotNull(data);
+                System.out.println(data);
+                latch.countDown();
+            }
+
+            @Override
+            public void onNetworkUnavailable() {
+                System.out.println("NetworkUnavailable");
+                latch.countDown();
+            }
+        });
         latch.await(5, TimeUnit.SECONDS);
     }
 

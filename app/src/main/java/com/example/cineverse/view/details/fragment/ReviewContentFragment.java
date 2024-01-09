@@ -17,13 +17,16 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.review.Review;
+import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.FragmentReviewContentBinding;
 import com.example.cineverse.utils.DateTimeUtils;
 import com.example.cineverse.utils.constant.GlobalConstant;
@@ -63,8 +66,6 @@ public class ReviewContentFragment extends Fragment {
         setViewModel();
         setContentUi();
         setListener();
-        binding.materialToolbar.setNavigationOnClickListener(v ->
-                requireActivity().getOnBackPressedDispatcher().onBackPressed());
     }
 
     @Override
@@ -89,8 +90,10 @@ public class ReviewContentFragment extends Fragment {
     private void setViewModel() {
         viewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
         viewModel.getCurrentUserReviewLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReview);
-        viewModel.getAddedReviewLiveData().observe(getViewLifecycleOwner(), this::handleActionReview);
-        viewModel.getRemovedReviewLiveData().observe(getViewLifecycleOwner(), this::handleActionReview);
+        viewModel.getAddedReviewLiveData().observe(getViewLifecycleOwner(), added ->
+                handleActionReview(added, viewModel.getAddedReviewLiveData()));
+        viewModel.getRemovedReviewLiveData().observe(getViewLifecycleOwner(), removed ->
+                handleActionReview(removed, viewModel.getRemovedReviewLiveData()));
         viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
     }
 
@@ -159,7 +162,6 @@ public class ReviewContentFragment extends Fragment {
         binding.materialToolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.publicReview) {
                 viewModel.addContentReviewOfCurrentUser(content, oldReview, review);
-                requireActivity().getOnBackPressedDispatcher().onBackPressed();
                 return true;
             } else if (item.getItemId() == R.id.deleteReview) {
                 openDeleteDialog();
@@ -167,18 +169,21 @@ public class ReviewContentFragment extends Fragment {
             }
             return false;
         });
+
+        binding.materialToolbar.setNavigationOnClickListener(v ->
+                requireActivity().getOnBackPressedDispatcher().onBackPressed());
     }
 
-    private void handleCurrentUserReview(Review review) {
+    private void handleCurrentUserReview(UserReview userReview) {
         oldReview = null;
-        if (review == null) {
+        if (userReview == null || userReview.getReview() == null) {
             this.review = Review.createDefaultReview();
         } else {
-            oldReview = review.clone();
-            this.review = review;
+            oldReview = userReview.getReview().clone();
+            review = userReview.getReview();
         }
-        setRatingStar(this.review.getRating());
-        setReviewText(this.review.getReview());
+        setRatingStar(review.getRating());
+        setReviewText(review.getReview());
         handleButton();
     }
 
@@ -201,12 +206,16 @@ public class ReviewContentFragment extends Fragment {
         item.setEnabled(review.getRating() != 0 && !review.getReview().isEmpty());
     }
 
-    private void handleActionReview(Boolean actionExecuted) {
-        if (!actionExecuted) {
-            Snackbar.make(binding.getRoot(),
-                    R.string.unexpected_error, Snackbar.LENGTH_SHORT).show();
-        } else {
-            onDestroy();
+    private void handleActionReview(Boolean actionExecuted, MutableLiveData<Boolean> addedReviewLiveData) {
+        if (actionExecuted != null) {
+            if (!actionExecuted) {
+                Snackbar.make(binding.getRoot(),
+                        R.string.unexpected_error, Snackbar.LENGTH_SHORT).show();
+            } else {
+                viewModel.getContentRating(content);
+                Navigation.findNavController(requireView()).popBackStack();
+                addedReviewLiveData.postValue(null);
+            }
         }
     }
 
@@ -218,8 +227,7 @@ public class ReviewContentFragment extends Fragment {
 
                 })
                 .setPositiveButton(getString(R.string.delete_), (dialog, which) -> {
-                    viewModel.removeContentReviewOfCurrentUser(content);
-                    requireActivity().getOnBackPressedDispatcher().onBackPressed();
+                    viewModel.removeContentReviewOfCurrentUser(content, review);
                 })
                 .show();
     }

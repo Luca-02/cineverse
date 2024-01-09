@@ -21,6 +21,10 @@ public class User implements Parcelable {
 
     public User() {}
 
+    public User(String uid) {
+        this.uid = uid;
+    }
+
     public User(FirebaseUser firebaseUser, String username) {
         this.uid = firebaseUser.getUid();
         this.username = username;

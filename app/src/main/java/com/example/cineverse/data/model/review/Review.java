@@ -1,6 +1,7 @@
 package com.example.cineverse.data.model.review;
 
-import android.content.Context;
+import static com.example.cineverse.utils.constant.GlobalConstant.TIMESTAMP_DATE_FORMAT;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -48,8 +49,8 @@ public class Review implements Cloneable, Parcelable {
         this.timestamp = timestamp;
     }
 
-    public String getTimeAgoString(Context context) {
-        return DateTimeUtils.formatTimeAgo(context, timestamp);
+    public String timestampString() {
+        return DateTimeUtils.formatDateFromTimestamp(TIMESTAMP_DATE_FORMAT, timestamp);
     }
 
     public static Review createDefaultReview() {

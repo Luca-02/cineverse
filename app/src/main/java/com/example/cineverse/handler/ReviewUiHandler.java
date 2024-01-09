@@ -16,47 +16,12 @@ public class ReviewUiHandler {
 
     public static void setReviewUi(
             Context context,
-            UserFirebaseSource userFirebaseSource,
             ReviewItemLayoutBinding binding,
             UserReview userReview) {
         if (userReview != null) {
-            loadUserDetails(context, userFirebaseSource, binding, userReview.getUserId());
-            setReviewDetails(context, binding, userReview.getReview());
+            displayUserDetails(context, binding, userReview.getUser());
+            setReviewDetails(binding, userReview.getReview());
         }
-    }
-
-    public static void setReviewUi(
-            Context context,
-            ReviewItemLayoutBinding binding,
-            User user,
-            Review review) {
-        loadUserDetails(context, binding, user);
-        setReviewDetails(context, binding, review);
-    }
-
-    private static void loadUserDetails(
-            Context context,
-            UserFirebaseSource userFirebaseSource,
-            ReviewItemLayoutBinding binding,
-            String userId) {
-        userFirebaseSource.getUserFromUid(context, userId, new FirebaseCallback<User>() {
-            @Override
-            public void onCallback(User user) {
-                displayUserDetails(context, binding, user);
-            }
-
-            @Override
-            public void onNetworkUnavailable() {
-                // Handle network unavailable case if needed
-            }
-        });
-    }
-
-    private static void loadUserDetails(
-            Context context,
-            ReviewItemLayoutBinding binding,
-            User user) {
-        displayUserDetails(context, binding, user);
     }
 
     private static void displayUserDetails(
@@ -74,11 +39,10 @@ public class ReviewUiHandler {
     }
 
     private static void setReviewDetails(
-            Context context,
             ReviewItemLayoutBinding binding,
             Review review) {
         if (review != null) {
-            binding.reviewDateTextView.setText(review.getTimeAgoString(context));
+            binding.reviewDateTextView.setText(review.timestampString());
             binding.ratingChip.setText(String.valueOf(review.getRating()));
             binding.reviewTextView.setText(review.getReview());
         }

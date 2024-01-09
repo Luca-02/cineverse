@@ -88,7 +88,6 @@ public abstract class AbstractContentDetailsViewModel<T extends ContentDetailsAp
     }
 
     public void getTimestampForContentInWatchlist(AbstractContent content) {
-        Log.d(GlobalConstant.TAG, "getTimestampForContentInWatchlist: ");
         watchlistRepository.getTimestampForContentInWatchlist(content);
     }
 

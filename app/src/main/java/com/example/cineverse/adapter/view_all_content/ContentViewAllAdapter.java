@@ -54,7 +54,7 @@ public class ContentViewAllAdapter
      *
      * @param newContentList The new list of {@link AbstractContent} items.
      */
-    public void setData(List<? extends AbstractContent> newContentList) {
+    public void addPagingData(List<? extends AbstractContent> newContentList) {
         int start = contentList.size();
         contentList.addAll(newContentList);
         notifyItemRangeInserted(start, contentList.size());

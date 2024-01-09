@@ -16,6 +16,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 /**
  * The {@link UserFirebaseSource} class provides methods to interact with the Firebase Realtime Database
  * for user-related operations. It extends the functionality of {@link UserFirebaseDatabaseService}.

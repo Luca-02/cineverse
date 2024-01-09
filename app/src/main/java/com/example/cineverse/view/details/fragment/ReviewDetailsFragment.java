@@ -39,8 +39,7 @@ public class ReviewDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getExtras();
         if (userReview != null) {
-            ReviewUiHandler.setReviewUi(
-                    requireContext(), new UserFirebaseSource(requireContext()), binding.reviewLayout, userReview);
+            ReviewUiHandler.setReviewUi(requireContext(), binding.reviewLayout, userReview);
             binding.reviewLayout.getRoot().setClickable(false);
             binding.reviewLayout.reviewTextView.setMaxLines(Integer.MAX_VALUE);
             binding.reviewLayout.reviewTextView.setEllipsize(null);

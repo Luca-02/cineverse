@@ -31,6 +31,13 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_contentDetailsFragment_to_viewAllReviewContentFragment"
+            app:destination="@id/viewAllReviewContentFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/reviewContentFragment"
@@ -42,6 +49,24 @@
         android:name="com.example.cineverse.view.details.fragment.ReviewDetailsFragment"
         android:label="fragment_review_details"
         tools:layout="@layout/fragment_review_details" />
+    <fragment
+        android:id="@+id/viewAllCastCrewFragment"
+        android:name="com.example.cineverse.view.details.fragment.ViewAllCastCrewFragment"
+        android:label="fragment_view_all_cast_crew"
+        tools:layout="@layout/fragment_view_all_cast_crew" />
+    <fragment
+        android:id="@+id/viewAllReviewContentFragment"
+        android:name="com.example.cineverse.view.details.fragment.ViewAllReviewContentFragment"
+        android:label="fragment_view_all_review_content"
+        tools:layout="@layout/fragment_view_all_review_content" >
+        <action
+            android:id="@+id/action_viewAllReviewContentFragment_to_reviewDetailsFragment"
+            app:destination="@id/reviewDetailsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
 
     <activity
         android:id="@+id/networkErrorActivity"
@@ -52,9 +77,4 @@
     <action
         android:id="@+id/action_global_networkErrorActivity"
         app:destination="@id/networkErrorActivity" />
-    <fragment
-        android:id="@+id/viewAllCastCrewFragment"
-        android:name="com.example.cineverse.view.details.fragment.ViewAllCastCrewFragment"
-        android:label="fragment_view_all_cast_crew"
-        tools:layout="@layout/fragment_view_all_cast_crew" />
 </navigation>

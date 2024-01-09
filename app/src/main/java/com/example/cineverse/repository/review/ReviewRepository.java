@@ -1,16 +1,15 @@
 package com.example.cineverse.repository.review;
 
-import static com.example.cineverse.utils.constant.GlobalConstant.RECENT_LIMIT_COUNT;
-
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
-import com.example.cineverse.data.source.review.ReviewFirebaseSource;
-import com.example.cineverse.utils.DateTimeUtils;
 import com.example.cineverse.data.source.review.ReviewFirebaseCallback;
+import com.example.cineverse.data.source.review.ReviewFirebaseSource;
 
 import java.util.List;
 
@@ -27,6 +26,10 @@ public class ReviewRepository
         reviewFirebaseSource = new ReviewFirebaseSource(context, this);
     }
 
+    public void getContentRating(AbstractContent content) {
+        reviewFirebaseSource.getContentRating(content);
+    }
+
     public void getContentReviewOfCurrentUser(AbstractContent content) {
         if (user != null) {
             reviewFirebaseSource.getContentReviewOfUser(user, content);
@@ -35,29 +38,33 @@ public class ReviewRepository
 
     public void addContentReviewOfCurrentUser(AbstractContent content, Review review) {
         if (user != null) {
-            review.setTimestamp(DateTimeUtils.getCurrentTimestamp());
             reviewFirebaseSource.addContentReviewOfUser(user, content, review);
         }
     }
 
-    public void removeContentReviewOfCurrentUser(AbstractContent content) {
+    public void removeContentReviewOfCurrentUser(AbstractContent content, @NonNull Review review) {
         if (user != null) {
-            reviewFirebaseSource.removeContentReviewOfUser(user, content);
+            reviewFirebaseSource.removeContentReviewOfUser(user, content, review);
         }
     }
 
-    public void getRecentContentReview(AbstractContent content) {
-        reviewFirebaseSource.getRecentContentReview(content, RECENT_LIMIT_COUNT);
+    public void getPagedContentReviewOfContent(AbstractContent content, int pageSize, long lastTimestamp) {
+        reviewFirebaseSource.getPagedContentReviewOfContent(content, pageSize, lastTimestamp);
     }
 
     @Override
-    public void onContentReviewOfUser(Review review) {
-        firebaseCallback.onContentReviewOfUser(review);
+    public void onContentRating(Double rating) {
+        firebaseCallback.onContentRating(rating);
     }
 
     @Override
-    public void onAddedContentReviewOfUser(boolean added) {
-        firebaseCallback.onAddedContentReviewOfUser(added);
+    public void onContentReviewOfUser(UserReview userReview) {
+        firebaseCallback.onContentReviewOfUser(userReview);
+    }
+
+    @Override
+    public void onAddedContentReviewOfUser(UserReview userReview) {
+        firebaseCallback.onAddedContentReviewOfUser(userReview);
     }
 
     @Override
@@ -66,13 +73,8 @@ public class ReviewRepository
     }
 
     @Override
-    public void onRecentContentReview(List<UserReview> recentReviews) {
-        firebaseCallback.onRecentContentReview(recentReviews);
-    }
-
-    @Override
-    public void onContentReviewOfContent(List<UserReview> userReviewList, int pageSize, long lastTimestamp) {
-        firebaseCallback.onContentReviewOfContent(userReviewList, pageSize, lastTimestamp);
+    public void onPagedContentReviewOfContent(List<UserReview> userReviewList, long lastTimestamp) {
+        firebaseCallback.onPagedContentReviewOfContent(userReviewList, lastTimestamp);
     }
 
     @Override

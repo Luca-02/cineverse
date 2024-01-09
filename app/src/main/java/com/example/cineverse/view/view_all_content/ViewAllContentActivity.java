@@ -1,25 +1,19 @@
 package com.example.cineverse.view.view_all_content;
 
-import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_ID_TAG;
-import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_TYPE_STRING_TAG;
-
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
-import com.example.cineverse.data.model.content.AbstractContent;
-import com.example.cineverse.data.model.content.section.Movie;
-import com.example.cineverse.data.model.content.section.Tv;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.databinding.ActivityViewAllContentBinding;
-import com.example.cineverse.utils.NetworkUtils;
-import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
-import com.example.cineverse.view.details.ContentDetailsActivityOpener;
+import com.example.cineverse.utils.constant.GlobalConstant;
 
 /**
  * The {@link ViewAllContentActivity} is an activity responsible for displaying a list of content items
@@ -55,12 +49,6 @@ public class ViewAllContentActivity extends AppCompatActivity {
         getWindow().setNavigationBarColor(android.R.attr.colorBackground);
         binding.materialToolbar.setNavigationOnClickListener(
                 view -> getOnBackPressedDispatcher().onBackPressed());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ViewAllContentController.getInstance().clearParameters();
     }
 
     /**

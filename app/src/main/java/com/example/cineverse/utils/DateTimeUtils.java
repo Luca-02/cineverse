@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * The {@link DateTimeUtils} class provides utility methods for dates and time.
@@ -40,6 +41,7 @@ public class DateTimeUtils {
     public static String formatDateFromTimestamp(String dateFormatString, long timestamp) {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormatString);
+        sdf.setTimeZone(TimeZone.getDefault());
         Date resultdate = new Date(timestamp);
         return sdf.format(resultdate);
     }
@@ -66,10 +68,6 @@ public class DateTimeUtils {
         } else {
             return formatQuantity(context, duration.toDays() / 365, R.string.year_ago, R.string.years_ago);
         }
-    }
-
-    public static long getCurrentTimestamp() {
-        return System.currentTimeMillis();
     }
 
     private static String formatQuantity(Context context, long value, int singularResourceId, int pluralResourceId) {

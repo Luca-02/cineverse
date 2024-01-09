@@ -1,5 +1,9 @@
 package com.example.cineverse.viewmodel.review;
 
+import static com.example.cineverse.utils.constant.GlobalConstant.RECENT_LIMIT_COUNT;
+import static com.example.cineverse.utils.constant.GlobalConstant.REVIEW_PAGE_COUNT;
+import static com.example.cineverse.utils.constant.GlobalConstant.START_TIMESTAMP_VALUE;
+
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -12,6 +16,7 @@ import com.example.cineverse.data.source.review.ReviewFirebaseCallback;
 import com.example.cineverse.repository.review.ReviewRepository;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewViewModel
@@ -19,18 +24,30 @@ public class ReviewViewModel
         implements ReviewFirebaseCallback {
 
     private final ReviewRepository reviewRepository;
-    private MutableLiveData<Review> currentUserReviewLiveData;
+    private MutableLiveData<Double> contentRatingLiveData;
+    private MutableLiveData<UserReview> currentUserReviewLiveData;
     private MutableLiveData<Boolean> addedReviewLiveData;
     private MutableLiveData<Boolean> removedReviewLiveData;
-    private MutableLiveData<List<UserReview>> recentContentReviewLiveData;
+    private MutableLiveData<List<UserReview>> pagedContentReviewLiveData;
+    private long lastTimestamp;
+    private boolean isLoading;
 
     public ReviewViewModel(@NonNull Application application) {
         super(application);
         reviewRepository = new ReviewRepository(
                 application.getApplicationContext(), userRepository.getCurrentUser(), this);
+        lastTimestamp = START_TIMESTAMP_VALUE;
+        isLoading = false;
     }
 
-    public MutableLiveData<Review> getCurrentUserReviewLiveData() {
+    public MutableLiveData<Double> getContentRatingLiveData() {
+        if (contentRatingLiveData == null) {
+            contentRatingLiveData = new MutableLiveData<>();
+        }
+        return contentRatingLiveData;
+    }
+
+    public MutableLiveData<UserReview> getCurrentUserReviewLiveData() {
         if (currentUserReviewLiveData == null) {
             currentUserReviewLiveData = new MutableLiveData<>();
         }
@@ -51,11 +68,31 @@ public class ReviewViewModel
         return removedReviewLiveData;
     }
 
-    public MutableLiveData<List<UserReview>> getRecentContentReviewLiveData() {
-        if (recentContentReviewLiveData == null) {
-            recentContentReviewLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<UserReview>> getPagedContentReviewLiveData() {
+        if (pagedContentReviewLiveData == null) {
+            pagedContentReviewLiveData = new MutableLiveData<>();
         }
-        return recentContentReviewLiveData;
+        return pagedContentReviewLiveData;
+    }
+
+    public long getLastTimestamp() {
+        return lastTimestamp;
+    }
+
+    public void setLastTimestamp(long lastTimestamp) {
+        this.lastTimestamp = lastTimestamp;
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+    }
+
+    public void getContentRating(AbstractContent content) {
+        reviewRepository.getContentRating(content);
     }
 
     public void getContentReviewOfCurrentUser(AbstractContent content) {
@@ -65,27 +102,41 @@ public class ReviewViewModel
     public void addContentReviewOfCurrentUser(AbstractContent content, Review oldReview, Review newReview) {
         if (!newReview.equals(oldReview)) {
             reviewRepository.addContentReviewOfCurrentUser(content, newReview);
-            getRecentContentReview(content);
+            updateContentReviewOfContent(content);
         }
     }
 
-    public void getRecentContentReview(AbstractContent content) {
-        reviewRepository.getRecentContentReview(content);
+    public void removeContentReviewOfCurrentUser(AbstractContent content, @NonNull Review review) {
+        reviewRepository.removeContentReviewOfCurrentUser(content, review);
+        updateContentReviewOfContent(content);
     }
 
-    public void removeContentReviewOfCurrentUser(AbstractContent content) {
-        reviewRepository.removeContentReviewOfCurrentUser(content);
-        getRecentContentReview(content);
+    public void getPagedContentReviewOfContent(AbstractContent content) {
+        long timestamp = getLastTimestamp();
+        int pageSize = (timestamp == START_TIMESTAMP_VALUE) ? RECENT_LIMIT_COUNT : REVIEW_PAGE_COUNT;
+        reviewRepository.getPagedContentReviewOfContent(content, pageSize, getLastTimestamp());
+    }
+
+    private void updateContentReviewOfContent(AbstractContent content) {
+        setLastTimestamp(START_TIMESTAMP_VALUE);
+        getPagedContentReviewLiveData().setValue(new ArrayList<>());
+        getPagedContentReviewOfContent(content);
     }
 
     @Override
-    public void onContentReviewOfUser(Review review) {
-        getCurrentUserReviewLiveData().postValue(review);
+    public void onContentRating(Double rating) {
+        contentRatingLiveData.postValue(rating);
     }
 
     @Override
-    public void onAddedContentReviewOfUser(boolean added) {
-        getAddedReviewLiveData().postValue(added);
+    public void onContentReviewOfUser(UserReview userReview) {
+        getCurrentUserReviewLiveData().postValue(userReview);
+    }
+
+    @Override
+    public void onAddedContentReviewOfUser(UserReview userReview) {
+        getAddedReviewLiveData().postValue(userReview != null);
+        getCurrentUserReviewLiveData().postValue(userReview);
     }
 
     @Override
@@ -97,15 +148,18 @@ public class ReviewViewModel
     }
 
     @Override
-    public void onRecentContentReview(List<UserReview> userReviewList) {
+    public void onPagedContentReviewOfContent(List<UserReview> userReviewList, long lastTimestamp) {
         if (userReviewList != null) {
-            getRecentContentReviewLiveData().postValue(userReviewList);
+            setLastTimestamp(lastTimestamp);
+            List<UserReview> list = getPagedContentReviewLiveData().getValue();
+            if (list == null) {
+                list = new ArrayList<>(userReviewList);
+                getPagedContentReviewLiveData().postValue(list);
+            } else {
+                list.addAll(userReviewList);
+                getPagedContentReviewLiveData().postValue(list);
+            }
         }
-    }
-
-    @Override
-    public void onContentReviewOfContent(List<UserReview> userReviewList, int pageSize, long lastTimestamp) {
-
     }
 
 }
