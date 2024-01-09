@@ -14,7 +14,7 @@
         android:id="@+id/searchResultActivity"
         android:name="com.example.cineverse.view.verified_account.VerifiedAccountActivity"
         android:label="SearchResult"
-        tools:layout="@layout/search_result" />
+        tools:layout="@layout/activity_search_result" />
 
 
     <activity
