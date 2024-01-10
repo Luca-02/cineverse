@@ -13,19 +13,21 @@ import com.google.gson.annotations.SerializedName;
 public class Movie extends AbstractContent {
 
     @SerializedName("title")
-    private String name;
+    protected String name;
     @SerializedName("release_date")
-    private String releaseDate;
+    protected String releaseDate;
 
-    public Movie(int id, String name, String overview, String releaseDate, String posterPath, String backdropPath) {
-        super(id, overview, posterPath, backdropPath);
+    public Movie(int id, String name, String overview, String releaseDate,
+                 String posterPath, String backdropPath, String originalLanguage) {
+        super(id, overview, posterPath, backdropPath, originalLanguage);
         this.name = name;
         this.releaseDate = releaseDate;
     }
 
     public Movie(ContentEntityDb entityDb) {
         this(entityDb.getId(), entityDb.getName(), entityDb.getOverview(),
-                entityDb.getReleaseDate(), entityDb.getPosterPath(), entityDb.getBackdropPath());
+                entityDb.getReleaseDate(), entityDb.getPosterPath(),
+                entityDb.getBackdropPath(), entityDb.getOriginalLanguage());
     }
 
     @Override

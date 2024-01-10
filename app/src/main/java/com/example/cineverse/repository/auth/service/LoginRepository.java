@@ -3,7 +3,7 @@ package com.example.cineverse.repository.auth.service;
 import android.content.Context;
 
 import com.example.cineverse.repository.auth.AbstractAuthRepository;
-import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.service.firebase.FirebaseCallback;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
@@ -15,7 +15,7 @@ import org.apache.commons.validator.routines.EmailValidator;
  * The {@link LoginRepository} class extends {@link AbstractAuthRepository} and provides authentication functionality
  * for user login. It validates the user input, performs login operations using Firebase
  * authentication services, and handles success and failure scenarios. Errors and authentication
- * status are communicated through the provided {@link AuthCallback}.
+ * status are communicated through the provided {@link AuthErrorCallback}.
  */
 public class LoginRepository
         extends AbstractAuthRepository {
@@ -32,7 +32,7 @@ public class LoginRepository
     /**
      * Performs user login with the provided account and password. Validates the account format,
      * initiates the login operation, and communicates errors or success through the provided
-     * {@link AuthCallback}.
+     * {@link AuthErrorCallback}.
      *
      * @param account   User's account (username or email) for login.
      * @param password  User's password for login.
@@ -42,8 +42,8 @@ public class LoginRepository
             if (account.contains("@")) {
                 authCallback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
             } else {
-                firebaseSource.getEmailFromUsername(account, context,
-                        new UserFirebaseDatabaseServices.FirebaseCallback<String>() {
+                firebaseSource.getEmailFromUsername(context, account,
+                        new FirebaseCallback<String>() {
                             @Override
                             public void onCallback(String email) {
                                 if (email != null) {
@@ -55,7 +55,7 @@ public class LoginRepository
 
                             @Override
                             public void onNetworkUnavailable() {
-                                authCallback.onNetworkError();
+                                authCallback.onNetworkUnavailable();
                             }
                         });
             }
@@ -93,7 +93,7 @@ public class LoginRepository
         if (exception instanceof FirebaseAuthInvalidUserException) {
             authCallback.onError(Error.ERROR_NOT_FOUND_DISABLED);
         } else if (exception instanceof FirebaseNetworkException) {
-            authCallback.onNetworkError();
+            authCallback.onNetworkUnavailable();
         } else {
             authCallback.onError(Error.ERROR_WRONG_PASSWORD);
         }

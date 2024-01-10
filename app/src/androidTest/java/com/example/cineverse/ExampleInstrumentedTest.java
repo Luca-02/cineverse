@@ -1,20 +1,17 @@
 package com.example.cineverse;
 
+import static org.junit.Assert.assertTrue;
+
 import android.content.Context;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-
-import com.example.cineverse.service.api.MovieApiService;
-import com.example.cineverse.utils.ServiceLocator;
 
 import java.util.Locale;
 
@@ -36,7 +33,7 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void testGetLocalRegion() {
+    public void getLocalRegionTest() {
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String ISO2 = manager.getSimCountryIso();
         String ISO3 = new Locale("", ISO2).getISO3Country();

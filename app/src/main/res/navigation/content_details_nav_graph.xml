@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_details_nav_graph"
+    app:startDestination="@id/contentDetailsFragment">
+
+    <fragment
+        android:id="@+id/contentDetailsFragment"
+        android:name="com.example.cineverse.view.details.fragment.ContentDetailsFragment"
+        android:label="fragment_content_details"
+        tools:layout="@layout/fragment_content_details" >
+        <action
+            android:id="@+id/action_contentDetailsFragment_to_reviewContentFragment"
+            app:destination="@id/reviewContentFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_contentDetailsFragment_to_reviewDetailsFragment"
+            app:destination="@id/reviewDetailsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_contentDetailsFragment_to_viewAllCastCrewFragment"
+            app:destination="@id/viewAllCastCrewFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_contentDetailsFragment_to_viewAllReviewContentFragment"
+            app:destination="@id/viewAllReviewContentFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/reviewContentFragment"
+        android:name="com.example.cineverse.view.details.fragment.ReviewContentFragment"
+        android:label="fragment_review_content"
+        tools:layout="@layout/fragment_review_content" />
+    <fragment
+        android:id="@+id/reviewDetailsFragment"
+        android:name="com.example.cineverse.view.details.fragment.ReviewDetailsFragment"
+        android:label="fragment_review_details"
+        tools:layout="@layout/fragment_review_details" />
+    <fragment
+        android:id="@+id/viewAllCastCrewFragment"
+        android:name="com.example.cineverse.view.details.fragment.ViewAllCastCrewFragment"
+        android:label="fragment_view_all_cast_crew"
+        tools:layout="@layout/fragment_view_all_cast_crew" />
+    <fragment
+        android:id="@+id/viewAllReviewContentFragment"
+        android:name="com.example.cineverse.view.details.fragment.ViewAllReviewContentFragment"
+        android:label="fragment_view_all_review_content"
+        tools:layout="@layout/fragment_view_all_review_content" >
+        <action
+            android:id="@+id/action_viewAllReviewContentFragment_to_reviewDetailsFragment"
+            app:destination="@id/reviewDetailsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
+
+    <activity
+        android:id="@+id/networkErrorActivity"
+        android:name="com.example.cineverse.view.network_error.NetworkErrorActivity"
+        android:label="activity_network_error"
+        tools:layout="@layout/activity_network_error" />
+
+    <action
+        android:id="@+id/action_global_networkErrorActivity"
+        app:destination="@id/networkErrorActivity" />
+</navigation>

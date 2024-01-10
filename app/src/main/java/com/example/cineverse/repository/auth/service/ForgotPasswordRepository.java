@@ -13,7 +13,7 @@ import org.apache.commons.validator.routines.EmailValidator;
  * functionality for handling user password reset requests. It validates the user input (email),
  * initiates a password reset operation using Firebase authentication services, and handles various
  * scenarios, including invalid email format, user not found, network issues, and other exceptions.
- * Errors and password reset status are communicated through the provided {@link ErrorAuthCallback}.
+ * Errors and password reset status are communicated through the provided {@link ErrorAuthErrorCallback}.
  */
 public class ForgotPasswordRepository
         extends AbstractAuthRepository {
@@ -30,7 +30,7 @@ public class ForgotPasswordRepository
     /**
      * Initiates a password reset request for the provided email address. Validates the email format,
      * initiates the password reset operation, and communicates errors or success through the
-     * provided {@link ErrorAuthCallback}.
+     * provided {@link ErrorAuthErrorCallback}.
      *
      * @param email    User's email address for password reset.
      */
@@ -60,7 +60,7 @@ public class ForgotPasswordRepository
         if (exception instanceof FirebaseAuthInvalidUserException) {
             authCallback.onError(Error.ERROR_NOT_FOUND_DISABLED);
         } else if (exception instanceof FirebaseNetworkException) {
-            authCallback.onNetworkError();
+            authCallback.onNetworkUnavailable();
         } else {
             authCallback.onError(Error.ERROR_INVALID_CREDENTIAL);
         }

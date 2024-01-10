@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.example.cineverse.R;
 import com.example.cineverse.adapter.OnContentClickListener;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.ui.ContentSection;
@@ -131,11 +132,18 @@ public class ContentSectionAdapter
 
         @Override
         public void bind(AbstractContent content) {
-            String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getPosterPath();
-            Glide.with(context)
-                    .load(imageUrl)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(binding.posterImageView);
+            if (content.getPosterPath() == null) {
+                int padding = context.getResources().getDimensionPixelOffset(R.dimen.double_spacing);
+                binding.posterImageView.setPadding(padding, padding, padding, padding);
+                binding.posterImageView.setImageResource(R.drawable.outline_image_not_supported);
+            } else {
+                binding.posterImageView.setPadding(0, 0, 0, 0);
+                String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getPosterPath();
+                Glide.with(context)
+                        .load(imageUrl)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(binding.posterImageView);
+            }
             binding.titleTextView.setText(content.getName());
             binding.materialCardView.setOnClickListener(v -> listener.onContentClick(content));
         }
@@ -157,11 +165,18 @@ public class ContentSectionAdapter
         @SuppressLint("RestrictedApi")
         @Override
         public void bind(AbstractContent content) {
-            String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getBackdropPath();
-            Glide.with(context)
-                    .load(imageUrl)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(binding.carouselImageView);
+            if (content.getBackdropPath() == null) {
+                int padding = context.getResources().getDimensionPixelOffset(R.dimen.double_spacing);
+                binding.carouselImageView.setPadding(padding, padding, padding, padding);
+                binding.carouselImageView.setImageResource(R.drawable.outline_image_not_supported);
+            } else {
+                binding.carouselImageView.setPadding(0, 0, 0, 0);
+                String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getBackdropPath();
+                Glide.with(context)
+                        .load(imageUrl)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(binding.carouselImageView);
+            }
             binding.titleTextView.setText(content.getName());
 
             ((MaskableFrameLayout) itemView).setOnMaskChangedListener(maskRect -> {

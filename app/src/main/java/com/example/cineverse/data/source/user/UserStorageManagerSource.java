@@ -3,7 +3,8 @@ package com.example.cineverse.data.source.user;
 import android.content.Context;
 
 import com.example.cineverse.data.model.User;
-import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.service.firebase.FirebaseCallback;
+import com.example.cineverse.service.firebase.UserFirebaseDatabaseService;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
@@ -12,7 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
  * registering a user, authenticating a Google user, and logging in a user.
  */
 public class UserStorageManagerSource
-        extends UserFirebaseDatabaseServices {
+        extends UserFirebaseDatabaseService {
 
     private final Context context;
     private final UserLocalSource localSource;
@@ -62,7 +63,7 @@ public class UserStorageManagerSource
      */
     public void googleAuth(FirebaseUser firebaseUser) {
         if (firebaseCallback != null) {
-            firebaseSource.getUserFromUid(firebaseUser.getUid(), context,
+            firebaseSource.getUserFromUid(context, firebaseUser.getUid(),
                     new FirebaseCallback<User>() {
                         @Override
                         public void onCallback(User user) {
@@ -88,7 +89,7 @@ public class UserStorageManagerSource
      */
     public void login(String uid) {
         if (firebaseCallback != null) {
-            firebaseSource.getUserFromUid(uid, context,
+            firebaseSource.getUserFromUid(context, uid,
                     new FirebaseCallback<User>() {
                         @Override
                         public void onCallback(User user) {

@@ -3,6 +3,8 @@ package com.example.cineverse.utils.mapper;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.content.section.Movie;
 import com.example.cineverse.data.model.content.section.Tv;
+import com.example.cineverse.data.model.details.section.MovieDetails;
+import com.example.cineverse.data.model.details.section.TvDetails;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +40,9 @@ public class ContentTypeMappingManager {
     // Initialize the map with predefined content classes and types.
     static {
         typeMap.put(Movie.class, ContentType.MOVIE);
+        typeMap.put(MovieDetails.class, ContentType.MOVIE);
         typeMap.put(Tv.class, ContentType.TV);
+        typeMap.put(TvDetails.class, ContentType.TV);
     }
 
     /**

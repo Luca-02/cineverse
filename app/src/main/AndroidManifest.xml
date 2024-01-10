@@ -21,6 +21,9 @@
             android:name=".view.search_result.SearchResultActivity"
             android:exported="false" />
         <activity
+            android:name=".view.details.ContentDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.view_all_content.ViewAllContentActivity"
             android:exported="false" />
         <activity

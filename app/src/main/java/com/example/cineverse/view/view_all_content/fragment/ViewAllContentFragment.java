@@ -3,7 +3,6 @@ package com.example.cineverse.view.view_all_content.fragment;
 import static com.example.cineverse.utils.constant.Api.STARTING_PAGE;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,8 @@ import com.example.cineverse.adapter.view_all_content.ContentViewAllAdapter;
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.databinding.FragmentViewAllContentBinding;
-import com.example.cineverse.utils.constant.GlobalConstant;
+import com.example.cineverse.view.details.ContentDetailsActivityOpener;
+import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
 import com.example.cineverse.view.view_all_content.ViewAllContentController;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModel;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModelFactory;
@@ -43,7 +43,6 @@ public class ViewAllContentFragment extends Fragment
     private ContentViewAllAdapter contentAdapter;
 
     private RecyclerView recyclerView;
-    private boolean isLoading = false;
     private boolean savedInstanceStateIsNull = true;
 
     @Override
@@ -88,7 +87,7 @@ public class ViewAllContentFragment extends Fragment
     public void restorePreviousState(Bundle savedInstanceState){
         List<AbstractContent> dataset = savedInstanceState
                 .getParcelableArrayList(SAVE_RECYCLER_VIEW_CONTENT_ID);
-        contentAdapter.setData(dataset);
+        contentAdapter.addPagingData(dataset);
     }
 
     /**
@@ -101,7 +100,7 @@ public class ViewAllContentFragment extends Fragment
                 ViewAllContentController.getInstance().getViewModelClass();
 
         if (viewModelFactory != null && viewModelClass != null) {
-            viewModel = new ViewModelProvider(this, viewModelFactory.newInstance())
+            viewModel = new ViewModelProvider(this, viewModelFactory)
                     .get(viewModelClass);
             viewModel.getContentLiveData().observe(this.getViewLifecycleOwner(), this::handleContent);
             viewModel.getFailureLiveData().observe(this.getViewLifecycleOwner(), this::handleFailure);
@@ -122,9 +121,9 @@ public class ViewAllContentFragment extends Fragment
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (!isLoading && !recyclerView.canScrollVertically(1)) {
+                if (!viewModel.isLoading() && !recyclerView.canScrollVertically(1)) {
                     viewModel.fetchAndIncreasePage();
-                    isLoading = true;
+                    viewModel.setLoading(true);
                 }
             }
         });
@@ -132,7 +131,6 @@ public class ViewAllContentFragment extends Fragment
 
     private void initContentSection(Bundle savedInstanceState) {
         contentAdapter = new ContentViewAllAdapter(requireContext(), new ArrayList<>(), this);
-
         binding.contentRecyclerView.setAdapter(contentAdapter);
         binding.contentRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         handleRecyclerViewState(savedInstanceState);
@@ -161,11 +159,11 @@ public class ViewAllContentFragment extends Fragment
      */
     public void handleContent(List<? extends AbstractContent> abstractPosters) {
         if (savedInstanceStateIsNull) {
-            contentAdapter.setData(abstractPosters);
+            contentAdapter.addPagingData(abstractPosters);
         } else {
             savedInstanceStateIsNull = true;
         }
-        isLoading = false;
+        viewModel.setLoading(false);
     }
 
     /**
@@ -196,8 +194,11 @@ public class ViewAllContentFragment extends Fragment
      */
     @Override
     public void onContentClick(AbstractContent content) {
-        Log.d(GlobalConstant.TAG, "onContentClick: " + content.getClass());
-        Log.d(GlobalConstant.TAG, "onContentClick: " + content);
+        ContentDetailsActivityOpener.openContentDetailsActivity(
+                requireContext(),
+                ((ViewAllContentActivity) requireActivity()).getNavController(),
+                content
+        );
     }
 
 }

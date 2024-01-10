@@ -81,6 +81,7 @@ public class ViewAllContentController {
             AbstractSectionContentViewModelFactory
                     <? extends AbstractSectionContentViewModel> viewModelFactory,
             Class<? extends AbstractSectionContentViewModel> viewModelClass) {
+        clearParameters();
         this.viewModelFactory = viewModelFactory;
         this.viewModelClass = viewModelClass;
     }
