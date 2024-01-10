@@ -18,6 +18,12 @@ import com.example.cineverse.view.network_error.NetworkErrorActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.verify_account.VerifyAccountActivity;
 
+/**
+ * The {@link AuthActivity} class serves as the entry point of the application for authentication-related flows.
+ * It checks if a user is already logged in. If so, it navigates the user to {@link VerifiedAccountActivity}.
+ * If not, it displays the main authentication screen. This activity also handles network error scenarios by
+ * redirecting users to the {@link NetworkErrorActivity}.
+ */
 public class AuthActivity extends AppCompatActivity {
 
     private ActivityAuthBinding binding;
@@ -37,6 +43,9 @@ public class AuthActivity extends AppCompatActivity {
                 view -> getOnBackPressedDispatcher().onBackPressed());
     }
 
+    /**
+     * Sets up the {@link ActionBar} with the provided Toolbar.
+     */
     private void setActionBar() {
         setSupportActionBar(binding.materialToolbar);
         ActionBar actionBar =  getSupportActionBar();
@@ -45,6 +54,11 @@ public class AuthActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Sets up the {@link NavController} for navigating between destinations.
+     * This method finds the {@link NavHostFragment} and initializes the {@link NavController}.
+     */
     private void setNavController() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragmentContainerView);

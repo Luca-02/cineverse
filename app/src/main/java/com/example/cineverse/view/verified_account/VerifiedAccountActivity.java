@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
 import com.example.cineverse.view.auth.AuthActivity;
+import com.example.cineverse.view.search_result.SearchResultActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
 /**
@@ -104,8 +105,9 @@ public class VerifiedAccountActivity extends AppCompatActivity {
     }
 
     public void openResultSearchActivity(String query) {
-        navController.navigate(R.id.action_global_searchResultActivity);
-        finish();
+        Bundle bundle = new Bundle();
+        bundle.putString(SearchResultActivity.QUERY_TAG, query);
+        navController.navigate(R.id.action_global_searchResultActivity, bundle);
     }
 
     /**
