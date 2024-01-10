@@ -204,7 +204,7 @@ public class HomeFragment extends Fragment {
      * @param section The {@link ContentSection} to display in the {@link ViewAllContentActivity}.
      */
     public void openViewAllContentActivity(@NotNull ContentSection section) {
-        ViewAllContentController.getInstance().setParameters(section.getViewModelFactory(), section.getViewModelClass());
+        ViewAllContentController.getInstance().setParameters(section.getViewModelFactory().newInstance(), section.getViewModelClass());
         Bundle bundle = new Bundle();
         bundle.putInt(TITLE_STRING_ID_TAG, section.getSectionTitleStringId());
         navController.navigate(R.id.action_global_viewAllContentActivity, bundle);
@@ -218,7 +218,7 @@ public class HomeFragment extends Fragment {
      *                         the content from genre section.
      */
     public void openViewAllContentActivity(@NotNull Genre genre, @NotNull AbstractSectionContentViewModelFactory<?> viewModelFactory) {
-        ViewAllContentController.getInstance().setParameters(viewModelFactory, viewModelFactory.getViewModelClass());
+        ViewAllContentController.getInstance().setParameters(viewModelFactory.newInstance(), viewModelFactory.getViewModelClass());
         Bundle bundle = new Bundle();
         bundle.putParcelable(GENRE_TAG, genre);
         navController.navigate(R.id.action_global_viewAllContentActivity, bundle);

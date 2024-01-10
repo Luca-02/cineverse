@@ -12,19 +12,21 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Tv extends AbstractContent {
 
-    private String name;
+    protected String name;
     @SerializedName("first_air_date")
-    private String releaseDate;
+    protected String releaseDate;
 
-    public Tv(int id, String name, String overview, String releaseDate, String posterPath, String backdropPath) {
-        super(id, overview, posterPath, backdropPath);
+    public Tv(int id, String name, String overview, String releaseDate,
+              String posterPath, String backdropPath, String originalLanguage) {
+        super(id, overview, posterPath, backdropPath, originalLanguage);
         this.name = name;
         this.releaseDate = releaseDate;
     }
 
     public Tv(ContentEntityDb entityDb) {
         this(entityDb.getId(), entityDb.getName(), entityDb.getOverview(),
-                entityDb.getReleaseDate(), entityDb.getPosterPath(), entityDb.getBackdropPath());
+                entityDb.getReleaseDate(), entityDb.getPosterPath(),
+                entityDb.getBackdropPath(), entityDb.getOriginalLanguage());
     }
 
     @Override

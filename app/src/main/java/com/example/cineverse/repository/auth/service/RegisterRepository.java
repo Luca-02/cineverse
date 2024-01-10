@@ -3,7 +3,7 @@ package com.example.cineverse.repository.auth.service;
 import android.content.Context;
 
 import com.example.cineverse.repository.auth.AbstractAuthRepository;
-import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.service.firebase.FirebaseCallback;
 import com.example.cineverse.utils.UsernameValidator;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
@@ -18,7 +18,7 @@ import org.apache.commons.validator.routines.EmailValidator;
  * The {@link RegisterRepository} class extends {@link AbstractAuthRepository} and provides functionality
  * for user registration. It validates user input, performs registration operations using Firebase authentication
  * services, and handles various registration-related error scenarios. Errors and registration status are
- * communicated through the provided {@link AuthCallback}.
+ * communicated through the provided {@link AuthErrorCallback}.
  */
 public class RegisterRepository
         extends AbstractAuthRepository {
@@ -35,7 +35,7 @@ public class RegisterRepository
     /**
      * Attempts user registration with the provided username, email, and password. Validates the username
      * and email format, initiates the registration operation, and communicates errors or success through
-     * the provided {@link AuthCallback}.
+     * the provided {@link AuthErrorCallback}.
      *
      * @param username  User's username for registration.
      * @param email     User's email address for registration.
@@ -47,8 +47,8 @@ public class RegisterRepository
         } else if (!EmailValidator.getInstance().isValid(email)) {
             authCallback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
-            firebaseSource.isUsernameSaved(username, context,
-                    new UserFirebaseDatabaseServices.FirebaseCallback<Boolean>() {
+            firebaseSource.isUsernameSaved(context, username,
+                    new FirebaseCallback<Boolean>() {
                         @Override
                         public void onCallback(Boolean exist) {
                             if (exist == null) {
@@ -65,7 +65,7 @@ public class RegisterRepository
 
                         @Override
                         public void onNetworkUnavailable() {
-                            authCallback.onNetworkError();
+                            authCallback.onNetworkUnavailable();
                         }
                     });
         }
@@ -99,7 +99,7 @@ public class RegisterRepository
         } else if (exception instanceof FirebaseAuthUserCollisionException) {
             authCallback.onError(Error.ERROR_EMAIL_ALREADY_EXISTS);
         } else if (exception instanceof FirebaseNetworkException) {
-            authCallback.onNetworkError();
+            authCallback.onNetworkUnavailable();
         } else {
             authCallback.onError(Error.ERROR_INVALID_CREDENTIAL);
         }

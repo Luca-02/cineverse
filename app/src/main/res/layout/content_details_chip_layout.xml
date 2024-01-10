@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.App.Chip.Assist"
+    android:id="@+id/chip"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/half_spacing"
+    android:layout_marginBottom="@dimen/half_spacing"
+    android:layout_marginStart="@dimen/quarter_spacing"
+    android:layout_marginEnd="@dimen/quarter_spacing"
+    android:clickable="false"
+    app:chipMinTouchTargetSize="0dp" />

@@ -3,20 +3,21 @@ package com.example.cineverse.repository.auth.logged;
 import android.content.Context;
 
 import com.example.cineverse.repository.auth.AbstractLoggedRepository;
+import com.example.cineverse.service.NetworkCallback;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
  * The {@link VerifyAccountRepository} class extends {@link AbstractLoggedRepository} and provides functionality
  * for verifying user email addresses. It allows users to request email verification, reload their user data,
- * and check whether their email is verified or not. It provides {@link SentEmailCallback}
- * and {@link ReloadUserCallback} to communicate the operation status to the caller.
+ * and check whether their email is verified or not. It provides {@link SentEmailErrorCallback}
+ * and {@link ReloadUserErrorCallback} to communicate the operation status to the caller.
  */
 public class VerifyAccountRepository
         extends AbstractLoggedRepository {
 
-    private SentEmailCallback sentEmailCallback;
-    private ReloadUserCallback reloadUserCallback;
+    private SentEmailErrorCallback sentEmailCallback;
+    private ReloadUserErrorCallback reloadUserCallback;
 
     /**
      * Constructs a {@link VerifyAccountRepository} object with the given application {@link Context}.
@@ -27,11 +28,11 @@ public class VerifyAccountRepository
         super(context);
     }
 
-    public void setSentEmailCallback(SentEmailCallback sentEmailCallback) {
+    public void setSentEmailCallback(SentEmailErrorCallback sentEmailCallback) {
         this.sentEmailCallback = sentEmailCallback;
     }
 
-    public void setReloadUserCallback(ReloadUserCallback reloadUserCallback) {
+    public void setReloadUserCallback(ReloadUserErrorCallback reloadUserCallback) {
         this.reloadUserCallback = reloadUserCallback;
     }
 
@@ -71,7 +72,7 @@ public class VerifyAccountRepository
      */
     private void handleReloadSendEmailFailure(Exception exception) {
         if (exception instanceof FirebaseNetworkException) {
-            sentEmailCallback.onNetworkError();
+            sentEmailCallback.onNetworkUnavailable();
         } else {
             sentEmailCallback.onEmailSent(null);
         }
@@ -106,7 +107,7 @@ public class VerifyAccountRepository
      */
     private void handleReloadFailure(Exception exception) {
         if (exception instanceof FirebaseNetworkException) {
-            reloadUserCallback.onNetworkError();
+            reloadUserCallback.onNetworkUnavailable();
         } else {
             reloadUserCallback.onReloadUser(null);
         }
@@ -115,7 +116,7 @@ public class VerifyAccountRepository
     /**
      * Callback interface for handling the result of the email verification request.
      */
-    public interface SentEmailCallback extends NetworkCallback {
+    public interface SentEmailErrorCallback extends NetworkCallback {
         /**
          * Invoked when the email verification request is completed.
          *
@@ -132,7 +133,7 @@ public class VerifyAccountRepository
     /**
      * Callback interface for handling the result of the user data reload operation.
      */
-    public interface ReloadUserCallback extends NetworkCallback {
+    public interface ReloadUserErrorCallback extends NetworkCallback {
         /**
          * Invoked when the user data reload operation is completed.
          *

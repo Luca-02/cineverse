@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.repository.UserRepository;
+import com.example.cineverse.service.NetworkCallback;
 
 /**
  * The {@link AbstractUserViewModel} class serves as the base class for ViewModels related to authentication
@@ -20,7 +21,7 @@ import com.example.cineverse.repository.UserRepository;
  */
 public abstract class AbstractUserViewModel<T extends UserRepository>
         extends AndroidViewModel
-        implements UserRepository.NetworkCallback {
+        implements NetworkCallback {
 
     /**
      * The repository responsible for handling user authentication and data operations.
@@ -79,12 +80,12 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
     }
 
     /**
-     * Overrides the {@link UserRepository.NetworkCallback#onNetworkError()} method
+     * Overrides the {@link NetworkCallback#onNetworkUnavailable()} method
      * to handle the network error event and update the network error LiveData.
      * Trigger network error {@link MutableLiveData}.
      */
     @Override
-    public void onNetworkError() {
+    public void onNetworkUnavailable() {
         getNetworkErrorLiveData().postValue(true);
     }
 

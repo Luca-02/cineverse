@@ -21,7 +21,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
  * The {@link GoogleAuthRepository} class extends {@link AbstractAuthRepository} and provides
  * authentication functionality for Google Sign-In. It allows users to authenticate using their Google accounts.
  * The class handles Google Sign-In operations, processes authentication results, and communicates errors
- * or success through a provided {@link AuthCallback}. {@link GoogleAuthRepository} integrates with Firebase
+ * or success through a provided {@link AuthErrorCallback}. {@link GoogleAuthRepository} integrates with Firebase
  * authentication services for Google Sign-In authentication.
  */
 public class GoogleAuthRepository
@@ -39,7 +39,7 @@ public class GoogleAuthRepository
     /**
      * Initiates Google Sign-In authentication with the provided data from the intent. Handles the
      * Google Sign-In result, processes authentication credentials, and communicates errors or success
-     * through the provided {@link AuthCallback}.
+     * through the provided {@link AuthErrorCallback}.
      *
      * @param data     {@link Intent} containing the Google Sign-In result data.
      */
@@ -83,7 +83,7 @@ public class GoogleAuthRepository
         } else if (exception instanceof FirebaseAuthUserCollisionException) {
             authCallback.onError(Error.ERROR_EMAIL_ALREADY_EXISTS);
         } else if (exception instanceof FirebaseNetworkException) {
-            authCallback.onNetworkError();
+            authCallback.onNetworkUnavailable();
         } else {
             authCallback.onError(Error.ERROR_AUTHENTICATION_FAILED);
         }

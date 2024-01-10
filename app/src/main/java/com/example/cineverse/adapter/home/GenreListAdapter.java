@@ -32,11 +32,11 @@ public class GenreListAdapter
     }
 
     private final List<Genre> genreList;
-    private final OnGenreClickListener callback;
+    private final OnGenreClickListener listener;
 
-    public GenreListAdapter(List<Genre> genreList, OnGenreClickListener callback) {
+    public GenreListAdapter(List<Genre> genreList, OnGenreClickListener listener) {
         this.genreList = genreList;
-        this.callback = callback;
+        this.listener = listener;
     }
 
     /**
@@ -89,7 +89,7 @@ public class GenreListAdapter
          */
         public void bind(Genre genre) {
             binding.textView.setText(genre.getName());
-            itemView.setOnClickListener(v -> callback.onGenreClick(genre));
+            itemView.setOnClickListener(v -> listener.onGenreClick(genre));
         }
 
     }

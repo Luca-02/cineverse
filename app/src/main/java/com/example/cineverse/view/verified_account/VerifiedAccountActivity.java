@@ -1,6 +1,9 @@
 package com.example.cineverse.view.verified_account;
 
 import android.content.SharedPreferences;
+import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_ID_TAG;
+import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_TYPE_STRING_TAG;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +18,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.content.AbstractContent;
+import com.example.cineverse.data.model.content.section.Movie;
+import com.example.cineverse.data.model.content.section.Tv;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
+import com.example.cineverse.utils.NetworkUtils;
+import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
@@ -125,6 +133,21 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         }
     }
 
+    public void openContentDetailsActivity(AbstractContent content) {
+        if (navController != null) {
+            if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) {
+                navController.navigate(R.id.action_global_networkErrorActivity);
+            } else {
+                if (content.getClass().isAssignableFrom(Movie.class) || content.getClass().isAssignableFrom(Tv.class)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(CONTENT_TYPE_STRING_TAG, ContentTypeMappingManager.getContentType(content.getClass()));
+                    bundle.putInt(CONTENT_ID_TAG, content.getId());
+                    navController.navigate(R.id.action_global_contentDetailsActivity, bundle);
+                }
+            }
+        }
+    }
+
     public void openAccountSettingsActivity() {
         if (navController != null) {
             navController.navigate(R.id.action_global_accountSettingsActivity);
@@ -145,6 +168,10 @@ public class VerifiedAccountActivity extends AppCompatActivity {
 
     public void openResultSearchActivity(String query) {
         // ...
+    }
+
+    public NavController getNavController() {
+        return navController;
     }
 
     /**

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource">
+
+    <item android:id="@+id/publicReview"
+        android:icon="@drawable/outline_done"
+        android:title="@string/public_"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/deleteReview"
+        android:icon="@drawable/outline_delete"
+        android:title="@string/delete_"
+        app:showAsAction="ifRoom"/>
+</menu>

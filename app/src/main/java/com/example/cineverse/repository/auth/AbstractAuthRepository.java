@@ -7,16 +7,17 @@ import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.source.user.UserFirebaseSource;
 import com.example.cineverse.data.source.user.UserStorageManagerSource;
 import com.example.cineverse.repository.UserRepository;
-import com.example.cineverse.service.firebase.UserFirebaseDatabaseServices;
+import com.example.cineverse.service.NetworkCallback;
+import com.example.cineverse.service.firebase.FirebaseCallback;
 
 /**
  * The {@link AbstractAuthRepository} class extends {@link UserRepository} and serves as
- * a base class for authentication service repositories. It provides {@link ErrorAuthCallback}
- * and {@link AuthCallback} to communicate the authentication error and status to the caller.
+ * a base class for authentication service repositories. It provides {@link ErrorAuthErrorCallback}
+ * and {@link AuthErrorCallback} to communicate the authentication error and status to the caller.
  */
 public abstract class AbstractAuthRepository
         extends UserRepository
-        implements UserFirebaseDatabaseServices.FirebaseCallback<User> {
+        implements FirebaseCallback<User> {
 
     /**
      * {@link Error Error} enum representing possible authentication errors and associated string resources for error messages.
@@ -52,7 +53,7 @@ public abstract class AbstractAuthRepository
 
     protected final UserFirebaseSource firebaseSource;
     protected final UserStorageManagerSource userStorage;
-    protected AuthCallback authCallback;
+    protected AuthErrorCallback authCallback;
 
     /**
      * Constructs an {@link AbstractAuthRepository} object with the given application.
@@ -65,7 +66,7 @@ public abstract class AbstractAuthRepository
         userStorage = new UserStorageManagerSource(context, localSource, firebaseSource, this);
     }
 
-    public void setAuthCallback(AuthCallback authCallback) {
+    public void setAuthCallback(AuthErrorCallback authCallback) {
         this.authCallback = authCallback;
     }
 
@@ -98,14 +99,14 @@ public abstract class AbstractAuthRepository
     public void onNetworkUnavailable() {
         if (authCallback != null) {
             firebaseAuth.signOut();
-            authCallback.onNetworkError();
+            authCallback.onNetworkUnavailable();
         }
     }
 
     /**
      * Callback interface for handling authentication errors.
      */
-    public interface ErrorAuthCallback extends NetworkCallback {
+    public interface ErrorAuthErrorCallback extends NetworkCallback {
         /**
          * Invoked when an authentication {@link Error} occurs.
          *
@@ -117,7 +118,7 @@ public abstract class AbstractAuthRepository
     /**
      * Callback interface for handling authentication success and errors.
      */
-    public interface AuthCallback extends ErrorAuthCallback {
+    public interface AuthErrorCallback extends ErrorAuthErrorCallback {
         /**
          * Invoked when user authentication is successful.
          *

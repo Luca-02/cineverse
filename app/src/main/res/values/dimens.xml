@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- spacing -->
     <dimen name="double_spacing">32dp</dimen>
     <dimen name="standard_spacing">16dp</dimen>
+    <dimen name="low_standard_spacing">12dp</dimen>
     <dimen name="half_spacing">8dp</dimen>
     <dimen name="quarter_spacing">4dp</dimen>
 

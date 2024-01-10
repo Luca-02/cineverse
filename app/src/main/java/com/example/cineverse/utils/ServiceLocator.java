@@ -8,9 +8,10 @@ import com.example.cineverse.data.database.ContentSectionDatabase;
 import com.example.cineverse.data.database.dao.ContentDao;
 import com.example.cineverse.data.database.dao.SectionContentCrossRefDao;
 import com.example.cineverse.data.database.dao.SectionDao;
+import com.example.cineverse.service.api.DetailsApiService;
 import com.example.cineverse.service.api.GenreApiService;
 import com.example.cineverse.service.api.MovieApiService;
-import com.example.cineverse.service.api.SearchApiServices;
+import com.example.cineverse.service.api.SearchApiService;
 import com.example.cineverse.service.api.TvApiService;
 
 import retrofit2.Retrofit;
@@ -48,8 +49,12 @@ public class ServiceLocator {
         return getRetrofitService().create(GenreApiService.class);
     }
 
-    public SearchApiServices getSearchApiServices() {
-        return getRetrofitService().create(SearchApiServices.class);
+    public SearchApiService getSearchApiServices() {
+        return getRetrofitService().create(SearchApiService.class);
+    }
+
+    public DetailsApiService getDetailsApiService() {
+        return getRetrofitService().create(DetailsApiService.class);
     }
 
     public SectionDao getSectionDao(Context context) {

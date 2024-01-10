@@ -17,7 +17,7 @@ import com.example.cineverse.viewmodel.AbstractLoggedViewModel;
  */
 public class VerifyAccountViewModel
         extends AbstractLoggedViewModel<VerifyAccountRepository>
-        implements VerifyAccountRepository.SentEmailCallback, VerifyAccountRepository.ReloadUserCallback {
+        implements VerifyAccountRepository.SentEmailErrorCallback, VerifyAccountRepository.ReloadUserErrorCallback {
 
     private MutableLiveData<Boolean> emailSentLiveData;
     private MutableLiveData<Boolean> emailVerifiedLiveData;
@@ -62,7 +62,7 @@ public class VerifyAccountViewModel
     }
 
     /**
-     * Overrides the {@link VerifyAccountRepository.SentEmailCallback#onEmailSent(Boolean)} method
+     * Overrides the {@link VerifyAccountRepository.SentEmailErrorCallback#onEmailSent(Boolean)} method
      * to handle the result of the email sending operation and update the email sent LiveData.
      * Clears email sent status {@link MutableLiveData}.
      *
@@ -74,7 +74,7 @@ public class VerifyAccountViewModel
     }
 
     /**
-     * Overrides the {@link VerifyAccountRepository.ReloadUserCallback#onReloadUser(Boolean)} method
+     * Overrides the {@link VerifyAccountRepository.ReloadUserErrorCallback#onReloadUser(Boolean)} method
      * to handle the result of the user data reloading operation and update the email verification LiveData.
      * Clears email verification status {@link MutableLiveData}.
      *

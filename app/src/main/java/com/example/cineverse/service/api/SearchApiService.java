@@ -16,9 +16,9 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 /**
- * The {@link SearchApiServices} interface provides methods for searching data from the external API.
+ * The {@link SearchApiService} interface provides methods for searching data from the external API.
  */
-public interface SearchApiServices {
+public interface SearchApiService {
 
     @GET(SEARCH_KEYWORD_ENDPOINT)
     Call<KeywordResponse> searchKeyword(

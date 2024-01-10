@@ -10,4 +10,22 @@
         android:name="com.example.cineverse.view.view_all_content.fragment.ViewAllContentFragment"
         android:label="fragment_view_all_content"
         tools:layout="@layout/fragment_view_all_content" />
+
+    <activity
+        android:id="@+id/contentDetailsActivity"
+        android:name="com.example.cineverse.view.details.ContentDetailsActivity"
+        android:label="ContentDetailsActivity"
+        tools:layout="@layout/activity_content_details" />
+    <activity
+        android:id="@+id/networkErrorActivity"
+        android:name="com.example.cineverse.view.network_error.NetworkErrorActivity"
+        android:label="activity_network_error"
+        tools:layout="@layout/activity_network_error" />
+
+    <action
+        android:id="@+id/action_global_contentDetailsActivity"
+        app:destination="@id/contentDetailsActivity" />
+    <action
+        android:id="@+id/action_global_networkErrorActivity"
+        app:destination="@id/networkErrorActivity" />
 </navigation>

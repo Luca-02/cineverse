@@ -25,17 +25,20 @@ public class ContentEntityDb {
     private final String releaseDate;
     private final String posterPath;
     private final String backdropPath;
+    private final String originalLanguage;
     private final String contentType;
     private final int position;
 
     public ContentEntityDb(int id, String name, String overview, String releaseDate,
-                           String posterPath, String backdropPath, String contentType, int position) {
+                           String posterPath, String backdropPath, String originalLanguage,
+                           String contentType, int position) {
         this.id = id;
         this.name = name;
         this.overview = overview;
         this.releaseDate = releaseDate;
         this.posterPath = posterPath;
         this.backdropPath = backdropPath;
+        this.originalLanguage = originalLanguage;
         this.contentType = contentType;
         this.position = position;
     }
@@ -55,6 +58,7 @@ public class ContentEntityDb {
                 content.getReleaseDate(),
                 content.getPosterPath(),
                 content.getBackdropPath(),
+                content.getOriginalLanguage(),
                 contentType,
                 position
         );
@@ -82,6 +86,10 @@ public class ContentEntityDb {
 
     public String getBackdropPath() {
         return backdropPath;
+    }
+
+    public String getOriginalLanguage() {
+        return originalLanguage;
     }
 
     public int getPosition() {

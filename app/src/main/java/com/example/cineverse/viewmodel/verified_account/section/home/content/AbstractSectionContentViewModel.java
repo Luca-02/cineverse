@@ -3,10 +3,12 @@ package com.example.cineverse.viewmodel.verified_account.section.home.content;
 import static com.example.cineverse.utils.constant.Api.STARTING_PAGE;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.content.AbstractContent;
+import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.viewmodel.verified_account.AbstractFailureResponseViewModel;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public abstract class AbstractSectionContentViewModel
 
     private MutableLiveData<List<? extends AbstractContent>> contentLiveData;
     private int page;
+    private boolean isLoading;
 
     /**
      * Constructs an {@link AbstractSectionContentViewModel} object with the given {@link Application}.
@@ -30,6 +33,7 @@ public abstract class AbstractSectionContentViewModel
     public AbstractSectionContentViewModel(Application application) {
         super(application);
         page = STARTING_PAGE;
+        isLoading = false;
     }
 
     public MutableLiveData<List<? extends AbstractContent>> getContentLiveData() {
@@ -53,6 +57,14 @@ public abstract class AbstractSectionContentViewModel
      */
     public void increasePage() {
         page++;
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
     }
 
     /**

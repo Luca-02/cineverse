@@ -1,7 +1,10 @@
 package com.example.cineverse.view.view_all_content;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -10,7 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.databinding.ActivityViewAllContentBinding;
-import com.example.cineverse.handler.BackPressedHandler;
+import com.example.cineverse.utils.constant.GlobalConstant;
 
 /**
  * The {@link ViewAllContentActivity} is an activity responsible for displaying a list of content items
@@ -36,6 +39,7 @@ public class ViewAllContentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivityViewAllContentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -47,16 +51,10 @@ public class ViewAllContentActivity extends AppCompatActivity {
                 view -> getOnBackPressedDispatcher().onBackPressed());
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ViewAllContentController.getInstance().clearParameters();
-    }
-
     /**
      * Retrieves extra data from the intent bundle, including the title string ID and genre.
      */
-    public void getExtras() {
+    private void getExtras() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             titleStringId = bundle.getInt(TITLE_STRING_ID_TAG);
@@ -89,6 +87,10 @@ public class ViewAllContentActivity extends AppCompatActivity {
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
+    }
+
+    public NavController getNavController() {
+        return navController;
     }
 
 }

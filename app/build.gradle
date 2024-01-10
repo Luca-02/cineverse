@@ -51,6 +51,7 @@ dependencies {
     implementation('androidx.annotation:annotation:1.7.1')
     implementation('androidx.lifecycle:lifecycle-livedata-ktx:2.6.2')
     implementation('androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2')
+    implementation 'org.jetbrains:annotations:15.0'
     implementation 'androidx.room:room-common:2.6.1'
     testImplementation('junit:junit:4.13.2')
     androidTestImplementation('androidx.test.ext:junit:1.1.5')
@@ -109,8 +110,11 @@ dependencies {
     implementation("androidx.room:room-paging:$room_version")
 
     // Blur View
-    implementation 'com.github.Dimezis:BlurView:version-2.0.3'
+    implementation('com.github.Dimezis:BlurView:version-2.0.3')
 
     // Jackson
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
+    implementation('com.fasterxml.jackson.core:jackson-databind:2.15.3')
+
+    // Flexbox
+    implementation('com.google.android.flexbox:flexbox:3.0.0')
 }
