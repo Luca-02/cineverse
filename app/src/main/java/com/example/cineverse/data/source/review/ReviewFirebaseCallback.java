@@ -7,8 +7,10 @@ import java.util.List;
 
 public interface ReviewFirebaseCallback extends NetworkCallback {
     void onContentRating(Double rating);
-    void onContentReviewOfUser(UserReview userReview);
-    void onAddedContentReviewOfUser(UserReview userReview);
-    void onRemovedContentReviewOfUser(boolean removed);
-    void onPagedContentReviewOfContent(List<UserReview> userReviewList, long lastTimestamp);
+    void onUserReviewOfContent(UserReview userReview);
+    void onAddedUserReviewOfContent(UserReview userReview);
+    void onRemovedUserReviewOfContent(boolean removed);
+    void onPagedUserReviewOfContent(List<UserReview> userReviewList, long lastTimestamp);
+    void onAddedLikeOfUserToUserReviewOfContent(UserReview userReview, boolean added);
+    void onRemovedLikeOfUserToUserReviewOfContent(UserReview userReview, boolean removed);
 }

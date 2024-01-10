@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -104,6 +105,18 @@ public class User implements Parcelable {
         return stringBuilder.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getUid(), user.getUid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUid(), getUsername(), getEmail(), getPhotoUrl());
+    }
 
     @Override
     public int describeContents() {
@@ -137,4 +150,13 @@ public class User implements Parcelable {
         }
     };
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
+                '}';
+    }
 }

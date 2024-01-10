@@ -10,4 +10,9 @@ public class ReviewFirebaseDatabaseService
      */
     public static final DatabaseReference reviewsDatabase = database.child("reviews");
 
+    /**
+     * Firebase Realtime Database "userReview" reference instance.
+     */
+    public static final DatabaseReference userReviewDatabase = database.child("userReview");
+
 }

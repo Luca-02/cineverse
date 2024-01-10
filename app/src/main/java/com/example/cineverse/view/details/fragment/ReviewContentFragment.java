@@ -6,7 +6,6 @@ import static com.example.cineverse.utils.constant.Api.TMDB_IMAGE_ORIGINAL_SIZE_
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +28,6 @@ import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.FragmentReviewContentBinding;
 import com.example.cineverse.utils.DateTimeUtils;
-import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.details.ContentDetailsActivity;
 import com.example.cineverse.viewmodel.review.ReviewViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -89,11 +87,11 @@ public class ReviewContentFragment extends Fragment {
      */
     private void setViewModel() {
         viewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
-        viewModel.getCurrentUserReviewLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReview);
-        viewModel.getAddedReviewLiveData().observe(getViewLifecycleOwner(), added ->
-                handleActionReview(added, viewModel.getAddedReviewLiveData()));
-        viewModel.getRemovedReviewLiveData().observe(getViewLifecycleOwner(), removed ->
-                handleActionReview(removed, viewModel.getRemovedReviewLiveData()));
+        viewModel.getCurrentUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReview);
+        viewModel.getAddedCurrentUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), added ->
+                handleActionReview(added, viewModel.getAddedCurrentUserReviewOfContentLiveData()));
+        viewModel.getRemovedCurrentUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), removed ->
+                handleActionReview(removed, viewModel.getRemovedCurrentUserReviewOfContentLiveData()));
         viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
     }
 
@@ -161,7 +159,7 @@ public class ReviewContentFragment extends Fragment {
 
         binding.materialToolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.publicReview) {
-                viewModel.addContentReviewOfCurrentUser(content, oldReview, review);
+                viewModel.addCurrentUserReviewOfContent(content, oldReview, review);
                 return true;
             } else if (item.getItemId() == R.id.deleteReview) {
                 openDeleteDialog();
@@ -213,6 +211,7 @@ public class ReviewContentFragment extends Fragment {
                         R.string.unexpected_error, Snackbar.LENGTH_SHORT).show();
             } else {
                 viewModel.getContentRating(content);
+                viewModel.refreshContentReviewOfContent(content);
                 Navigation.findNavController(requireView()).popBackStack();
                 addedReviewLiveData.postValue(null);
             }
@@ -227,7 +226,7 @@ public class ReviewContentFragment extends Fragment {
 
                 })
                 .setPositiveButton(getString(R.string.delete_), (dialog, which) -> {
-                    viewModel.removeContentReviewOfCurrentUser(content, review);
+                    viewModel.removeCurrentUserReviewOfContent(content, review);
                 })
                 .show();
     }

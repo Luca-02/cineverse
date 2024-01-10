@@ -16,12 +16,12 @@ import java.util.List;
 public class ReviewRepository
         implements ReviewFirebaseCallback {
 
-    private final User user;
+    private final User currentUser;
     private final ReviewFirebaseSource reviewFirebaseSource;
     private final ReviewFirebaseCallback firebaseCallback;
 
-    public ReviewRepository(Context context, User user, ReviewFirebaseCallback firebaseCallback) {
-        this.user = user;
+    public ReviewRepository(Context context, User currentUser, ReviewFirebaseCallback firebaseCallback) {
+        this.currentUser = currentUser;
         this.firebaseCallback = firebaseCallback;
         reviewFirebaseSource = new ReviewFirebaseSource(context, this);
     }
@@ -30,26 +30,40 @@ public class ReviewRepository
         reviewFirebaseSource.getContentRating(content);
     }
 
-    public void getContentReviewOfCurrentUser(AbstractContent content) {
-        if (user != null) {
-            reviewFirebaseSource.getContentReviewOfUser(user, content);
+    public void getCurrentUserReviewOfContent(AbstractContent content) {
+        if (currentUser != null) {
+            reviewFirebaseSource.getUserReviewOfContent(currentUser, content);
         }
     }
 
-    public void addContentReviewOfCurrentUser(AbstractContent content, Review review) {
-        if (user != null) {
-            reviewFirebaseSource.addContentReviewOfUser(user, content, review);
+    public void addCurrentUserReviewOfContent(AbstractContent content, Review review) {
+        if (currentUser != null) {
+            reviewFirebaseSource.addUserReviewOfContent(currentUser, content, review);
         }
     }
 
-    public void removeContentReviewOfCurrentUser(AbstractContent content, @NonNull Review review) {
-        if (user != null) {
-            reviewFirebaseSource.removeContentReviewOfUser(user, content, review);
+    public void removeCurrentUserReviewOfContent(AbstractContent content, @NonNull Review review) {
+        if (currentUser != null) {
+            reviewFirebaseSource.removeUserReviewOfContent(currentUser, content, review);
         }
     }
 
-    public void getPagedContentReviewOfContent(AbstractContent content, int pageSize, long lastTimestamp) {
-        reviewFirebaseSource.getPagedContentReviewOfContent(content, pageSize, lastTimestamp);
+    public void getPagedUserReviewOfContent(AbstractContent content, int pageSize, long lastTimestamp) {
+        if (currentUser != null) {
+            reviewFirebaseSource.getPagedUserReviewOfContent(currentUser, content, pageSize, lastTimestamp);
+        }
+    }
+
+    public void addLikeOfCurrentUserToUserReviewOfContent(AbstractContent content, UserReview userReview) {
+        if (currentUser != null) {
+            reviewFirebaseSource.addLikeOfUserToUserReviewOfContent(currentUser, content, userReview);
+        }
+    }
+
+    public void removeLikeOfCurrentUserToUserReviewOfContent(AbstractContent content, UserReview userReview) {
+        if (currentUser != null) {
+            reviewFirebaseSource.removedLikeOfUserToUserReviewOfContent(currentUser, content, userReview);
+        }
     }
 
     @Override
@@ -58,23 +72,41 @@ public class ReviewRepository
     }
 
     @Override
-    public void onContentReviewOfUser(UserReview userReview) {
-        firebaseCallback.onContentReviewOfUser(userReview);
+    public void onUserReviewOfContent(UserReview userReview) {
+        firebaseCallback.onUserReviewOfContent(userReview);
     }
 
     @Override
-    public void onAddedContentReviewOfUser(UserReview userReview) {
-        firebaseCallback.onAddedContentReviewOfUser(userReview);
+    public void onAddedUserReviewOfContent(UserReview userReview) {
+        firebaseCallback.onAddedUserReviewOfContent(userReview);
     }
 
     @Override
-    public void onRemovedContentReviewOfUser(boolean removed) {
-        firebaseCallback.onRemovedContentReviewOfUser(removed);
+    public void onRemovedUserReviewOfContent(boolean removed) {
+        firebaseCallback.onRemovedUserReviewOfContent(removed);
     }
 
     @Override
-    public void onPagedContentReviewOfContent(List<UserReview> userReviewList, long lastTimestamp) {
-        firebaseCallback.onPagedContentReviewOfContent(userReviewList, lastTimestamp);
+    public void onPagedUserReviewOfContent(List<UserReview> userReviewList, long lastTimestamp) {
+        firebaseCallback.onPagedUserReviewOfContent(userReviewList, lastTimestamp);
+    }
+
+    @Override
+    public void onAddedLikeOfUserToUserReviewOfContent(UserReview userReview, boolean added) {
+        if (added && userReview != null) {
+            userReview.setLikeCount(userReview.getLikeCount() + 1);
+            userReview.setUserLikeReview(true);
+        }
+        firebaseCallback.onAddedLikeOfUserToUserReviewOfContent(userReview, added);
+    }
+
+    @Override
+    public void onRemovedLikeOfUserToUserReviewOfContent(UserReview userReview, boolean removed) {
+        if (removed && userReview != null) {
+            userReview.setLikeCount(userReview.getLikeCount() - 1);
+            userReview.setUserLikeReview(false);
+        }
+        firebaseCallback.onRemovedLikeOfUserToUserReviewOfContent(userReview, removed);
     }
 
     @Override

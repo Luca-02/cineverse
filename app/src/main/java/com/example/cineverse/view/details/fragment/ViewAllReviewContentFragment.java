@@ -22,6 +22,7 @@ import com.example.cineverse.adapter.review.ReviewAdapter;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.FragmentViewAllReviewContentBinding;
+import com.example.cineverse.handler.ReviewUiHandler;
 import com.example.cineverse.view.details.ContentDetailsActivity;
 import com.example.cineverse.viewmodel.review.ReviewViewModel;
 
@@ -34,7 +35,7 @@ public class ViewAllReviewContentFragment extends Fragment
     public static final String CONTENT_TAG = "Content";
 
     private FragmentViewAllReviewContentBinding binding;
-    private ReviewViewModel viewModel;
+    private ReviewViewModel reviewViewModel;
     private ReviewAdapter reviewAdapter;
     private AbstractContent content;
 
@@ -76,9 +77,11 @@ public class ViewAllReviewContentFragment extends Fragment
      * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
-        viewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
-        viewModel.getPagedContentReviewLiveData().observe(this.getViewLifecycleOwner(), this::handlePagedContentReview);
-        viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
+        reviewViewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
+        reviewViewModel.getPagedUserReviewOfContentLiveData().observe(this.getViewLifecycleOwner(), this::handlePagedContentReview);
+        reviewViewModel.getChangeLikeOfCurrentUserToUserReviewOfContentLiveData().observe(
+                getViewLifecycleOwner(), this::handleChangeLikeToUserReview);
+        reviewViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
     }
 
     private void initContentSection() {
@@ -88,8 +91,8 @@ public class ViewAllReviewContentFragment extends Fragment
         }
         binding.reviewRecyclerView.setAdapter(reviewAdapter);
         binding.reviewRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        if (viewModel.getLastTimestamp() == START_TIMESTAMP_VALUE) {
-            viewModel.getPagedContentReviewOfContent(content);
+        if (reviewViewModel.getLastTimestamp() == START_TIMESTAMP_VALUE) {
+            reviewViewModel.getPagedUserReviewOfContent(content);
         }
     }
 
@@ -107,9 +110,9 @@ public class ViewAllReviewContentFragment extends Fragment
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (!viewModel.isLoading() && !recyclerView.canScrollVertically(1)) {
-                    viewModel.getPagedContentReviewOfContent(content);
-                    viewModel.setLoading(true);
+                if (!reviewViewModel.isLoading() && !recyclerView.canScrollVertically(1)) {
+                    reviewViewModel.getPagedUserReviewOfContent(content);
+                    reviewViewModel.setLoading(true);
                 }
             }
         });
@@ -120,22 +123,40 @@ public class ViewAllReviewContentFragment extends Fragment
 
     private void handlePagedContentReview(List<UserReview> userReviewList) {
         reviewAdapter.addPagingData(userReviewList);
-        viewModel.setLoading(false);
+        reviewViewModel.setLoading(false);
+    }
+
+    private void handleChangeLikeToUserReview(UserReview userReview) {
+        if (userReview != null) {
+            reviewAdapter.handleChangeLikeToUserReview(userReview);
+        }
     }
 
     private void handleNetworkError(Boolean bool) {
         if (bool != null && bool) {
             ((ContentDetailsActivity) requireActivity()).openNetworkErrorActivity();
-            viewModel.getNetworkErrorLiveData().setValue(null);
+            reviewViewModel.getNetworkErrorLiveData().setValue(null);
         }
     }
 
     @Override
     public void onUserReviewClick(UserReview userReview) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(USER_REVIEW_TAG, userReview);
+        bundle.putParcelable(ReviewDetailsFragment.CONTENT_TAG, content);
+        bundle.putParcelable(ReviewDetailsFragment.USER_REVIEW_TAG, userReview);
+        bundle.putBoolean(ReviewDetailsFragment.WITH_LIKE_SECTION_TAG, true);
         Navigation.findNavController(requireView())
                 .navigate(R.id.action_viewAllReviewContentFragment_to_reviewDetailsFragment, bundle);
+    }
+
+    @Override
+    public void addLikeToUserReview(UserReview userReview) {
+        reviewViewModel.addLikeOfCurrentUserToUserReviewOfContent(content, userReview);
+    }
+
+    @Override
+    public void removeLikeToUserReview(UserReview userReview) {
+        reviewViewModel.removeLikeOfCurrentUserToUserReviewOfContent(content, userReview);
     }
 
 }

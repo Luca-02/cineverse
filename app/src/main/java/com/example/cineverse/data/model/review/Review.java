@@ -57,13 +57,20 @@ public class Review implements Cloneable, Parcelable {
         return new Review(0, null, 0);
     }
 
-    @Override
-    public boolean equals(Object o) {
+    public boolean equalsContent(Object o) {
         if (this == o) return true;
         if (!(o instanceof Review)) return false;
         Review review1 = (Review) o;
         return getRating() == review1.getRating() &&
                 Objects.equals(getReview(), review1.getReview());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Review)) return false;
+        Review review1 = (Review) o;
+        return getTimestamp() == review1.getTimestamp() ;
     }
 
     @Override
@@ -112,4 +119,12 @@ public class Review implements Cloneable, Parcelable {
         }
     };
 
+    @Override
+    public String toString() {
+        return "Review{" +
+                "rating=" + rating +
+                ", review='" + review + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

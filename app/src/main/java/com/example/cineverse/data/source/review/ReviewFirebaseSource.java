@@ -4,7 +4,6 @@ import static com.example.cineverse.utils.constant.GlobalConstant.END_TIMESTAMP_
 import static com.example.cineverse.utils.constant.GlobalConstant.START_TIMESTAMP_VALUE;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,10 +12,8 @@ import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
-import com.example.cineverse.service.firebase.FirebaseCallback;
 import com.example.cineverse.service.firebase.ReviewFirebaseDatabaseService;
 import com.example.cineverse.utils.NetworkUtils;
-import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,9 +49,9 @@ public class ReviewFirebaseSource
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Long count = snapshot.child("count").getValue(Long.class);
+                        long count = snapshot.child("list").getChildrenCount();
                         Long ratingCount = snapshot.child("ratingCount").getValue(Long.class);
-                        if (count != null && ratingCount != null) {
+                        if (ratingCount != null) {
                             firebaseCallback.onContentRating((double) ratingCount / count);
                         } else {
                             firebaseCallback.onContentRating(null);
@@ -63,7 +60,7 @@ public class ReviewFirebaseSource
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        firebaseCallback.onContentReviewOfUser(null);
+                        firebaseCallback.onUserReviewOfContent(null);
                     }
                 });
             }
@@ -72,7 +69,7 @@ public class ReviewFirebaseSource
         }
     }
 
-    public void getContentReviewOfUser(User user, AbstractContent content) {
+    public void getUserReviewOfContent(User user, AbstractContent content) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             String contentType = ContentTypeMappingManager.getContentType(content.getClass());
             if (contentType != null) {
@@ -86,13 +83,17 @@ public class ReviewFirebaseSource
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Review review = snapshot.getValue(Review.class);
+                        long likeCount = snapshot.child("like").getChildrenCount();
+                        boolean userLikeReview = snapshot.child("like").hasChild(user.getUid());
                         UserReview userReview = new UserReview(user, review);
-                        firebaseCallback.onContentReviewOfUser(userReview);
+                        userReview.setLikeCount(likeCount);
+                        userReview.setUserLikeReview(userLikeReview);
+                        firebaseCallback.onUserReviewOfContent(userReview);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        firebaseCallback.onContentReviewOfUser(null);
+                        firebaseCallback.onUserReviewOfContent(null);
                     }
                 });
             }
@@ -101,7 +102,7 @@ public class ReviewFirebaseSource
         }
     }
 
-    public void addContentReviewOfUser(User user, AbstractContent content, Review review) {
+    public void addUserReviewOfContent(User user, AbstractContent content, Review review) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             String contentType = ContentTypeMappingManager.getContentType(content.getClass());
             if (contentType != null) {
@@ -115,7 +116,8 @@ public class ReviewFirebaseSource
                     @Override
                     public Transaction.Result doTransaction(@NonNull MutableData currentData) {
                         oldReview[0] = currentData.getValue(Review.class);
-                        currentData.setValue(review);
+                        currentData.child("rating").setValue(review.getRating());
+                        currentData.child("review").setValue(review.getReview());
                         currentData.child("timestamp").setValue(ServerValue.TIMESTAMP);
                         return Transaction.success(currentData);
                     }
@@ -128,11 +130,14 @@ public class ReviewFirebaseSource
                             if (newReview != null) {
                                 review.setTimestamp(newReview.getTimestamp());
                                 userReview = new UserReview(user, newReview);
+                                userReviewDatabase
+                                        .child(contentType)
+                                        .child(user.getUid())
+                                        .child(String.valueOf(content.getId()))
+                                        .setValue(review.getTimestamp());
+
                                 int oldRating = 0;
-                                if (oldReview[0] == null) {
-                                    ref.child("count").setValue(
-                                            ServerValue.increment(1));
-                                } else {
+                                if (oldReview[0] != null) {
                                     oldRating = oldReview[0].getRating();
                                 }
                                 int newRating = newReview.getRating();
@@ -140,8 +145,10 @@ public class ReviewFirebaseSource
                                 ref.child("ratingCount").setValue(
                                         ServerValue.increment(sumRating));
                             }
+                            firebaseCallback.onAddedUserReviewOfContent(userReview);
+                        } else {
+                            firebaseCallback.onAddedUserReviewOfContent(null);
                         }
-                        firebaseCallback.onAddedContentReviewOfUser(userReview);
                     }
                 });
             }
@@ -150,7 +157,7 @@ public class ReviewFirebaseSource
         }
     }
 
-    public void removeContentReviewOfUser(User user, AbstractContent content, @NonNull Review review) {
+    public void removeUserReviewOfContent(User user, AbstractContent content, @NonNull Review review) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             String contentType = ContentTypeMappingManager.getContentType(content.getClass());
             if (contentType != null) {
@@ -164,8 +171,6 @@ public class ReviewFirebaseSource
                     public Transaction.Result doTransaction(@NonNull MutableData currentData) {
                         if (currentData.hasChildren()) {
                             ref.child("list").child(user.getUid()).removeValue((error1, ref1) -> {
-                                ref.child("count").setValue(
-                                        ServerValue.increment(-1));
                                 ref.child("ratingCount").setValue(
                                         ServerValue.increment(-1 * review.getRating()));
                             });
@@ -175,7 +180,13 @@ public class ReviewFirebaseSource
 
                     @Override
                     public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                        firebaseCallback.onRemovedContentReviewOfUser(error == null);
+                        userReviewDatabase
+                                .child(contentType)
+                                .child(user.getUid())
+                                .child(String.valueOf(content.getId()))
+                                .removeValue();
+
+                        firebaseCallback.onRemovedUserReviewOfContent(committed);
                     }
                 });
             }
@@ -184,7 +195,7 @@ public class ReviewFirebaseSource
         }
     }
 
-    public void getPagedContentReviewOfContent(AbstractContent content, int pageSize, long lastTimestamp) {
+    public void getPagedUserReviewOfContent(User currentUser, AbstractContent content, int pageSize, long lastTimestamp) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             String contentType = ContentTypeMappingManager.getContentType(content.getClass());
             if (contentType != null) {
@@ -216,8 +227,14 @@ public class ReviewFirebaseSource
                             for (DataSnapshot reviewSnapshot : snapshot.getChildren()) {
                                 String userUid = reviewSnapshot.getKey();
                                 Review review = reviewSnapshot.getValue(Review.class);
-                                if (review != null) {
-                                    userReviewList.add(0, new UserReview(userUid, review));
+
+                                if (userUid != null && review != null) {
+                                    long likeCount = reviewSnapshot.child("like").getChildrenCount();
+                                    boolean userLikeReview = reviewSnapshot.child("like").hasChild(currentUser.getUid());
+                                    UserReview userReview = new UserReview(userUid, review);
+                                    userReview.setLikeCount(likeCount);
+                                    userReview.setUserLikeReview(userLikeReview);
+                                    userReviewList.add(0, userReview);
                                     if (lowestTimestamp > review.getTimestamp()) {
                                         lowestTimestamp = review.getTimestamp();
                                     }
@@ -239,19 +256,19 @@ public class ReviewFirebaseSource
                                     User user = snapshot.child(userReview.getUser().getUid()).getValue(User.class);
                                     userReview.setUser(user);
                                 }
-                                firebaseCallback.onPagedContentReviewOfContent(userReviewList, finalLowestTimestamp);
+                                firebaseCallback.onPagedUserReviewOfContent(userReviewList, finalLowestTimestamp);
                             }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-                                firebaseCallback.onPagedContentReviewOfContent(new ArrayList<>(), lastTimestamp);
+                                firebaseCallback.onPagedUserReviewOfContent(new ArrayList<>(), lastTimestamp);
                             }
                         });
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        firebaseCallback.onPagedContentReviewOfContent(new ArrayList<>(), lastTimestamp);
+                        firebaseCallback.onPagedUserReviewOfContent(new ArrayList<>(), lastTimestamp);
                     }
                 });
             }
@@ -260,7 +277,7 @@ public class ReviewFirebaseSource
         }
     }
 
-    public void addLikeOfUserToContentReview(User user, AbstractContent content, UserReview userReview, FirebaseCallback<Boolean> firebaseCallback) {
+    public void addLikeOfUserToUserReviewOfContent(User user, AbstractContent content, UserReview userReview) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             String contentType = ContentTypeMappingManager.getContentType(content.getClass());
             User userOfReview = userReview.getUser();
@@ -287,7 +304,7 @@ public class ReviewFirebaseSource
 
                     @Override
                     public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                        firebaseCallback.onCallback(committed && error == null);
+                        firebaseCallback.onAddedLikeOfUserToUserReviewOfContent(userReview, committed);
                     }
                 });
             }
@@ -296,7 +313,7 @@ public class ReviewFirebaseSource
         }
     }
 
-    public void removeLikeOfUserToContentReview(User user, AbstractContent content, UserReview userReview, FirebaseCallback<Boolean> firebaseCallback) {
+    public void removedLikeOfUserToUserReviewOfContent(User user, AbstractContent content, UserReview userReview) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             String contentType = ContentTypeMappingManager.getContentType(content.getClass());
             User userOfReview = userReview.getUser();
@@ -310,7 +327,7 @@ public class ReviewFirebaseSource
                         .child(user.getUid());
 
                 ref.removeValue((error, ref1) -> {
-                    firebaseCallback.onCallback(error == null);
+                    firebaseCallback.onRemovedLikeOfUserToUserReviewOfContent(userReview, error == null);
                 });
             }
         } else {

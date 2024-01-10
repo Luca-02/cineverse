@@ -100,8 +100,10 @@ public class ContentDetailsFragment extends Fragment
 
         reviewViewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
         reviewViewModel.getContentRatingLiveData().observe(getViewLifecycleOwner(), this::handleContentRating);
-        reviewViewModel.getCurrentUserReviewLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReview);
-        reviewViewModel.getPagedContentReviewLiveData().observe(this.getViewLifecycleOwner(), this::handlePagedContentReview);
+        reviewViewModel.getCurrentUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReview);
+        reviewViewModel.getPagedUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), this::handlePagedContentReview);
+        reviewViewModel.getChangeLikeOfCurrentUserToUserReviewOfContentLiveData().observe(
+                getViewLifecycleOwner(), this::handleChangeLikeToUserReview);
         reviewViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
     }
 
@@ -195,11 +197,11 @@ public class ContentDetailsFragment extends Fragment
         if (reviewViewModel.getContentRatingLiveData().getValue() == null) {
             reviewViewModel.getContentRating(content);
         }
-        if (reviewViewModel.getCurrentUserReviewLiveData().getValue() == null) {
-            reviewViewModel.getContentReviewOfCurrentUser(content);
+        if (reviewViewModel.getCurrentUserReviewOfContentLiveData().getValue() == null) {
+            reviewViewModel.getCurrentUserReviewOfContent(content);
         }
-        if (reviewViewModel.getPagedContentReviewLiveData().getValue() == null) {
-            reviewViewModel.getPagedContentReviewOfContent(content);
+        if (reviewViewModel.getPagedUserReviewOfContentLiveData().getValue() == null) {
+            reviewViewModel.getPagedUserReviewOfContent(content);
         }
     }
 
@@ -234,10 +236,10 @@ public class ContentDetailsFragment extends Fragment
     }
 
     private void handleCurrentUserReview(UserReview userReview) {
-        if (userReview != null && userReview.getReview() != null) {
+        if (userReview != null && userReview.getUser() != null && userReview.getReview() != null) {
             binding.yourReviewTextView.setVisibility(View.VISIBLE);
             binding.yourReviewLayout.getRoot().setVisibility(View.VISIBLE);
-            ReviewUiHandler.setReviewUi(requireContext(), binding.yourReviewLayout, userReview);
+            ReviewUiHandler.setReviewUi(requireContext(), binding.yourReviewLayout, userReview, false);
         } else {
             binding.yourReviewTextView.setVisibility(View.GONE);
             binding.yourReviewLayout.getRoot().setVisibility(View.GONE);
@@ -254,6 +256,10 @@ public class ContentDetailsFragment extends Fragment
             binding.recentReviewConstraintLayout.setVisibility(View.GONE);
             binding.recentReviewRecyclerView.setVisibility(View.GONE);
         }
+    }
+
+    private void handleChangeLikeToUserReview(UserReview userReview) {
+        reviewAdapter.handleChangeLikeToUserReview(userReview);
     }
 
     private void handleTimestampInWatchlist(Long timestamp) {
@@ -320,7 +326,7 @@ public class ContentDetailsFragment extends Fragment
 
     private void openViewAllCastCrewFragment() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(CREDITS_TAG, contentDetails.getCredits());
+        bundle.putParcelable(ViewAllCastCrewFragment.CREDITS_TAG, contentDetails.getCredits());
         Navigation.findNavController(requireView())
                 .navigate(R.id.action_contentDetailsFragment_to_viewAllCastCrewFragment, bundle);
     }
@@ -335,9 +341,21 @@ public class ContentDetailsFragment extends Fragment
     @Override
     public void onUserReviewClick(UserReview userReview) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(USER_REVIEW_TAG, userReview);
+        bundle.putParcelable(ReviewDetailsFragment.CONTENT_TAG, (AbstractContent) contentDetails);
+        bundle.putParcelable(ReviewDetailsFragment.USER_REVIEW_TAG, userReview);
+        bundle.putBoolean(ReviewDetailsFragment.WITH_LIKE_SECTION_TAG, true);
         Navigation.findNavController(requireView())
                 .navigate(R.id.action_contentDetailsFragment_to_reviewDetailsFragment, bundle);
+    }
+
+    @Override
+    public void addLikeToUserReview(UserReview userReview) {
+        reviewViewModel.addLikeOfCurrentUserToUserReviewOfContent((AbstractContent) contentDetails, userReview);
+    }
+
+    @Override
+    public void removeLikeToUserReview(UserReview userReview) {
+        reviewViewModel.removeLikeOfCurrentUserToUserReviewOfContent((AbstractContent) contentDetails, userReview);
     }
 
 }
