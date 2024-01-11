@@ -38,6 +38,13 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_contentDetailsFragment_to_viewAllVideoFragment"
+            app:destination="@id/viewAllVideoFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/reviewContentFragment"
@@ -67,6 +74,11 @@
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
     </fragment>
+    <fragment
+        android:id="@+id/viewAllVideoFragment"
+        android:name="com.example.cineverse.view.details.fragment.ViewAllVideoFragment"
+        android:label="fragment_view_all_video"
+        tools:layout="@layout/fragment_view_all_video" />
 
     <activity
         android:id="@+id/networkErrorActivity"

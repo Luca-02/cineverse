@@ -14,8 +14,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cineverse.adapter.OnContentClickListener;
-import com.example.cineverse.adapter.view_all_content.ContentViewAllAdapter;
+import com.example.cineverse.adapter.content.OnContentClickListener;
+import com.example.cineverse.adapter.content.ContentViewAllAdapter;
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.databinding.FragmentViewAllContentBinding;
@@ -36,7 +36,7 @@ import java.util.List;
 public class ViewAllContentFragment extends Fragment
         implements OnContentClickListener {
 
-    private static final String SAVE_RECYCLER_VIEW_CONTENT_ID = "SaveRecyclerViewContent";
+    private static final String SAVE_RECYCLER_VIEW_CONTENT_ID = "SaveRecyclerViewContentViewAllContent";
 
     private FragmentViewAllContentBinding binding;
     private AbstractSectionContentViewModel viewModel;
@@ -84,7 +84,7 @@ public class ViewAllContentFragment extends Fragment
      *
      * @param savedInstanceState The saved instance state bundle.
      */
-    public void restorePreviousState(Bundle savedInstanceState){
+    public void restorePreviousState(Bundle savedInstanceState) {
         List<AbstractContent> dataset = savedInstanceState
                 .getParcelableArrayList(SAVE_RECYCLER_VIEW_CONTENT_ID);
         contentAdapter.addPagingData(dataset);

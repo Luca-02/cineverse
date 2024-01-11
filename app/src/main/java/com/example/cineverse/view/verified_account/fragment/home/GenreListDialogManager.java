@@ -8,7 +8,7 @@ import android.view.Window;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.cineverse.R;
-import com.example.cineverse.adapter.home.GenreListAdapter;
+import com.example.cineverse.adapter.genre.GenreListAdapter;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.databinding.GenreListDialogLayoutBinding;
 

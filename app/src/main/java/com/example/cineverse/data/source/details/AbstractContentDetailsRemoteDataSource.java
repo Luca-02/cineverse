@@ -2,14 +2,14 @@ package com.example.cineverse.data.source.details;
 
 import android.content.Context;
 
-import com.example.cineverse.data.model.details.section.ContentDetailsApiResponse;
+import com.example.cineverse.data.model.details.section.IContentDetails;
 import com.example.cineverse.data.source.api.TMDBRemoteDataSource;
 import com.example.cineverse.service.api.DetailsApiService;
 import com.example.cineverse.utils.ServiceLocator;
 
 import retrofit2.Call;
 
-public abstract class AbstractContentDetailsRemoteDataSource<T extends ContentDetailsApiResponse>
+public abstract class AbstractContentDetailsRemoteDataSource<T extends IContentDetails>
         extends TMDBRemoteDataSource
         implements IContentDetailsRemoteDataSource {
 

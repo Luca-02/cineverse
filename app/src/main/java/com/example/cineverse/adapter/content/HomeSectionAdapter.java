@@ -1,4 +1,4 @@
-package com.example.cineverse.adapter.home;
+package com.example.cineverse.adapter.content;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cineverse.adapter.OnContentClickListener;
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.CarouselContentSectionBinding;

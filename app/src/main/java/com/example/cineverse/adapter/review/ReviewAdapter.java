@@ -55,6 +55,8 @@ public class ReviewAdapter
         if (userReview != null) {
             for (int i = 0; i < userReviewList.size(); i++) {
                 if (userReview.equals(userReviewList.get(i))) {
+                    userReviewList.get(i).updateLike(
+                            userReview.getLikeCount(), userReview.isUserLikeReview());
                     List<Object> payload = new ArrayList<>();
                     payload.add(userReview.getLikeCount());
                     payload.add(userReview.isUserLikeReview());

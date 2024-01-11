@@ -12,10 +12,8 @@ import com.example.cineverse.service.NetworkCallback;
 public class MovieDetailsRepository
         extends AbstractDetailsRepository<MovieDetails> {
 
-    public MovieDetailsRepository(
-            Context context,
-            ContentDetailsRemoteResponseCallback<MovieDetails> remoteResponseCallback) {
-        super(new MovieDetailsRemoteDataSource(context), remoteResponseCallback);
+    public MovieDetailsRepository(Context context) {
+        super(new MovieDetailsRemoteDataSource(context));
     }
 
 }

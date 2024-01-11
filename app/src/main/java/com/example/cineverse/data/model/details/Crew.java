@@ -101,16 +101,6 @@ public class Crew implements Parcelable {
         dest.writeTypedList(this.jobs);
     }
 
-    public void readFromParcel(Parcel source) {
-        this.id = source.readInt();
-        this.knownForDepartment = source.readString();
-        this.name = source.readString();
-        this.profilePath = source.readString();
-        this.department = source.readString();
-        this.job = source.readString();
-        this.jobs = source.createTypedArrayList(Jobs.CREATOR);
-    }
-
     protected Crew(Parcel in) {
         this.id = in.readInt();
         this.knownForDepartment = in.readString();

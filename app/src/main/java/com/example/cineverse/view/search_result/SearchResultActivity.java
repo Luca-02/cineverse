@@ -1,16 +1,15 @@
 package com.example.cineverse.view.search_result;
 
+import android.os.Bundle;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.os.Bundle;
-
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivitySearchResultBinding;
-import com.example.cineverse.databinding.ActivityViewAllContentBinding;
 
 public class SearchResultActivity extends AppCompatActivity {
 
@@ -30,7 +29,7 @@ public class SearchResultActivity extends AppCompatActivity {
         setActionBar();
         setNavController();
         binding.materialToolbar.setNavigationOnClickListener(
-                view -> finish());
+                view -> getOnBackPressedDispatcher().onBackPressed());
     }
 
     /**
@@ -68,6 +67,10 @@ public class SearchResultActivity extends AppCompatActivity {
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
+    }
+
+    public NavController getNavController() {
+        return navController;
     }
 
     public String getQuery() {

@@ -9,7 +9,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityVerifyAccountBinding;
-import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;

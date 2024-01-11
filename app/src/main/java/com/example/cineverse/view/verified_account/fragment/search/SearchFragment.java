@@ -2,15 +2,17 @@ package com.example.cineverse.view.verified_account.fragment.search;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -28,6 +30,7 @@ import com.example.cineverse.adapter.search.SearchHistoryAdapter;
 import com.example.cineverse.data.model.search.QueryHistory;
 import com.example.cineverse.data.model.ui.CustomSearchView;
 import com.example.cineverse.databinding.FragmentSearchBinding;
+import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.verified_account.fragment.DashboardFragment;
 import com.example.cineverse.viewmodel.verified_account.section.search.SearchViewModel;
@@ -60,7 +63,7 @@ public class SearchFragment extends Fragment
                                 data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
                         if (resultArrayList != null) {
-                            handleSpeechToText(resultArrayList.get(0));
+                            handleSearchQuery(resultArrayList.get(0));
                         }
                     }
                 }
@@ -68,18 +71,14 @@ public class SearchFragment extends Fragment
     );
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentSearchBinding.inflate(inflater, container, false);
         DashboardFragment dashboardFragment = (DashboardFragment) requireParentFragment()
                 .requireParentFragment();
         searchView = dashboardFragment.getSearchView();
         keywordRecyclerView = dashboardFragment.getKeywordRecyclerView();
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentSearchBinding.inflate(inflater, container, false);
+        searchView.setupWithSearchBar(binding.searchBar);
         return binding.getRoot();
     }
 
@@ -90,7 +89,14 @@ public class SearchFragment extends Fragment
         initHistorySection();
         initKeywordSection();
         setListener();
-        searchView.setupWithSearchBar(binding.searchBar);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (searchView != null) {
+            searchView.hide();
+        }
     }
 
     @Override
@@ -153,13 +159,12 @@ public class SearchFragment extends Fragment
 
         searchView.getEditText().setOnEditorActionListener(
                 (v, actionId, event) -> {
-                    QueryHistory queryHistory = viewModel.addToSearchHistory(
-                            searchView.getEditText().getText().toString());
-                    // Check if the query inserted is not null, so if is not an empty string
-                    if (queryHistory != null) {
-                        searchView.hide();
-                        searchHistoryAdapter.addQuery(queryHistory);
-                        openSearchResult(queryHistory.getQuery());
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                            (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() &&
+                                    event.getAction() == KeyEvent.ACTION_DOWN)) {
+                        String query = v.getText().toString();
+                        handleSearchQuery(query);
+                        return true;
                     }
                     return false;
                 });
@@ -186,8 +191,13 @@ public class SearchFragment extends Fragment
                 ((VerifiedAccountActivity) requireActivity()).openDrawer());
     }
 
-    private void handleSpeechToText(String query) {
-        binding.searchBar.setText(query);
+    private void handleSearchQuery(String query) {
+        QueryHistory queryHistory = viewModel.addToSearchHistory(query);
+        // Check if the query inserted is not null, so if is not an empty string
+        if (queryHistory != null) {
+            searchHistoryAdapter.addQuery(queryHistory);
+        }
+        openSearchResult(query);
     }
 
     private void openSearchResult(String query) {

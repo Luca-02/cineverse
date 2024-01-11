@@ -9,5 +9,6 @@
         android:id="@+id/contentRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/half_spacing"
         android:clipToPadding="false" />
 </FrameLayout>

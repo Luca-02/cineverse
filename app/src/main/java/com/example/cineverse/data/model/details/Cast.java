@@ -90,15 +90,6 @@ public class Cast implements Parcelable {
         dest.writeTypedList(this.roles);
     }
 
-    public void readFromParcel(Parcel source) {
-        this.id = source.readInt();
-        this.knownForDepartment = source.readString();
-        this.name = source.readString();
-        this.profilePath = source.readString();
-        this.character = source.readString();
-        this.roles = source.createTypedArrayList(Role.CREATOR);
-    }
-
     protected Cast(Parcel in) {
         this.id = in.readInt();
         this.knownForDepartment = in.readString();

@@ -2,8 +2,6 @@ package com.example.cineverse.view.details.fragment;
 
 import static com.example.cineverse.utils.constant.Api.RESPONSE_DATE_FORMAT;
 import static com.example.cineverse.utils.constant.Api.TMDB_IMAGE_ORIGINAL_SIZE_URL;
-import static com.example.cineverse.view.details.fragment.ReviewDetailsFragment.USER_REVIEW_TAG;
-import static com.example.cineverse.view.details.fragment.ViewAllCastCrewFragment.CREDITS_TAG;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,7 +25,7 @@ import com.example.cineverse.adapter.review.OnReviewClickListener;
 import com.example.cineverse.adapter.review.ReviewAdapter;
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
-import com.example.cineverse.data.model.details.section.ContentDetailsApiResponse;
+import com.example.cineverse.data.model.details.section.IContentDetails;
 import com.example.cineverse.data.model.details.section.MovieDetails;
 import com.example.cineverse.data.model.details.section.TvDetails;
 import com.example.cineverse.data.model.review.UserReview;
@@ -50,9 +48,9 @@ public class ContentDetailsFragment extends Fragment
         implements OnReviewClickListener {
 
     private FragmentContentDetailsBinding binding;
-    private AbstractContentDetailsViewModel<? extends ContentDetailsApiResponse> contentDetailsViewModel;
+    private AbstractContentDetailsViewModel<? extends IContentDetails> contentDetailsViewModel;
     private ReviewViewModel reviewViewModel;
-    private ContentDetailsApiResponse contentDetails;
+    private IContentDetails contentDetails;
     private ReviewAdapter reviewAdapter;
 
     @Override
@@ -91,18 +89,18 @@ public class ContentDetailsFragment extends Fragment
 
         if (contentDetailsViewModel != null) {
             contentDetailsViewModel.getContentDetailsLiveData().observe(getViewLifecycleOwner(), this::handleContentDetails);
-            contentDetailsViewModel.getTimestampInWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleTimestampInWatchlist);
-            contentDetailsViewModel.getAddedToWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleAddedToWatch);
-            contentDetailsViewModel.getRemovedToWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleRemovedToWatch);
+            contentDetailsViewModel.getTimestampForContentInWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleTimestampInWatchlist);
+            contentDetailsViewModel.getAddedContentToWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleAddedToWatch);
+            contentDetailsViewModel.getRemovedContentToWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleRemovedToWatch);
             contentDetailsViewModel.getFailureLiveData().observe(getViewLifecycleOwner(), this::handleFailure);
             contentDetailsViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
         }
 
         reviewViewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
         reviewViewModel.getContentRatingLiveData().observe(getViewLifecycleOwner(), this::handleContentRating);
-        reviewViewModel.getCurrentUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReview);
+        reviewViewModel.getUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReview);
         reviewViewModel.getPagedUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), this::handlePagedContentReview);
-        reviewViewModel.getChangeLikeOfCurrentUserToUserReviewOfContentLiveData().observe(
+        reviewViewModel.getChangeLikeOfUserToUserReviewOfContentLiveData().observe(
                 getViewLifecycleOwner(), this::handleChangeLikeToUserReview);
         reviewViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
     }
@@ -121,21 +119,22 @@ public class ContentDetailsFragment extends Fragment
     private void setListener() {
         binding.reviewButton.setOnClickListener(v -> openReviewContentFragment());
         binding.yourReviewLayout.getRoot().setOnClickListener(v -> openReviewContentFragment());
+        binding.videoButton.setOnClickListener(v -> openViewAllVideoFragment());
         binding.viewAllCastCrewChip.setOnClickListener(v -> openViewAllCastCrewFragment());
         binding.viewAllReviewChip.setOnClickListener(v -> openViewAllReviewContentFragment());
         binding.materialToolbar.setNavigationOnClickListener(v ->
                 requireActivity().getOnBackPressedDispatcher().onBackPressed());
     }
 
-    private void handleContentDetails(ContentDetailsApiResponse contentDetailsApiResponse) {
-        if (MovieDetails.class.isAssignableFrom(contentDetailsApiResponse.getClass())) {
-            handleMovieDetails((MovieDetails) contentDetailsApiResponse);
-        } else if (TvDetails.class.isAssignableFrom(contentDetailsApiResponse.getClass())) {
-            handleTvDetails((TvDetails) contentDetailsApiResponse);
+    private void handleContentDetails(IContentDetails contentDetails) {
+        if (MovieDetails.class.isAssignableFrom(contentDetails.getClass())) {
+            handleMovieDetails((MovieDetails) contentDetails);
+        } else if (TvDetails.class.isAssignableFrom(contentDetails.getClass())) {
+            handleTvDetails((TvDetails) contentDetails);
         }
 
         if (contentDetailsViewModel.isFirstTimeLoadTimestampInWatchlist()) {
-            contentDetailsViewModel.getTimestampForContentInWatchlist((AbstractContent) contentDetails);
+            contentDetailsViewModel.getTimestampForContentInWatchlist((AbstractContent) this.contentDetails);
         }
     }
 
@@ -174,14 +173,14 @@ public class ContentDetailsFragment extends Fragment
 
         if (content.getPosterPath() == null) {
             int padding = requireContext().getResources().getDimensionPixelOffset(R.dimen.double_spacing);
-            binding.posterImageView.setPadding(padding, padding, padding, padding);
-            binding.posterImageView.setImageResource(R.drawable.outline_image_not_supported);
+            binding.posterImageLayout.posterImageView.setPadding(padding, padding, padding, padding);
+            binding.posterImageLayout.posterImageView.setImageResource(R.drawable.outline_image_not_supported);
         } else {
             String posterImageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getPosterPath();
             Glide.with(requireActivity())
                     .load(posterImageUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(binding.posterImageView);
+                    .into(binding.posterImageLayout.posterImageView);
         }
 
         binding.titleTextView.setText(content.getName());
@@ -197,15 +196,15 @@ public class ContentDetailsFragment extends Fragment
         if (reviewViewModel.getContentRatingLiveData().getValue() == null) {
             reviewViewModel.getContentRating(content);
         }
-        if (reviewViewModel.getCurrentUserReviewOfContentLiveData().getValue() == null) {
-            reviewViewModel.getCurrentUserReviewOfContent(content);
+        if (reviewViewModel.getUserReviewOfContentLiveData().getValue() == null) {
+            reviewViewModel.getUserReviewOfContent(content);
         }
         if (reviewViewModel.getPagedUserReviewOfContentLiveData().getValue() == null) {
             reviewViewModel.getPagedUserReviewOfContent(content);
         }
     }
 
-    private void setContentDetailsUi(ContentDetailsApiResponse contentDetails) {
+    private void setContentDetailsUi(IContentDetails contentDetails) {
         this.contentDetails = contentDetails;
         if (contentDetails.getTagline().isEmpty()) {
             binding.taglineTextView.setVisibility(View.GONE);
@@ -239,7 +238,14 @@ public class ContentDetailsFragment extends Fragment
         if (userReview != null && userReview.getUser() != null && userReview.getReview() != null) {
             binding.yourReviewTextView.setVisibility(View.VISIBLE);
             binding.yourReviewLayout.getRoot().setVisibility(View.VISIBLE);
-            ReviewUiHandler.setReviewUi(requireContext(), binding.yourReviewLayout, userReview, false);
+            ReviewUiHandler.setReviewUi(requireContext(), binding.yourReviewLayout, userReview, true);
+            binding.yourReviewLayout.likeCheckBox.setOnClickListener(v -> {
+                if (binding.yourReviewLayout.likeCheckBox.isChecked()) {
+                    addLikeToUserReview(userReview);
+                } else {
+                    removeLikeToUserReview(userReview);
+                }
+            });
         } else {
             binding.yourReviewTextView.setVisibility(View.GONE);
             binding.yourReviewLayout.getRoot().setVisibility(View.GONE);
@@ -259,12 +265,16 @@ public class ContentDetailsFragment extends Fragment
     }
 
     private void handleChangeLikeToUserReview(UserReview userReview) {
+        UserReview currentUserReview = reviewViewModel.getUserReviewOfContentLiveData().getValue();
+        if (currentUserReview != null && currentUserReview.equals(userReview)) {
+            reviewViewModel.getUserReviewOfContentLiveData().postValue(userReview);
+        }
         reviewAdapter.handleChangeLikeToUserReview(userReview);
     }
 
     private void handleTimestampInWatchlist(Long timestamp) {
         if (contentDetails != null) {
-            contentDetails.setTimestamp(timestamp);
+            contentDetails.setWatchlistTimestamp(timestamp);
             handleToWatchButton();
             contentDetailsViewModel.setFirstTimeLoadTimestampInWatchlist(false);
         }
@@ -272,26 +282,26 @@ public class ContentDetailsFragment extends Fragment
 
     private void handleAddedToWatch(Long timestamp) {
         if (timestamp != null) {
-            contentDetails.setTimestamp(timestamp);
-            contentDetailsViewModel.getTimestampInWatchlistLiveData().setValue(timestamp);
+            contentDetails.setWatchlistTimestamp(timestamp);
+            contentDetailsViewModel.getTimestampForContentInWatchlistLiveData().setValue(timestamp);
             Snackbar.make(binding.getRoot(),
                     R.string.added_to_watch_list, Snackbar.LENGTH_SHORT).show();
-            contentDetailsViewModel.getAddedToWatchlistLiveData().setValue(null);
+            contentDetailsViewModel.getAddedContentToWatchlistLiveData().setValue(null);
         }
     }
 
     private void handleRemovedToWatch(Boolean removed) {
         if (removed != null && removed) {
-            contentDetails.setTimestamp(null);
-            contentDetailsViewModel.getTimestampInWatchlistLiveData().setValue(null);
+            contentDetails.setWatchlistTimestamp(null);
+            contentDetailsViewModel.getTimestampForContentInWatchlistLiveData().setValue(null);
             Snackbar.make(binding.getRoot(),
                     R.string.removed_to_watch_list, Snackbar.LENGTH_SHORT).show();
-            contentDetailsViewModel.getRemovedToWatchlistLiveData().setValue(null);
+            contentDetailsViewModel.getRemovedContentToWatchlistLiveData().setValue(null);
         }
     }
 
     private void handleToWatchButton() {
-        if (contentDetails.getTimestamp() != null) {
+        if (contentDetails.getWatchlistTimestamp() != null) {
             binding.toWatchButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.outline_done));
             binding.toWatchButton.setOnClickListener(v ->
                     contentDetailsViewModel.removeContentToWatchlist((AbstractContent) contentDetails));
@@ -324,6 +334,13 @@ public class ContentDetailsFragment extends Fragment
                 .navigate(R.id.action_contentDetailsFragment_to_reviewContentFragment, bundle);
     }
 
+    public void openViewAllVideoFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ViewAllVideoFragment.CONTENT_VIDEOS_TAG, contentDetails.getVideos());
+        Navigation.findNavController(requireView())
+                .navigate(R.id.action_contentDetailsFragment_to_viewAllVideoFragment, bundle);
+    }
+
     private void openViewAllCastCrewFragment() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(ViewAllCastCrewFragment.CREDITS_TAG, contentDetails.getCredits());
@@ -350,12 +367,12 @@ public class ContentDetailsFragment extends Fragment
 
     @Override
     public void addLikeToUserReview(UserReview userReview) {
-        reviewViewModel.addLikeOfCurrentUserToUserReviewOfContent((AbstractContent) contentDetails, userReview);
+        reviewViewModel.addLikeOfUserToUserReviewOfContent((AbstractContent) contentDetails, userReview);
     }
 
     @Override
     public void removeLikeToUserReview(UserReview userReview) {
-        reviewViewModel.removeLikeOfCurrentUserToUserReviewOfContent((AbstractContent) contentDetails, userReview);
+        reviewViewModel.removedLikeOfUserToUserReviewOfContent((AbstractContent) contentDetails, userReview);
     }
 
 }

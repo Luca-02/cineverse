@@ -10,7 +10,9 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.model.content.section.Movie;
+import com.example.cineverse.data.model.review.ContentUserReview;
 import com.example.cineverse.data.model.review.UserReview;
+import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +46,18 @@ public class ReviewFirebaseSourceTest {
             }
 
             @Override
+            public void onUserReviewList(List<ContentUserReview> contentUserReviewList, String contentType) {
+                assertNotNull(contentUserReviewList);
+                System.out.println("-----");
+                System.out.println(contentUserReviewList.size());
+                for (ContentUserReview i : contentUserReviewList) {
+                    System.out.println(i.getUser() + " - " + i.getReview());
+                }
+                System.out.println("-----");
+                latch.countDown();
+            }
+
+            @Override
             public void onAddedUserReviewOfContent(UserReview userReview) {
                 assertNotNull(userReview);
                 System.out.println(userReview);
@@ -71,12 +85,18 @@ public class ReviewFirebaseSourceTest {
 
             @Override
             public void onAddedLikeOfUserToUserReviewOfContent(UserReview userReview, boolean added) {
-
+                assertNotNull(userReview);
+                assertTrue(added);
+                System.out.println(userReview);
+                latch.countDown();
             }
 
             @Override
             public void onRemovedLikeOfUserToUserReviewOfContent(UserReview userReview, boolean removed) {
-
+                assertNotNull(userReview);
+                assertTrue(removed);
+                System.out.println(userReview);
+                latch.countDown();
             }
 
             @Override
@@ -110,6 +130,13 @@ public class ReviewFirebaseSourceTest {
         Movie movie = new Movie(238, null, null, null,
                 null, null, null);
         reviewFirebaseSource.getContentRating(movie);
+        latch.await(5, TimeUnit.SECONDS);
+    }
+
+    @Test
+    public void getUserReviewListTest() throws InterruptedException {
+        User user = new User("ztat6FiSrNSs3fxfx0GmXRKMBlr2", null, null, null);
+        reviewFirebaseSource.getUserReviewList(user, ContentTypeMappingManager.ContentType.MOVIE.getType());
         latch.await(5, TimeUnit.SECONDS);
     }
 

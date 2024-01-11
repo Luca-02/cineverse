@@ -20,7 +20,7 @@ import com.example.cineverse.data.model.User;
 import com.example.cineverse.databinding.FragmentAuthBinding;
 import com.example.cineverse.repository.auth.service.LoginRepository;
 import com.example.cineverse.view.auth.AuthActivity;
-import com.example.cineverse.viewmodel.auth.service.AuthViewModel;
+import com.example.cineverse.viewmodel.auth.service.GoogleAuthViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.snackbar.Snackbar;
@@ -28,14 +28,14 @@ import com.google.android.material.snackbar.Snackbar;
 /**
  * The {@link AuthFragment} class represents the user authentication screen of the application.
  * Users can log in with their email and password, register a new account, or sign in using
- * their Google account. This fragment handles user input and interacts with the {@link AuthViewModel}
+ * their Google account. This fragment handles user input and interacts with the {@link GoogleAuthViewModel}
  * to perform authentication operations. It also provides navigation to the registration and
  * login screens as well as handling Google sign-in operations.
  */
 public class AuthFragment extends Fragment {
 
     private FragmentAuthBinding binding;
-    private AuthViewModel viewModel;
+    private GoogleAuthViewModel viewModel;
     private GoogleSignInClient googleSignInClient;
     private ActivityResultLauncher<Intent> googleSignInLauncher;
 
@@ -69,7 +69,7 @@ public class AuthFragment extends Fragment {
      * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
-        viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        viewModel = new ViewModelProvider(this).get(GoogleAuthViewModel.class);
         viewModel.getUserLiveData().observe(getViewLifecycleOwner(), this::handleUser);
         viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
         viewModel.getErrorLiveData().observe(getViewLifecycleOwner(), this::handleError);

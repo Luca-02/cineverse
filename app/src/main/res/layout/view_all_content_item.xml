@@ -23,7 +23,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/normalRadiusStyle"
                 app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -61,5 +61,4 @@
                 android:textSize="@dimen/text_small" />
         </LinearLayout>
     </LinearLayout>
-
 </com.google.android.material.card.MaterialCardView>

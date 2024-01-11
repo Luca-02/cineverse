@@ -1,4 +1,4 @@
-package com.example.cineverse.adapter.home;
+package com.example.cineverse.adapter.genre;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

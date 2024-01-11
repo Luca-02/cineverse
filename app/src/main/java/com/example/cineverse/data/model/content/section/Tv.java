@@ -16,6 +16,14 @@ public class Tv extends AbstractContent {
     @SerializedName("first_air_date")
     protected String releaseDate;
 
+    public Tv(int id) {
+        super(id);
+    }
+
+    public Tv(int id, Long watchlistTimestamp) {
+        super(id, watchlistTimestamp);
+    }
+
     public Tv(int id, String name, String overview, String releaseDate,
               String posterPath, String backdropPath, String originalLanguage) {
         super(id, overview, posterPath, backdropPath, originalLanguage);

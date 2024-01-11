@@ -11,22 +11,22 @@ import com.example.cineverse.viewmodel.auth.AbstractAuthServicesViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 /**
- * The {@link AuthViewModel} class extends {@link AbstractAuthServicesViewModel} and represents the ViewModel for authentication
+ * The {@link GoogleAuthViewModel} class extends {@link AbstractAuthServicesViewModel} and represents the ViewModel for authentication
  * functionality. It handles user authentication operations, including Google Sign-In, and communicates
- * changes in user authentication status and errors through LiveData objects. {@link AuthViewModel} integrates
+ * changes in user authentication status and errors through LiveData objects. {@link GoogleAuthViewModel} integrates
  * with {@link GoogleAuthRepository} and handles Google Sign-In authentication requests.
  */
-public class AuthViewModel
+public class GoogleAuthViewModel
         extends AbstractAuthServicesViewModel<GoogleAuthRepository> {
 
     private final GoogleSignInOptions googleSignInOptions;
 
     /**
-     * Constructs an {@link AuthViewModel} object with the given {@link Application}.
+     * Constructs an {@link GoogleAuthViewModel} object with the given {@link Application}.
      *
      * @param application The {@link Application} of the calling component.
      */
-    public AuthViewModel(@NonNull Application application) {
+    public GoogleAuthViewModel(@NonNull Application application) {
         super(application, new GoogleAuthRepository(application.getApplicationContext()));
         // Initialize GoogleSignInOptions
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

@@ -7,6 +7,7 @@ import static com.example.cineverse.view.view_all_content.ViewAllContentActivity
 import static com.example.cineverse.view.view_all_content.ViewAllContentActivity.TITLE_STRING_ID_TAG;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.example.cineverse.data.model.ui.ChipSelector;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentHomeBinding;
 import com.example.cineverse.databinding.HomeSectionChipLayoutBinding;
+import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
 import com.example.cineverse.view.view_all_content.ViewAllContentController;
@@ -41,6 +43,8 @@ import java.util.List;
  * This fragment serves as one of the tabs in the BottomNavigationView.
  */
 public class HomeFragment extends Fragment {
+
+    private static final String SAVE_SECTION_TYPE_ID = "SaveSectionTime";
 
     public static final int MOVIE_CHIP_POSITION = 0;
     public static final int TV_CHIP_POSITION = 1;
@@ -61,6 +65,9 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setNavController();
         setChipGroup(view);
+        if (savedInstanceState != null) {
+            restorePreviousState(savedInstanceState);
+        }
         binding.materialToolbar.setNavigationOnClickListener(v ->
                 ((VerifiedAccountActivity) requireActivity()).openDrawer());
         binding.categoryChip.setOnClickListener(v -> openDialog());
@@ -71,6 +78,33 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding.chipGroup.removeAllViews();
         binding = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager()
+                .findFragmentById(R.id.homeFragmentContainerView);
+
+        if (navHostFragment != null) {
+            SectionContentFragment sectionContentFragment =
+                    (SectionContentFragment) navHostFragment
+                            .getChildFragmentManager().getFragments().get(0);
+            String sectionType = sectionContentFragment.getSectionType();
+            outState.putString(SAVE_SECTION_TYPE_ID, sectionType);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Restores the previous state of the RecyclerView using the provided savedInstanceState.
+     *
+     * @param savedInstanceState The saved instance state bundle.
+     */
+    public void restorePreviousState(Bundle savedInstanceState) {
+        String sectionType = savedInstanceState.getString(SAVE_SECTION_TYPE_ID);
+        if (sectionType != null) {
+            navigateToFragment(R.id.action_global_allContentFragment, null);
+        }
     }
 
     /**

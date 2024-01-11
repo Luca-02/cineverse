@@ -1,4 +1,4 @@
-package com.example.cineverse.adapter;
+package com.example.cineverse.adapter.content;
 
 import com.example.cineverse.data.model.content.AbstractContent;
 

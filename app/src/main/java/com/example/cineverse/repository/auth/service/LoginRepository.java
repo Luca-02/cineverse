@@ -3,7 +3,7 @@ package com.example.cineverse.repository.auth.service;
 import android.content.Context;
 
 import com.example.cineverse.repository.auth.AbstractAuthRepository;
-import com.example.cineverse.service.firebase.FirebaseCallback;
+import com.example.cineverse.data.source.user.UserCallback;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
@@ -43,7 +43,7 @@ public class LoginRepository
                 authCallback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
             } else {
                 firebaseSource.getEmailFromUsername(context, account,
-                        new FirebaseCallback<String>() {
+                        new UserCallback<String>() {
                             @Override
                             public void onCallback(String email) {
                                 if (email != null) {
