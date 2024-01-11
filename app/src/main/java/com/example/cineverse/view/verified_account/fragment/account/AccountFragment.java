@@ -6,13 +6,11 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,7 +23,7 @@ import com.example.cineverse.data.model.User;
 import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.example.cineverse.utils.account.SizeModifierAccount;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
-import com.example.cineverse.utils.account.adapter.ScreenSlidePagerAdapter;
+import com.example.cineverse.adapter.account.ScreenSlidePagerAdapter;
 import com.example.cineverse.utils.account.ZoomOutPageTransformer;
 import com.example.cineverse.utils.account.account_data.ProfileInfoData;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
@@ -42,14 +40,10 @@ import java.util.List;
 public class AccountFragment extends Fragment {
     private FragmentAccountBinding binding;
     private VerifiedAccountViewModel viewModel;
-    private ImageView profile_account_image;
-    private TextView userName;
-    private AppBarLayout appBarLayout;
     private SizeModifierAccount sizemodifier;
     private int initialImageSizePx; // Initial size of profile picture in pixels
     private int initialTextSizePx; // Initial text size of username in pixels
     MaterialButtonToggleGroup materialButtonToggleGroup;
-    ConstraintLayout consMoviesLayout, consSeriesLayout;
 
     /*
     Pager View Info User Data
@@ -89,12 +83,7 @@ public class AccountFragment extends Fragment {
      * Set elements in my Fragment
      */
     private void setElements(View view){
-        profile_account_image = view.findViewById(R.id.profile_image);
-        appBarLayout = view.findViewById(R.id.account_appBarLayout);
-        userName = view.findViewById(R.id.userName);
         materialButtonToggleGroup = view.findViewById(R.id.materialToggleGroup);
-        consMoviesLayout = view.findViewById(R.id.constMoviesLayout);
-        consSeriesLayout = view.findViewById(R.id.constSeriesLayout);
         materialButtonToggleGroup.check(R.id.buttonMovies);
 
         sizemodifier = new SizeModifierAccount();
@@ -103,20 +92,19 @@ public class AccountFragment extends Fragment {
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (isChecked){
                     if (checkedId == R.id.buttonMovies){
-                        consMoviesLayout.setVisibility(View.VISIBLE);
-                        consSeriesLayout.setVisibility(View.GONE);
+
+                        binding.constMoviesLayout.setVisibility(View.VISIBLE);
+                        binding.constSeriesLayout.setVisibility(View.GONE);
                     }
 
                     else if (checkedId == R.id.buttonSeries){
-                        consSeriesLayout.setVisibility(View.VISIBLE);
-                        consMoviesLayout.setVisibility(View.GONE);
+                        binding.constSeriesLayout.setVisibility(View.VISIBLE);
+                        binding.constMoviesLayout.setVisibility(View.GONE);
                     }
                 }
             }
         });
 
-        infoList.add(new ProfileInfoData("Film of the Year", 0, R.drawable.star_account_24));
-        infoList.add(new ProfileInfoData("Total Movie", 0, R.drawable.tv_series_account_24px));
         infoList.add(new ProfileInfoData("Likes", 0, R.drawable.favorite_account_24px));
         infoList.add(new ProfileInfoData("Reviews", 0, R.drawable.reviews_account_24px));
 
@@ -132,9 +120,10 @@ public class AccountFragment extends Fragment {
 
     private void setAnimation(){
         // Get initial sizes of profileImage and userName from XML
-        initialImageSizePx = profile_account_image.getLayoutParams().width; // Assuming width and height are the same
-        initialTextSizePx = (int) userName.getTextSize(); // Initial text size in pixels
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+        initialImageSizePx = binding.profileImage.getLayoutParams().width; // Assuming width and height are the same
+        initialTextSizePx = (int) binding.userName.getTextSize(); // Initial text size in pixels
+
+        binding.accountAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isColorChanged = false;
             int scrollRange = -1;
             @Override
@@ -154,7 +143,7 @@ public class AccountFragment extends Fragment {
                     // Collapsed
                     if (!isColorChanged) {
                         binding.profileConstraintLayout.setBackgroundColor(Color.TRANSPARENT);
-                        userName.setTextColor(getContext().getResources().getColor(R.color.white));
+                        binding.userName.setTextColor(getContext().getResources().getColor(R.color.white));
                         isColorChanged = true;
                     }
                 } else {
@@ -178,11 +167,11 @@ public class AccountFragment extends Fragment {
      */
     private void updateSize(int newSize, int newTextSize) {
         // Update the size of profileImage and userName
-        profile_account_image.getLayoutParams().width = newSize;
-        profile_account_image.getLayoutParams().height = newSize;
-        profile_account_image.requestLayout();
+        binding.profileImage.getLayoutParams().width = newSize;
+        binding.profileImage.getLayoutParams().height = newSize;
+        binding.profileImage.requestLayout();
 
-        userName.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+        binding.userName.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
     }
 
     /**
@@ -242,7 +231,7 @@ public class AccountFragment extends Fragment {
             if (user.getPhotoUrl() != null) {
                 Glide.with(this)
                         .load(user.getPhotoUrl())
-                        .into(profile_account_image);
+                        .into(binding.profileImage);
             }
         } else {
             viewModel.logOut();

@@ -1,4 +1,4 @@
-package com.example.cineverse.utils.account.adapter;
+package com.example.cineverse.adapter.account;
 
 import android.util.Log;
 

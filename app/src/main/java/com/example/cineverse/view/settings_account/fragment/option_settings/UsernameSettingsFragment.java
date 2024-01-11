@@ -79,8 +79,7 @@ public class UsernameSettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         changeUsernameRepository = new ChangeUsernameRepository(getContext());
-        changeUsernameRepository.setUsernameChangeCallback(new ChangeUsernameRepository
-                .UsernameChangeCallback() {
+        changeUsernameRepository.setUsernameChangeCallback(new ChangeUsernameRepository.UsernameChangeCallback() {
             @Override
             public void isSuccess(Boolean isChanged) {
                 if (isChanged != null && isChanged) {
@@ -89,8 +88,9 @@ public class UsernameSettingsFragment extends Fragment {
                     Log.e("ChangeUsernameRepository", "Failed to change username or network error occurred");
                 }
             }
+
             @Override
-            public void onNetworkError() {
+            public void onNetworkUnavailable() {
                 Log.e("ChangeUsernameRepository", "Network error occurred while changing username");
             }
         });

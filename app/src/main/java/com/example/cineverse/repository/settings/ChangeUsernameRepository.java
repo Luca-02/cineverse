@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.repository.auth.logged.VerifiedAccountRepository;
+import com.example.cineverse.service.NetworkCallback;
 import com.google.firebase.Firebase;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,7 +66,7 @@ public class ChangeUsernameRepository extends VerifiedAccountRepository {
      */
     private void handleFailureChanging (Exception exception) {
         if (exception instanceof FirebaseNetworkException) {
-            usernameChangeCallback.onNetworkError();
+            usernameChangeCallback.onNetworkUnavailable();
         } else {
             usernameChangeCallback.isSuccess(null);
         }
@@ -76,7 +77,7 @@ public class ChangeUsernameRepository extends VerifiedAccountRepository {
         return super.getCurrentFirebaseUser();
     }
 
-    public interface UsernameChangeCallback extends NetworkCallback{
+    public interface UsernameChangeCallback extends NetworkCallback {
         /**
          * Invoked when the change is success.
          * @param isChanged
