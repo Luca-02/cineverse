@@ -60,15 +60,15 @@ public class CrewAdapter
         public void bind(Crew crew) {
             if (crew.getProfilePath() == null) {
                 int padding = context.getResources().getDimensionPixelOffset(R.dimen.double_spacing);
-                binding.profileImageView.setPadding(padding, padding, padding, padding);
-                binding.profileImageView.setImageResource(R.drawable.outline_person);
+                binding.posterImageLayout.posterImageView.setPadding(padding, padding, padding, padding);
+                binding.posterImageLayout.posterImageView.setImageResource(R.drawable.outline_person);
             } else {
-                binding.profileImageView.setPadding(0, 0, 0, 0);
+                binding.posterImageLayout.posterImageView.setPadding(0, 0, 0, 0);
                 String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + crew.getProfilePath();
                 Glide.with(context)
                         .load(imageUrl)
                         .transition(DrawableTransitionOptions.withCrossFade())
-                        .into(binding.profileImageView);
+                        .into(binding.posterImageLayout.posterImageView);
             }
 
             binding.nameTextView.setText(crew.getName());

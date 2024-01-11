@@ -17,6 +17,14 @@ public class Movie extends AbstractContent {
     @SerializedName("release_date")
     protected String releaseDate;
 
+    public Movie(int id) {
+        super(id);
+    }
+
+    public Movie(int id, Long watchlistTimestamp) {
+        super(id, watchlistTimestamp);
+    }
+
     public Movie(int id, String name, String overview, String releaseDate,
                  String posterPath, String backdropPath, String originalLanguage) {
         super(id, overview, posterPath, backdropPath, originalLanguage);

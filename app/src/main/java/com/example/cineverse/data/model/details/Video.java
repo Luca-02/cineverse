@@ -1,6 +1,9 @@
 package com.example.cineverse.data.model.details;
 
-public class Video {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Video implements Parcelable {
 
     private String iso_639_1;
     private String iso_3166_1;
@@ -96,5 +99,47 @@ public class Video {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.iso_639_1);
+        dest.writeString(this.iso_3166_1);
+        dest.writeString(this.name);
+        dest.writeString(this.key);
+        dest.writeString(this.site);
+        dest.writeInt(this.size);
+        dest.writeString(this.type);
+        dest.writeByte(this.official ? (byte) 1 : (byte) 0);
+        dest.writeString(this.id);
+    }
+
+    protected Video(Parcel in) {
+        this.iso_639_1 = in.readString();
+        this.iso_3166_1 = in.readString();
+        this.name = in.readString();
+        this.key = in.readString();
+        this.site = in.readString();
+        this.size = in.readInt();
+        this.type = in.readString();
+        this.official = in.readByte() != 0;
+        this.id = in.readString();
+    }
+
+    public static final Parcelable.Creator<Video> CREATOR = new Parcelable.Creator<Video>() {
+        @Override
+        public Video createFromParcel(Parcel source) {
+            return new Video(source);
+        }
+
+        @Override
+        public Video[] newArray(int size) {
+            return new Video[size];
+        }
+    };
 
 }

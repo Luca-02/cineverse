@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class TvDetails extends Tv implements ContentDetailsApiResponse {
+public class TvDetails extends Tv implements IContentDetails {
 
     private List<Genre> genres;
     private String status;
@@ -18,7 +18,6 @@ public class TvDetails extends Tv implements ContentDetailsApiResponse {
     @SerializedName("aggregate_credits")
     private Credits credits;
     private ContentVideos videos;
-    private Long timestamp;
 
     public TvDetails(int id, String name, String overview, String releaseDate,
                      String posterPath, String backdropPath, String originalLanguage,
@@ -91,32 +90,4 @@ public class TvDetails extends Tv implements ContentDetailsApiResponse {
         this.videos = videos;
     }
 
-    @Override
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    @Override
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    @Override
-    public String toString() {
-        return "TvDetails{" +
-                "\ngenres=" + genres +
-                "\n, status='" + status + '\'' +
-                "\n, tagline='" + tagline + '\'' +
-                "\n, seasons=" + seasons +
-                "\n, credits=" + credits +
-                "\n, videos=" + videos +
-                "\n, timestamp=" + timestamp +
-                "\n, name='" + name + '\'' +
-                "\n, releaseDate='" + releaseDate + '\'' +
-                "\n, id=" + id +
-                "\n, overview='" + overview + '\'' +
-                "\n, posterPath='" + posterPath + '\'' +
-                "\n, backdropPath='" + backdropPath + '\'' +
-                '}';
-    }
 }

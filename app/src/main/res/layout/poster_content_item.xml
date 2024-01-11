@@ -18,12 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/posterImageView"
-            android:layout_width="92dp"
-            android:layout_height="138dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
+        <include layout="@layout/poster_image_layout"
+            android:id="@+id/poster_image_layout" />
     </com.google.android.material.card.MaterialCardView>
 
     <TextView

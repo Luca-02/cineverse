@@ -25,6 +25,7 @@ import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
 import com.example.cineverse.utils.NetworkUtils;
 import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.view.auth.AuthActivity;
+import com.example.cineverse.view.search_result.SearchResultActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
 /**
@@ -167,7 +168,9 @@ public class VerifiedAccountActivity extends AppCompatActivity {
     }
 
     public void openResultSearchActivity(String query) {
-        // ...
+        Bundle bundle = new Bundle();
+        bundle.putString(SearchResultActivity.QUERY_TAG, query);
+        navController.navigate(R.id.action_global_searchResultActivity, bundle);
     }
 
     public NavController getNavController() {

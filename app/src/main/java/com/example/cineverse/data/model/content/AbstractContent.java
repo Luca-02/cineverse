@@ -1,7 +1,5 @@
 package com.example.cineverse.data.model.content;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -23,6 +21,16 @@ public abstract class AbstractContent implements Parcelable {
     protected String backdropPath;
     @SerializedName("original_language")
     private String originalLanguage;
+    private Long watchlistTimestamp;
+
+    public AbstractContent(int id) {
+        this.id = id;
+    }
+
+    public AbstractContent(int id, Long watchlistTimestamp) {
+        this.id = id;
+        this.watchlistTimestamp = watchlistTimestamp;
+    }
 
     public AbstractContent(int id, String overview, String posterPath, String backdropPath, String originalLanguage) {
         this.id = id;
@@ -72,6 +80,14 @@ public abstract class AbstractContent implements Parcelable {
         this.originalLanguage = originalLanguage;
     }
 
+    public Long getWatchlistTimestamp() {
+        return watchlistTimestamp;
+    }
+
+    public void setWatchlistTimestamp(Long watchlistTimestamp) {
+        this.watchlistTimestamp = watchlistTimestamp;
+    }
+
     public String getCountryName() {
         Locale locale = new Locale(originalLanguage);
         return locale.getDisplayLanguage(locale);
@@ -97,6 +113,7 @@ public abstract class AbstractContent implements Parcelable {
         dest.writeString(this.posterPath);
         dest.writeString(this.backdropPath);
         dest.writeString(this.originalLanguage);
+        dest.writeValue(this.watchlistTimestamp);
     }
 
     protected AbstractContent(Parcel in) {
@@ -105,6 +122,7 @@ public abstract class AbstractContent implements Parcelable {
         this.posterPath = in.readString();
         this.backdropPath = in.readString();
         this.originalLanguage = in.readString();
+        this.watchlistTimestamp = (Long) in.readValue(Long.class.getClassLoader());
     }
 
 }

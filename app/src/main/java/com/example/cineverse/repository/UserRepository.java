@@ -3,6 +3,7 @@ package com.example.cineverse.repository;
 import android.content.Context;
 
 import com.example.cineverse.data.model.User;
+import com.example.cineverse.data.source.user.UserFirebaseSource;
 import com.example.cineverse.data.source.user.UserLocalSource;
 import com.example.cineverse.service.NetworkCallback;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +24,7 @@ public class UserRepository {
     protected static final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     protected final Context context;
+    protected final UserFirebaseSource firebaseSource;
     protected final UserLocalSource localSource;
 
     /**
@@ -32,6 +34,7 @@ public class UserRepository {
      */
     public UserRepository(Context context) {
         this.context = context;
+        firebaseSource = new UserFirebaseSource(context);
         localSource = new UserLocalSource(context);
     }
 

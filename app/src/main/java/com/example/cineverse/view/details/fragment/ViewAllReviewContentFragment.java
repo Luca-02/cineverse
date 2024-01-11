@@ -1,7 +1,6 @@
 package com.example.cineverse.view.details.fragment;
 
 import static com.example.cineverse.utils.constant.GlobalConstant.START_TIMESTAMP_VALUE;
-import static com.example.cineverse.view.details.fragment.ReviewDetailsFragment.USER_REVIEW_TAG;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import com.example.cineverse.adapter.review.ReviewAdapter;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.FragmentViewAllReviewContentBinding;
-import com.example.cineverse.handler.ReviewUiHandler;
 import com.example.cineverse.view.details.ContentDetailsActivity;
 import com.example.cineverse.viewmodel.review.ReviewViewModel;
 
@@ -79,7 +77,7 @@ public class ViewAllReviewContentFragment extends Fragment
     private void setViewModel() {
         reviewViewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
         reviewViewModel.getPagedUserReviewOfContentLiveData().observe(this.getViewLifecycleOwner(), this::handlePagedContentReview);
-        reviewViewModel.getChangeLikeOfCurrentUserToUserReviewOfContentLiveData().observe(
+        reviewViewModel.getChangeLikeOfUserToUserReviewOfContentLiveData().observe(
                 getViewLifecycleOwner(), this::handleChangeLikeToUserReview);
         reviewViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
     }
@@ -151,12 +149,12 @@ public class ViewAllReviewContentFragment extends Fragment
 
     @Override
     public void addLikeToUserReview(UserReview userReview) {
-        reviewViewModel.addLikeOfCurrentUserToUserReviewOfContent(content, userReview);
+        reviewViewModel.addLikeOfUserToUserReviewOfContent(content, userReview);
     }
 
     @Override
     public void removeLikeToUserReview(UserReview userReview) {
-        reviewViewModel.removeLikeOfCurrentUserToUserReviewOfContent(content, userReview);
+        reviewViewModel.removedLikeOfUserToUserReviewOfContent(content, userReview);
     }
 
 }

@@ -12,9 +12,7 @@ public class MovieDetailsViewModel
         extends AbstractContentDetailsViewModel<MovieDetails> {
 
     public MovieDetailsViewModel(@NonNull Application application) {
-        super(application);
-        detailsRepository = new MovieDetailsRepository(
-                application.getApplicationContext(), this);
+        super(application, new MovieDetailsRepository(application.getApplicationContext()));
     }
 
 }

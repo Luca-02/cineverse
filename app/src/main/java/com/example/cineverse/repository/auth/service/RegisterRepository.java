@@ -3,7 +3,7 @@ package com.example.cineverse.repository.auth.service;
 import android.content.Context;
 
 import com.example.cineverse.repository.auth.AbstractAuthRepository;
-import com.example.cineverse.service.firebase.FirebaseCallback;
+import com.example.cineverse.data.source.user.UserCallback;
 import com.example.cineverse.utils.UsernameValidator;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
@@ -48,7 +48,7 @@ public class RegisterRepository
             authCallback.onError(Error.ERROR_INVALID_EMAIL_FORMAT);
         } else {
             firebaseSource.isUsernameSaved(context, username,
-                    new FirebaseCallback<Boolean>() {
+                    new UserCallback<Boolean>() {
                         @Override
                         public void onCallback(Boolean exist) {
                             if (exist == null) {

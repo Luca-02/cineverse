@@ -13,7 +13,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.ActivityAuthBinding;
-import com.example.cineverse.handler.BackPressedHandler;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.view.verify_account.VerifyAccountActivity;
@@ -53,6 +52,7 @@ public class AuthActivity extends AppCompatActivity {
             actionBar.setTitle(null);
         }
     }
+
 
     /**
      * Sets up the {@link NavController} for navigating between destinations.

@@ -22,9 +22,9 @@ public class SearchHistoryAdapter
     private final List<QueryHistory> queryList;
     private final OnSearchQueryListener searchQueryListener;
 
-    public SearchHistoryAdapter(List<QueryHistory> queryList, OnSearchQueryListener deleteItemClickListener) {
+    public SearchHistoryAdapter(List<QueryHistory> queryList, OnSearchQueryListener searchQueryListener) {
         this.queryList = queryList;
-        this.searchQueryListener = deleteItemClickListener;
+        this.searchQueryListener = searchQueryListener;
     }
 
     public void setData(List<QueryHistory> newQueryHistory) {

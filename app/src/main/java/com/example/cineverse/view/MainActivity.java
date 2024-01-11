@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         User currentUser = viewModel.getCurrentUser();
         Intent intent;
         if (currentUser != null) {
+            // TODO sync local current User username with Firebase
             intent = requireLoggedActivity();
         } else {
             intent = new Intent(this, AuthActivity.class);

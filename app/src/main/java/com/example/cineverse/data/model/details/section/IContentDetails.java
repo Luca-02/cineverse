@@ -7,7 +7,39 @@ import com.example.cineverse.data.model.genre.Genre;
 
 import java.util.List;
 
-public interface ContentDetailsApiResponse extends ApiResponse {
+public interface IContentDetails extends ApiResponse {
+
+    int getId();
+
+    void setId(int id);
+
+    String getOverview();
+
+    void setOverview(String overview);
+
+    String getPosterPath();
+
+    void setPosterPath(String posterPath);
+
+    String getBackdropPath();
+
+    void setBackdropPath(String backdropPath);
+
+    String getOriginalLanguage();
+
+    void setOriginalLanguage(String originalLanguage);
+
+    Long getWatchlistTimestamp();
+
+    void setWatchlistTimestamp(Long timestamp);
+
+    String getName();
+
+    void setName(String name);
+
+    String getReleaseDate();
+
+    void setReleaseDate(String releaseDate);
 
     List<Genre> getGenres();
 
@@ -28,9 +60,5 @@ public interface ContentDetailsApiResponse extends ApiResponse {
     ContentVideos getVideos();
 
     void setVideos(ContentVideos videos);
-
-    Long getTimestamp();
-
-    void setTimestamp(Long timestamp);
 
 }

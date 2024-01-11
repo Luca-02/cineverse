@@ -56,6 +56,11 @@ public class UserReview implements Parcelable {
         this.userLikeReview = userLikeReview;
     }
 
+    public void updateLike(long likeCount, boolean userLikeReview) {
+        this.likeCount = likeCount;
+        this.userLikeReview = userLikeReview;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

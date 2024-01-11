@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.cineverse.data.model.User;
-import com.example.cineverse.service.firebase.FirebaseCallback;
 import com.example.cineverse.service.firebase.UserFirebaseDatabaseService;
 import com.example.cineverse.utils.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
@@ -16,9 +15,6 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The {@link UserFirebaseSource} class provides methods to interact with the Firebase Realtime Database
@@ -44,38 +40,38 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
      * username if necessary and performs a transaction to save the user's information.
      *
      * @param user     The user to save.
-     * @param firebaseCallback The callback to handle the result.
+     * @param userCallback The callback to handle the result.
      */
-    public void saveUser(User user, FirebaseCallback<Boolean> firebaseCallback) {
+    public void saveUser(User user, UserCallback<Boolean> userCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
-            checkIfUserSaved(user, firebaseCallback);
+            checkIfUserSaved(user, userCallback);
         } else {
-            firebaseCallback.onNetworkUnavailable();
+            userCallback.onNetworkUnavailable();
         }
     }
 
-    private void checkIfUserSaved(User user, FirebaseCallback<Boolean> firebaseCallback) {
-        isUserSaved(context, user.getUid(), new FirebaseCallback<Boolean>() {
+    private void checkIfUserSaved(User user, UserCallback<Boolean> userCallback) {
+        isUserSaved(context, user.getUid(), new UserCallback<Boolean>() {
             @Override
             public void onCallback(Boolean isUserSaved) {
-                handleUserSavedResult(isUserSaved, user, firebaseCallback);
+                handleUserSavedResult(isUserSaved, user, userCallback);
             }
 
             @Override
             public void onNetworkUnavailable() {
-                firebaseCallback.onNetworkUnavailable();
+                userCallback.onNetworkUnavailable();
             }
         });
     }
 
-    private void handleUserSavedResult(Boolean isUserSaved, User user, FirebaseCallback<Boolean> firebaseCallback) {
+    private void handleUserSavedResult(Boolean isUserSaved, User user, UserCallback<Boolean> userCallback) {
         if (isUserSaved == null) {
-            firebaseCallback.onCallback(null);
+            userCallback.onCallback(null);
         } else {
             if (!isUserSaved) {
-                saveUserNotSaved(user, firebaseCallback);
+                saveUserNotSaved(user, userCallback);
             } else {
-                firebaseCallback.onCallback(false);
+                userCallback.onCallback(false);
             }
         }
     }
@@ -85,9 +81,9 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
      * username if necessary and performs a transaction to save the user's information.
      *
      * @param user     The user to save.
-     * @param firebaseCallback The callback to handle the result.
+     * @param userCallback The callback to handle the result.
      */
-    private void saveUserNotSaved(User user, FirebaseCallback<Boolean> firebaseCallback) {
+    private void saveUserNotSaved(User user, UserCallback<Boolean> userCallback) {
         boolean usernameIsNull = (user.getUsername() == null);
         final boolean[] saved = {false};
 
@@ -119,9 +115,9 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
                                    boolean committed,
                                    @Nullable DataSnapshot currentData) {
                 if (committed && error == null) {
-                    firebaseCallback.onCallback(saved[0]);
+                    userCallback.onCallback(saved[0]);
                 } else {
-                    firebaseCallback.onCallback(null);
+                    userCallback.onCallback(null);
                 }
             }
         });
@@ -132,9 +128,9 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
      *
      * @param context The context used to check network availability.
      * @param username The username to check.
-     * @param firebaseCallback The callback to handle the result.
+     * @param userCallback The callback to handle the result.
      */
-    public void isUsernameSaved(Context context, String username, final FirebaseCallback<Boolean> firebaseCallback) {
+    public void isUsernameSaved(Context context, String username, final UserCallback<Boolean> userCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             Query query = usernamesDatabase.child(username);
 
@@ -142,16 +138,16 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     boolean exists = dataSnapshot.exists();
-                    firebaseCallback.onCallback(exists);
+                    userCallback.onCallback(exists);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    firebaseCallback.onCallback(null);
+                    userCallback.onCallback(null);
                 }
             });
         } else {
-            firebaseCallback.onNetworkUnavailable();
+            userCallback.onNetworkUnavailable();
         }
     }
 
@@ -160,9 +156,9 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
      *
      * @param context The context used to check network availability.
      * @param uid The UID to check.
-     * @param firebaseCallback The callback to handle the result.
+     * @param userCallback The callback to handle the result.
      */
-    public void isUserSaved(Context context, String uid, final FirebaseCallback<Boolean> firebaseCallback) {
+    public void isUserSaved(Context context, String uid, final UserCallback<Boolean> userCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             Query query = usersDatabase.child(uid);
 
@@ -170,16 +166,16 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     boolean exists = dataSnapshot.exists();
-                    firebaseCallback.onCallback(exists);
+                    userCallback.onCallback(exists);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    firebaseCallback.onCallback(null);
+                    userCallback.onCallback(null);
                 }
             });
         } else {
-            firebaseCallback.onNetworkUnavailable();
+            userCallback.onNetworkUnavailable();
         }
     }
 
@@ -188,9 +184,9 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
      *
      * @param context The context used to check network availability.
      * @param uid The UID of the user.
-     * @param firebaseCallback The callback to handle the result.
+     * @param userCallback The callback to handle the result.
      */
-    public void getUserFromUid(Context context, String uid, final FirebaseCallback<User> firebaseCallback) {
+    public void getUserFromUid(Context context, String uid, final UserCallback<User> userCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             Query query = usersDatabase.child(uid);
 
@@ -199,19 +195,19 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         User user = dataSnapshot.getValue(User.class);
-                        firebaseCallback.onCallback(user);
+                        userCallback.onCallback(user);
                     } else {
-                        firebaseCallback.onCallback(null);
+                        userCallback.onCallback(null);
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    firebaseCallback.onCallback(null);
+                    userCallback.onCallback(null);
                 }
             });
         } else {
-            firebaseCallback.onNetworkUnavailable();
+            userCallback.onNetworkUnavailable();
         }
     }
 
@@ -220,9 +216,9 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
      *
      * @param context The context used to check network availability.
      * @param username The username to retrieve the email for.
-     * @param firebaseCallback The callback to handle the result.
+     * @param userCallback The callback to handle the result.
      */
-    public void getEmailFromUsername(Context context, String username, final FirebaseCallback<String> firebaseCallback) {
+    public void getEmailFromUsername(Context context, String username, final UserCallback<String> userCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             Query uidQuery = usernamesDatabase.child(username);
 
@@ -232,22 +228,22 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
                     if (dataSnapshot.exists()) {
                         String uid = dataSnapshot.getValue(String.class);
                         if (uid != null) {
-                            getEmailFromUid(context, uid, firebaseCallback);
+                            getEmailFromUid(context, uid, userCallback);
                         } else {
-                            firebaseCallback.onCallback(null);
+                            userCallback.onCallback(null);
                         }
                     } else {
-                        firebaseCallback.onCallback(null);
+                        userCallback.onCallback(null);
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    firebaseCallback.onCallback(null);
+                    userCallback.onCallback(null);
                 }
             });
         } else {
-            firebaseCallback.onNetworkUnavailable();
+            userCallback.onNetworkUnavailable();
         }
     }
 
@@ -256,9 +252,9 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
      *
      * @param context The context used to check network availability.
      * @param uid The UID to retrieve the email for.
-     * @param firebaseCallback The callback to handle the result.
+     * @param userCallback The callback to handle the result.
      */
-    public void getEmailFromUid(Context context, String uid, final FirebaseCallback<String> firebaseCallback) {
+    public void getEmailFromUid(Context context, String uid, final UserCallback<String> userCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             Query emailQuery = usersDatabase.child(uid).child("email");
 
@@ -267,19 +263,19 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         String email = dataSnapshot.getValue(String.class);
-                        firebaseCallback.onCallback(email);
+                        userCallback.onCallback(email);
                     } else {
-                        firebaseCallback.onCallback(null);
+                        userCallback.onCallback(null);
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    firebaseCallback.onCallback(null);
+                    userCallback.onCallback(null);
                 }
             });
         } else {
-            firebaseCallback.onNetworkUnavailable();
+            userCallback.onNetworkUnavailable();
         }
     }
 

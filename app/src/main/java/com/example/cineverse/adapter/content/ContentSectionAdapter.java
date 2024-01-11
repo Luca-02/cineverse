@@ -1,4 +1,4 @@
-package com.example.cineverse.adapter.home;
+package com.example.cineverse.adapter.content;
 
 import static com.example.cineverse.utils.constant.Api.TMDB_IMAGE_ORIGINAL_SIZE_URL;
 
@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.cineverse.R;
-import com.example.cineverse.adapter.OnContentClickListener;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.CarouselContentItemBinding;
@@ -134,15 +133,15 @@ public class ContentSectionAdapter
         public void bind(AbstractContent content) {
             if (content.getPosterPath() == null) {
                 int padding = context.getResources().getDimensionPixelOffset(R.dimen.double_spacing);
-                binding.posterImageView.setPadding(padding, padding, padding, padding);
-                binding.posterImageView.setImageResource(R.drawable.outline_image_not_supported);
+                binding.posterImageLayout.posterImageView.setPadding(padding, padding, padding, padding);
+                binding.posterImageLayout.posterImageView.setImageResource(R.drawable.outline_image_not_supported);
             } else {
-                binding.posterImageView.setPadding(0, 0, 0, 0);
+                binding.posterImageLayout.posterImageView.setPadding(0, 0, 0, 0);
                 String imageUrl = TMDB_IMAGE_ORIGINAL_SIZE_URL + content.getPosterPath();
                 Glide.with(context)
                         .load(imageUrl)
                         .transition(DrawableTransitionOptions.withCrossFade())
-                        .into(binding.posterImageView);
+                        .into(binding.posterImageLayout.posterImageView);
             }
             binding.titleTextView.setText(content.getName());
             binding.materialCardView.setOnClickListener(v -> listener.onContentClick(content));

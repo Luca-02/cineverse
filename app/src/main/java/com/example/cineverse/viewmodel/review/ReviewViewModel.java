@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.content.AbstractContent;
+import com.example.cineverse.data.model.review.ContentUserReview;
 import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.data.source.review.ReviewFirebaseCallback;
@@ -25,11 +26,12 @@ public class ReviewViewModel
 
     private final ReviewRepository reviewRepository;
     private MutableLiveData<Double> contentRatingLiveData;
-    private MutableLiveData<UserReview> currentUserReviewOfContentLiveData;
-    private MutableLiveData<Boolean> addedCurrentUserReviewOfContentLiveData;
-    private MutableLiveData<Boolean> removedCurrentUserReviewOfContentLiveData;
+    private MutableLiveData<UserReview> userReviewOfContentLiveData;
+    private MutableLiveData<List<ContentUserReview>> userReviewListLiveData;
+    private MutableLiveData<Boolean> addedUserReviewOfContentLiveData;
+    private MutableLiveData<Boolean> removedUserReviewOfContentLiveData;
     private MutableLiveData<List<UserReview>> pagedUserReviewOfContentLiveData;
-    private MutableLiveData<UserReview> changeLikeOfCurrentUserToUserReviewOfContentLiveData;
+    private MutableLiveData<UserReview> changeLikeOfUserToUserReviewOfContentLiveData;
     private long lastTimestamp;
     private boolean isLoading;
 
@@ -48,25 +50,32 @@ public class ReviewViewModel
         return contentRatingLiveData;
     }
 
-    public MutableLiveData<UserReview> getCurrentUserReviewOfContentLiveData() {
-        if (currentUserReviewOfContentLiveData == null) {
-            currentUserReviewOfContentLiveData = new MutableLiveData<>();
+    public MutableLiveData<UserReview> getUserReviewOfContentLiveData() {
+        if (userReviewOfContentLiveData == null) {
+            userReviewOfContentLiveData = new MutableLiveData<>();
         }
-        return currentUserReviewOfContentLiveData;
+        return userReviewOfContentLiveData;
     }
 
-    public MutableLiveData<Boolean> getAddedCurrentUserReviewOfContentLiveData() {
-        if (addedCurrentUserReviewOfContentLiveData == null) {
-            addedCurrentUserReviewOfContentLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<ContentUserReview>> getUserReviewListLiveData() {
+        if (userReviewListLiveData == null) {
+            userReviewListLiveData = new MutableLiveData<>();
         }
-        return addedCurrentUserReviewOfContentLiveData;
+        return userReviewListLiveData;
     }
 
-    public MutableLiveData<Boolean> getRemovedCurrentUserReviewOfContentLiveData() {
-        if (removedCurrentUserReviewOfContentLiveData == null) {
-            removedCurrentUserReviewOfContentLiveData = new MutableLiveData<>();
+    public MutableLiveData<Boolean> getAddedUserReviewOfContentLiveData() {
+        if (addedUserReviewOfContentLiveData == null) {
+            addedUserReviewOfContentLiveData = new MutableLiveData<>();
         }
-        return removedCurrentUserReviewOfContentLiveData;
+        return addedUserReviewOfContentLiveData;
+    }
+
+    public MutableLiveData<Boolean> getRemovedUserReviewOfContentLiveData() {
+        if (removedUserReviewOfContentLiveData == null) {
+            removedUserReviewOfContentLiveData = new MutableLiveData<>();
+        }
+        return removedUserReviewOfContentLiveData;
     }
 
     public MutableLiveData<List<UserReview>> getPagedUserReviewOfContentLiveData() {
@@ -76,11 +85,11 @@ public class ReviewViewModel
         return pagedUserReviewOfContentLiveData;
     }
 
-    public MutableLiveData<UserReview> getChangeLikeOfCurrentUserToUserReviewOfContentLiveData() {
-        if (changeLikeOfCurrentUserToUserReviewOfContentLiveData == null) {
-            changeLikeOfCurrentUserToUserReviewOfContentLiveData = new MutableLiveData<>();
+    public MutableLiveData<UserReview> getChangeLikeOfUserToUserReviewOfContentLiveData() {
+        if (changeLikeOfUserToUserReviewOfContentLiveData == null) {
+            changeLikeOfUserToUserReviewOfContentLiveData = new MutableLiveData<>();
         }
-        return changeLikeOfCurrentUserToUserReviewOfContentLiveData;
+        return changeLikeOfUserToUserReviewOfContentLiveData;
     }
 
     public long getLastTimestamp() {
@@ -103,18 +112,22 @@ public class ReviewViewModel
         reviewRepository.getContentRating(content);
     }
 
-    public void getCurrentUserReviewOfContent(AbstractContent content) {
-        reviewRepository.getCurrentUserReviewOfContent(content);
+    public void getUserReviewOfContent(AbstractContent content) {
+        reviewRepository.getUserReviewOfContent(content);
     }
 
-    public void addCurrentUserReviewOfContent(AbstractContent content, Review oldReview, Review newReview) {
+    public void getUserReviewList(String contentType) {
+        reviewRepository.getUserReviewList(contentType);
+    }
+
+    public void addUserReviewOfContent(AbstractContent content, Review oldReview, Review newReview) {
         if (!newReview.equalsContent(oldReview)) {
-            reviewRepository.addCurrentUserReviewOfContent(content, newReview);
+            reviewRepository.addUserReviewOfContent(content, newReview);
         }
     }
 
-    public void removeCurrentUserReviewOfContent(AbstractContent content, @NonNull Review review) {
-        reviewRepository.removeCurrentUserReviewOfContent(content, review);
+    public void removeUserReviewOfContent(AbstractContent content, @NonNull Review review) {
+        reviewRepository.removeUserReviewOfContent(content, review);
     }
 
     public void getPagedUserReviewOfContent(AbstractContent content) {
@@ -129,12 +142,12 @@ public class ReviewViewModel
         getPagedUserReviewOfContent(content);
     }
 
-    public void addLikeOfCurrentUserToUserReviewOfContent(AbstractContent content, UserReview userReview) {
-        reviewRepository.addLikeOfCurrentUserToUserReviewOfContent(content, userReview);
+    public void addLikeOfUserToUserReviewOfContent(AbstractContent content, UserReview userReview) {
+        reviewRepository.addLikeOfUserToUserReviewOfContent(content, userReview);
     }
 
-    public void removeLikeOfCurrentUserToUserReviewOfContent(AbstractContent content, UserReview userReview) {
-        reviewRepository.removeLikeOfCurrentUserToUserReviewOfContent(content, userReview);
+    public void removedLikeOfUserToUserReviewOfContent(AbstractContent content, UserReview userReview) {
+        reviewRepository.removedLikeOfUserToUserReviewOfContent(content, userReview);
     }
 
     @Override
@@ -144,20 +157,27 @@ public class ReviewViewModel
 
     @Override
     public void onUserReviewOfContent(UserReview userReview) {
-        getCurrentUserReviewOfContentLiveData().postValue(userReview);
+        getUserReviewOfContentLiveData().postValue(userReview);
+    }
+
+    @Override
+    public void onUserReviewList(List<ContentUserReview> contentUserReviewList, String contentType) {
+        if (contentUserReviewList != null) {
+            getUserReviewListLiveData().postValue(contentUserReviewList);
+        }
     }
 
     @Override
     public void onAddedUserReviewOfContent(UserReview userReview) {
-        getAddedCurrentUserReviewOfContentLiveData().postValue(userReview != null);
-        getCurrentUserReviewOfContentLiveData().postValue(userReview);
+        getAddedUserReviewOfContentLiveData().postValue(userReview != null);
+        getUserReviewOfContentLiveData().postValue(userReview);
     }
 
     @Override
     public void onRemovedUserReviewOfContent(boolean removed) {
-        getRemovedCurrentUserReviewOfContentLiveData().postValue(removed);
+        getRemovedUserReviewOfContentLiveData().postValue(removed);
         if (removed) {
-            getCurrentUserReviewOfContentLiveData().postValue(null);
+            getUserReviewOfContentLiveData().postValue(null);
         }
     }
 
@@ -179,14 +199,14 @@ public class ReviewViewModel
     @Override
     public void onAddedLikeOfUserToUserReviewOfContent(UserReview userReview, boolean added) {
         if (added) {
-            getChangeLikeOfCurrentUserToUserReviewOfContentLiveData().postValue(userReview);
+            getChangeLikeOfUserToUserReviewOfContentLiveData().postValue(userReview);
         }
     }
 
     @Override
     public void onRemovedLikeOfUserToUserReviewOfContent(UserReview userReview, boolean removed) {
         if (removed) {
-            getChangeLikeOfCurrentUserToUserReviewOfContentLiveData().postValue(userReview);
+            getChangeLikeOfUserToUserReviewOfContentLiveData().postValue(userReview);
         }
     }
 

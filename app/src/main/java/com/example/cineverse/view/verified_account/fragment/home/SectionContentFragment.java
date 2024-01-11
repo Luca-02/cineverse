@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.cineverse.adapter.OnContentClickListener;
-import com.example.cineverse.adapter.home.GenreListAdapter;
-import com.example.cineverse.adapter.home.HomeSectionAdapter;
+import com.example.cineverse.adapter.content.OnContentClickListener;
+import com.example.cineverse.adapter.genre.GenreListAdapter;
+import com.example.cineverse.adapter.content.HomeSectionAdapter;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.genre.Genre;
 import com.example.cineverse.data.model.ui.ContentSection;
@@ -22,7 +22,6 @@ import com.example.cineverse.data.source.content.section.TvFromGenreRemoteDataSo
 import com.example.cineverse.databinding.FragmentSectionContentBinding;
 import com.example.cineverse.view.details.ContentDetailsActivityOpener;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
-import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.AbstractSectionContentViewModelFactory;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.section.SectionMovieViewModelFactory;
 import com.example.cineverse.viewmodel.verified_account.section.home.content.section.SectionTvViewModelFactory;
@@ -73,6 +72,10 @@ public class SectionContentFragment extends Fragment
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public String getSectionType() {
+        return sectionType;
     }
 
     /**

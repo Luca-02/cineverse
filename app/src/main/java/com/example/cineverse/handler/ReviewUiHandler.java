@@ -1,6 +1,5 @@
 package com.example.cineverse.handler;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.View;
 
@@ -13,6 +12,10 @@ import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.ReviewItemLayoutBinding;
 
 public class ReviewUiHandler {
+
+    private ReviewUiHandler() {
+        throw new IllegalStateException(ReviewUiHandler.class.getSimpleName());
+    }
 
     public static void setReviewUi(
             Context context,

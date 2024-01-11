@@ -7,7 +7,7 @@ import com.example.cineverse.data.model.genre.Genre;
 
 import java.util.List;
 
-public class MovieDetails extends Movie implements ContentDetailsApiResponse {
+public class MovieDetails extends Movie implements IContentDetails {
 
     private List<Genre> genres;
     private String status;
@@ -15,7 +15,6 @@ public class MovieDetails extends Movie implements ContentDetailsApiResponse {
     private int runtime;
     private Credits credits;
     private ContentVideos videos;
-    private Long timestamp;
 
     public MovieDetails(int id, String name, String overview, String releaseDate,
                         String posterPath, String backdropPath, String originalLanguage,
@@ -86,16 +85,6 @@ public class MovieDetails extends Movie implements ContentDetailsApiResponse {
     @Override
     public void setVideos(ContentVideos videos) {
         this.videos = videos;
-    }
-
-    @Override
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    @Override
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
     }
 
 }

@@ -46,7 +46,6 @@ public class ViewAllContentActivity extends AppCompatActivity {
         getExtras();
         setActionBar();
         setNavController();
-        getWindow().setNavigationBarColor(android.R.attr.colorBackground);
         binding.materialToolbar.setNavigationOnClickListener(
                 view -> getOnBackPressedDispatcher().onBackPressed());
     }

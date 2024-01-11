@@ -28,7 +28,7 @@ public class KeywordAdapter
         int end = keywordList.size();
         keywordList.clear();
         notifyItemRangeRemoved(0, end);
-        keywordList.addAll(newKeywordList);
+        keywordList.addAll(newKeywordList.subList(0, Math.min(10, newKeywordList.size())));
         notifyItemRangeInserted(0, newKeywordList.size());
     }
 

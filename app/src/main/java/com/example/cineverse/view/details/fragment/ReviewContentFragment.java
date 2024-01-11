@@ -87,11 +87,11 @@ public class ReviewContentFragment extends Fragment {
      */
     private void setViewModel() {
         viewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
-        viewModel.getCurrentUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReview);
-        viewModel.getAddedCurrentUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), added ->
-                handleActionReview(added, viewModel.getAddedCurrentUserReviewOfContentLiveData()));
-        viewModel.getRemovedCurrentUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), removed ->
-                handleActionReview(removed, viewModel.getRemovedCurrentUserReviewOfContentLiveData()));
+        viewModel.getUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), this::handleCurrentUserReview);
+        viewModel.getAddedUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), added ->
+                handleActionReview(added, viewModel.getAddedUserReviewOfContentLiveData()));
+        viewModel.getRemovedUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), removed ->
+                handleActionReview(removed, viewModel.getRemovedUserReviewOfContentLiveData()));
         viewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
     }
 
@@ -159,7 +159,7 @@ public class ReviewContentFragment extends Fragment {
 
         binding.materialToolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.publicReview) {
-                viewModel.addCurrentUserReviewOfContent(content, oldReview, review);
+                viewModel.addUserReviewOfContent(content, oldReview, review);
                 return true;
             } else if (item.getItemId() == R.id.deleteReview) {
                 openDeleteDialog();
@@ -226,7 +226,7 @@ public class ReviewContentFragment extends Fragment {
 
                 })
                 .setPositiveButton(getString(R.string.delete_), (dialog, which) -> {
-                    viewModel.removeCurrentUserReviewOfContent(content, review);
+                    viewModel.removeUserReviewOfContent(content, review);
                 })
                 .show();
     }

@@ -12,9 +12,7 @@ public class TvDetailsViewModel
         extends AbstractContentDetailsViewModel<TvDetails> {
 
     public TvDetailsViewModel(@NonNull Application application) {
-        super(application);
-        detailsRepository = new TvDetailsRepository(
-                application.getApplicationContext(), this);
+        super(application, new TvDetailsRepository(application.getApplicationContext()));
     }
 
 }

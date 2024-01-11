@@ -10,7 +10,7 @@ import android.util.Log;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.cineverse.data.model.User;
-import com.example.cineverse.service.firebase.FirebaseCallback;
+import com.example.cineverse.data.source.user.UserCallback;
 import com.example.cineverse.data.source.user.UserFirebaseSource;
 
 import org.junit.Before;
@@ -38,7 +38,7 @@ public class UserFirebaseSourceTest {
 
         String inputUsername = "milanesiluca2002";
         userFirebaseSource.getEmailFromUsername(context, inputUsername,
-                new FirebaseCallback<String>() {
+                new UserCallback<String>() {
                     @Override
                     public void onCallback(String email) {
                         assertNotNull(email);
@@ -61,7 +61,7 @@ public class UserFirebaseSourceTest {
 
         String inputUsername = "gVAAnz1sdReOF6p7lpvJwWoW7Z72";
         userFirebaseSource.getUserFromUid(context, inputUsername,
-                new FirebaseCallback<User>() {
+                new UserCallback<User>() {
                     @Override
                     public void onCallback(User user) {
                         assertNotNull(user);
@@ -87,7 +87,7 @@ public class UserFirebaseSourceTest {
 
         String inputUsername = "milanesiluca2002";
         userFirebaseSource.isUsernameSaved(context, inputUsername,
-                new FirebaseCallback<Boolean>() {
+                new UserCallback<Boolean>() {
                     @Override
                     public void onCallback(Boolean exist) {
                         assertNotNull(exist);
@@ -110,7 +110,7 @@ public class UserFirebaseSourceTest {
 
         String inputUsername = "test200";
         userFirebaseSource.isUsernameSaved(context, inputUsername,
-                new FirebaseCallback<Boolean>() {
+                new UserCallback<Boolean>() {
                     @Override
                     public void onCallback(Boolean exist) {
                         assertNotNull(exist);

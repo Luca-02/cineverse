@@ -10,6 +10,9 @@ import androidx.annotation.Nullable;
 
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.model.content.AbstractContent;
+import com.example.cineverse.data.model.content.section.Movie;
+import com.example.cineverse.data.model.content.section.Tv;
+import com.example.cineverse.data.model.review.ContentUserReview;
 import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.service.firebase.ReviewFirebaseDatabaseService;
@@ -26,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ReviewFirebaseSource
         extends ReviewFirebaseDatabaseService {
@@ -39,72 +43,155 @@ public class ReviewFirebaseSource
     }
 
     public void getContentRating(AbstractContent content) {
-        if (NetworkUtils.isNetworkAvailable(context)) {
-            String contentType = ContentTypeMappingManager.getContentType(content.getClass());
-            if (contentType != null) {
-                DatabaseReference ref = reviewsDatabase
-                        .child(contentType)
-                        .child(String.valueOf(content.getId()));
+        if (!isNetworkAvailable(context, firebaseCallback)) {
+            return;
+        }
 
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        long count = snapshot.child("list").getChildrenCount();
-                        Long ratingCount = snapshot.child("ratingCount").getValue(Long.class);
-                        if (ratingCount != null) {
-                            firebaseCallback.onContentRating((double) ratingCount / count);
-                        } else {
-                            firebaseCallback.onContentRating(null);
-                        }
-                    }
+        String contentType = getContentType(content.getClass());
+        if (contentType != null) {
+            DatabaseReference ref = reviewsDatabase
+                    .child(contentType)
+                    .child(String.valueOf(content.getId()));
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        firebaseCallback.onUserReviewOfContent(null);
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    long count = snapshot.child("list").getChildrenCount();
+                    Long ratingCount = snapshot.child("ratingCount").getValue(Long.class);
+                    if (ratingCount != null) {
+                        firebaseCallback.onContentRating((double) ratingCount / count);
+                    } else {
+                        firebaseCallback.onContentRating(null);
                     }
-                });
-            }
-        } else {
-            firebaseCallback.onNetworkUnavailable();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    firebaseCallback.onUserReviewOfContent(null);
+                }
+            });
         }
     }
 
     public void getUserReviewOfContent(User user, AbstractContent content) {
-        if (NetworkUtils.isNetworkAvailable(context)) {
-            String contentType = ContentTypeMappingManager.getContentType(content.getClass());
-            if (contentType != null) {
-                DatabaseReference ref = reviewsDatabase
-                        .child(contentType)
-                        .child(String.valueOf(content.getId()))
-                        .child("list")
-                        .child(user.getUid());
+        if (!isNetworkAvailable(context, firebaseCallback)) {
+            return;
+        }
 
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Review review = snapshot.getValue(Review.class);
-                        long likeCount = snapshot.child("like").getChildrenCount();
-                        boolean userLikeReview = snapshot.child("like").hasChild(user.getUid());
-                        UserReview userReview = new UserReview(user, review);
-                        userReview.setLikeCount(likeCount);
-                        userReview.setUserLikeReview(userLikeReview);
-                        firebaseCallback.onUserReviewOfContent(userReview);
-                    }
+        String contentType = getContentType(content.getClass());
+        if (contentType != null) {
+            DatabaseReference ref = reviewsDatabase
+                    .child(contentType)
+                    .child(String.valueOf(content.getId()))
+                    .child("list")
+                    .child(user.getUid());
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        firebaseCallback.onUserReviewOfContent(null);
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Review review = snapshot.getValue(Review.class);
+                    long likeCount = snapshot.child("like").getChildrenCount();
+                    boolean userLikeReview = snapshot.child("like").hasChild(user.getUid());
+
+                    UserReview userReview = new UserReview(user, review);
+                    userReview.setLikeCount(likeCount);
+                    userReview.setUserLikeReview(userLikeReview);
+                    firebaseCallback.onUserReviewOfContent(userReview);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    firebaseCallback.onUserReviewOfContent(null);
+                }
+            });
+        }
+    }
+
+    public void getUserReviewList(User user, String contentType) {
+        if (!isNetworkAvailable(context, firebaseCallback)) {
+            return;
+        }
+
+        if (contentType != null) {
+            DatabaseReference ref = userReviewDatabase
+                    .child(contentType)
+                    .child(user.getUid());
+
+            ref.orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    List<AbstractContent> contentList = new ArrayList<>();
+                    List<ContentUserReview> contentUserReviewList = new ArrayList<>();
+                    if (snapshot.exists() && snapshot.hasChildren()) {
+                        for (DataSnapshot reviewSnapshot : snapshot.getChildren()) {
+                            String contentIdString = reviewSnapshot.getKey();
+                            if (contentIdString != null) {
+                                int contentId = Integer.parseInt(contentIdString);
+
+                                if (Objects.equals(contentType, ContentTypeMappingManager.ContentType.MOVIE.getType())) {
+                                    contentList.add(new Movie(contentId));
+                                } else if (Objects.equals(contentType, ContentTypeMappingManager.ContentType.TV.getType())) {
+                                    contentList.add(new Tv(contentId));
+                                }
+                            }
+                        }
+
+                        if (contentList.size() > 0) {
+                            DatabaseReference ref1 = reviewsDatabase
+                                    .child(contentType);
+
+                            ref1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists() && snapshot.hasChildren()) {
+                                        for (AbstractContent content : contentList) {
+                                            DataSnapshot snapshot1 = snapshot.child(String.valueOf(content.getId()))
+                                                    .child("list")
+                                                    .child(user.getUid());
+
+                                            Review review = snapshot1.getValue(Review.class);
+                                            long likeCount = snapshot1.child("like").getChildrenCount();
+                                            boolean userLikeReview = snapshot1.child("like").hasChild(user.getUid());
+
+                                            ContentUserReview contentUserReview = new ContentUserReview(user, review, content);
+                                            contentUserReview.setLikeCount(likeCount);
+                                            contentUserReview.setUserLikeReview(userLikeReview);
+                                            contentUserReviewList.add(contentUserReview);
+                                        }
+                                        firebaseCallback.onUserReviewList(contentUserReviewList, contentType);
+                                    } else {
+                                        firebaseCallback.onUserReviewList(contentUserReviewList, contentType);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    firebaseCallback.onUserReviewList(null, contentType);
+                                }
+                            });
+                        } else {
+                            firebaseCallback.onUserReviewList(contentUserReviewList, contentType);
+                        }
+                    } else {
+                        firebaseCallback.onUserReviewList(contentUserReviewList, contentType);
                     }
-                });
-            }
-        } else {
-            firebaseCallback.onNetworkUnavailable();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    firebaseCallback.onUserReviewList(null, contentType);
+                }
+            });
         }
     }
 
     public void addUserReviewOfContent(User user, AbstractContent content, Review review) {
+        if (!isNetworkAvailable(context, firebaseCallback)) {
+            return;
+        }
+
         if (NetworkUtils.isNetworkAvailable(context)) {
-            String contentType = ContentTypeMappingManager.getContentType(content.getClass());
+            String contentType = getContentType(content.getClass());
             if (contentType != null) {
                 DatabaseReference ref = reviewsDatabase
                         .child(contentType)
@@ -158,180 +245,178 @@ public class ReviewFirebaseSource
     }
 
     public void removeUserReviewOfContent(User user, AbstractContent content, @NonNull Review review) {
-        if (NetworkUtils.isNetworkAvailable(context)) {
-            String contentType = ContentTypeMappingManager.getContentType(content.getClass());
-            if (contentType != null) {
-                DatabaseReference ref = reviewsDatabase
-                        .child(contentType)
-                        .child(String.valueOf(content.getId()));
+        if (!isNetworkAvailable(context, firebaseCallback)) {
+            return;
+        }
 
-                ref.child("list").child(user.getUid()).runTransaction(new Transaction.Handler() {
-                    @NonNull
-                    @Override
-                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                        if (currentData.hasChildren()) {
-                            ref.child("list").child(user.getUid()).removeValue((error1, ref1) -> {
+        String contentType = getContentType(content.getClass());
+        if (contentType != null) {
+            DatabaseReference ref = reviewsDatabase
+                    .child(contentType)
+                    .child(String.valueOf(content.getId()));
+
+            ref.child("list").child(user.getUid()).runTransaction(new Transaction.Handler() {
+                @NonNull
+                @Override
+                public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                    if (currentData.hasChildren()) {
+                        ref.child("list").child(user.getUid()).removeValue((error1, ref1) ->
                                 ref.child("ratingCount").setValue(
-                                        ServerValue.increment(-1 * review.getRating()));
-                            });
-                        }
-                        return Transaction.success(currentData);
+                                        ServerValue.increment(-1 * review.getRating())));
                     }
+                    return Transaction.success(currentData);
+                }
 
-                    @Override
-                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                        userReviewDatabase
-                                .child(contentType)
-                                .child(user.getUid())
-                                .child(String.valueOf(content.getId()))
-                                .removeValue();
+                @Override
+                public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                    userReviewDatabase
+                            .child(contentType)
+                            .child(user.getUid())
+                            .child(String.valueOf(content.getId()))
+                            .removeValue();
 
-                        firebaseCallback.onRemovedUserReviewOfContent(committed);
-                    }
-                });
-            }
-        } else {
-            firebaseCallback.onNetworkUnavailable();
+                    firebaseCallback.onRemovedUserReviewOfContent(committed);
+                }
+            });
         }
     }
 
     public void getPagedUserReviewOfContent(User currentUser, AbstractContent content, int pageSize, long lastTimestamp) {
-        if (NetworkUtils.isNetworkAvailable(context)) {
-            String contentType = ContentTypeMappingManager.getContentType(content.getClass());
-            if (contentType != null) {
-                DatabaseReference ref = reviewsDatabase
-                        .child(contentType)
-                        .child(String.valueOf(content.getId()))
-                        .child("list");
+        if (!isNetworkAvailable(context, firebaseCallback)) {
+            return;
+        }
 
-                Query query;
-                if (lastTimestamp == START_TIMESTAMP_VALUE) {
-                    // If first iteration, start to end of list
-                    query = ref
-                            .orderByChild("timestamp")
-                            .limitToLast(pageSize);
-                } else {
-                    // For next iteration, use timestamp to starting point
-                    query = ref
-                            .orderByChild("timestamp")
-                            .endAt(lastTimestamp)
-                            .limitToLast(pageSize);
+        String contentType = getContentType(content.getClass());
+        if (contentType != null) {
+            DatabaseReference ref = reviewsDatabase
+                    .child(contentType)
+                    .child(String.valueOf(content.getId()))
+                    .child("list");
+
+            Query query;
+            if (lastTimestamp == START_TIMESTAMP_VALUE) {
+                // If first iteration, start to end of list
+                query = ref
+                        .orderByChild("timestamp")
+                        .limitToLast(pageSize);
+            } else {
+                // For next iteration, use timestamp to starting point
+                query = ref
+                        .orderByChild("timestamp")
+                        .endAt(lastTimestamp)
+                        .limitToLast(pageSize);
+            }
+
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    List<UserReview> userReviewList = new ArrayList<>();
+                    long lowestTimestamp = Long.MAX_VALUE;
+                    if (snapshot.exists() && snapshot.hasChildren()) {
+                        for (DataSnapshot reviewSnapshot : snapshot.getChildren()) {
+                            String userUid = reviewSnapshot.getKey();
+                            Review review = reviewSnapshot.getValue(Review.class);
+
+                            if (userUid != null && review != null) {
+                                long likeCount = reviewSnapshot.child("like").getChildrenCount();
+                                boolean userLikeReview = reviewSnapshot.child("like").hasChild(currentUser.getUid());
+                                UserReview userReview = new UserReview(userUid, review);
+                                userReview.setLikeCount(likeCount);
+                                userReview.setUserLikeReview(userLikeReview);
+                                userReviewList.add(0, userReview);
+                                if (lowestTimestamp > review.getTimestamp()) {
+                                    lowestTimestamp = review.getTimestamp();
+                                }
+                            }
+                        }
+                    }
+
+                    long finalLowestTimestamp;
+                    if (lowestTimestamp == Long.MAX_VALUE) {
+                        finalLowestTimestamp = END_TIMESTAMP_VALUE;
+                    } else {
+                        finalLowestTimestamp = lowestTimestamp - 1;
+                    }
+
+                    usersDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (UserReview userReview : userReviewList) {
+                                User user = snapshot.child(userReview.getUser().getUid()).getValue(User.class);
+                                userReview.setUser(user);
+                            }
+                            firebaseCallback.onPagedUserReviewOfContent(userReviewList, finalLowestTimestamp);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            firebaseCallback.onPagedUserReviewOfContent(null, lastTimestamp);
+                        }
+                    });
                 }
 
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        List<UserReview> userReviewList = new ArrayList<>();
-                        long lowestTimestamp = Long.MAX_VALUE;
-                        if (snapshot.exists() && snapshot.hasChildren()) {
-                            for (DataSnapshot reviewSnapshot : snapshot.getChildren()) {
-                                String userUid = reviewSnapshot.getKey();
-                                Review review = reviewSnapshot.getValue(Review.class);
-
-                                if (userUid != null && review != null) {
-                                    long likeCount = reviewSnapshot.child("like").getChildrenCount();
-                                    boolean userLikeReview = reviewSnapshot.child("like").hasChild(currentUser.getUid());
-                                    UserReview userReview = new UserReview(userUid, review);
-                                    userReview.setLikeCount(likeCount);
-                                    userReview.setUserLikeReview(userLikeReview);
-                                    userReviewList.add(0, userReview);
-                                    if (lowestTimestamp > review.getTimestamp()) {
-                                        lowestTimestamp = review.getTimestamp();
-                                    }
-                                }
-                            }
-                        }
-
-                        long finalLowestTimestamp;
-                        if (lowestTimestamp == Long.MAX_VALUE) {
-                            finalLowestTimestamp = END_TIMESTAMP_VALUE;
-                        } else {
-                            finalLowestTimestamp = lowestTimestamp - 1;
-                        }
-
-                        usersDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (UserReview userReview : userReviewList) {
-                                    User user = snapshot.child(userReview.getUser().getUid()).getValue(User.class);
-                                    userReview.setUser(user);
-                                }
-                                firebaseCallback.onPagedUserReviewOfContent(userReviewList, finalLowestTimestamp);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                firebaseCallback.onPagedUserReviewOfContent(new ArrayList<>(), lastTimestamp);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        firebaseCallback.onPagedUserReviewOfContent(new ArrayList<>(), lastTimestamp);
-                    }
-                });
-            }
-        } else {
-            firebaseCallback.onNetworkUnavailable();
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    firebaseCallback.onPagedUserReviewOfContent(null, lastTimestamp);
+                }
+            });
         }
     }
 
     public void addLikeOfUserToUserReviewOfContent(User user, AbstractContent content, UserReview userReview) {
-        if (NetworkUtils.isNetworkAvailable(context)) {
-            String contentType = ContentTypeMappingManager.getContentType(content.getClass());
-            User userOfReview = userReview.getUser();
-            if (contentType != null && userOfReview != null) {
-                DatabaseReference ref = reviewsDatabase
-                        .child(contentType)
-                        .child(String.valueOf(content.getId()))
-                        .child("list")
-                        .child(userOfReview.getUid())
-                        .child("like")
-                        .child(user.getUid());
+        if (!isNetworkAvailable(context, firebaseCallback)) {
+            return;
+        }
 
-                ref.runTransaction(new Transaction.Handler() {
-                    @NonNull
-                    @Override
-                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                        if (currentData.getValue() == null) {
-                            currentData.setValue(true);
-                            return Transaction.success(currentData);
-                        } else {
-                            return Transaction.abort();
-                        }
-                    }
+        String contentType = getContentType(content.getClass());
+        User userOfReview = userReview.getUser();
+        if (contentType != null && userOfReview != null) {
+            DatabaseReference ref = reviewsDatabase
+                    .child(contentType)
+                    .child(String.valueOf(content.getId()))
+                    .child("list")
+                    .child(userOfReview.getUid())
+                    .child("like")
+                    .child(user.getUid());
 
-                    @Override
-                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                        firebaseCallback.onAddedLikeOfUserToUserReviewOfContent(userReview, committed);
+            ref.runTransaction(new Transaction.Handler() {
+                @NonNull
+                @Override
+                public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                    if (currentData.getValue() == null) {
+                        currentData.setValue(true);
+                        return Transaction.success(currentData);
+                    } else {
+                        return Transaction.abort();
                     }
-                });
-            }
-        } else {
-            firebaseCallback.onNetworkUnavailable();
+                }
+
+                @Override
+                public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                    firebaseCallback.onAddedLikeOfUserToUserReviewOfContent(userReview, committed);
+                }
+            });
         }
     }
 
     public void removedLikeOfUserToUserReviewOfContent(User user, AbstractContent content, UserReview userReview) {
-        if (NetworkUtils.isNetworkAvailable(context)) {
-            String contentType = ContentTypeMappingManager.getContentType(content.getClass());
-            User userOfReview = userReview.getUser();
-            if (contentType != null && userOfReview != null) {
-                DatabaseReference ref = reviewsDatabase
-                        .child(contentType)
-                        .child(String.valueOf(content.getId()))
-                        .child("list")
-                        .child(userOfReview.getUid())
-                        .child("like")
-                        .child(user.getUid());
+        if (!isNetworkAvailable(context, firebaseCallback)) {
+            return;
+        }
 
-                ref.removeValue((error, ref1) -> {
-                    firebaseCallback.onRemovedLikeOfUserToUserReviewOfContent(userReview, error == null);
-                });
-            }
-        } else {
-            firebaseCallback.onNetworkUnavailable();
+        String contentType = getContentType(content.getClass());
+        User userOfReview = userReview.getUser();
+        if (contentType != null && userOfReview != null) {
+            DatabaseReference ref = reviewsDatabase
+                    .child(contentType)
+                    .child(String.valueOf(content.getId()))
+                    .child("list")
+                    .child(userOfReview.getUid())
+                    .child("like")
+                    .child(user.getUid());
+
+            ref.removeValue((error, ref1) ->
+                    firebaseCallback.onRemovedLikeOfUserToUserReviewOfContent(userReview, error == null));
         }
     }
 

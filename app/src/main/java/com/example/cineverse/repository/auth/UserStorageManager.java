@@ -1,34 +1,36 @@
-package com.example.cineverse.data.source.user;
+package com.example.cineverse.repository.auth;
 
 import android.content.Context;
 
 import com.example.cineverse.data.model.User;
-import com.example.cineverse.service.firebase.FirebaseCallback;
+import com.example.cineverse.data.source.user.UserFirebaseSource;
+import com.example.cineverse.data.source.user.UserLocalSource;
+import com.example.cineverse.data.source.user.UserCallback;
 import com.example.cineverse.service.firebase.UserFirebaseDatabaseService;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * The {@link UserStorageManagerSource} class serves as a higher-level abstraction for user-related operations,
+ * The {@link UserStorageManager} class serves as a higher-level abstraction for user-related operations,
  * combining functionality from Firebase, local storage, and user queries. It includes methods for
  * registering a user, authenticating a Google user, and logging in a user.
  */
-public class UserStorageManagerSource
+public class UserStorageManager
         extends UserFirebaseDatabaseService {
 
     private final Context context;
     private final UserLocalSource localSource;
     private final UserFirebaseSource firebaseSource;
-    private final FirebaseCallback<User> firebaseCallback;
+    private final UserCallback<User> userCallback;
 
-    public UserStorageManagerSource(
+    public UserStorageManager(
             Context context,
             UserLocalSource localSource,
             UserFirebaseSource firebaseSource,
-            FirebaseCallback<User> firebaseCallback) {
+            UserCallback<User> userCallback) {
         this.context = context;
         this.localSource = localSource;
         this.firebaseSource = firebaseSource;
-        this.firebaseCallback = firebaseCallback;
+        this.userCallback = userCallback;
     }
 
     /**
@@ -38,10 +40,10 @@ public class UserStorageManagerSource
      * @param username The username to associate with the user.
      */
     public void register(FirebaseUser firebaseUser, String username) {
-        if (firebaseCallback != null) {
+        if (userCallback != null) {
             User user = new User(firebaseUser, username);
 
-            firebaseSource.saveUser(user, new FirebaseCallback<Boolean>() {
+            firebaseSource.saveUser(user, new UserCallback<Boolean>() {
                 @Override
                 public void onCallback(Boolean userSaved) {
                     handleUserSaveResult(userSaved, user);
@@ -49,7 +51,7 @@ public class UserStorageManagerSource
 
                 @Override
                 public void onNetworkUnavailable() {
-                    firebaseCallback.onNetworkUnavailable();
+                    userCallback.onNetworkUnavailable();
                 }
             });
         }
@@ -62,23 +64,22 @@ public class UserStorageManagerSource
      * @param firebaseUser The Firebase user object.
      */
     public void googleAuth(FirebaseUser firebaseUser) {
-        if (firebaseCallback != null) {
-            firebaseSource.getUserFromUid(context, firebaseUser.getUid(),
-                    new FirebaseCallback<User>() {
-                        @Override
-                        public void onCallback(User user) {
-                            if (user == null) {
-                                register(firebaseUser, null);
-                            } else {
-                                login(user.getUid());
-                            }
-                        }
+        if (userCallback != null) {
+            firebaseSource.getUserFromUid(context, firebaseUser.getUid(), new UserCallback<User>() {
+                @Override
+                public void onCallback(User user) {
+                    if (user == null) {
+                        register(firebaseUser, null);
+                    } else {
+                        login(user.getUid());
+                    }
+                }
 
-                        @Override
-                        public void onNetworkUnavailable() {
-                            firebaseCallback.onNetworkUnavailable();
-                        }
-                    });
+                @Override
+                public void onNetworkUnavailable() {
+                    userCallback.onNetworkUnavailable();
+                }
+            });
         }
     }
 
@@ -88,31 +89,30 @@ public class UserStorageManagerSource
      * @param uid The UID of the user to log in.
      */
     public void login(String uid) {
-        if (firebaseCallback != null) {
-            firebaseSource.getUserFromUid(context, uid,
-                    new FirebaseCallback<User>() {
-                        @Override
-                        public void onCallback(User user) {
-                            if (user != null) {
-                                localSource.saveUser(user);
-                            }
-                            firebaseCallback.onCallback(user);
-                        }
+        if (userCallback != null) {
+            firebaseSource.getUserFromUid(context, uid, new UserCallback<User>() {
+                @Override
+                public void onCallback(User user) {
+                    if (user != null) {
+                        localSource.saveUser(user);
+                    }
+                    userCallback.onCallback(user);
+                }
 
-                        @Override
-                        public void onNetworkUnavailable() {
-                            firebaseCallback.onNetworkUnavailable();
-                        }
-                    });
+                @Override
+                public void onNetworkUnavailable() {
+                    userCallback.onNetworkUnavailable();
+                }
+            });
         }
     }
 
     private void handleUserSaveResult(Boolean userSaved, User user) {
         if (userSaved != null && userSaved) {
             localSource.saveUser(user);
-            firebaseCallback.onCallback(user);
+            userCallback.onCallback(user);
         } else {
-            firebaseCallback.onCallback(null);
+            userCallback.onCallback(null);
         }
     }
 

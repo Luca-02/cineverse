@@ -158,6 +158,7 @@
     <string name="no_item_search_history">No items saved in your search history</string>
     <string name="microphone">Microphone</string>
     <string name="speak_to_text">Speak to text</string>
+    <string name="keyword">Keyword</string>
 
     <!-- Content Details -->
     <string name="cast_crew">Cast &amp; Crew</string>
@@ -168,6 +169,7 @@
     <string name="recent_review">Recent Reviews</string>
     <string name="to_watch">To Watch</string>
     <string name="review">Review</string>
+    <string name="video">Video</string>
     <string name="your_review">Your review</string>
     <string name="write_review">Write your review</string>
     <string name="give_your_rating">Give your rating</string>
