@@ -41,7 +41,7 @@ public class SettingsActivity extends BaseActivity {
     public void setActionBarStyle(){
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(R.string.setting_menu);
+            actionBar.setTitle(R.string.settings);
         }
     }
 

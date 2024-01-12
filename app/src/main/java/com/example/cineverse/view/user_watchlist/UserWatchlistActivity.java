@@ -46,7 +46,7 @@ public class UserWatchlistActivity extends BaseActivity {
     public void setActionBarStyle(){
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(R.string.recent_to_watch_title);
+            actionBar.setTitle(R.string.your_watchlist2);
         }
     }
 

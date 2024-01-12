@@ -46,7 +46,7 @@ public class UserReviewsActivity extends BaseActivity {
     public void setActionBarStyle(){
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(R.string.recent_reviews_title);
+            actionBar.setTitle(R.string.your_reviews2);
         }
     }
 

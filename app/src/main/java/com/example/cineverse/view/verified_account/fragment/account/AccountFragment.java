@@ -87,7 +87,7 @@ public class AccountFragment extends Fragment {
         });
 
         infoList.add(new ProfileInfoData(getString(R.string.to_watch), 0, R.drawable.outline_video_library));
-        infoList.add(new ProfileInfoData(getString(R.string.review), 0, R.drawable.reviews_account));
+        infoList.add(new ProfileInfoData(getString(R.string.review), 0, R.drawable.outline_question_answer));
     }
 
     private void setViewPager(View view){
@@ -118,7 +118,7 @@ public class AccountFragment extends Fragment {
                 viewModel.logOut();
                 return true;
             } else if (itemId == R.id.settingProfile) {
-                ((VerifiedAccountActivity) requireActivity()).openAccountSettingsActivity();
+                ((VerifiedAccountActivity) requireActivity()).openSettingsActivity();
                 return true;
             } else {
                 // if you do nothing, returning false
@@ -129,10 +129,10 @@ public class AccountFragment extends Fragment {
 
     private void viewAllPageSection(){
         binding.seeAllRecentWatched.setOnClickListener(v ->
-                ((VerifiedAccountActivity) requireActivity()).openViewAllRecentToWatchActivity());
+                ((VerifiedAccountActivity) requireActivity()).openUserWatchlistActivity());
 
         binding.seeAllRecentReviews.setOnClickListener(v ->
-                ((VerifiedAccountActivity) requireActivity()).openViewAllRecentReviewsActivity());
+                ((VerifiedAccountActivity) requireActivity()).openUserReviewsActivity());
 
     }
 
@@ -149,8 +149,6 @@ public class AccountFragment extends Fragment {
                         .load(user.getPhotoUrl())
                         .into(binding.profileImage);
             }
-        } else {
-            viewModel.logOut();
         }
     }
 

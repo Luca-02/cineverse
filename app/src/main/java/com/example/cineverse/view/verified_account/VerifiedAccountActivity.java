@@ -2,20 +2,25 @@ package com.example.cineverse.view.verified_account;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.EdgeToEdge;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.model.ui.BaseActivity;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
+import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.view.search_result.SearchResultActivity;
+import com.example.cineverse.view.settings.SettingsActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
 /**
@@ -27,6 +32,7 @@ public class VerifiedAccountActivity extends BaseActivity {
 
     private ActivityVerifiedAccountBinding binding;
     private NavController navController;
+    private VerifiedAccountViewModel viewModel;
     private DrawerHeaderManager drawerHeaderManager;
 
     @Override
@@ -57,15 +63,9 @@ public class VerifiedAccountActivity extends BaseActivity {
      * Sets up the ViewModel for the fragment.
      */
     private void setViewModel() {
-        VerifiedAccountViewModel viewModel = new ViewModelProvider(this)
-                .get(VerifiedAccountViewModel.class);
-        viewModel.getUserLiveData().observe(this, user -> {
-            if (user != null) {
-                drawerHeaderManager.setDrawerUserUi(user);
-            } else {
-                viewModel.logOut();
-            }
-        });
+        viewModel = new ViewModelProvider(this).get(VerifiedAccountViewModel.class);
+        viewModel.getUserLiveData().observe(this, this::handleUser);
+        viewModel.getLoggedOutLiveData().observe(this, this::handleLoggedOutUser);
     }
 
     /**
@@ -75,6 +75,23 @@ public class VerifiedAccountActivity extends BaseActivity {
         drawerHeaderManager = new DrawerHeaderManager(this);
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         binding.navigationView.addHeaderView(drawerHeaderManager.getHeaderBinding());
+        binding.navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.user_watchlist) {
+                openUserWatchlistActivity();
+                return true;
+            } else if (id == R.id.user_reviews) {
+                openUserReviewsActivity();
+                return true;
+            } else if (id == R.id.settings) {
+                openSettingsActivity();
+                return true;
+            } else if (id == R.id.signout) {
+                viewModel.logOut();
+                return true;
+            }
+            return false;
+        });
     }
 
     /**
@@ -94,6 +111,18 @@ public class VerifiedAccountActivity extends BaseActivity {
         binding.blurView.setBlurEnabled(false);
     }
 
+    private void handleUser(User user){
+        if (user != null) {
+            drawerHeaderManager.setDrawerUserUi(user);
+        }
+    }
+
+    private void handleLoggedOutUser(Boolean loggedOut) {
+        if (loggedOut != null && loggedOut) {
+            openAuthActivity();
+        }
+    }
+
     /**
      * Opens the authentication activity ({@link AuthActivity}).
      */
@@ -104,21 +133,21 @@ public class VerifiedAccountActivity extends BaseActivity {
         }
     }
 
-    public void openAccountSettingsActivity() {
+    public void openSettingsActivity() {
         if (navController != null) {
-            navController.navigate(R.id.action_global_accountSettingsActivity);
+            navController.navigate(R.id.action_global_settingsActivity);
         }
     }
 
-    public void openViewAllRecentToWatchActivity() {
+    public void openUserWatchlistActivity() {
         if (navController != null) {
-            navController.navigate(R.id.action_global_accountRecentToWatch);
+            navController.navigate(R.id.action_global_userWatchlistActivity);
         }
     }
 
-    public void openViewAllRecentReviewsActivity() {
+    public void openUserReviewsActivity() {
         if (navController != null) {
-            navController.navigate(R.id.action_global_accountRecentReviews);
+            navController.navigate(R.id.action_global_userReviewsActivity);
         }
     }
 

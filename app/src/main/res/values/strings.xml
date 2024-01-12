@@ -16,6 +16,7 @@
     <string name="public_">Public</string>
     <string name="delete_">delete</string>
     <string name="change">Change</string>
+    <string name="content">Content</string>
 
     <!-- Time -->
     <string name="second_ago">second ago</string>
@@ -96,6 +97,8 @@
     <string name="movies">Movies</string>
     <string name="tv_series">Tv Series</string>
     <string name="categories">Categories</string>
+    <string name="your_reviews">Your reviews</string>
+    <string name="your_watchlist">Your watchlist</string>
 
     <!-- Home Section -->
     <string name="popular_movie">Popular Movie</string>
@@ -111,21 +114,19 @@
     <string name="view_all">View all</string>
     <string name="genre">Genre</string>
 
-    <!-- Profile Account -->
-    <string name="fav_films">Favourite Movies</string>
-    <string name="fav_series">Favourite Series</string>
-    <string name="recent_watched">Recent To Watch</string>
-    <string name="recent_reviews">Recent Reviews</string>
-    <string name="see_all">See All</string>
+    <!-- Search -->
+    <string name="search_history">Search History</string>
+    <string name="no_item_search_history">No items saved in your search history</string>
+    <string name="microphone">Microphone</string>
+    <string name="speak_to_text">Speak to text</string>
+    <string name="keyword">Keyword</string>
 
-    <!-- Profile Account info slider-->
-    <string name="total_movies">Total Movies</string>
-    <string name="reviews">Reviews</string>
-    <string name="likes">Likes</string>
-    <string name="film_of_the_year">Film of the Year</string>
+    <!-- Account -->
+    <string name="your_recent_in_watchlist">Your Recent in Watchlist</string>
+    <string name="your_recent_reviews">Your Recent Reviews</string>
 
-    <!-- Profile menu settings-->
-    <string name="setting_menu">Settings</string>
+    <!-- Setting -->
+    <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="about_subtitle">Benvenuti su CineVerse - La tua destinazione cinematografica definitiva!</string>
     <string name="about_text">Welcome to CineVerse - Your Ultimate Movie Destination!
@@ -135,12 +136,6 @@
         Join us on CineVerse and be part of a community that loves cinema as much as you do. Explore, interact, share and discover the magical world of cinema with CineVerse!</string>
     <string name="account_settings_name">Account</string>
     <string name="theme_settings_name">Theme</string>
-
-    <!-- View All Account -->
-    <string name="recent_to_watch_title">To Watch</string>
-    <string name="recent_reviews_title">Reviews</string>
-
-    <!-- Settings Pages-->
     <string name="change_theme">Change Theme</string>
     <string name="light">Light</string>
     <string name="dark">Dark</string>
@@ -152,12 +147,9 @@
     <string name="username_updated">Username Updated</string>
     <string name="delete_account_text">By clicking on the button below your Account will be deleted permanently.</string>
 
-    <!-- Search -->
-    <string name="search_history">Search History</string>
-    <string name="no_item_search_history">No items saved in your search history</string>
-    <string name="microphone">Microphone</string>
-    <string name="speak_to_text">Speak to text</string>
-    <string name="keyword">Keyword</string>
+    <!-- View All Account -->
+    <string name="your_reviews2">Your Reviews</string>
+    <string name="your_watchlist2">Your Watchlist</string>
 
     <!-- Content Details -->
     <string name="cast_crew">Cast &amp; Crew</string>

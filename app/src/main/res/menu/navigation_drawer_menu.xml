@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
-        android:id="@+id/main_item"
-        android:title="title">
+        android:id="@+id/content_item"
+        android:title="@string/content">
         <menu>
             <item
-                android:id="@+id/inbox_item"
-                android:icon="@drawable/outline_home"
-                android:title="text"
-                android:checkable="true"/>
+                android:id="@+id/user_watchlist"
+                android:icon="@drawable/outline_video_library"
+                android:title="@string/your_watchlist"/>
             <item
-                android:id="@+id/outbox_item"
-                android:icon="@drawable/outline_home"
-                android:title="text"
-                android:checkable="true"/>
-            <item
-                android:id="@+id/favourites_item"
-                android:icon="@drawable/outline_home"
-                android:title="text"
-                android:checkable="true"/>
+                android:id="@+id/user_reviews"
+                android:icon="@drawable/outline_question_answer"
+                android:title="@string/your_reviews"/>
         </menu>
     </item>
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/outline_settings"
+        android:title="@string/settings"/>
+    <item
+        android:id="@+id/signout"
+        android:icon="@drawable/outline_logout"
+        android:title="@string/signout"/>
 </menu>

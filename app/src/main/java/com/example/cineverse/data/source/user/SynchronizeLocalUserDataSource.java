@@ -46,11 +46,9 @@ public class SynchronizeLocalUserDataSource {
 
         // If 24 hours or more have passed, execute the method and update the last execution date
         if (timeDifference >= 24 * 60 * 60 * 1000) {
-            Log.d(GlobalConstant.TAG, "synchronized");
             synchronizeLocalUser(currentUser);
             saveLocalUserSynchronizationTimestamp();
         } else {
-            Log.d(GlobalConstant.TAG, "not synchronized");
             synchronizeLocalUserCallback.onSynchronizedLocalUser(currentUser);
         }
     }

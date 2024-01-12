@@ -151,7 +151,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="@string/recent_watched"
+                    android:text="@string/your_recent_in_watchlist"
                     android:textSize="@dimen/text_medium"
                     android:textStyle="bold"
                     android:layout_marginStart="6dp"/>
@@ -186,7 +186,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="@string/recent_reviews"
+                    android:text="@string/your_recent_reviews"
                     android:textSize="@dimen/text_medium"
                     android:textStyle="bold"
                     android:layout_marginStart="6dp"/>
