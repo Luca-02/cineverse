@@ -105,13 +105,14 @@ public class User implements Parcelable {
         return stringBuilder.toString();
     }
 
-    /**
-     *
-     * @param username
-     * Update the User's username
-     */
-    public void updateUsername(String username){
-        this.username = username;
+    public boolean equalsContent(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getUid(), user.getUid()) &&
+                Objects.equals(getUsername(), user.getUsername()) &&
+                Objects.equals(getEmail(), user.getEmail()) &&
+                Objects.equals(getPhotoUrl(), user.getPhotoUrl());
     }
 
     @Override

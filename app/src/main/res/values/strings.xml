@@ -1,6 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="default_web_client_id" translatable="false">437098083016-1405ljf6sn6beoee83osfh362jmhvdnb.apps.googleusercontent.com</string>
-
     <string name="language">en</string>
     <string name="app_name">CineVerse</string>
     <string name="app_slogan">Where Cinema Meets Your Pen!</string>
@@ -17,6 +15,7 @@
     <string name="cancel">Cancel</string>
     <string name="public_">Public</string>
     <string name="delete_">delete</string>
+    <string name="change">Change</string>
 
     <!-- Time -->
     <string name="second_ago">second ago</string>
@@ -127,7 +126,13 @@
 
     <!-- Profile menu settings-->
     <string name="setting_menu">Settings</string>
-    <string name="delete_settings_name">Delete Your Account</string>
+    <string name="about">About</string>
+    <string name="about_subtitle">Benvenuti su CineVerse - La tua destinazione cinematografica definitiva!</string>
+    <string name="about_text">Welcome to CineVerse - Your Ultimate Movie Destination!
+        CineVerse is more than a mobile application, it\'s a passionate community of cinephiles. We share the same passion for the world of cinema and offer a welcoming place where film lovers can connect, express their opinions and discover new content to love. \n
+        On CineVerse, you can write detailed reviews of movies and TV shows, share your opinions, and find out what other members of our community think. Your personal watchlist allows you to keep track of all the films and TV series you want to watch, while social interactions allow you to like other users\' reviews, comment and participate in discussions about your passion for cinema. \n\n
+        Create your personalized account, reflect your unique love of cinema in your profile, and connect with friends who share your interests. CineVerse was born from the belief that cinema is a universal language that can connect people from all over the world. Our mission is to create a global community of cinephiles who can share their passion, discover new titles and deepen their understanding of the world of cinema. \n\n
+        Join us on CineVerse and be part of a community that loves cinema as much as you do. Explore, interact, share and discover the magical world of cinema with CineVerse!</string>
     <string name="account_settings_name">Account</string>
     <string name="theme_settings_name">Theme</string>
 
@@ -136,22 +141,16 @@
     <string name="recent_reviews_title">Reviews</string>
 
     <!-- Settings Pages-->
-    <string name="theme_title">Change Theme</string>
-    <string name="theme_mode_section">Mode</string>
-
-    <string name="username_title">Change Username</string>
-    <string name="username_section">Username</string>
-    <string name="username_button_bottom">Change Username</string>
-
+    <string name="change_theme">Change Theme</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="system_default">System default</string>
+    <string name="username_changed">Username changed</string>
+    <string name="current_username">Current Username</string>
+    <string name="enter_username">Enter your username</string>
+    <string name="change_username">Change your username</string>
+    <string name="username_updated">Username Updated</string>
     <string name="delete_account_text">By clicking on the button below your Account will be deleted permanently.</string>
-    <string name="delete_button_bottom">Delete Account</string>
-
-    <string name="alert_changes_title">Username Updated</string>
-    <string name="alert_changes_body">Please log in again in order to apply the changes!</string>
-    <string name="alert_changes_okay">Ok</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Search -->
     <string name="search_history">Search History</string>

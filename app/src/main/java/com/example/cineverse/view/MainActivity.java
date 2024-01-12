@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cineverse.data.model.User;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setViewModel() {
         viewModel = new ViewModelProvider(this).get(ConcreteUserViewModel.class);
+        viewModel.getUserLiveData().observe(this, this::handleUser);
     }
 
     /**
@@ -42,13 +44,21 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initializeUI() {
         User currentUser = viewModel.getCurrentUser();
-        Intent intent;
         if (currentUser != null) {
-            // TODO sync local current User username with Firebase
-            intent = requireLoggedActivity();
+            viewModel.synchronizeCurrentUser(currentUser);
         } else {
-            intent = new Intent(this, AuthActivity.class);
+            openActivity(new Intent(this, AuthActivity.class));
         }
+    }
+
+    private void handleUser(User user) {
+        Intent intent = requireLoggedActivity();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void openActivity(Intent intent) {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

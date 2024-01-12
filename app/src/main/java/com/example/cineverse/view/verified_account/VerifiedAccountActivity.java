@@ -1,29 +1,19 @@
 package com.example.cineverse.view.verified_account;
 
-import android.content.SharedPreferences;
-import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_ID_TAG;
-import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_TYPE_STRING_TAG;
-
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
-import com.example.cineverse.data.model.content.AbstractContent;
-import com.example.cineverse.data.model.content.section.Movie;
-import com.example.cineverse.data.model.content.section.Tv;
+import com.example.cineverse.data.model.ui.BaseActivity;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
-import com.example.cineverse.utils.NetworkUtils;
-import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.view.search_result.SearchResultActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
@@ -33,15 +23,11 @@ import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel
  * and their email is verified. It provides the main interface for the user to interact with the app's
  * features.
  */
-public class VerifiedAccountActivity extends AppCompatActivity {
+public class VerifiedAccountActivity extends BaseActivity {
 
     private ActivityVerifiedAccountBinding binding;
     private NavController navController;
     private DrawerHeaderManager drawerHeaderManager;
-    private SharedPreferences sharedPreferences;
-    private boolean isNightMode;
-    private static final String THEME_PREFERENCES = "theme_prefs";
-    private static final String THEME_NIGHT_MODE = "isNightMode";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +39,6 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         setDrawerHeader();
         setViewModel();
         setBlurView();
-        loadDataPreferences();
     }
 
     /**
@@ -109,21 +94,6 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         binding.blurView.setBlurEnabled(false);
     }
 
-    /*
-    ** Retrieve the saved theme mode from SharedPreferences
-    *  and apply the appropriate theme based on the saved mode
-     */
-    private void loadDataPreferences(){
-        sharedPreferences = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE);
-        isNightMode = sharedPreferences.getBoolean(THEME_NIGHT_MODE, false);
-
-        if (isNightMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-    }
-
     /**
      * Opens the authentication activity ({@link AuthActivity}).
      */
@@ -131,21 +101,6 @@ public class VerifiedAccountActivity extends AppCompatActivity {
         if (navController != null) {
             navController.navigate(R.id.action_global_authActivity);
             finish();
-        }
-    }
-
-    public void openContentDetailsActivity(AbstractContent content) {
-        if (navController != null) {
-            if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) {
-                navController.navigate(R.id.action_global_networkErrorActivity);
-            } else {
-                if (content.getClass().isAssignableFrom(Movie.class) || content.getClass().isAssignableFrom(Tv.class)) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(CONTENT_TYPE_STRING_TAG, ContentTypeMappingManager.getContentType(content.getClass()));
-                    bundle.putInt(CONTENT_ID_TAG, content.getId());
-                    navController.navigate(R.id.action_global_contentDetailsActivity, bundle);
-                }
-            }
         }
     }
 

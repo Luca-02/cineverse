@@ -2,51 +2,93 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/settings_nav_grap"
+    android:id="@+id/settings_nav_graph"
     app:startDestination="@id/optionSettingsFragment">
 
     <fragment
         android:id="@+id/optionSettingsFragment"
-        android:name="com.example.cineverse.view.settings_account.fragment.OptionSettingsFragment"
+        android:name="com.example.cineverse.view.settings.fragment.OptionSettingsFragment"
         android:label="fragment_option_settings"
         tools:layout="@layout/fragment_option_settings" >
         <action
             android:id="@+id/action_optionSettingsFragment_to_usernameSettingsFragment2"
-            app:destination="@id/usernameSettingsFragment2" />
+            app:destination="@id/usernameSettingsFragment2"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
         <action
             android:id="@+id/action_optionSettingsFragment_to_changeThemeSettingsFragment"
-            app:destination="@id/changeThemeSettingsFragment" />
+            app:destination="@id/changeThemeSettingsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
         <action
-            android:id="@+id/action_optionSettingsFragment_to_deleteSettingsFragment2"
-            app:destination="@id/deleteSettingsFragment2" />
+            android:id="@+id/action_optionSettingsFragment_to_aboutSettingsFragment"
+            app:destination="@id/aboutSettingsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
     </fragment>
-
     <fragment
         android:id="@+id/usernameSettingsFragment2"
-        android:name="com.example.cineverse.view.settings_account.fragment.option_settings.UsernameSettingsFragment"
+        android:name="com.example.cineverse.view.settings.fragment.section.UsernameSettingsFragment"
         android:label="fragment_username_settings"
         tools:layout="@layout/fragment_username_settings" >
         <action
             android:id="@+id/action_usernameSettingsFragment2_to_optionSettingsFragment"
-            app:destination="@id/optionSettingsFragment" />
+            app:destination="@id/optionSettingsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
     </fragment>
     <fragment
         android:id="@+id/changeThemeSettingsFragment"
-        android:name="com.example.cineverse.view.settings_account.fragment.option_settings.ChangeThemeSettingsFragment"
+        android:name="com.example.cineverse.view.settings.fragment.section.ChangeThemeSettingsFragment"
         android:label="fragment_change_theme_setting"
         tools:layout="@layout/fragment_change_theme_settings" >
         <action
             android:id="@+id/action_changeThemeSettingsFragment_to_optionSettingsFragment"
-            app:destination="@id/optionSettingsFragment" />
+            app:destination="@id/optionSettingsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
     </fragment>
     <fragment
-        android:id="@+id/deleteSettingsFragment2"
-        android:name="com.example.cineverse.view.settings_account.fragment.option_settings.DeleteSettingsFragment"
-        android:label="fragment_delete_settings"
-        tools:layout="@layout/fragment_delete_settings" >
+        android:id="@+id/aboutSettingsFragment"
+        android:name="com.example.cineverse.view.settings.fragment.section.AboutSettingsFragment"
+        android:label="fragment_about_settings"
+        tools:layout="@layout/fragment_about_settings" >
         <action
-            android:id="@+id/action_deleteSettingsFragment2_to_optionSettingsFragment"
-            app:destination="@id/optionSettingsFragment" />
+            android:id="@+id/action_aboutSettingsFragment_to_optionSettingsFragment"
+            app:destination="@id/optionSettingsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
     </fragment>
 
+    <activity
+        android:id="@+id/authActivity"
+        android:name="com.example.cineverse.view.auth.AuthActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth" />
+    <activity
+        android:id="@+id/networkErrorActivity"
+        android:name="com.example.cineverse.view.network_error.NetworkErrorActivity"
+        android:label="activity_network_error"
+        tools:layout="@layout/activity_network_error" />
+
+    <action
+        android:id="@+id/action_global_authActivity"
+        app:destination="@id/authActivity"
+        app:popUpTo="@id/verified_account_nav_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_networkErrorActivity"
+        app:destination="@id/networkErrorActivity" />
 </navigation>

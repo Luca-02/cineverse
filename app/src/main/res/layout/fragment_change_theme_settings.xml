@@ -1,48 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.settings_account.fragment.option_settings.ChangeThemeSettingsFragment">
+    tools:context=".view.settings.fragment.section.ChangeThemeSettingsFragment">
 
-    <TextView
-        android:id="@+id/change_theme_topText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:text="@string/theme_title"
-        android:textSize="@dimen/text_normal"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_margin="@dimen/double_spacing"
+    <include
+        android:id="@+id/progressIndicator"
+        layout="@layout/linear_progress_indicator_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_56dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        app:layout_constraintTop_toBottomOf="@id/change_theme_topText">
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/theme_mode_section"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:textSize="@dimen/text_normal" />
+            android:layout_margin="@dimen/standard_spacing"
+            android:orientation="vertical">
 
-        <Switch
-            android:id="@+id/switch_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:thumb="@drawable/thumb"
-            android:track="@drawable/track"
-            android:minHeight="48dp"/>
+            <TextView
+                android:id="@+id/change_name_topText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standard_spacing"
+                android:text="@string/change_theme"
+                android:textSize="@dimen/text_title"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <RadioButton
+                    android:id="@+id/lightRadio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_normal"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/light"/>
+
+                <RadioButton
+                    android:id="@+id/darkRadio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_normal"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/dark"/>
+
+                <RadioButton
+                    android:id="@+id/systemRadio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_normal"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/system_default"/>
+            </RadioGroup>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

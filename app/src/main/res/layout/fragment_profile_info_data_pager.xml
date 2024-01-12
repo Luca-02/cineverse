@@ -8,55 +8,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="@dimen/standard_spacing">
 
         <!-- Total Movies -->
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="@dimen/normal_radius">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:background="@color/md_theme_dark_inverseOnSurface">
+                android:padding="@dimen/standard_spacing">
 
                 <ImageView
                     android:id="@+id/infoImagePagerProfile"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/star_account_24"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    app:tint="@color/white" />
+                    android:layout_centerVertical="true" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toEndOf="@id/infoImagePagerProfile"
-                    android:layout_marginStart="16dp">
+                    android:layout_marginStart="@dimen/standard_spacing">
 
                     <TextView
                         android:id="@+id/infoNamePagerProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="@color/white"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/text_medium"/>
 
                     <TextView
                         android:id="@+id/infoNumberPagerProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/text_medium"
                         android:textStyle="bold"/>
                 </LinearLayout>
             </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 </ScrollView>

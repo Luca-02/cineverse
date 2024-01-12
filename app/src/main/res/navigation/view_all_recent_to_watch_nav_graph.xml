@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/viewAllRecentToWatchFragment"
-        android:name="com.example.cineverse.view.verified_account.view_all_section_account.fragment_view.ViewAllRecentToWatchFragment"
+        android:name="com.example.cineverse.view.user_watchlist.fragment.UserWatchlistFragment"
         android:label="fragment_view_all_recent_to_watch"
-        tools:layout="@layout/fragment_view_all_recent_to_watch" />
+        tools:layout="@layout/fragment_user_watchlist" />
 </navigation>

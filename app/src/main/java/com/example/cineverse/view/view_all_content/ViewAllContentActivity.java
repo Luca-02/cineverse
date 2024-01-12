@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.genre.Genre;
+import com.example.cineverse.data.model.ui.BaseActivity;
 import com.example.cineverse.databinding.ActivityViewAllContentBinding;
 import com.example.cineverse.utils.constant.GlobalConstant;
 
@@ -19,7 +20,7 @@ import com.example.cineverse.utils.constant.GlobalConstant;
  * The {@link ViewAllContentActivity} is an activity responsible for displaying a list of content items
  * in a specific section, allowing users to navigate and explore the content.
  */
-public class ViewAllContentActivity extends AppCompatActivity {
+public class ViewAllContentActivity extends BaseActivity {
 
     /**
      * The tag used for the title string ID in the extras bundle.
