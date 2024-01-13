@@ -14,9 +14,13 @@
     <string name="none">None</string>
     <string name="cancel">Cancel</string>
     <string name="public_">Public</string>
-    <string name="delete_">delete</string>
+    <string name="delete_">Delete</string>
     <string name="change">Change</string>
     <string name="content">Content</string>
+    <string name="no_content_found">No such content was found</string>
+    <string name="sort">Sort</string>
+    <string name="confirm">Confirm</string>
+    <string name="ok" tools:ignore="PrivateResource">OK</string>
 
     <!-- Time -->
     <string name="second_ago">second ago</string>
@@ -122,13 +126,13 @@
     <string name="keyword">Keyword</string>
 
     <!-- Account -->
-    <string name="your_recent_in_watchlist">Your Recent in Watchlist</string>
+    <string name="your_recent_to_watch">Your Recent to Watch</string>
     <string name="your_recent_reviews">Your Recent Reviews</string>
 
     <!-- Setting -->
     <string name="settings">Settings</string>
     <string name="about">About</string>
-    <string name="about_subtitle">Benvenuti su CineVerse - La tua destinazione cinematografica definitiva!</string>
+    <string name="about_subtitle">Welcome to CineVerse - Your Ultimate Movie Destination!</string>
     <string name="about_text">Welcome to CineVerse - Your Ultimate Movie Destination!
         CineVerse is more than a mobile application, it\'s a passionate community of cinephiles. We share the same passion for the world of cinema and offer a welcoming place where film lovers can connect, express their opinions and discover new content to love. \n
         On CineVerse, you can write detailed reviews of movies and TV shows, share your opinions, and find out what other members of our community think. Your personal watchlist allows you to keep track of all the films and TV series you want to watch, while social interactions allow you to like other users\' reviews, comment and participate in discussions about your passion for cinema. \n\n
@@ -145,7 +149,6 @@
     <string name="enter_username">Enter your username</string>
     <string name="change_username">Change your username</string>
     <string name="username_updated">Username Updated</string>
-    <string name="delete_account_text">By clicking on the button below your Account will be deleted permanently.</string>
 
     <!-- View All Account -->
     <string name="your_reviews2">Your Reviews</string>
@@ -168,4 +171,13 @@
     <string name="removed_to_watch_list">Content removed to watch list</string>
     <string name="delete_review">Delete review</string>
     <string name="sure_delete_review">Are you sure you want to delete your review?</string>
+
+    <!-- User content list -->
+    <string name="recent_old">Recent to old</string>
+    <string name="old_recent">Old to recent</string>
+    <string name="alphabetic_a_z">Alphabetic A-Z</string>
+    <string name="alphabetic_z_a">Alphabetic Z-A</string>
+    <string name="best_rating">Best rating</string>
+    <string name="worst_rating">Worst rating</string>
+    <string name="number_of_like">Number of like</string>
 </resources>

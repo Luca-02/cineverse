@@ -107,17 +107,21 @@ public class ReviewFirebaseSource
         }
     }
 
-    public void getUserReviewList(User user, String contentType) {
+    public void getUserReviewList(User user, String contentType, Integer sizeLimit) {
         if (!isNetworkAvailable(context, firebaseCallback)) {
             return;
         }
 
         if (contentType != null) {
-            DatabaseReference ref = userReviewDatabase
+            DatabaseReference reviewRef = userReviewDatabase
                     .child(contentType)
                     .child(user.getUid());
 
-            ref.orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
+            if (sizeLimit != null) {
+                reviewRef.limitToFirst(sizeLimit);
+            }
+
+            reviewRef.orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     List<AbstractContent> contentList = new ArrayList<>();
@@ -129,9 +133,9 @@ public class ReviewFirebaseSource
                                 int contentId = Integer.parseInt(contentIdString);
 
                                 if (Objects.equals(contentType, ContentTypeMappingManager.ContentType.MOVIE.getType())) {
-                                    contentList.add(new Movie(contentId));
+                                    contentList.add(0, new Movie(contentId));
                                 } else if (Objects.equals(contentType, ContentTypeMappingManager.ContentType.TV.getType())) {
-                                    contentList.add(new Tv(contentId));
+                                    contentList.add(0, new Tv(contentId));
                                 }
                             }
                         }

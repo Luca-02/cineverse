@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.User;
+import com.example.cineverse.data.model.review.ContentUserReview;
 import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.ReviewItemLayoutBinding;
@@ -17,20 +18,32 @@ public class ReviewUiHandler {
         throw new IllegalStateException(ReviewUiHandler.class.getSimpleName());
     }
 
-    public static void setReviewUi(
+    public static <T extends UserReview> void setReviewUi(
             Context context,
             ReviewItemLayoutBinding binding,
-            UserReview userReview,
+            T review,
             boolean withLikeSection) {
         binding.likeCheckBox.setVisibility(View.GONE);
-        if (userReview != null) {
-            displayUserDetails(context, binding, userReview.getUser());
-            setReviewDetails(binding, userReview, withLikeSection);
-            setLikeDetails(binding, userReview, withLikeSection);
+        if (review != null) {
+            setContentDetails(binding, review);
+            setUserDetails(context, binding, review.getUser());
+            setReviewDetails(binding, review, withLikeSection);
+            setLikeDetails(binding, review, withLikeSection);
         }
     }
 
-    private static void displayUserDetails(
+    private static <T extends UserReview> void setContentDetails(
+            ReviewItemLayoutBinding binding, T review) {
+        if (ContentUserReview.class.isAssignableFrom(review.getClass())) {
+            ContentUserReview contentUserReview = (ContentUserReview) review;
+            binding.contentNameTextView.setVisibility(View.VISIBLE);
+            binding.contentNameTextView.setText(contentUserReview.getContent().getName());
+        } else {
+            binding.contentNameTextView.setVisibility(View.GONE);
+        }
+    }
+
+    private static void setUserDetails(
             Context context,
             ReviewItemLayoutBinding binding,
             User user) {

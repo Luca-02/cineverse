@@ -28,13 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewAllReviewContentFragment extends Fragment
-        implements OnReviewClickListener {
+        implements OnReviewClickListener<UserReview> {
 
     public static final String CONTENT_TAG = "Content";
 
     private FragmentViewAllReviewContentBinding binding;
     private ReviewViewModel reviewViewModel;
-    private ReviewAdapter reviewAdapter;
+    private ReviewAdapter<UserReview> reviewAdapter;
     private AbstractContent content;
 
     @Override
@@ -48,11 +48,9 @@ public class ViewAllReviewContentFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getExtras();
-        if (content != null) {
-            setViewModel();
-            initContentSection();
-            setListener();
-        }
+        setViewModel();
+        initContentSection();
+        setListener();
     }
 
     @Override
@@ -83,14 +81,16 @@ public class ViewAllReviewContentFragment extends Fragment
     }
 
     private void initContentSection() {
-        binding.materialToolbar.setTitle(content.getName());
         if (reviewAdapter == null) {
-            reviewAdapter = new ReviewAdapter(requireContext(), new ArrayList<>(), this);
+            reviewAdapter = new ReviewAdapter<>(requireContext(), new ArrayList<>(), this);
         }
         binding.reviewRecyclerView.setAdapter(reviewAdapter);
         binding.reviewRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        if (reviewViewModel.getLastTimestamp() == START_TIMESTAMP_VALUE) {
-            reviewViewModel.getPagedUserReviewOfContent(content);
+        if (content != null) {
+            if (reviewViewModel.getLastTimestamp() == START_TIMESTAMP_VALUE) {
+                reviewViewModel.getPagedUserReviewOfContent(content);
+            }
+            binding.materialToolbar.setTitle(content.getName());
         }
     }
 
@@ -98,21 +98,29 @@ public class ViewAllReviewContentFragment extends Fragment
      * Sets up the UI button listeners for navigation, text input, and login functionality.
      */
     private void setListener() {
-        binding.reviewRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                if (!reviewViewModel.isLoading() && !recyclerView.canScrollVertically(1)) {
-                    reviewViewModel.getPagedUserReviewOfContent(content);
-                    reviewViewModel.setLoading(true);
+        if (content != null) {
+            binding.reviewRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
                 }
-            }
+
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+
+                    if (!reviewViewModel.isLoading() && !recyclerView.canScrollVertically(1)) {
+                        reviewViewModel.getPagedUserReviewOfContent(content);
+                        reviewViewModel.setLoading(true);
+                    }
+                }
+            });
+        }
+
+        binding.swipeContainer.setOnRefreshListener(() -> {
+            binding.swipeContainer.setRefreshing(false);
+            reviewAdapter.clearData();
+            reviewViewModel.refreshContentReviewOfContent(content);
         });
 
         binding.materialToolbar.setNavigationOnClickListener(v ->
@@ -125,9 +133,11 @@ public class ViewAllReviewContentFragment extends Fragment
     }
 
     private void handleChangeLikeToUserReview(UserReview userReview) {
-        if (userReview != null) {
-            reviewAdapter.handleChangeLikeToUserReview(userReview);
+        UserReview currentUserReview = reviewViewModel.getUserReviewOfContentLiveData().getValue();
+        if (currentUserReview != null && currentUserReview.equals(userReview)) {
+            reviewViewModel.getUserReviewOfContentLiveData().postValue(userReview);
         }
+        reviewAdapter.handleChangeLikeToUserReview(userReview);
     }
 
     private void handleNetworkError(Boolean bool) {

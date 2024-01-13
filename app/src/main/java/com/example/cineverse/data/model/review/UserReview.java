@@ -1,10 +1,13 @@
 package com.example.cineverse.data.model.review;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.cineverse.R;
 import com.example.cineverse.data.model.User;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 public class UserReview implements Parcelable {
@@ -82,6 +85,36 @@ public class UserReview implements Parcelable {
                 ", likeCount=" + likeCount +
                 ", userLikeReview=" + userLikeReview +
                 '}';
+    }
+
+    public static String[] getSortingArrayString(Context context) {
+        return new String[] {
+                context.getString(R.string.recent_old),
+                context.getString(R.string.old_recent),
+                context.getString(R.string.best_rating),
+                context.getString(R.string.worst_rating),
+                context.getString(R.string.number_of_like)
+        };
+    }
+
+    public static Comparator<UserReview> getComparator(int sortIndex) {
+        switch (sortIndex) {
+            case 0:
+                return (o1, o2) -> Long.compare(
+                        o1.getReview().getTimestamp(), o2.getReview().getTimestamp()) * -1;
+            case 1:
+                return Comparator.comparingLong(o -> o.getReview().getTimestamp());
+            case 2:
+                return (o1, o2) -> Integer.compare(
+                        o1.getReview().getRating(), o2.getReview().getRating()) * -1;
+            case 3:
+                return Comparator.comparingInt(o -> o.getReview().getRating());
+            case 4:
+                return (o1, o2) -> Long.compare(
+                        o1.getLikeCount(), o2.getLikeCount()) * -1;
+            default:
+                return null;
+        }
     }
 
     @Override

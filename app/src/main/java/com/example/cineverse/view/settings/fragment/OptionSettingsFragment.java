@@ -1,19 +1,19 @@
 package com.example.cineverse.view.settings.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
 import com.example.cineverse.R;
 import com.example.cineverse.databinding.FragmentOptionSettingsBinding;
 import com.example.cineverse.view.settings.SettingsActivity;
-import com.example.cineverse.view.verify_account.VerifyAccountActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
 public class OptionSettingsFragment extends Fragment {

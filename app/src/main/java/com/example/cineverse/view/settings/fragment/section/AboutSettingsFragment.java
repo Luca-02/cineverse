@@ -31,18 +31,18 @@ public class AboutSettingsFragment extends Fragment {
         setActionBar();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((SettingsActivity) requireActivity()).setActionBarStyle();
+        binding = null;
+    }
+
     private void setActionBar(){
         ActionBar actionBar = ((SettingsActivity) requireActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.about);
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ((SettingsActivity)requireActivity()).setActionBarStyle();
-        binding = null;
     }
 
 }

@@ -48,6 +48,13 @@ public class UsernameSettingsFragment extends Fragment {
         setListeners();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((SettingsActivity)requireActivity()).setActionBarStyle();
+        binding = null;
+    }
+
     private void setActionBar(){
         ActionBar actionBar = ((SettingsActivity) requireActivity()).getSupportActionBar();
         if (actionBar != null) {
@@ -133,17 +140,6 @@ public class UsernameSettingsFragment extends Fragment {
             viewModel.getNetworkErrorLiveData().setValue(null);
         }
         binding.progressIndicator.getRoot().setVisibility(View.GONE);
-    }
-
-    /**
-     * Called when the fragment is no longer in use.
-     * This method ensures the ActionBar style is reset and releases the binding.
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ((SettingsActivity)requireActivity()).setActionBarStyle();
-        binding = null;
     }
 
 }

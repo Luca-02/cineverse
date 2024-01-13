@@ -5,6 +5,7 @@ import static com.example.cineverse.utils.constant.GlobalConstant.REVIEW_PAGE_CO
 import static com.example.cineverse.utils.constant.GlobalConstant.START_TIMESTAMP_VALUE;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -15,10 +16,13 @@ import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.data.source.review.ReviewFirebaseCallback;
 import com.example.cineverse.repository.review.ReviewRepository;
+import com.example.cineverse.utils.constant.GlobalConstant;
+import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ReviewViewModel
         extends VerifiedAccountViewModel
@@ -27,7 +31,8 @@ public class ReviewViewModel
     private final ReviewRepository reviewRepository;
     private MutableLiveData<Double> contentRatingLiveData;
     private MutableLiveData<UserReview> userReviewOfContentLiveData;
-    private MutableLiveData<List<ContentUserReview>> userReviewListLiveData;
+    private MutableLiveData<List<ContentUserReview>> userMovieReviewListLiveData;
+    private MutableLiveData<List<ContentUserReview>> userTvReviewListLiveData;
     private MutableLiveData<Boolean> addedUserReviewOfContentLiveData;
     private MutableLiveData<Boolean> removedUserReviewOfContentLiveData;
     private MutableLiveData<List<UserReview>> pagedUserReviewOfContentLiveData;
@@ -57,11 +62,18 @@ public class ReviewViewModel
         return userReviewOfContentLiveData;
     }
 
-    public MutableLiveData<List<ContentUserReview>> getUserReviewListLiveData() {
-        if (userReviewListLiveData == null) {
-            userReviewListLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<ContentUserReview>> getUserMovieReviewListLiveData() {
+        if (userMovieReviewListLiveData == null) {
+            userMovieReviewListLiveData = new MutableLiveData<>();
         }
-        return userReviewListLiveData;
+        return userMovieReviewListLiveData;
+    }
+
+    public MutableLiveData<List<ContentUserReview>> getUserTvReviewListLiveData() {
+        if (userTvReviewListLiveData == null) {
+            userTvReviewListLiveData = new MutableLiveData<>();
+        }
+        return userTvReviewListLiveData;
     }
 
     public MutableLiveData<Boolean> getAddedUserReviewOfContentLiveData() {
@@ -117,7 +129,11 @@ public class ReviewViewModel
     }
 
     public void getUserReviewList(String contentType) {
-        reviewRepository.getUserReviewList(contentType);
+        getUserReviewList(contentType, null);
+    }
+
+    public void getUserReviewList(String contentType, Integer sizeLimit) {
+        reviewRepository.getUserReviewList(contentType, sizeLimit);
     }
 
     public void addUserReviewOfContent(AbstractContent content, Review oldReview, Review newReview) {
@@ -162,8 +178,12 @@ public class ReviewViewModel
 
     @Override
     public void onUserReviewList(List<ContentUserReview> contentUserReviewList, String contentType) {
-        if (contentUserReviewList != null) {
-            getUserReviewListLiveData().postValue(contentUserReviewList);
+        if (contentUserReviewList != null && contentType != null) {
+            if (Objects.equals(contentType, ContentTypeMappingManager.ContentType.MOVIE.getType())) {
+                getUserMovieReviewListLiveData().postValue(contentUserReviewList);
+            } else if (Objects.equals(contentType, ContentTypeMappingManager.ContentType.TV.getType())) {
+                getUserTvReviewListLiveData().postValue(contentUserReviewList);
+            }
         }
     }
 

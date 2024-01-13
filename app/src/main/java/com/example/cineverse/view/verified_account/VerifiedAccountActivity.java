@@ -19,6 +19,7 @@ import com.example.cineverse.data.model.ui.BaseActivity;
 import com.example.cineverse.databinding.ActivityVerifiedAccountBinding;
 import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.auth.AuthActivity;
+import com.example.cineverse.view.network_error.NetworkErrorActivity;
 import com.example.cineverse.view.search_result.SearchResultActivity;
 import com.example.cineverse.view.settings.SettingsActivity;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
@@ -155,6 +156,15 @@ public class VerifiedAccountActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString(SearchResultActivity.QUERY_TAG, query);
         navController.navigate(R.id.action_global_searchResultActivity, bundle);
+    }
+
+    /**
+     * Opens the network error activity ({@link NetworkErrorActivity}).
+     */
+    public void openNetworkErrorActivity() {
+        if (navController != null) {
+            navController.navigate(R.id.action_global_networkErrorActivity);
+        }
     }
 
     public NavController getNavController() {

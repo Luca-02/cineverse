@@ -45,9 +45,9 @@ public class ReviewRepository
         }
     }
 
-    public void getUserReviewList(String contentType) {
+    public void getUserReviewList(String contentType, Integer sizeLimit) {
         if (currentUser != null) {
-            reviewFirebaseSource.getUserReviewList(currentUser, contentType);
+            reviewFirebaseSource.getUserReviewList(currentUser, contentType, sizeLimit);
         }
     }
 

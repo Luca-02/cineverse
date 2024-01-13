@@ -6,12 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cineverse.data.model.content.AbstractContent;
-import com.example.cineverse.data.model.details.section.IContentDetails;
 import com.example.cineverse.data.source.watchlist.WatchlistFirebaseCallback;
 import com.example.cineverse.repository.watchlist.WatchlistRepository;
+import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 public class WatchlistViewModel
         extends VerifiedAccountViewModel
@@ -19,7 +20,8 @@ public class WatchlistViewModel
 
     protected WatchlistRepository watchlistRepository;
     private MutableLiveData<Long> timestampForContentInWatchlistLiveData;
-    private MutableLiveData<List<AbstractContent>> userContentWatchlistLiveData;
+    private MutableLiveData<List<AbstractContent>> userMovieWatchlistLiveData;
+    private MutableLiveData<List<AbstractContent>> userTvWatchlistLiveData;
     private MutableLiveData<Long> addedContentToWatchlistLiveData;
     private MutableLiveData<Boolean> removedContentToWatchlistLiveData;
     private boolean firstTimeLoadTimestampInWatchlist;
@@ -38,11 +40,18 @@ public class WatchlistViewModel
         return timestampForContentInWatchlistLiveData;
     }
 
-    public MutableLiveData<List<AbstractContent>> getUserContentWatchlistLiveData() {
-        if (userContentWatchlistLiveData == null) {
-            userContentWatchlistLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<AbstractContent>> getUserMovieWatchlistLiveData() {
+        if (userMovieWatchlistLiveData == null) {
+            userMovieWatchlistLiveData = new MutableLiveData<>();
         }
-        return userContentWatchlistLiveData;
+        return userMovieWatchlistLiveData;
+    }
+
+    public MutableLiveData<List<AbstractContent>> getUserTvWatchlistLiveData() {
+        if (userTvWatchlistLiveData == null) {
+            userTvWatchlistLiveData = new MutableLiveData<>();
+        }
+        return userTvWatchlistLiveData;
     }
 
     public MutableLiveData<Long> getAddedContentToWatchlistLiveData() {
@@ -72,7 +81,11 @@ public class WatchlistViewModel
     }
 
     public void getUserContentWatchlist(String contentType) {
-        watchlistRepository.getUserContentWatchlist(contentType);
+        getUserContentWatchlist(contentType, null);
+    }
+
+    public void getUserContentWatchlist(String contentType, Integer sizeLimit) {
+        watchlistRepository.getUserContentWatchlist(contentType, sizeLimit);
     }
 
     public void addContentToWatchlist(AbstractContent content) {
@@ -90,8 +103,12 @@ public class WatchlistViewModel
 
     @Override
     public void onUserContentWatchlist(List<AbstractContent> watchlistList, String contentType) {
-        if (watchlistList != null) {
-            getUserContentWatchlistLiveData().postValue(watchlistList);
+        if (watchlistList != null && contentType != null) {
+            if (Objects.equals(contentType, ContentTypeMappingManager.ContentType.MOVIE.getType())) {
+                getUserMovieWatchlistLiveData().postValue(watchlistList);
+            } else if (Objects.equals(contentType, ContentTypeMappingManager.ContentType.TV.getType())) {
+                getUserTvWatchlistLiveData().postValue(watchlistList);
+            }
         }
     }
 

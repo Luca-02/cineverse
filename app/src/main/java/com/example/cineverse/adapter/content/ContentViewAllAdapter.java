@@ -15,8 +15,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.content.AbstractContent;
+import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.ViewAllContentItemBinding;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -53,10 +55,35 @@ public class ContentViewAllAdapter
      *
      * @param newContentList The new list of {@link AbstractContent} items.
      */
+    public void setData(List<? extends AbstractContent> newContentList) {
+        clearData();
+        contentList.addAll(newContentList);
+        notifyItemRangeInserted(0, contentList.size());
+    }
+
+    public void clearData() {
+        int end = contentList.size();
+        contentList.clear();
+        notifyItemRangeRemoved(0, end);
+    }
+
+    /**
+     * Sets new paged data for the adapter and notifies observers of the data set change.
+     *
+     * @param newContentList The new list of {@link AbstractContent} items.
+     */
     public void addPagingData(List<? extends AbstractContent> newContentList) {
         int start = contentList.size();
         contentList.addAll(newContentList);
         notifyItemRangeInserted(start, contentList.size());
+    }
+
+    public void sortContentList(int sortIndex) {
+        Comparator<AbstractContent> comparator = AbstractContent.getComparator(sortIndex);
+        if (comparator != null) {
+            contentList.sort(comparator);
+            notifyItemRangeChanged(0, contentList.size());
+        }
     }
 
     @NonNull

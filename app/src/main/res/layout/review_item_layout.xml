@@ -13,6 +13,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/contentNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/standard_spacing"
+            android:ellipsize="end"
+            android:maxLines="5"
+            android:textStyle="bold|italic"
+            android:textSize="@dimen/text_normal" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -95,6 +105,7 @@
                 android:id="@+id/likeCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
                 android:paddingStart="@dimen/half_spacing"
                 android:button="@drawable/selector_thumb_up" />
         </LinearLayout>

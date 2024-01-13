@@ -13,5 +13,7 @@ public class GlobalConstant {
     public static final long END_TIMESTAMP_VALUE = -2;
     public static final int RECENT_LIMIT_COUNT = 3;
     public static final int REVIEW_PAGE_COUNT = 10;
+    public static final int USER_RECENT_WATCHLIST_COUNT = 10;
+    public static final int USER_RECENT_REVIEW_COUNT = 5;
 
 }

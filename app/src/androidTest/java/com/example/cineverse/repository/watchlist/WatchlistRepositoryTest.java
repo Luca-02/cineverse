@@ -73,7 +73,7 @@ public class WatchlistRepositoryTest {
 
     @Test
     public void getUserContentWatchlistTest() throws InterruptedException {
-        watchlistRepository.getUserContentWatchlist(ContentTypeMappingManager.ContentType.MOVIE.getType());
+        watchlistRepository.getUserContentWatchlist(ContentTypeMappingManager.ContentType.MOVIE.getType(), null);
         latch.await(5, TimeUnit.SECONDS);
     }
 

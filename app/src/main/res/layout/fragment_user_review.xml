@@ -1,61 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.user_watchlist.fragment.UserWatchlistFragment"
-    android:orientation="vertical">
-
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/materialToggleGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:singleSelection="true"
-        android:layout_marginEnd="@dimen/standard_spacing"
-        android:layout_marginStart="@dimen/standard_spacing">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/buttonMovies"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:text="@string/movies"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/buttonSeries"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:text="@string/tv_series"/>
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
+    tools:context=".view.user_watchlist.fragment.UserWatchlistFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_vertical">
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constMoviesLayout"
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/materialToggleGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible">
+            app:singleSelection="true"
+            android:paddingTop="@dimen/quarter_spacing"
+            android:paddingBottom="@dimen/quarter_spacing"
+            android:paddingStart="@dimen/standard_spacing"
+            android:paddingEnd="@dimen/standard_spacing">
+
+            <Button
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:id="@+id/buttonMovies"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/movies"/>
+
+            <Button
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:id="@+id/buttonSeries"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tv_series"/>
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/empty_content_layout"
+                android:id="@+id/empty_content_layout" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewFavouriteFilms"
+                android:id="@+id/recyclerViewReview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:padding="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/constMoviesLayout" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:clipToPadding="false"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

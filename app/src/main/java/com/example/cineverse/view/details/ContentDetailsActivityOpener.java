@@ -5,6 +5,7 @@ import static com.example.cineverse.view.details.ContentDetailsActivity.CONTENT_
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.navigation.NavController;
 
@@ -12,7 +13,10 @@ import com.example.cineverse.R;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.content.section.Movie;
 import com.example.cineverse.data.model.content.section.Tv;
+import com.example.cineverse.data.model.details.section.MovieDetails;
+import com.example.cineverse.data.model.details.section.TvDetails;
 import com.example.cineverse.utils.NetworkUtils;
+import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 
 public class ContentDetailsActivityOpener {
@@ -22,7 +26,10 @@ public class ContentDetailsActivityOpener {
             if (!NetworkUtils.isNetworkAvailable(context)) {
                 navController.navigate(R.id.action_global_networkErrorActivity);
             } else {
-                if (content.getClass().isAssignableFrom(Movie.class) || content.getClass().isAssignableFrom(Tv.class)) {
+                if (content.getClass().isAssignableFrom(Movie.class) ||
+                        content.getClass().isAssignableFrom(Tv.class) ||
+                        content.getClass().isAssignableFrom(MovieDetails.class) ||
+                        content.getClass().isAssignableFrom(TvDetails.class)) {
                     Bundle bundle = new Bundle();
                     bundle.putString(CONTENT_TYPE_STRING_TAG, ContentTypeMappingManager.getContentType(content.getClass()));
                     bundle.putInt(CONTENT_ID_TAG, content.getId());

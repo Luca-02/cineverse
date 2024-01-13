@@ -72,7 +72,7 @@ public class WatchlistFirebaseSourceTest {
     @Test
     public void getUserContentWatchlistTest() throws InterruptedException {
         User user = new User("ztat6FiSrNSs3fxfx0GmXRKMBlr2", null, null, null);
-        watchlistFirebaseSource.getUserContentWatchlist(user, ContentTypeMappingManager.ContentType.MOVIE.getType());
+        watchlistFirebaseSource.getUserContentWatchlist(user, ContentTypeMappingManager.ContentType.MOVIE.getType(), null);
         latch.await(5, TimeUnit.SECONDS);
     }
 

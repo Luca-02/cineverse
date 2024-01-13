@@ -3,6 +3,10 @@ package com.example.cineverse.view.search_result.fragment;
 import static com.example.cineverse.utils.constant.Api.STARTING_PAGE;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,20 +15,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.example.cineverse.R;
 import com.example.cineverse.adapter.content.OnContentClickListener;
 import com.example.cineverse.adapter.content.SearchContentAdapter;
 import com.example.cineverse.data.model.api.Failure;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.databinding.FragmentSearchResultBinding;
-import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.view.details.ContentDetailsActivityOpener;
 import com.example.cineverse.view.search_result.SearchResultActivity;
-import com.example.cineverse.view.view_all_content.ViewAllContentActivity;
 import com.example.cineverse.viewmodel.search_result.SearchResultViewModel;
 import com.example.cineverse.viewmodel.search_result.SearchResultViewModelFactory;
 import com.google.android.material.snackbar.Snackbar;
@@ -124,8 +122,15 @@ public class SearchResultFragment extends Fragment
     private void initContentSection(Bundle savedInstanceState) {
         contentAdapter = new SearchContentAdapter(requireContext(), new ArrayList<>(), this);
         binding.contentRecyclerView.setAdapter(contentAdapter);
-        binding.contentRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        binding.contentRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), getContentCountForScreen()));
         handleRecyclerViewState(savedInstanceState);
+    }
+
+    private int getContentCountForScreen() {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int dpWidth = (int) (displayMetrics.widthPixels / displayMetrics.density);
+        int contentWidth = (int) (getResources().getDimensionPixelSize(R.dimen.standard_poster_width) / displayMetrics.density);
+        return (int) (dpWidth - 16) / (contentWidth + 16);
     }
 
     /**

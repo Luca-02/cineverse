@@ -1,5 +1,6 @@
 package com.example.cineverse.view.settings;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -23,12 +24,12 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setActionBar();
         setNavController();
-        getWindow().setNavigationBarColor(android.R.attr.colorBackground);
         binding.toolbarSettings.setNavigationOnClickListener(
                 view -> getOnBackPressedDispatcher().onBackPressed());
     }

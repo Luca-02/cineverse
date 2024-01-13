@@ -88,7 +88,6 @@ public class Review implements Cloneable, Parcelable {
         }
     }
 
-
     @Override
     public int describeContents() {
         return 0;

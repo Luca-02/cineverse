@@ -56,7 +56,7 @@ public class VerifiedAccountViewModel
     }
 
     @Override
-    public void onError(VerifiedAccountRepository.Error error) {
+    public void onUsernameChangeError(VerifiedAccountRepository.Error error) {
         getChangeUsernameErrorLiveData().postValue(error);
     }
 

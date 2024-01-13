@@ -52,7 +52,7 @@ public class VerifiedAccountRepository
 
     public void changeUsernameOfUser(String newUsername) {
         if (!UsernameValidator.getInstance().isValid(newUsername)) {
-            usernameChangeCallback.onError(Error.ERROR_INVALID_USERNAME_FORMAT);
+            usernameChangeCallback.onUsernameChangeError(Error.ERROR_INVALID_USERNAME_FORMAT);
         } else {
             User user = getCurrentUser();
             if (user != null) {
@@ -62,7 +62,7 @@ public class VerifiedAccountRepository
                         if (exist == null) {
                             usernameChangeCallback.onUsernameChange(null);
                         } else if (exist) {
-                            usernameChangeCallback.onError(Error.ERROR_USERNAME_ALREADY_EXISTS);
+                            usernameChangeCallback.onUsernameChangeError(Error.ERROR_USERNAME_ALREADY_EXISTS);
                         } else {
                             handleChangeUsername(user, newUsername);
                         }
@@ -99,7 +99,7 @@ public class VerifiedAccountRepository
 
     public interface UsernameChangeCallback extends NetworkCallback {
         void onUsernameChange(User updatedUser);
-        void onError(VerifiedAccountRepository.Error error);
+        void onUsernameChangeError(VerifiedAccountRepository.Error error);
     }
 
 }
