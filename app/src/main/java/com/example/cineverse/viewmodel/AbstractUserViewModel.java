@@ -1,6 +1,7 @@
 package com.example.cineverse.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,6 +10,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.cineverse.data.model.User;
 import com.example.cineverse.repository.UserRepository;
 import com.example.cineverse.service.NetworkCallback;
+import com.example.cineverse.data.model.CurrentUser;
+import com.example.cineverse.utils.constant.GlobalConstant;
 
 /**
  * The {@link AbstractUserViewModel} class serves as the base class for ViewModels related to authentication
@@ -27,7 +30,6 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
      * The repository responsible for handling user authentication and data operations.
      */
     protected T userRepository;
-    private MutableLiveData<User> userLiveData;
     private MutableLiveData<Boolean> networkErrorLiveData;
 
     /**
@@ -41,17 +43,11 @@ public abstract class AbstractUserViewModel<T extends UserRepository>
         this.userRepository = userRepository;
 
         // Check if there is a currently authenticated user and update userLiveData if available.
-        User currentUser = getCurrentUser();
-        if (currentUser != null) {
-            getUserLiveData().postValue(currentUser);
-        }
+        CurrentUser.getInstance().handleCurrentUser(getCurrentUser());
     }
 
     public MutableLiveData<User> getUserLiveData() {
-        if (userLiveData == null) {
-            userLiveData = new MutableLiveData<>();
-        }
-        return userLiveData;
+        return CurrentUser.getInstance().getCurrentUserMutableLiveData();
     }
 
     public MutableLiveData<Boolean> getNetworkErrorLiveData() {

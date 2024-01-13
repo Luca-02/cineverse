@@ -46,6 +46,11 @@ public class ViewAllVideoFragment extends Fragment
             binding.videoRecyclerView.setAdapter(videoAdapter);
             binding.materialToolbar.setNavigationOnClickListener(v ->
                     requireActivity().getOnBackPressedDispatcher().onBackPressed());
+            if (contentVideos.getResults().size() == 0) {
+                binding.emptyContentLayout.getRoot().setVisibility(View.VISIBLE);
+            } else {
+                binding.emptyContentLayout.getRoot().setVisibility(View.GONE);
+            }
         }
     }
 

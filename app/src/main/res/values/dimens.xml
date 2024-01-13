@@ -23,7 +23,7 @@
     <dimen name="half_radius">8dp</dimen>
 
     <!-- dimension -->
-    <dimen name="standard_poster_width">112dp</dimen>
-    <dimen name="standard_carousel_height">200dp</dimen>
+    <dimen name="standard_poster_width">108dp</dimen>
+    <dimen name="standard_carousel_height">180dp</dimen>
     <dimen name="standard_backdrop_height">120dp</dimen>
 </resources>

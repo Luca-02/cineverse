@@ -40,6 +40,7 @@
 
         <!-- TextInputLayout -->
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+
     </style>
 
     <style name="Theme.CineVerse" parent="Base.Theme.CineVerse" />

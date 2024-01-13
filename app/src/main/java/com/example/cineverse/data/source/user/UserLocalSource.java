@@ -44,6 +44,13 @@ public class UserLocalSource {
         editor.apply();
     }
 
+    public void updateUser(User user) {
+        if (user != null) {
+            clearUser();
+            saveUser(user);
+        }
+    }
+
     /**
      * Retrieves the stored user information from shared preferences.
      *

@@ -136,7 +136,7 @@ public class ReviewFirebaseSourceTest {
     @Test
     public void getUserReviewListTest() throws InterruptedException {
         User user = new User("ztat6FiSrNSs3fxfx0GmXRKMBlr2", null, null, null);
-        reviewFirebaseSource.getUserReviewList(user, ContentTypeMappingManager.ContentType.MOVIE.getType());
+        reviewFirebaseSource.getUserReviewList(user, ContentTypeMappingManager.ContentType.MOVIE.getType(), null);
         latch.await(5, TimeUnit.SECONDS);
     }
 

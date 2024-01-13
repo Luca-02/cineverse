@@ -1,21 +1,17 @@
 package com.example.cineverse.view.details;
 
-import static com.example.cineverse.view.details.fragment.ReviewDetailsFragment.USER_REVIEW_TAG;
-
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
-import com.example.cineverse.data.model.review.UserReview;
+import com.example.cineverse.data.model.ui.BaseActivity;
 import com.example.cineverse.databinding.ActivityContentDetailsBinding;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
 
-public class ContentDetailsActivity extends AppCompatActivity {
+public class ContentDetailsActivity extends BaseActivity {
 
     public static final String CONTENT_TYPE_STRING_TAG = "ContentTypeString";
     public static final String CONTENT_ID_TAG = "ContentId";

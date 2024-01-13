@@ -37,9 +37,9 @@ public class WatchlistRepository
         }
     }
 
-    public void getUserContentWatchlist(String contentType) {
+    public void getUserContentWatchlist(String contentType, Integer sizeLimit) {
         if (currentuser != null) {
-            watchlistFirebaseSource.getUserContentWatchlist(currentuser, contentType);
+            watchlistFirebaseSource.getUserContentWatchlist(currentuser, contentType, sizeLimit);
         }
     }
 

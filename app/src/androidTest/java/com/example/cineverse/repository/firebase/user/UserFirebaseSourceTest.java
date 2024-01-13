@@ -127,4 +127,28 @@ public class UserFirebaseSourceTest {
         latch.await(5, TimeUnit.SECONDS);
     }
 
+    @Test
+    public void changeUsernameOfUserTest() throws InterruptedException {
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        User user = new User("ztat6FiSrNSs3fxfx0GmXRKMBlr2", "nuovousername", null, null);
+        String inputUsername = "hh";
+        userFirebaseSource.changeUsernameOfUser(context, user, inputUsername, new UserCallback<String>() {
+            @Override
+            public void onCallback(String data) {
+                assertNotNull(data);
+                System.out.println(data);
+                latch.countDown();
+            }
+
+            @Override
+            public void onNetworkUnavailable() {
+                System.out.println("NetworkUnavailable");
+                latch.countDown();
+            }
+        });
+
+        latch.await(5, TimeUnit.SECONDS);
+    }
+
 }

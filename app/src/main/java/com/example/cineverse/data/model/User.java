@@ -105,6 +105,16 @@ public class User implements Parcelable {
         return stringBuilder.toString();
     }
 
+    public boolean equalsContent(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getUid(), user.getUid()) &&
+                Objects.equals(getUsername(), user.getUsername()) &&
+                Objects.equals(getEmail(), user.getEmail()) &&
+                Objects.equals(getPhotoUrl(), user.getPhotoUrl());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -9,9 +9,6 @@ import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.content.section.Movie;
 import com.example.cineverse.data.model.content.section.Tv;
-import com.example.cineverse.data.model.details.section.IContentDetails;
-import com.example.cineverse.data.model.details.section.MovieDetails;
-import com.example.cineverse.data.model.details.section.TvDetails;
 import com.example.cineverse.service.firebase.WatchlistFirebaseDatabaseService;
 import com.example.cineverse.utils.NetworkUtils;
 import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
@@ -69,14 +66,18 @@ public class WatchlistFirebaseSource
         }
     }
 
-    public void getUserContentWatchlist(User user, String contentType) {
+    public void getUserContentWatchlist(User user, String contentType, Integer sizeLimit) {
         if (NetworkUtils.isNetworkAvailable(context)) {
             if (contentType != null) {
-                DatabaseReference userMovieWatchlistRef = watchlistDatabase
+                DatabaseReference watchlistRef = watchlistDatabase
                         .child(contentType)
                         .child(user.getUid());
 
-                userMovieWatchlistRef.orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
+                if (sizeLimit != null) {
+                    watchlistRef.limitToFirst(sizeLimit);
+                }
+
+                watchlistRef.orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         List<AbstractContent> watchlistList = new ArrayList<>();
@@ -95,7 +96,7 @@ public class WatchlistFirebaseSource
                                     }
 
                                     if (content != null) {
-                                        watchlistList.add(content);
+                                        watchlistList.add(0, content);
                                     }
                                 }
                             }
@@ -153,7 +154,8 @@ public class WatchlistFirebaseSource
             if (contentType != null) {
                 DatabaseReference userMovieWatchlistRef = watchlistDatabase
                         .child(contentType)
-                        .child(user.getUid());
+                        .child(user.getUid())
+                        .child(String.valueOf(content.getId()));
 
                 userMovieWatchlistRef.removeValue((error, ref) ->
                         firebaseCallback.onRemovedContentToWatchlist(error == null));

@@ -19,24 +19,48 @@
     <activity
         android:id="@+id/searchResultActivity"
         android:name="com.example.cineverse.view.search_result.SearchResultActivity"
-        android:label="SearchResultActivity"
+        android:label="activity_search_result"
         tools:layout="@layout/activity_search_result"/>
     <activity
         android:id="@+id/contentDetailsActivity"
         android:name="com.example.cineverse.view.details.ContentDetailsActivity"
-        android:label="ContentDetailsActivity"
+        android:label="activity_content_details"
         tools:layout="@layout/activity_content_details" />
     <activity
         android:id="@+id/networkErrorActivity"
         android:name="com.example.cineverse.view.network_error.NetworkErrorActivity"
         android:label="activity_network_error"
         tools:layout="@layout/activity_network_error" />
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="com.example.cineverse.view.settings.SettingsActivity"
+        android:label="activity_settings"
+        tools:layout="@layout/activity_settings" />
+    <activity
+        android:id="@+id/userReviewsActivity"
+        android:name="com.example.cineverse.view.user_reviews.UserReviewsActivity"
+        android:label="activity_user_review"
+        tools:layout="@layout/activity_user_review"/>
+    <activity
+        android:id="@+id/userWatchlistActivity"
+        android:name="com.example.cineverse.view.user_watchlist.UserWatchlistActivity"
+        android:label="activity_user_watchlist"
+        tools:layout="@layout/activity_user_watchlist"/>
 
     <action
         android:id="@+id/action_global_authActivity"
         app:destination="@id/authActivity"
         app:popUpTo="@id/verified_account_nav_graph"
         app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_settingsActivity"
+        app:destination="@id/settingsActivity" />
+    <action
+        android:id="@+id/action_global_userReviewsActivity"
+        app:destination="@id/userReviewsActivity" />
+    <action
+        android:id="@+id/action_global_userWatchlistActivity"
+        app:destination="@id/userWatchlistActivity" />
     <action
         android:id="@+id/action_global_searchResultActivity"
         app:destination="@id/searchResultActivity" />

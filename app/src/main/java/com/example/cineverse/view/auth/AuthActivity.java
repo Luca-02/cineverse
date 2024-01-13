@@ -12,6 +12,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.ui.BaseActivity;
 import com.example.cineverse.databinding.ActivityAuthBinding;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
@@ -23,7 +24,7 @@ import com.example.cineverse.view.verify_account.VerifyAccountActivity;
  * If not, it displays the main authentication screen. This activity also handles network error scenarios by
  * redirecting users to the {@link NetworkErrorActivity}.
  */
-public class AuthActivity extends AppCompatActivity {
+public class AuthActivity extends BaseActivity {
 
     private ActivityAuthBinding binding;
     private NavController navController;

@@ -109,7 +109,7 @@ public class ReviewRepositoryTest {
 
     @Test
     public void getUserReviewList() throws InterruptedException {
-        reviewRepository.getUserReviewList(ContentTypeMappingManager.ContentType.MOVIE.getType());
+        reviewRepository.getUserReviewList(ContentTypeMappingManager.ContentType.MOVIE.getType(), null);
         latch.await(5, TimeUnit.SECONDS);
     }
 

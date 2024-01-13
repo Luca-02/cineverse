@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,13 +46,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContentDetailsFragment extends Fragment
-        implements OnReviewClickListener {
+        implements OnReviewClickListener<UserReview> {
 
     private FragmentContentDetailsBinding binding;
     private AbstractContentDetailsViewModel<? extends IContentDetails> contentDetailsViewModel;
     private ReviewViewModel reviewViewModel;
     private IContentDetails contentDetails;
-    private ReviewAdapter reviewAdapter;
+    private ReviewAdapter<UserReview> reviewAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -93,7 +94,8 @@ public class ContentDetailsFragment extends Fragment
             contentDetailsViewModel.getAddedContentToWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleAddedToWatch);
             contentDetailsViewModel.getRemovedContentToWatchlistLiveData().observe(getViewLifecycleOwner(), this::handleRemovedToWatch);
             contentDetailsViewModel.getFailureLiveData().observe(getViewLifecycleOwner(), this::handleFailure);
-            contentDetailsViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
+            contentDetailsViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), aBoolean ->
+                    handleNetworkError(aBoolean, contentDetailsViewModel.getNetworkErrorLiveData()));
         }
 
         reviewViewModel = new ViewModelProvider(requireActivity()).get(ReviewViewModel.class);
@@ -102,7 +104,8 @@ public class ContentDetailsFragment extends Fragment
         reviewViewModel.getPagedUserReviewOfContentLiveData().observe(getViewLifecycleOwner(), this::handlePagedContentReview);
         reviewViewModel.getChangeLikeOfUserToUserReviewOfContentLiveData().observe(
                 getViewLifecycleOwner(), this::handleChangeLikeToUserReview);
-        reviewViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
+        reviewViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), aBoolean ->
+                handleNetworkError(aBoolean, reviewViewModel.getNetworkErrorLiveData()));
     }
 
     private void setContentDetails() {
@@ -111,7 +114,7 @@ public class ContentDetailsFragment extends Fragment
         if (contentDetails == null) {
             contentDetailsViewModel.fetchDetails(contentId);
         }
-        reviewAdapter = new ReviewAdapter(requireContext(), new ArrayList<>(), this);
+        reviewAdapter = new ReviewAdapter<>(requireContext(), new ArrayList<>(), this);
         binding.recentReviewRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recentReviewRecyclerView.setAdapter(reviewAdapter);
     }
@@ -320,10 +323,10 @@ public class ContentDetailsFragment extends Fragment
         }
     }
 
-    private void handleNetworkError(Boolean bool) {
+    private void handleNetworkError(Boolean bool, MutableLiveData<Boolean> networkMutableLiveData) {
         if (bool != null && bool) {
             ((ContentDetailsActivity) requireActivity()).openNetworkErrorActivity();
-            contentDetailsViewModel.getNetworkErrorLiveData().setValue(null);
+            networkMutableLiveData.setValue(null);
         }
     }
 

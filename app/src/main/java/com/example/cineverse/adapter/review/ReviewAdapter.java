@@ -7,55 +7,58 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cineverse.R;
+import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.ReviewItemLayoutBinding;
 import com.example.cineverse.handler.ReviewUiHandler;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class ReviewAdapter
-        extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
+public class ReviewAdapter<T extends UserReview>
+        extends RecyclerView.Adapter<ReviewAdapter<T>.ReviewViewHolder> {
 
     private final Context context;
-    private final List<UserReview> userReviewList;
-    private final OnReviewClickListener listener;
+    private final List<T> reviewList;
+    private final OnReviewClickListener<T> listener;
 
-    public ReviewAdapter(Context context, List<UserReview> userReviewList, OnReviewClickListener listener) {
+    public ReviewAdapter(Context context, List<T> reviewList, OnReviewClickListener<T> listener) {
         this.context = context;
-        this.userReviewList = userReviewList;
+        this.reviewList = reviewList;
         this.listener = listener;
         setHasStableIds(true);
     }
 
-    public List<UserReview> getData() {
-        return userReviewList;
+    public List<T> getData() {
+        return reviewList;
     }
 
-    public void setData(List<UserReview> newUserReviewList) {
+    public void setData(List<T> newUserReviewList) {
         clearData();
-        userReviewList.addAll(newUserReviewList);
-        notifyItemRangeInserted(0, userReviewList.size());
+        reviewList.addAll(newUserReviewList);
+        notifyItemRangeInserted(0, reviewList.size());
     }
 
-    public void addPagingData(List<UserReview> newUserReviewList) {
-        int start = userReviewList.size();
-        userReviewList.clear();
-        userReviewList.addAll(newUserReviewList);
-        notifyItemRangeInserted(start, userReviewList.size());
+    public void addPagingData(List<T> newUserReviewList) {
+        int start = reviewList.size();
+        reviewList.clear();
+        reviewList.addAll(newUserReviewList);
+        notifyItemRangeInserted(start, reviewList.size());
     }
 
     public void clearData() {
-        int end = userReviewList.size();
-        userReviewList.clear();
+        int end = reviewList.size();
+        reviewList.clear();
         notifyItemRangeRemoved(0, end);
     }
 
     public void handleChangeLikeToUserReview(UserReview userReview) {
         if (userReview != null) {
-            for (int i = 0; i < userReviewList.size(); i++) {
-                if (userReview.equals(userReviewList.get(i))) {
-                    userReviewList.get(i).updateLike(
+            for (int i = 0; i < reviewList.size(); i++) {
+                if (userReview.equals(reviewList.get(i))) {
+                    reviewList.get(i).updateLike(
                             userReview.getLikeCount(), userReview.isUserLikeReview());
                     List<Object> payload = new ArrayList<>();
                     payload.add(userReview.getLikeCount());
@@ -67,17 +70,25 @@ public class ReviewAdapter
         }
     }
 
+    public void sortContentList(int sortIndex) {
+        Comparator<UserReview> comparator = UserReview.getComparator(sortIndex);
+        if (comparator != null) {
+            reviewList.sort(comparator);
+            notifyItemRangeChanged(0, reviewList.size());
+        }
+    }
+
     @NonNull
     @Override
-    public ReviewAdapter.ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new ReviewViewHolder(ReviewItemLayoutBinding.inflate(
                 inflater, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReviewAdapter.ReviewViewHolder holder, int position) {
-        holder.bind(userReviewList.get(position));
+    public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
+        holder.bind(reviewList.get(position));
     }
 
     @Override
@@ -96,12 +107,12 @@ public class ReviewAdapter
 
     @Override
     public int getItemCount() {
-        return userReviewList.size();
+        return reviewList.size();
     }
 
     @Override
     public long getItemId(int position) {
-        return userReviewList.get(position).getReview().getTimestamp();
+        return reviewList.get(position).getReview().getTimestamp();
     }
 
     public class ReviewViewHolder extends RecyclerView.ViewHolder {
@@ -113,17 +124,17 @@ public class ReviewAdapter
             this.binding = binding;
         }
 
-        public void bind(UserReview userReview) {
-            ReviewUiHandler.setReviewUi(context, binding, userReview, true);
+        public void bind(T review) {
+            ReviewUiHandler.setReviewUi(context, binding, review, true);
             binding.likeCheckBox.setOnClickListener(v -> {
                 if (binding.likeCheckBox.isChecked()) {
-                    listener.addLikeToUserReview(userReview);
+                    listener.addLikeToUserReview(review);
                 } else {
-                    listener.removeLikeToUserReview(userReview);
+                    listener.removeLikeToUserReview(review);
                 }
             });
             binding.getRoot().setOnClickListener(v ->
-                    listener.onUserReviewClick(userReview));
+                    listener.onUserReviewClick(review));
         }
 
         public void updateLikeView(long likeCount, boolean userLikeReview) {

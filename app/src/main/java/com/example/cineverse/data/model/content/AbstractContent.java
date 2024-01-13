@@ -1,10 +1,14 @@
 package com.example.cineverse.data.model.content;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.cineverse.R;
+import com.example.cineverse.data.model.review.UserReview;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
 import java.util.Locale;
 
 /**
@@ -91,6 +95,32 @@ public abstract class AbstractContent implements Parcelable {
     public String getCountryName() {
         Locale locale = new Locale(originalLanguage);
         return locale.getDisplayLanguage(locale);
+    }
+
+    public static String[] getSortingArrayString(Context context) {
+        return new String[]{
+                context.getString(R.string.recent_old),
+                context.getString(R.string.old_recent),
+                context.getString(R.string.alphabetic_a_z),
+                context.getString(R.string.alphabetic_z_a)
+        };
+    }
+
+    public static Comparator<AbstractContent> getComparator(int sortIndex) {
+        switch (sortIndex) {
+            case 0:
+                return (o1, o2) -> Long.compare(
+                        o1.getWatchlistTimestamp(), o2.getWatchlistTimestamp()) * -1;
+            case 1:
+                return Comparator.comparingLong(AbstractContent::getWatchlistTimestamp);
+            case 2:
+                return (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
+            case 3:
+                return (o1, o2) ->
+                        o1.getName().compareToIgnoreCase(o2.getName()) * -1;
+            default:
+                return null;
+        }
     }
 
     public abstract String getName();

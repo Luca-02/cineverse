@@ -2,12 +2,17 @@ package com.example.cineverse.repository;
 
 import android.content.Context;
 
+import com.example.cineverse.data.model.CurrentUser;
 import com.example.cineverse.data.model.User;
+import com.example.cineverse.data.source.user.SynchronizeLocalUserDataSource;
 import com.example.cineverse.data.source.user.UserFirebaseSource;
 import com.example.cineverse.data.source.user.UserLocalSource;
+import com.example.cineverse.handler.SignOutLocalDataHandler;
 import com.example.cineverse.service.NetworkCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The {@link UserRepository} class is a base class providing authentication-related functionality
@@ -26,6 +31,7 @@ public class UserRepository {
     protected final Context context;
     protected final UserFirebaseSource firebaseSource;
     protected final UserLocalSource localSource;
+    private final SynchronizeLocalUserDataSource synchronizeLocalUserDataSource;
 
     /**
      * Constructs an {@link UserRepository} object with the given application {@link Context}.
@@ -36,6 +42,11 @@ public class UserRepository {
         this.context = context;
         firebaseSource = new UserFirebaseSource(context);
         localSource = new UserLocalSource(context);
+        synchronizeLocalUserDataSource = new SynchronizeLocalUserDataSource(context, firebaseSource, localSource);
+    }
+
+    public void setSynchronizedUserCallback(SynchronizeLocalUserCallback synchronizeLocalUserCallback) {
+        synchronizeLocalUserDataSource.setSynchronizeLocalUserCallback(synchronizeLocalUserCallback);
     }
 
     /**
@@ -62,6 +73,7 @@ public class UserRepository {
     protected void clearAllUser() {
         firebaseAuth.signOut();
         localSource.clearUser();
+        SignOutLocalDataHandler.handleDataOnSignOut(context);
     }
 
     /**
@@ -92,6 +104,15 @@ public class UserRepository {
     }
 
     /**
+     * Gets the synchronized currently authenticated user.
+     *
+     * @param currentUser current logged {@link User}
+     */
+    public void synchronizeLocalUser(@NotNull User currentUser) {
+        synchronizeLocalUserDataSource.synchronizeLocalUserIf24HoursPassed(currentUser);
+    }
+
+    /**
      * Checks if the currently authenticated user's email is verified.
      *
      * @return {@code true} if the user's email is verified, {@code false} otherwise.
@@ -99,6 +120,13 @@ public class UserRepository {
     public boolean isEmailVerified() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         return user != null && user.isEmailVerified();
+    }
+
+    /**
+     * Callback interface for handling synchronized user.
+     */
+    public interface SynchronizeLocalUserCallback {
+        void onSynchronizedLocalUser(User user);
     }
 
 }

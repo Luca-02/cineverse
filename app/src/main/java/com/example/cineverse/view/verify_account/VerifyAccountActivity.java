@@ -8,6 +8,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.ui.BaseActivity;
 import com.example.cineverse.databinding.ActivityVerifyAccountBinding;
 import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
@@ -18,7 +19,7 @@ import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
  * It allows users to verify their email address, resent verification emails, and navigate
  * to the home screen upon successful verification.
  */
-public class VerifyAccountActivity extends AppCompatActivity {
+public class VerifyAccountActivity extends BaseActivity {
 
     private ActivityVerifyAccountBinding binding;
     private NavController navController;

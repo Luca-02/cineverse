@@ -10,6 +10,7 @@ import com.example.cineverse.service.firebase.UserFirebaseDatabaseService;
 import com.example.cineverse.utils.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
@@ -43,13 +44,13 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
      */
     public void saveUser(User user, UserCallback<Boolean> userCallback) {
         if (NetworkUtils.isNetworkAvailable(context)) {
-            checkIfUserSaved(user, userCallback);
+            isUserSaved(user, userCallback);
         } else {
             userCallback.onNetworkUnavailable();
         }
     }
 
-    private void checkIfUserSaved(User user, UserCallback<Boolean> userCallback) {
+    private void isUserSaved(User user, UserCallback<Boolean> userCallback) {
         isUserSaved(context, user.getUid(), new UserCallback<Boolean>() {
             @Override
             public void onCallback(Boolean isUserSaved) {
@@ -270,6 +271,29 @@ public class UserFirebaseSource extends UserFirebaseDatabaseService {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
+                    userCallback.onCallback(null);
+                }
+            });
+        } else {
+            userCallback.onNetworkUnavailable();
+        }
+    }
+
+    public void changeUsernameOfUser(Context context, User user, String newUsername, final UserCallback<String> userCallback) {
+        if (NetworkUtils.isNetworkAvailable(context)) {
+            DatabaseReference refUsernamesDatabase = usernamesDatabase;
+
+            DatabaseReference refUsersDatabase = usersDatabase
+                    .child(user.getUid())
+                    .child("username");
+
+            refUsernamesDatabase.child(user.getUsername()).removeValue((error, ref2) -> {
+                if (error == null) {
+                    refUsernamesDatabase.child(newUsername).setValue(user.getUid(), (error1, ref) -> {
+                        refUsersDatabase.setValue(newUsername);
+                        userCallback.onCallback(newUsername);
+                    });
+                } else {
                     userCallback.onCallback(null);
                 }
             });

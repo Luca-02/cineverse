@@ -24,6 +24,15 @@
             android:name=".view.details.ContentDetailsActivity"
             android:exported="false" />
         <activity
+            android:name=".view.user_reviews.UserReviewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.user_watchlist.UserWatchlistActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.settings.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.view_all_content.ViewAllContentActivity"
             android:exported="false" />
         <activity

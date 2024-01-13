@@ -3,17 +3,17 @@ package com.example.cineverse.view.network_error;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.ui.BaseActivity;
 import com.example.cineverse.databinding.ActivityNetworkErrorBinding;
 
 /**
  * The {@link NetworkErrorActivity} class represents the activity shown to the user when there is a network error.
  */
-public class NetworkErrorActivity extends AppCompatActivity {
+public class NetworkErrorActivity extends BaseActivity {
 
     private ActivityNetworkErrorBinding binding;
     private NavController navController;

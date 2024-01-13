@@ -83,4 +83,11 @@ public class SearchHistoryLocalDataSource {
         setSearchHistory(searchHistory);
     }
 
+    public static void clearHistory(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(QUERY_HISTORY_KEY);
+        editor.apply();
+    }
+
 }
