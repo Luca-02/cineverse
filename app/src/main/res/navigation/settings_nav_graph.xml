@@ -31,46 +31,34 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right"/>
+        <action
+            android:id="@+id/action_optionSettingsFragment_to_changeLanguageSettingsFragment"
+            app:destination="@id/changeLanguageSettingsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
     </fragment>
     <fragment
         android:id="@+id/usernameSettingsFragment2"
         android:name="com.example.cineverse.view.settings.fragment.section.UsernameSettingsFragment"
         android:label="fragment_username_settings"
-        tools:layout="@layout/fragment_username_settings" >
-        <action
-            android:id="@+id/action_usernameSettingsFragment2_to_optionSettingsFragment"
-            app:destination="@id/optionSettingsFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"/>
-    </fragment>
+        tools:layout="@layout/fragment_username_settings"/>
     <fragment
         android:id="@+id/changeThemeSettingsFragment"
-        android:name="com.example.cineverse.view.settings.fragment.section.ChangeThemeSettingsFragment"
+        android:name="com.example.cineverse.view.settings.fragment.section.ThemeSettingsFragment"
         android:label="fragment_change_theme_setting"
-        tools:layout="@layout/fragment_change_theme_settings" >
-        <action
-            android:id="@+id/action_changeThemeSettingsFragment_to_optionSettingsFragment"
-            app:destination="@id/optionSettingsFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"/>
-    </fragment>
+        tools:layout="@layout/fragment_theme_settings"/>
     <fragment
         android:id="@+id/aboutSettingsFragment"
         android:name="com.example.cineverse.view.settings.fragment.section.AboutSettingsFragment"
         android:label="fragment_about_settings"
-        tools:layout="@layout/fragment_about_settings" >
-        <action
-            android:id="@+id/action_aboutSettingsFragment_to_optionSettingsFragment"
-            app:destination="@id/optionSettingsFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"/>
-    </fragment>
+        tools:layout="@layout/fragment_about_settings"/>
+    <fragment
+        android:id="@+id/changeLanguageSettingsFragment"
+        android:name="com.example.cineverse.view.settings.fragment.section.LanguageSettingsFragment"
+        android:label="fragment_change_language_settings"
+        tools:layout="@layout/fragment_language_settings" />
 
     <activity
         android:id="@+id/authActivity"

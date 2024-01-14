@@ -1,9 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="language">it</string>
-    <string name="app_name">CineVerse</string>
+    <string name="language_code">it</string>
     <string name="app_slogan">Dove il Cinema Incontra la Tua Penna!</string>
-
-    <!-- Global -->
     <string name="retry" tools:ignore="PrivateResource">Riprova</string>
     <string name="home">Home</string>
     <string name="search">Ricerca</string>
@@ -15,8 +12,11 @@
     <string name="cancel">Annulla</string>
     <string name="public_">Pubblica</string>
     <string name="delete_">elimina</string>
-
-    <!-- Time -->
+    <string name="change">Cambia</string>
+    <string name="content">Contenuti</string>
+    <string name="no_content_found">Nessun contenuto di questo tipo è stato trovato</string>
+    <string name="sort">Ordina</string>
+    <string name="confirm">Conferma</string>
     <string name="second_ago">secondo fa</string>
     <string name="seconds_ago">secondi fa</string>
     <string name="minute_ago">minuto fa</string>
@@ -31,30 +31,21 @@
     <string name="months_ago">mesi fa</string>
     <string name="year_ago">anno fa</string>
     <string name="years_ago">anni fa</string>
-
-    <!-- Error -->
     <string name="unexpected_error">Si è verificato un errore imprevisto</string>
-    <string name="unable_load_data">Impossibile caricare i dati</string>
-
-    <!-- Login/Register -->
     <string name="username">Nome utente</string>
     <string name="email">Email</string>
     <string name="username_email">Nome utente o Email</string>
     <string name="password">Password</string>
     <string name="google_login">Continua con Google</string>
     <string name="signin">Accedi</string>
-    <string name="signin_to_continue">Effettua l\'accesso per continuare.</string>
+    <string name="signin_to_continue">Per favore accedi per continuare.</string>
     <string name="signup">Registrati</string>
     <string name="create_an_account">Crea un account per continuare.</string>
     <string name="signout">Esci</string>
-
-    <!-- Forgot Password -->
     <string name="forgot_password_question">Password dimenticata</string>
     <string name="forgot_password_question_u"><u>Password dimenticata?</u></string>
     <string name="enter_your_email_to_reset">Nessun problema! Inserisci la tua email e ti invieremo un link per reimpostare la password.</string>
     <string name="reset_password">Reimposta password</string>
-
-    <!-- Auth Error -->
     <string name="user_not_found_disabled">L\'account utente non esiste o è stato disabilitato.</string>
     <string name="username_already_exist">Esiste già un account con il nome utente fornito.</string>
     <string name="email_already_exist">Esiste già un account con l\'indirizzo email fornito.</string>
@@ -64,8 +55,6 @@
     <string name="wrong_password">La tua password non è corretta, riprova.</string>
     <string name="weak_password">La password inserita è troppo debole, utilizza almeno 6 caratteri per una maggiore sicurezza.</string>
     <string name="invalid_credentials">Credenziali non valide.</string>
-
-    <!-- Verify Email -->
     <string name="verify_email">Verifica la tua Email</string>
     <string name="we_have_sent_email">Abbiamo inviato un\'email di verifica a te il %s.</string>
     <string name="check_your_inbox">Controlla la tua casella di posta, segui le istruzioni per completare il processo e poi clicca sul pulsante di verifica.</string>
@@ -74,30 +63,20 @@
     <string name="wait_second">Attendi %s secondo</string>
     <string name="wait_seconds">Attendi %s secondi</string>
     <string name="email_not_verified">Email non verificata</string>
-
-    <!-- Network Error -->
-    <string name="ops">Ops!</string>
     <string name="no_internet">Connessione internet lenta o assente.</string>
     <string name="check_internet">Verifica le impostazioni internet.</string>
     <string name="try_again">Riprova</string>
-
-    <!-- Email -->
     <string name="email_sent">Email inviata</string>
     <string name="email_not_sent_wait">Errore, email non inviata, attendi qualche istante</string>
-
-    <!-- Google -->
     <string name="google_signin_failed">Accesso con Google non riuscito</string>
     <string name="authentication_failed">Autenticazione non riuscita</string>
-
-    <!-- Home -->
-    <string name="hello_">Ciao\u0020</string>
     <string name="review_or_track_content">Recensisci o traccia il contenuto che desideri vedere</string>
     <string name="all">Tutto</string>
     <string name="movies">Film</string>
     <string name="tv_series">Serie TV</string>
     <string name="categories">Categorie</string>
-
-    <!-- Home Section -->
+    <string name="your_reviews">Le tue recensioni</string>
+    <string name="your_watchlist">I tuoi da guardare</string>
     <string name="popular_movie">Film Popolari</string>
     <string name="top_rated_movie">Film Valutati Globalmente al Top</string>
     <string name="today_trending_movie">Film in Tendenza Oggi su TMDB</string>
@@ -106,19 +85,19 @@
     <string name="popular_tv">Serie TV Popolari</string>
     <string name="top_rated_tv">Serie TV Valutate Globalmente al Top</string>
     <string name="today_trending_tv">Serie TV in Tendenza Oggi su TMDB</string>
-    <string name="airing_today_tv">Serie TV in onda oggi</string>
-    <string name="week_airing_tv">Serie TV in onda questa settimana</string>
+    <string name="airing_today_tv">Serie TV in Onda Oggi</string>
+    <string name="week_airing_tv">Serie TV in Onda Questa Settimana</string>
     <string name="view_all">Visualizza tutto</string>
     <string name="genre">Genere</string>
-
-    <!-- Search -->
-    <string name="search_history">Cronologia Ricerche</string>
-    <string name="no_item_search_history">Nessun elemento salvato nella cronologia ricerche</string>
+    <string name="search_history">Cronologia delle Ricerche</string>
+    <string name="no_item_search_history">Nessun elemento salvato nella cronologia delle ricerche</string>
     <string name="microphone">Microfono</string>
     <string name="speak_to_text">Parla per scrivere</string>
     <string name="keyword">Parola chiave</string>
-
-    <!-- Content Details -->
+    <string name="your_recent_to_watch">I Tuoi da Guardare Recenti</string>
+    <string name="your_recent_reviews">Le Tue Recensioni Recenti</string>
+    <string name="settings">Impostazioni</string>
+    <string name="about">Informazioni</string>
     <string name="cast_crew">Cast &amp; Crew</string>
     <string name="cast">Cast</string>
     <string name="crew">Crew</string>
@@ -135,4 +114,28 @@
     <string name="removed_to_watch_list">Contenuto rimosso dalla lista da guardare</string>
     <string name="delete_review">Elimina recensione</string>
     <string name="sure_delete_review">Sei sicuro di voler eliminare la tua recensione?</string>
+    <string name="about_subtitle">Benvenuto in CineVerse: La Tua Destinazione Cinematografica Definitiva!</string>
+    <string name="about_text">CineVerse è più di un\'applicazione mobile, è una community appassionata di cinefili. Condividiamo la stessa passione per il mondo del cinema e offriamo un luogo accogliente dove gli amanti del cinema possono connettersi, esprimere le proprie opinioni e scoprire nuovi contenuti da amare.\nSu CineVerse puoi scrivere recensioni dettagliate di film e programmi TV, condividere le tue opinioni e scoprire cosa pensano gli altri membri della nostra community. La tua watchlist personale ti consente di tenere traccia di tutti i film e le serie TV che desideri guardare, mentre le interazioni social ti consentono di mettere mi piace alle recensioni di altri utenti, commentare e partecipare a discussioni sulla tua passione per il cinema.\n\nCrea il tuo account personalizzato, rispecchia il tuo amore unico per il cinema nel tuo profilo e connettiti con amici che condividono i tuoi interessi. CineVerse nasce dalla convinzione che il cinema sia un linguaggio universale in grado di connettere persone provenienti da tutto il mondo. La nostra missione è creare una comunità globale di cinefili che possano condividere la loro passione, scoprire nuovi titoli e approfondire la loro comprensione del mondo del cinema.\n\nUnisciti a noi su CineVerse ed entra a far parte di una comunità che ama il cinema tanto quanto te. Esplora, interagisci, condividi e scopri il magico mondo del cinema con CineVerse!</string>
+    <string name="account_settings_name">Account</string>
+    <string name="theme">Tema</string>
+    <string name="change_theme">Cambia Tema</string>
+    <string name="light">Chiaro</string>
+    <string name="dark">Scuro</string>
+    <string name="system_default">Default del sistema</string>
+    <string name="username_changed">Nome utente cambiato</string>
+    <string name="current_username">Nome Utente Attuale</string>
+    <string name="enter_username">Inserisci il nome utente</string>
+    <string name="change_username">Cambia il tuo nome utente</string>
+    <string name="username_updated">Nome utente aggiornato</string>
+    <string name="your_reviews2">Le Tue Recensioni</string>
+    <string name="your_watchlist2">I Tuoi da Guardare</string>
+    <string name="recent_old">Più recente</string>
+    <string name="old_recent">Più vecchio</string>
+    <string name="alphabetic_a_z">Alfabetico A-Z</string>
+    <string name="alphabetic_z_a">Alfabetico Z-A</string>
+    <string name="best_rating">Valuazione migliore</string>
+    <string name="worst_rating">Valuazione peggiore</string>
+    <string name="number_of_like">Numero di like</string>
+    <string name="language">Lingua</string>
+    <string name="change_language">Cambia Lingua</string>
 </resources>

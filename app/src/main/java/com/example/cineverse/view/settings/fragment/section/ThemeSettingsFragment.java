@@ -1,8 +1,8 @@
 package com.example.cineverse.view.settings.fragment.section;
 
-import static com.example.cineverse.data.source.theme.ThemeModeLocalDataSource.DARK_MODE;
-import static com.example.cineverse.data.source.theme.ThemeModeLocalDataSource.LIGHT_MODE;
-import static com.example.cineverse.data.source.theme.ThemeModeLocalDataSource.SYSTEM_DEFAULT_MODE;
+import static com.example.cineverse.theme.ThemeModeController.DARK_MODE;
+import static com.example.cineverse.theme.ThemeModeController.LIGHT_MODE;
+import static com.example.cineverse.theme.ThemeModeController.SYSTEM_DEFAULT_MODE;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,25 +16,26 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.example.cineverse.R;
-import com.example.cineverse.databinding.FragmentChangeThemeSettingsBinding;
-import com.example.cineverse.data.source.theme.ThemeModeLocalDataSource;
+import com.example.cineverse.theme.ThemeModeController;
+import com.example.cineverse.databinding.FragmentThemeSettingsBinding;
 import com.example.cineverse.view.settings.SettingsActivity;
 
-public class ChangeThemeSettingsFragment extends Fragment {
+public class ThemeSettingsFragment extends Fragment {
 
-    private FragmentChangeThemeSettingsBinding binding;
-    private ThemeModeLocalDataSource themeModeLocalDataSource;
+    private FragmentThemeSettingsBinding binding;
+    private ThemeModeController themeModeController;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentChangeThemeSettingsBinding.inflate(inflater, container, false);
+        binding = FragmentThemeSettingsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        themeModeController = ((SettingsActivity) requireActivity()).getThemeModeController();
         setActionBar();
         setContentUi();
         setListener();
@@ -50,13 +51,12 @@ public class ChangeThemeSettingsFragment extends Fragment {
     private void setActionBar(){
         ActionBar actionBar = ((SettingsActivity) requireActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(R.string.theme_settings_name);
+            actionBar.setTitle(R.string.theme);
         }
     }
 
     private void setContentUi() {
-        themeModeLocalDataSource = new ThemeModeLocalDataSource(requireContext());
-        String themeMode = themeModeLocalDataSource.getThemeMode();
+        String themeMode = themeModeController.getThemeMode();
         if (themeMode == null) {
             binding.radioGroup.check(R.id.systemRadio);
         } else {
@@ -81,11 +81,11 @@ public class ChangeThemeSettingsFragment extends Fragment {
         binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             AppCompatDelegate delegate = ((SettingsActivity) requireActivity()).getDelegate();
             if (checkedId == R.id.lightRadio) {
-                themeModeLocalDataSource.applyTheme(delegate, LIGHT_MODE);
+                themeModeController.applyTheme(delegate, LIGHT_MODE);
             } else if (checkedId == R.id.darkRadio) {
-                themeModeLocalDataSource.applyTheme(delegate, DARK_MODE);
+                themeModeController.applyTheme(delegate, DARK_MODE);
             } else if (checkedId == R.id.systemRadio) {
-                themeModeLocalDataSource.applyTheme(delegate, SYSTEM_DEFAULT_MODE);
+                themeModeController.applyTheme(delegate, SYSTEM_DEFAULT_MODE);
             }
         });
     }

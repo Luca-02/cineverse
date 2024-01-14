@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="language">en</string>
-    <string name="app_name">CineVerse</string>
+    <string name="language_code">en</string>
+    <string name="app_name" translatable="false">CineVerse</string>
     <string name="app_slogan">Where Cinema Meets Your Pen!</string>
 
     <!-- Global -->
@@ -16,11 +16,10 @@
     <string name="public_">Public</string>
     <string name="delete_">Delete</string>
     <string name="change">Change</string>
-    <string name="content">Content</string>
+    <string name="content">Contents</string>
     <string name="no_content_found">No such content was found</string>
     <string name="sort">Sort</string>
     <string name="confirm">Confirm</string>
-    <string name="ok" tools:ignore="PrivateResource">OK</string>
 
     <!-- Time -->
     <string name="second_ago">second ago</string>
@@ -81,7 +80,7 @@
     <string name="email_not_verified">Email not verified</string>
 
     <!-- Network Error -->
-    <string name="ops">Ooops!</string>
+    <string name="ops" translatable="false">Ooops!</string>
     <string name="no_internet">Slow or no internet connection.</string>
     <string name="check_internet">Check your internet settings.</string>
     <string name="try_again">Try Again</string>
@@ -95,7 +94,6 @@
     <string name="authentication_failed">Authentication failed</string>
 
     <!-- Home -->
-    <string name="hello_">Hello\u0020</string>
     <string name="review_or_track_content">Review or track the content you want to see</string>
     <string name="all">All</string>
     <string name="movies">Movies</string>
@@ -113,8 +111,8 @@
     <string name="popular_tv">Popular Tv Series</string>
     <string name="top_rated_tv">Globally Top Rated Tv Series</string>
     <string name="today_trending_tv">Trending Tv Series Today on TMDB</string>
-    <string name="airing_today_tv">Airing today Tv Series</string>
-    <string name="week_airing_tv">Airing this week Tv Series</string>
+    <string name="airing_today_tv">Airing Today Tv Series</string>
+    <string name="week_airing_tv">Airing This Week Tv Series</string>
     <string name="view_all">View all</string>
     <string name="genre">Genre</string>
 
@@ -133,14 +131,12 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="about_subtitle">Welcome to CineVerse - Your Ultimate Movie Destination!</string>
-    <string name="about_text">Welcome to CineVerse - Your Ultimate Movie Destination!
-        CineVerse is more than a mobile application, it\'s a passionate community of cinephiles. We share the same passion for the world of cinema and offer a welcoming place where film lovers can connect, express their opinions and discover new content to love. \n
-        On CineVerse, you can write detailed reviews of movies and TV shows, share your opinions, and find out what other members of our community think. Your personal watchlist allows you to keep track of all the films and TV series you want to watch, while social interactions allow you to like other users\' reviews, comment and participate in discussions about your passion for cinema. \n\n
-        Create your personalized account, reflect your unique love of cinema in your profile, and connect with friends who share your interests. CineVerse was born from the belief that cinema is a universal language that can connect people from all over the world. Our mission is to create a global community of cinephiles who can share their passion, discover new titles and deepen their understanding of the world of cinema. \n\n
-        Join us on CineVerse and be part of a community that loves cinema as much as you do. Explore, interact, share and discover the magical world of cinema with CineVerse!</string>
+    <string name="about_text">CineVerse is more than a mobile application, it\'s a passionate community of cinephiles. We share the same passion for the world of cinema and offer a welcoming place where film lovers can connect, express their opinions and discover new content to love.\nOn CineVerse, you can write detailed reviews of movies and TV shows, share your opinions, and find out what other members of our community think. Your personal watchlist allows you to keep track of all the films and TV series you want to watch, while social interactions allow you to like other users\' reviews, comment and participate in discussions about your passion for cinema.\n\nCreate your personalized account, reflect your unique love of cinema in your profile, and connect with friends who share your interests. CineVerse was born from the belief that cinema is a universal language that can connect people from all over the world. Our mission is to create a global community of cinephiles who can share their passion, discover new titles and deepen their understanding of the world of cinema.\n\nJoin us on CineVerse and be part of a community that loves cinema as much as you do. Explore, interact, share and discover the magical world of cinema with CineVerse!</string>
     <string name="account_settings_name">Account</string>
-    <string name="theme_settings_name">Theme</string>
+    <string name="theme">Theme</string>
+    <string name="language">Language</string>
     <string name="change_theme">Change Theme</string>
+    <string name="change_language">Change Language</string>
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="system_default">System default</string>
@@ -173,8 +169,8 @@
     <string name="sure_delete_review">Are you sure you want to delete your review?</string>
 
     <!-- User content list -->
-    <string name="recent_old">Recent to old</string>
-    <string name="old_recent">Old to recent</string>
+    <string name="recent_old">Newest</string>
+    <string name="old_recent">Oldest</string>
     <string name="alphabetic_a_z">Alphabetic A-Z</string>
     <string name="alphabetic_z_a">Alphabetic Z-A</string>
     <string name="best_rating">Best rating</string>

@@ -53,6 +53,9 @@ public class OptionSettingsFragment extends Fragment {
         binding.buttonChangeTheme.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(
                         R.id.action_optionSettingsFragment_to_changeThemeSettingsFragment));
+        binding.buttonChangeLanguage.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(
+                        R.id.action_optionSettingsFragment_to_changeLanguageSettingsFragment));
         binding.buttonAbout.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(
                         R.id.action_optionSettingsFragment_to_aboutSettingsFragment));

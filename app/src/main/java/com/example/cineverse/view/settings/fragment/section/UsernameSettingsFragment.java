@@ -58,7 +58,7 @@ public class UsernameSettingsFragment extends Fragment {
     private void setActionBar(){
         ActionBar actionBar = ((SettingsActivity) requireActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(R.string.account_settings_name);
+            actionBar.setTitle(R.string.username);
         }
     }
 

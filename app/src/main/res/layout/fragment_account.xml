@@ -130,21 +130,23 @@
 
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="@string/your_recent_to_watch"
                             android:textSize="@dimen/text_medium"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:ellipsize="end"
+                            android:maxLines="2" />
 
                         <com.google.android.material.chip.Chip
+                            style="@style/Widget.App.Chip.Assist"
                             android:id="@+id/seeAllRecentWatched"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/view_all"
-                            android:textSize="@dimen/text_normal"
-                            android:padding="8dp"
-                            android:clickable="true"
-                            app:chipCornerRadius="50dp"/>
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -175,29 +177,29 @@
 
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="@string/your_recent_reviews"
                             android:textSize="@dimen/text_medium"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:ellipsize="end"
+                            android:maxLines="2" />
 
                         <com.google.android.material.chip.Chip
+                            style="@style/Widget.App.Chip.Assist"
                             android:id="@+id/seeAllRecentReviews"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/view_all"
-                            android:textSize="@dimen/text_normal"
-                            android:padding="8dp"
-                            app:chipCornerRadius="50dp"
-                            android:clickable="true"/>
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewRecentReviews"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/standard_spacing"
-                        android:layout_marginBottom="@dimen/standard_spacing"
                         android:clipToPadding="false" />
                 </LinearLayout>
             </LinearLayout>

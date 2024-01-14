@@ -47,7 +47,7 @@ public class TMDBRemoteDataSource {
      * @return The language string.
      */
     public String getLanguage() {
-        return context.getString(R.string.language);
+        return context.getString(R.string.language_code);
     }
 
     /**

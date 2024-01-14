@@ -1,14 +1,13 @@
-package com.example.cineverse.data.source.theme;
+package com.example.cineverse.theme;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ThemeModeLocalDataSource {
+public class ThemeModeController {
 
     public static final String LIGHT_MODE = "light";
     public static final String DARK_MODE = "dark";
@@ -19,7 +18,7 @@ public class ThemeModeLocalDataSource {
 
     private final Context context;
 
-    public ThemeModeLocalDataSource(Context context) {
+    public ThemeModeController(Context context) {
         this.context = context;
     }
 
