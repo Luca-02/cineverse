@@ -34,10 +34,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UserWatchlistFragment extends Fragment
         implements OnContentClickListener {
 
+    private static final String CHECKED_ITEM_KEY = "watchlistCheckedItem";
+
     private FragmentUserWatchlistBinding binding;
     private WatchlistViewModel watchlistViewModel;
     private ContentViewAllAdapter watchlistAdapter;
-    private int checkedItem = 0;
+    private int checkedItem;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -49,6 +51,8 @@ public class UserWatchlistFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        checkedItem = (savedInstanceState != null) ?
+                savedInstanceState.getInt(CHECKED_ITEM_KEY, 0) : 0;
         setActionBarMenu();
         setViewModel();
         setContentUi();
@@ -60,6 +64,12 @@ public class UserWatchlistFragment extends Fragment
     public void onDestroy() {
         super.onDestroy();
         binding = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CHECKED_ITEM_KEY, checkedItem);
     }
 
     /**
@@ -89,13 +99,19 @@ public class UserWatchlistFragment extends Fragment
     private void setViewModel() {
         watchlistViewModel = new ViewModelProvider(this).get(WatchlistViewModel.class);
         watchlistViewModel.getUserMovieWatchlistLiveData().observe(getViewLifecycleOwner(), abstractContents -> {
-            if (abstractContents != null && binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonMovies) {
-                setWatchlistAdapterData(abstractContents);
+            if (binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonMovies) {
+                fetchWatchlistData(
+                        watchlistViewModel.getUserMovieWatchlistLiveData().getValue(),
+                        ContentTypeMappingManager.ContentType.MOVIE.getType()
+                );
             }
         });
         watchlistViewModel.getUserTvWatchlistLiveData().observe(getViewLifecycleOwner(), abstractContents -> {
-            if (abstractContents != null && binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonSeries) {
-                setWatchlistAdapterData(abstractContents);
+            if (binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonSeries) {
+                fetchWatchlistData(
+                        watchlistViewModel.getUserTvWatchlistLiveData().getValue(),
+                        ContentTypeMappingManager.ContentType.TV.getType()
+                );
             }
         });
         watchlistViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
@@ -131,13 +147,11 @@ public class UserWatchlistFragment extends Fragment
                     ContentTypeMappingManager.ContentType.TV.getType()
             );
         }
-        checkedItem = 0;
     }
 
     private void updateAllData() {
         watchlistViewModel.getUserMovieWatchlistLiveData().postValue(null);
         watchlistViewModel.getUserTvWatchlistLiveData().postValue(null);
-        handleCheckedButton(binding.materialToggleGroup.getCheckedButtonId());
     }
 
     private void fetchWatchlistData(List<AbstractContent> userDataList, String type) {
@@ -151,6 +165,7 @@ public class UserWatchlistFragment extends Fragment
     private void setWatchlistAdapterData(List<AbstractContent> userDataList) {
         if (userDataList.size() > 0) {
             watchlistAdapter.setData(userDataList);
+            watchlistAdapter.sortContentList(checkedItem);
             binding.emptyContentLayout.getRoot().setVisibility(View.GONE);
         } else {
             binding.emptyContentLayout.getRoot().setVisibility(View.VISIBLE);

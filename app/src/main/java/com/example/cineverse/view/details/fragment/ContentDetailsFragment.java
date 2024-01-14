@@ -256,7 +256,7 @@ public class ContentDetailsFragment extends Fragment
     }
 
     private void handlePagedContentReview(List<UserReview> userReviewList) {
-        if (userReviewList.size() > 0) {
+        if (userReviewList != null && userReviewList.size() > 0) {
             reviewAdapter.setData(userReviewList.subList(0, Math.min(userReviewList.size(), 3)));
             binding.recentReviewConstraintLayout.setVisibility(View.VISIBLE);
             binding.recentReviewRecyclerView.setVisibility(View.VISIBLE);

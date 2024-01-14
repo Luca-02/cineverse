@@ -20,6 +20,8 @@
     <string name="no_content_found">No such content was found</string>
     <string name="sort">Sort</string>
     <string name="confirm">Confirm</string>
+    <string name="read_more">Read more</string>
+    <string name="read_less">Read less</string>
 
     <!-- Time -->
     <string name="second_ago">second ago</string>

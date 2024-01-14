@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -30,7 +29,6 @@ import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.data.model.ui.ContentSection;
 import com.example.cineverse.databinding.FragmentAccountBinding;
 import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
-import com.example.cineverse.view.details.ContentDetailsActivity;
 import com.example.cineverse.view.details.ContentDetailsActivityOpener;
 import com.example.cineverse.view.verified_account.VerifiedAccountActivity;
 import com.example.cineverse.viewmodel.review.ReviewViewModel;
@@ -88,32 +86,40 @@ public class AccountFragment extends Fragment
 
         watchlistViewModel = new ViewModelProvider(this).get(WatchlistViewModel.class);
         watchlistViewModel.getUserMovieWatchlistLiveData().observe(getViewLifecycleOwner(), abstractContents -> {
-            if (abstractContents != null && binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonMovies) {
-                setWatchlistAdapterData(abstractContents);
+            if (binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonMovies) {
+                fetchWatchlistData(
+                        watchlistViewModel.getUserMovieWatchlistLiveData().getValue(),
+                        ContentTypeMappingManager.ContentType.MOVIE.getType()
+                );
             }
-            handleEmptyLayout();
         });
         watchlistViewModel.getUserTvWatchlistLiveData().observe(getViewLifecycleOwner(), abstractContents -> {
-            if (abstractContents != null && binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonSeries) {
-                setWatchlistAdapterData(abstractContents);
+            if (binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonSeries) {
+                fetchWatchlistData(
+                        watchlistViewModel.getUserTvWatchlistLiveData().getValue(),
+                        ContentTypeMappingManager.ContentType.TV.getType()
+                );
             }
-            handleEmptyLayout();
         });
         watchlistViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), aBoolean ->
                 handleNetworkError(aBoolean, watchlistViewModel.getNetworkErrorLiveData()));
 
         reviewViewModel = new ViewModelProvider(this).get(ReviewViewModel.class);
         reviewViewModel.getUserMovieReviewListLiveData().observe(getViewLifecycleOwner(), contentUserReviews -> {
-            if (contentUserReviews != null && binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonMovies) {
-                setReviewAdapterData(contentUserReviews);
+            if (binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonMovies) {
+                fetchReviewData(
+                        reviewViewModel.getUserMovieReviewListLiveData().getValue(),
+                        ContentTypeMappingManager.ContentType.MOVIE.getType()
+                );
             }
-            handleEmptyLayout();
         });
         reviewViewModel.getUserTvReviewListLiveData().observe(getViewLifecycleOwner(), contentUserReviews -> {
-            if (contentUserReviews != null && binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonSeries) {
-                setReviewAdapterData(contentUserReviews);
+            if (binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonSeries) {
+                fetchReviewData(
+                        reviewViewModel.getUserTvReviewListLiveData().getValue(),
+                        ContentTypeMappingManager.ContentType.TV.getType()
+                );
             }
-            handleEmptyLayout();
         });
         reviewViewModel.getChangeLikeOfUserToUserReviewOfContentLiveData().observe(
                 getViewLifecycleOwner(), this::handleChangeLikeToUserReview);
@@ -187,7 +193,6 @@ public class AccountFragment extends Fragment
         reviewViewModel.getUserMovieReviewListLiveData().postValue(null);
         watchlistViewModel.getUserTvWatchlistLiveData().postValue(null);
         reviewViewModel.getUserTvReviewListLiveData().postValue(null);
-        handleCheckedButton(binding.materialToggleGroup.getCheckedButtonId());
     }
 
     private void fetchWatchlistData(List<AbstractContent> userDataList, String type) {

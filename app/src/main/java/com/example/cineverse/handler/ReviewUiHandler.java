@@ -1,6 +1,9 @@
 package com.example.cineverse.handler;
 
 import android.content.Context;
+import android.text.Layout;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -11,6 +14,7 @@ import com.example.cineverse.data.model.review.ContentUserReview;
 import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.ReviewItemLayoutBinding;
+import com.example.cineverse.utils.constant.GlobalConstant;
 
 public class ReviewUiHandler {
 
@@ -27,7 +31,7 @@ public class ReviewUiHandler {
         if (review != null) {
             setContentDetails(binding, review);
             setUserDetails(context, binding, review.getUser());
-            setReviewDetails(binding, review, withLikeSection);
+            setReviewDetails(binding, review);
             setLikeDetails(binding, review, withLikeSection);
         }
     }
@@ -59,14 +63,39 @@ public class ReviewUiHandler {
 
     private static void setReviewDetails(
             ReviewItemLayoutBinding binding,
-            UserReview userReview,
-            boolean withLikeSection) {
+            UserReview userReview) {
         Review review = userReview.getReview();
         if (review != null) {
             binding.reviewDateTextView.setText(review.timestampString());
             binding.ratingChip.setText(String.valueOf(review.getRating()));
             binding.reviewTextView.setText(review.getReview());
+            setReviewTextView(binding);
         }
+    }
+
+    private static void setReviewTextView(ReviewItemLayoutBinding binding) {
+        binding.reviewTextView.post(() -> {
+            Layout layout = binding.reviewTextView.getLayout();
+            if (layout != null) {
+                int lines = layout.getLineCount();
+                if (lines > 0) {
+                    if (lines > 5 || layout.getEllipsisCount(lines - 1) > 0) {
+                        binding.readMoreLessTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.readMoreLessTextView.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+        binding.readMoreLessTextView.setOnClickListener(v -> {
+            if (binding.reviewTextView.getMaxLines() == 5) {
+                binding.reviewTextView.setMaxLines(Integer.MAX_VALUE);
+                binding.readMoreLessTextView.setText(R.string.read_less);
+            } else {
+                binding.reviewTextView.setMaxLines(5);
+                binding.readMoreLessTextView.setText(R.string.read_more);
+            }
+        });
     }
 
     public static void setLikeDetails(

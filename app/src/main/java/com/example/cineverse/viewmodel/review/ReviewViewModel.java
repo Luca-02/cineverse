@@ -5,7 +5,6 @@ import static com.example.cineverse.utils.constant.GlobalConstant.REVIEW_PAGE_CO
 import static com.example.cineverse.utils.constant.GlobalConstant.START_TIMESTAMP_VALUE;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -16,7 +15,6 @@ import com.example.cineverse.data.model.review.Review;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.data.source.review.ReviewFirebaseCallback;
 import com.example.cineverse.repository.review.ReviewRepository;
-import com.example.cineverse.utils.constant.GlobalConstant;
 import com.example.cineverse.utils.mapper.ContentTypeMappingManager;
 import com.example.cineverse.viewmodel.verified_account.VerifiedAccountViewModel;
 
@@ -154,7 +152,7 @@ public class ReviewViewModel
 
     public void refreshContentReviewOfContent(AbstractContent content) {
         setLastTimestamp(START_TIMESTAMP_VALUE);
-        getPagedUserReviewOfContentLiveData().postValue(new ArrayList<>());
+        getPagedUserReviewOfContentLiveData().postValue(null);
         getPagedUserReviewOfContent(content);
     }
 
@@ -168,7 +166,7 @@ public class ReviewViewModel
 
     @Override
     public void onContentRating(Double rating) {
-        contentRatingLiveData.postValue(rating);
+        getContentRatingLiveData().postValue(rating);
     }
 
     @Override

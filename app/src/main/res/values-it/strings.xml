@@ -17,6 +17,8 @@
     <string name="no_content_found">Nessun contenuto di questo tipo è stato trovato</string>
     <string name="sort">Ordina</string>
     <string name="confirm">Conferma</string>
+    <string name="read_more">Leggi tutto</string>
+    <string name="read_less">Leggi meno</string>
     <string name="second_ago">secondo fa</string>
     <string name="seconds_ago">secondi fa</string>
     <string name="minute_ago">minuto fa</string>

@@ -52,8 +52,6 @@ public class ReviewDetailsFragment extends Fragment {
             }
             ReviewUiHandler.setReviewUi(requireContext(), binding.reviewLayout, userReview, withLikeSection);
             binding.reviewLayout.getRoot().setClickable(false);
-            binding.reviewLayout.reviewTextView.setMaxLines(Integer.MAX_VALUE);
-            binding.reviewLayout.reviewTextView.setEllipsize(null);
         }
         binding.materialToolbar.setNavigationOnClickListener(v ->
                 requireActivity().getOnBackPressedDispatcher().onBackPressed());

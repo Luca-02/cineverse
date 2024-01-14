@@ -128,8 +128,10 @@ public class ViewAllReviewContentFragment extends Fragment
     }
 
     private void handlePagedContentReview(List<UserReview> userReviewList) {
-        reviewAdapter.addPagingData(userReviewList);
-        reviewViewModel.setLoading(false);
+        if (userReviewList != null) {
+            reviewAdapter.addPagingData(userReviewList);
+            reviewViewModel.setLoading(false);
+        }
     }
 
     private void handleChangeLikeToUserReview(UserReview userReview) {

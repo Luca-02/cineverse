@@ -35,10 +35,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UserReviewFragment extends Fragment
         implements OnReviewClickListener<ContentUserReview> {
 
+    private static final String CHECKED_ITEM_KEY = "reviewCheckedItem";
+
     private FragmentUserReviewBinding binding;
     private ReviewViewModel reviewViewModel;
     private ReviewAdapter<ContentUserReview> reviewAdapter;
-    private int checkedItem = 0;
+    private int checkedItem;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -50,6 +52,8 @@ public class UserReviewFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        checkedItem = (savedInstanceState != null) ?
+                savedInstanceState.getInt(CHECKED_ITEM_KEY, 0) : 0;
         setActionBarMenu();
         setViewModel();
         setContentUi();
@@ -61,6 +65,12 @@ public class UserReviewFragment extends Fragment
     public void onDestroy() {
         super.onDestroy();
         binding = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CHECKED_ITEM_KEY, checkedItem);
     }
 
     /**
@@ -90,13 +100,19 @@ public class UserReviewFragment extends Fragment
     private void setViewModel() {
         reviewViewModel = new ViewModelProvider(this).get(ReviewViewModel.class);
         reviewViewModel.getUserMovieReviewListLiveData().observe(getViewLifecycleOwner(), contentUserReviews -> {
-            if (contentUserReviews != null && binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonMovies) {
-                setReviewAdapterData(contentUserReviews);
+            if (binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonMovies) {
+                fetchReviewData(
+                        reviewViewModel.getUserMovieReviewListLiveData().getValue(),
+                        ContentTypeMappingManager.ContentType.MOVIE.getType()
+                );
             }
         });
         reviewViewModel.getUserTvReviewListLiveData().observe(getViewLifecycleOwner(), contentUserReviews -> {
-            if (contentUserReviews != null && binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonSeries) {
-                setReviewAdapterData(contentUserReviews);
+            if (binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonSeries) {
+                fetchReviewData(
+                        reviewViewModel.getUserTvReviewListLiveData().getValue(),
+                        ContentTypeMappingManager.ContentType.TV.getType()
+                );
             }
         });
         reviewViewModel.getChangeLikeOfUserToUserReviewOfContentLiveData().observe(
@@ -134,13 +150,11 @@ public class UserReviewFragment extends Fragment
                     ContentTypeMappingManager.ContentType.TV.getType()
             );
         }
-        checkedItem = 0;
     }
 
     private void updateAllData() {
         reviewViewModel.getUserMovieReviewListLiveData().postValue(null);
         reviewViewModel.getUserTvReviewListLiveData().postValue(null);
-        handleCheckedButton(binding.materialToggleGroup.getCheckedButtonId());
     }
 
     private void fetchReviewData(List<ContentUserReview> userDataList, String type) {
@@ -154,6 +168,7 @@ public class UserReviewFragment extends Fragment
     private void setReviewAdapterData(List<ContentUserReview> userDataList) {
         if (userDataList.size() > 0) {
             reviewAdapter.setData(userDataList);
+            reviewAdapter.sortContentList(checkedItem);
             binding.emptyContentLayout.getRoot().setVisibility(View.GONE);
         } else {
             binding.emptyContentLayout.getRoot().setVisibility(View.VISIBLE);
