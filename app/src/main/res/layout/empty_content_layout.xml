@@ -16,11 +16,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:shapeDrawable="@{@drawable/random_shape4}"
-            app:imgDrawable="@{@drawable/search}" />
+            app:imgDrawable="@{@drawable/empty_box}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_marginTop="@dimen/double_spacing"
             android:text="@string/no_content_found"
             android:textSize="@dimen/text_normal"/>

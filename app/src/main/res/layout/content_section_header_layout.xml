@@ -14,6 +14,7 @@
         android:id="@+id/sectionTitleTextView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/standard_spacing"
         android:textSize="@dimen/text_medium"
         android:textStyle="bold"
         android:ellipsize="end"
