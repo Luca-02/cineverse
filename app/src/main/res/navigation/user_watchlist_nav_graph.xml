@@ -21,6 +21,11 @@
         android:name="com.example.cineverse.view.details.ContentDetailsActivity"
         android:label="activity_content_details"
         tools:layout="@layout/activity_content_details" />
+    <activity
+        android:id="@+id/authActivity"
+        android:name="com.example.cineverse.view.auth.AuthActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth" />
 
     <action
         android:id="@+id/action_global_networkErrorActivity"
@@ -28,4 +33,9 @@
     <action
         android:id="@+id/action_global_contentDetailsActivity"
         app:destination="@id/contentDetailsActivity" />
+    <action
+        android:id="@+id/action_global_authActivity"
+        app:destination="@id/authActivity"
+        app:popUpTo="@id/verified_account_nav_graph"
+        app:popUpToInclusive="true" />
 </navigation>

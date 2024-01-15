@@ -49,7 +49,7 @@ public class WatchlistFirebaseSourceTest {
             }
 
             @Override
-            public void onAddedContentToWatchlist(Long newTimestamp) {
+            public void onAddedContentToWatchlist(AbstractContent content, Long newTimestamp) {
                 assertNotNull(newTimestamp);
                 System.out.println(newTimestamp);
                 latch.countDown();

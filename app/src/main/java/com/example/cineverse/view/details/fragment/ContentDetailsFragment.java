@@ -287,8 +287,6 @@ public class ContentDetailsFragment extends Fragment
         if (timestamp != null) {
             contentDetails.setWatchlistTimestamp(timestamp);
             contentDetailsViewModel.getTimestampForContentInWatchlistLiveData().setValue(timestamp);
-            Snackbar.make(binding.getRoot(),
-                    R.string.added_to_watch_list, Snackbar.LENGTH_SHORT).show();
             contentDetailsViewModel.getAddedContentToWatchlistLiveData().setValue(null);
         }
     }
@@ -297,8 +295,6 @@ public class ContentDetailsFragment extends Fragment
         if (removed != null && removed) {
             contentDetails.setWatchlistTimestamp(null);
             contentDetailsViewModel.getTimestampForContentInWatchlistLiveData().setValue(null);
-            Snackbar.make(binding.getRoot(),
-                    R.string.removed_to_watch_list, Snackbar.LENGTH_SHORT).show();
             contentDetailsViewModel.getRemovedContentToWatchlistLiveData().setValue(null);
         }
     }

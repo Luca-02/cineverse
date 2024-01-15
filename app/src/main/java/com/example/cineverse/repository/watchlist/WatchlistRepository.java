@@ -23,12 +23,14 @@ public class WatchlistRepository
     private final User currentuser;
     private final WatchlistFirebaseSource watchlistFirebaseSource;
     private final WatchlistFirebaseCallback firebaseCallback;
+    private final WatchlistNotificationHandler watchlistNotificationHandler;
 
     public WatchlistRepository(Context context, User currentuser, WatchlistFirebaseCallback firebaseCallback) {
         this.context = context;
         this.currentuser = currentuser;
         this.firebaseCallback = firebaseCallback;
         this.watchlistFirebaseSource = new WatchlistFirebaseSource(context, this);
+        watchlistNotificationHandler = new WatchlistNotificationHandler(context);
     }
 
     public void getTimestampForContentInWatchlist(AbstractContent content) {
@@ -76,8 +78,9 @@ public class WatchlistRepository
     }
 
     @Override
-    public void onAddedContentToWatchlist(Long newTimestamp) {
-        firebaseCallback.onAddedContentToWatchlist(newTimestamp);
+    public void onAddedContentToWatchlist(AbstractContent content, Long newTimestamp) {
+        watchlistNotificationHandler.showNotification(content);
+        firebaseCallback.onAddedContentToWatchlist(content, newTimestamp);
     }
 
     @Override

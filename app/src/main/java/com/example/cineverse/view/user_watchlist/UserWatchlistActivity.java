@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.cineverse.R;
 import com.example.cineverse.data.model.ui.BaseActivity;
 import com.example.cineverse.databinding.ActivityUserWatchlistBinding;
+import com.example.cineverse.view.auth.AuthActivity;
 import com.example.cineverse.view.network_error.NetworkErrorActivity;
 
 public class UserWatchlistActivity extends BaseActivity {
@@ -27,15 +28,6 @@ public class UserWatchlistActivity extends BaseActivity {
         setNavController();
         binding.materialToolbar.setNavigationOnClickListener(
                 view -> getOnBackPressedDispatcher().onBackPressed());
-    }
-
-    /**
-     * Called when the activity is about to be destroyed.
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
     }
 
     /**
@@ -67,6 +59,16 @@ public class UserWatchlistActivity extends BaseActivity {
     public void openNetworkErrorActivity() {
         if (navController != null) {
             navController.navigate(R.id.action_global_networkErrorActivity);
+        }
+    }
+
+    /**
+     * Opens the authentication activity ({@link AuthActivity}).
+     */
+    public void openAuthActivity() {
+        if (navController != null) {
+            navController.navigate(R.id.action_global_authActivity);
+            finish();
         }
     }
 

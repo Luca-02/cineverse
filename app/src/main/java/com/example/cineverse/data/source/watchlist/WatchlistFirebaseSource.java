@@ -136,9 +136,9 @@ public class WatchlistFirebaseSource
                     public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                         if (committed && error == null && currentData != null) {
                             Long timestamp = currentData.getValue(Long.class);
-                            firebaseCallback.onAddedContentToWatchlist(timestamp);
+                            firebaseCallback.onAddedContentToWatchlist(content, timestamp);
                         } else {
-                            firebaseCallback.onAddedContentToWatchlist(null);
+                            firebaseCallback.onAddedContentToWatchlist(content, null);
                         }
                     }
                 });

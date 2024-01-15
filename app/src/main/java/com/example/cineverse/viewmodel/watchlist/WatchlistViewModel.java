@@ -113,7 +113,7 @@ public class WatchlistViewModel
     }
 
     @Override
-    public void onAddedContentToWatchlist(Long newTimestamp) {
+    public void onAddedContentToWatchlist(AbstractContent content, Long newTimestamp) {
         getAddedContentToWatchlistLiveData().postValue(newTimestamp);
     }
 

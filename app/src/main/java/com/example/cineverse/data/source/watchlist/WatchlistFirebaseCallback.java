@@ -10,6 +10,6 @@ import java.util.List;
 public interface WatchlistFirebaseCallback extends NetworkCallback {
     void onTimestampForContentInWatchlist(Long timestamp);
     void onUserContentWatchlist(List<AbstractContent> watchlistList, String contentType);
-    void onAddedContentToWatchlist(Long newTimestamp);
+    void onAddedContentToWatchlist(AbstractContent content, Long newTimestamp);
     void onRemovedContentToWatchlist(boolean removed);
 }

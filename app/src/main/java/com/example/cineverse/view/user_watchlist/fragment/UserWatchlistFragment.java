@@ -98,6 +98,7 @@ public class UserWatchlistFragment extends Fragment
      */
     private void setViewModel() {
         watchlistViewModel = new ViewModelProvider(this).get(WatchlistViewModel.class);
+        if (watchlistViewModel.getCurrentUser() == null) watchlistViewModel.logOut();
         watchlistViewModel.getUserMovieWatchlistLiveData().observe(getViewLifecycleOwner(), abstractContents -> {
             if (binding.materialToggleGroup.getCheckedButtonId() == R.id.buttonMovies) {
                 fetchWatchlistData(
@@ -115,6 +116,7 @@ public class UserWatchlistFragment extends Fragment
             }
         });
         watchlistViewModel.getNetworkErrorLiveData().observe(getViewLifecycleOwner(), this::handleNetworkError);
+        watchlistViewModel.getLoggedOutLiveData().observe(getViewLifecycleOwner(), this::handleLoggedOut);
     }
 
     private void setContentUi() {
@@ -177,6 +179,17 @@ public class UserWatchlistFragment extends Fragment
         if (bool != null && bool) {
             ((UserWatchlistActivity) requireActivity()).openNetworkErrorActivity();
             watchlistViewModel.getNetworkErrorLiveData().setValue(null);
+        }
+    }
+
+    /**
+     * Handles the event when the user is logged out.
+     *
+     * @param loggedOut A boolean indicating whether the user has been successfully logged out.
+     */
+    private void handleLoggedOut(Boolean loggedOut) {
+        if (loggedOut) {
+            ((UserWatchlistActivity) requireActivity()).openAuthActivity();
         }
     }
 
