@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cineverse.R;
+import com.example.cineverse.data.model.User;
 import com.example.cineverse.data.model.content.AbstractContent;
 import com.example.cineverse.data.model.review.UserReview;
 import com.example.cineverse.databinding.ReviewItemLayoutBinding;
@@ -58,6 +59,22 @@ public class ReviewAdapter<T extends UserReview>
         if (userReview != null) {
             for (int i = 0; i < reviewList.size(); i++) {
                 if (userReview.equals(reviewList.get(i))) {
+                    reviewList.get(i).updateLike(
+                            userReview.getLikeCount(), userReview.isUserLikeReview());
+                    List<Object> payload = new ArrayList<>();
+                    payload.add(userReview.getLikeCount());
+                    payload.add(userReview.isUserLikeReview());
+                    notifyItemChanged(i, payload);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void handleChangeLikeToCurrentUserReview(UserReview userReview) {
+        if (userReview != null) {
+            for (int i = 0; i < reviewList.size(); i++) {
+                if (userReview.getUser().equals(reviewList.get(i).getUser())) {
                     reviewList.get(i).updateLike(
                             userReview.getLikeCount(), userReview.isUserLikeReview());
                     List<Object> payload = new ArrayList<>();

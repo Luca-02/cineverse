@@ -269,10 +269,10 @@ public class ContentDetailsFragment extends Fragment
 
     private void handleChangeLikeToUserReview(UserReview userReview) {
         UserReview currentUserReview = reviewViewModel.getUserReviewOfContentLiveData().getValue();
-        if (currentUserReview != null && currentUserReview.equals(userReview)) {
+        if (currentUserReview != null && currentUserReview.getUser().equals(userReview.getUser())) {
             reviewViewModel.getUserReviewOfContentLiveData().postValue(userReview);
         }
-        reviewAdapter.handleChangeLikeToUserReview(userReview);
+        reviewAdapter.handleChangeLikeToCurrentUserReview(userReview);
     }
 
     private void handleTimestampInWatchlist(Long timestamp) {
