@@ -73,7 +73,7 @@ Before building the app, ensure you have:
 
 Create or update:
 
-`/home/runner/work/cineverse/cineverse/local.properties`
+`local.properties` (in the project root)
 
 with the required keys:
 
@@ -89,7 +89,7 @@ api_key_auth=YOUR_TMDB_API_KEY
 
 Add your Firebase configuration file:
 
-`/home/runner/work/cineverse/cineverse/app/google-services.json`
+`app/google-services.json`
 
 This file is intentionally gitignored and must be provided locally.
 
@@ -98,7 +98,7 @@ This file is intentionally gitignored and must be provided locally.
 From project root:
 
 ```bash
-bash ./gradlew assembleDebug
+./gradlew assembleDebug
 ```
 
 For installing/running through Android Studio, open the root folder and run the `app` configuration on an emulator/device.
@@ -108,19 +108,19 @@ For installing/running through Android Studio, open the root folder and run the 
 Unit tests:
 
 ```bash
-bash ./gradlew test
+./gradlew test
 ```
 
 Android instrumentation tests (requires emulator/device):
 
 ```bash
-bash ./gradlew connectedAndroidTest
+./gradlew connectedAndroidTest
 ```
 
 Lint:
 
 ```bash
-bash ./gradlew lint
+./gradlew lint
 ```
 
 ## Notes
