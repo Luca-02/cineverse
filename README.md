@@ -1,5 +1,6 @@
 # CineVerse
 
+This is a bachelor's degree project for Mobile Device Programming course (academic year 2023/24).
 CineVerse is an Android application for discovering movies and TV series, searching content, managing a personal watchlist, and writing reviews.
 
 ## Overview
@@ -27,14 +28,13 @@ The codebase is organized around an **MVVM + Repository** architecture.
 - Personal watchlist management
 - User reviews and ratings
 - In-app settings (theme, language, username, about)
-- Notification when content is added to watchlist
 
 ## Tech Stack
 
 - **Language**: Java
-- **UI**: AndroidX, Material Components, ViewBinding, DataBinding
+- **UI**: AndroidX, Material Components
 - **Architecture**: MVVM + Repository
-- **Networking**: Retrofit + Gson/Jackson
+- **Networking**: Retrofit
 - **Image loading**: Glide
 - **Persistence**: Room
 - **Backend services**: Firebase Auth + Firebase Realtime Database
@@ -55,7 +55,7 @@ Additional material:
 
 - `STYLE.md` – design/style references used by the project
 - `demo/CineVerse_demo.mp4` – demo video
-- `presentazione_documentazione/` – project documentation assets
+- `presentazione_documentazione/` – project documentation assets (written in Italian)
 
 ## Prerequisites
 
@@ -123,13 +123,8 @@ Lint:
 ./gradlew lint
 ```
 
-## Notes
-
-- The repository currently ignores sensitive/local files such as `local.properties` and `google-services.json`.
-- If Gradle dependency/plugin resolution fails in your environment, verify internet/proxy access to Google/Maven/Gradle plugin repositories.
-
 ## Team
 
-- Milanesi Luca (886279)
-- Pirnau Ion (887465)
-- Polignone Alessandro (886000)
+- [Milanesi Luca](https://github.com/Luca-02) (886279)
+- [Pirnau Ion](https://github.com/Ion-Pirnau) (887465)
+- [Polignone Alessandro](https://github.com/AlessandroPolignone) (886000)
