@@ -1,6 +1,5 @@
 # CineVerse
 
-This is a bachelor's degree project for Mobile Device Programming course (academic year 2023/24).
 CineVerse is an Android application for discovering movies and TV series, searching content, managing a personal watchlist, and writing reviews.
 
 ## Overview
